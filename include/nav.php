@@ -2,8 +2,8 @@
 	<nav class="animenu">
 		<input type="checkbox" id="button"> <label for="button" onclick>Menu</label>
 		<ul>
-			<li><a href="../pages/accueil.php">Accueil</a></li>
-			<li><a href="../pages/creerformulaire.php">Créer formulaire</a>
+			<li><a href="../accueil.php">Accueil</a></li>
+			<li><a href="../creerformulaire.php">Créer formulaire</a>
 				<!-- <ul>
 					<li><a href="">S Menu</a></li>
 					<li><a href="">S Menu</a></li>

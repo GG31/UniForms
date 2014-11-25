@@ -30,7 +30,7 @@
 		<div id="intro">
 <?php
 session_start();
-echo "<h3><center><B>Bonjour ".$_SESSION['nom_user']. " " .$_SESSION['prenom_user']."</B></center></h3>";
+echo "<h3><center><B>Bonjour ".$_SESSION['user']."</B></center></h3>";
 ?>  
    </div>
 		<!--end intro-->

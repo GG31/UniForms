@@ -1,4 +1,8 @@
 <?php 
+/**
+ * @author BENATHMANE
+ *
+ */
 class Form {
 
 	// Attributs
@@ -9,6 +13,12 @@ class Form {
 	// Méthodes 
 	public function __construct() { }
 	
-	public function getForm
+	public static function getLastId(){
+		$query = mysql_query("SELECT form_id FROM form ORDER BY form_id DESC  LIMIT 1");
+	}
+	
+	public static function getAll() {
+		$query = mysql_query("SELECT * FROM form");
+	}
 }
 ?>

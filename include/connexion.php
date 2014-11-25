@@ -24,9 +24,9 @@ if (! empty ( $_POST )) {
 
 	// LOT 2 : fake users
 	if($_POST ['login'] == "admin"){
-		$_SESSION['user'] = "admin";
+		$_SESSION['user_id'] = 1;
 	}else if($_POST ['login'] == "romain"){
-		$_SESSION['user'] = "romain";
+		$_SESSION['user_id'] = 2;
 	}
 	header ( "Location: accueil.php" );
 }

@@ -1,13 +1,7 @@
 <?php
 session_start();
+include("connect.php")
 if (! empty ( $_POST )) {
-	/*try {
-		// On se connecte à MySQL
-		//$bdd = new PDO ( 'mysql:host=localhost;dbname=uniforms', 'root', 'root' );
-	} catch ( Exception $e ) {
-		// En cas d'erreur, on affiche un message et on arrête tout
-		die ( 'Erreur : ' . $e->getMessage () );
-	}
 
 	$reponse = $bdd->query ( 'SELECT * FROM user' );	
 	while ( $donnees = $reponse->fetch () ) {

@@ -1,7 +1,9 @@
 <header class="group_bannner_left">
-	<a href="index.php" id="logo"><img src="res/img/logo_UNS_couleurs_web.png" alt="logo" /></a>
 	<hgroup>
-		<h1>UniForms</h1>
-		<h2>Plateforme de création de formulaires de l'Université de Nice</h2>
+		<a href="index.php" style="text-decoration: none;">
+			<h1 class="text-center">UniForms</br>
+				<small>Création et partage de formulaires web et papiers !</small>
+			</h1>
+		</a>
 	</hgroup>
 </header>

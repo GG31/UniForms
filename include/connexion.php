@@ -1,7 +1,6 @@
 <?php
 session_start();
 if (! empty ( $_POST )) {
-
 	/*try {
 		// On se connecte à MySQL
 		//$bdd = new PDO ( 'mysql:host=localhost;dbname=uniforms', 'root', 'root' );

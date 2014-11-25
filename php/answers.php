@@ -11,35 +11,21 @@
 	</head>
 	<body>
 		<div class="container">
-			<?php include 'include/header.php'; ?>
+			<header class="row page-header">
+				<?php include 'include/header.php'; ?>
+			</header>
 			<div class="row">
 				<?php include 'include/nav.php'; ?>
 			</div>
 			<div class="row">
-				<div class="panel panel-default">
-					<div class="panel-heading">Formulaires soumis</div>
-
-					<table class="table table-hover"><!-- table-hover vs table-striped -->
-						<thead>
-							<tr>
-								<th>Users</th>
-								<th>Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr class="info">
-								<td>Bernard</td>
-								<td>Voir CSV BDD</td>
-							</tr>
-							<tr class="success">
-								<td>Jacques</td>
-								<td>Voir CSV BDD</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+				<?php include 'include/answers_list.php'; ?>
 			</div>
-			<?php include 'include/footer.php'; ?>
+			<!-- 2 rows -->
+				<?php include 'include/answers_form.php'; ?>
+			<!--/2 rows -->
+			<footer class="row well">
+				<?php include 'include/footer.php'; ?>
+			</footer>
 		</div>
 	</body>
 </html>

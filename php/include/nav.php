@@ -1,18 +1,45 @@
-<nav>
-	<nav class="animenu">
-		<input type="checkbox" id="button"> <label for="button" onclick>Menu</label>
-		<ul>
+<nav class="navbar navbar-default col-sm-offset-2 col-sm-8" role="navigation">
+	<div class="container-fluid">
 
-			<li><a href="../php/accueil.php">Accueil</a></li>
-			<li><a href="../php/creerformulaire.php">Créer formulaire</a>
+		<div class="navbar-header">
+			<a class="navbar-brand" href="home.php">UniForms</a>
+		</div>
+
+		<ul class="nav navbar-nav">
+			<li class="active">
+				<a href="#">Créer <span class="sr-only">(current)</span></a>
 			</li>
-			<!--<li><a href="#">Menu M Menu</a>
-				<ul>
-					<li><a href="">S Menu</a></li>
-					<li><a href="">S Menu</a></li>
-					<li><a href="">S Menu</a></li>
-				</ul>
-			</li>-->
+			<li>
+				<a href="#">Link</a>
+			</li>
 		</ul>
-	</nav>
+
+		<form class="navbar-form navbar-left" role="search">
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Search">
+			</div>
+			<button type="submit" class="btn btn-default">Submit</button>
+		</form>
+
+		<ul class="nav navbar-nav navbar-right">
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Dropdown <span class="caret"></span></a>
+				<ul class="dropdown-menu" role="menu">
+					<li>
+						<a href="#">Action</a>
+					</li>
+					<li>
+						<a href="#">Another action</a>
+					</li>
+					<li>
+						<a href="#">Something else here</a>
+					</li>
+					<li class="divider"></li>
+					<li>
+						<a href="#">Separated link</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div><!-- /.container-fluid -->
 </nav>

@@ -28,6 +28,6 @@ if (! empty ( $_POST )) {
 	}else if($_POST ['login'] == "romain"){
 		$_SESSION['user_id'] = 2;
 	}
-	header ( "Location: accueil.php" );
+	header ( "Location: php/accueil.php" );
 }
 ?>  

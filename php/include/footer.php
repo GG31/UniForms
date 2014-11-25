@@ -1,6 +1,11 @@
 <footer>
-	<div class="container">
-		<div id="FooterTwo">www.unice.fr</div>
-		<div id="FooterTree">Université Nice Sophia Antipolis</div>
+	<div class="col-xs-4">Uniforms
+	</div>
+	<div class="col-xs-4">BENATHMANE Ayoub, benathmane.ab@gmail.com<br>
+TRUCHI Romain, romain.truchi.06@gmail.com<br>
+POLO Luis Philipe, luisfelipepolo@hotmail.com<br>
+CIRERA Geneviève,  genevieve.cirera@gmail.com
+	</div>
+	<div class="col-xs-4">© 2014-2015
 	</div>
 </footer>

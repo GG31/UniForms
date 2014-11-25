@@ -38,7 +38,7 @@ html, body{
 	color: black;
 	margin:0 0 1px;
 	line-height: 1.5;
-   background-image:url(../images/bg13.png); 
+   background-image:url(../res/img/bg13.png); 
 	background-position:left top;
 	background-repeat:repeat;
 }
@@ -650,7 +650,7 @@ div#connexion label{
 	
 div#connexion input.bouton { 
 	cursor:pointer;
-	background:#2193bd url(../images/asterisk_yellow.png) no-repeat 5px 50%; 
+	background:#2193bd url(../res/img/asterisk_yellow.png) no-repeat 5px 50%; 
 	padding:4px 10px; 
 	color:#fff; 
 	border:none; 
@@ -666,7 +666,7 @@ div#connexion span#confirmMsg {
 	color:#2193bd; 
 	font-weight:bold; 
 	font-size:0.8em; 
-	background: url(../images/asterisk_yellow.png) no-repeat 0 -1px; 
+	background: url(../res/img/asterisk_yellow.png) no-repeat 0 -1px; 
 	padding-left:20px; line-height:18px;
 	}
 /*******************************

@@ -7,11 +7,12 @@
 </head>
 <body>
 	<div id="container">
-		<header>
-			<a href="index.php" id="logo"><img
-				src="res/img/logo_UNS_couleurs_web.png" alt="logo" /></a>
-		<?php include('include/nav.php'); ?>
-		</header>
+      <div class="row">
+         <?php include('php/include/header.php'); ?>
+      </div>
+      <div class="col-sm-offset-6 col-sm-4">
+		   <?php include('include/nav.php'); ?>
+      </div>
 		<div id="intro">
 <?php
 session_start ();
@@ -29,6 +30,8 @@ $_SESSION['id_form'] = $random;
 </form>
 		</div>
 	</div>
+	<div class="row">
 		<?php include('include/footer.php'); ?>
+	</div>
 </body>
 </html>

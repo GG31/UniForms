@@ -3,8 +3,8 @@
 		<input type="checkbox" id="button"> <label for="button" onclick>Menu</label>
 		<ul>
 
-			<li><a href="../accueil.php">Accueil</a></li>
-			<li><a href="../creerformulaire.php">Créer formulaire</a>
+			<li><a href="../php/accueil.php">Accueil</a></li>
+			<li><a href="../php/creerformulaire.php">Créer formulaire</a>
 			</li>
 			<!--<li><a href="#">Menu M Menu</a>
 				<ul>

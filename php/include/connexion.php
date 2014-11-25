@@ -23,11 +23,14 @@ if (! empty ( $_POST )) {
 	$reponse->closeCursor ();*/
 
 	// LOT 2 : fake users
-	if($_POST ['login'] == "admin"){
+	if($_POST ['login'] == "u1"){
 		$_SESSION['user_id'] = 1;
-	}else if($_POST ['login'] == "romain"){
+		header ( "Location: php/home.php" );
+	}else if($_POST ['login'] == "u2"){
 		$_SESSION['user_id'] = 2;
+		header ( "Location: php/home.php" );
+	}else{
+		header ( "Location: index.php" );
 	}
-	header ( "Location: php/accueil.php" );
 }
 ?>  

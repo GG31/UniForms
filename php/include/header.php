@@ -1,9 +1,7 @@
-<header class="group_bannner_left">
+<header class="row page-header">
 	<hgroup>
-		<a href="index.php" style="text-decoration: none;">
-			<h1 class="text-center">UniForms</br>
-				<small>Création et partage de formulaires web et papiers !</small>
-			</h1>
-		</a>
+		<h1 class="text-center">UniForms</br>
+			<small>Création et partage de formulaires web et papiers !</small>
+		</h1>
 	</hgroup>
 </header>

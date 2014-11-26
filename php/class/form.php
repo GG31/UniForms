@@ -1,30 +1,29 @@
-<?php 
-/**
- * @author BENATHMANE
- *
- */
+<?php
 class form {
 
-	// Attributs
 	public $formId;
 	
-	// Méthodes 
+	// Constructor 
 	public function __construct($id) {
 		$this->formId = $id;
 	}
-	
-	public static function getAll() {
-		return mysql_query($connection, "SELECT * FROM form") or die('SQL Error<br>'.mysql_error());
+
+	// Returns all forms receivers
+	public function getAllFormsReceivers() {
+		return mysql_query("SELECT * FROM user JOIN formdest ON user.user_id = formdest.user_id");
 	}
 	
-	// Save all elements of listDest in the table form_dest
+	// Returns all forms
+	public static function getAllForms() {
+		return mysql_query("SELECT * FROM form");
+	}
+	
+	// $listDest must be a list of IDs of the receivers. Save all elements of listDest in the table form_dest.
 	public function addDest($listDest = array()){
-		mysql_query("DELETE FROM form_dest WHERE user_id = ".$this->formId);
-		foreach ($listDest as $Dest){
-			mysql_query("INSERT INTO form_dest(user_id, status) VALUES (".$this->$userId.", ".$status".)") or die('SQL Error<br>'.mysql_error());
+		mysql_query("DELETE FROM formdest WHERE form_id = ".$this->formId);
+		foreach ($listDest as $destId){
+			mysql_query("INSERT INTO formdest(form_id, user_id, status) VALUES (".$this->formId.",".$destId.", 0)") or die('SQL Error<br>'.mysql_error());
 		}
 	}
-	
-	
 }
 ?>

@@ -1,26 +1,26 @@
-<?
+<?php
 class user {
 
 	public $userId;
 	
-	//Constructor
-	function __construct($id) { 
+	// Constructor
+	function __construct($id) {
 		$this->userId = $id;
     } 
 	
 	// Returns registers which represent forms that user is the creator.
 	public function getCreatedForms(){
-		return mysql_query("SELECT * FROM form WHERE user_id = ".$this->$userId) or die('SQL Error<br>'.mysql_error());
+		return mysql_query("SELECT * FROM form WHERE user_id = ".$this->$userId);
 	}
 	
 	// Returns registers which represent forms that user is the destinator
 	public function getDestForms(){
-		return mysql_query("SELECT * FROM form_dest WHERE user_id = ".$this->$userId) or die('SQL Error<br>'.mysql_error());
+		return mysql_query("SELECT * FROM formdest WHERE user_id = ".$this->$userId);
 	}
 	
 	// Returns registers of all users
-	public function static getAllUsers(){
-		return mysql_query("SELECT * FROM users") or die('SQL Error<br>'.mysql_error());
+	public static function getAllUsers(){
+		return mysql_query("SELECT * FROM user");
 	}
 	
 	// "Enregistrer" one form. (the idForm must be 0 if the form don't exists yet). Create/update a form with the status "enregistrer". Returns an object form.
@@ -36,12 +36,12 @@ class user {
 	// Update or create a new form with status $status. And returns the form object that corresponds to it.
 	private function saveForm($idForm = 0, $status){
 		if ($idForm==0){
-			mysql_query("INSERT INTO form(user_id, status) VALUES (".$this->$userId.", ".$status".)") or die('SQL Error<br>'.mysql_error());
+			mysql_query("INSERT INTO form(user_id, status) VALUES (".$this->userId.", ".$status.")") or die('SQL Error<br>'.mysql_error());
 			$idForm = mysql_insert_id();
 		}else{
 			mysql_query("UPDATE form SET status = ".$status." WHERE form_id = ".$idForm) or die('SQL Error<br>'.mysql_error());
 		}
-		$newForm = new form($id);
+		$newForm = new form($idForm);
 		return $newForm;
 	}
 }

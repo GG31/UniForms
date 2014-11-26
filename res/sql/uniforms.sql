@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mar 25 Novembre 2014 à 09:32
+-- Généré le :  Mer 26 Novembre 2014 à 09:15
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -56,9 +56,21 @@ CREATE TABLE IF NOT EXISTS `ch_input` (
 CREATE TABLE IF NOT EXISTS `form` (
   `form_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
   PRIMARY KEY (`form_id`),
   KEY `FK_USER_FORM` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Contenu de la table `form`
+--
+
+INSERT INTO `form` (`form_id`, `user_id`, `status`) VALUES
+(1, 1, 0),
+(2, 1, 0),
+(3, 1, 0),
+(4, 1, 0),
+(5, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -85,10 +97,21 @@ CREATE TABLE IF NOT EXISTS `formdest` (
   `formdest_id` int(11) NOT NULL AUTO_INCREMENT,
   `form_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
   PRIMARY KEY (`formdest_id`),
   KEY `FK_FORM_FORMDEST` (`form_id`),
   KEY `FK_USER_FORMDEST` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
+
+--
+-- Contenu de la table `formdest`
+--
+
+INSERT INTO `formdest` (`formdest_id`, `form_id`, `user_id`, `status`) VALUES
+(29, 1, 3, 0),
+(30, 1, 4, 0),
+(31, 1, 6, 0),
+(32, 1, 5, 0);
 
 -- --------------------------------------------------------
 
@@ -112,8 +135,22 @@ CREATE TABLE IF NOT EXISTS `formlist` (
 
 CREATE TABLE IF NOT EXISTS `user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(255) NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Contenu de la table `user`
+--
+
+INSERT INTO `user` (`user_id`, `user_name`) VALUES
+(1, 'João'),
+(2, 'Maria'),
+(3, 'Genevieve'),
+(4, 'Carlos'),
+(5, 'Luís'),
+(6, 'Romain'),
+(7, 'Ayoub');
 
 --
 -- Contraintes pour les tables exportées
@@ -141,15 +178,15 @@ ALTER TABLE `form`
 -- Contraintes pour la table `formans`
 --
 ALTER TABLE `formans`
-  ADD CONSTRAINT `FK_FORMLIST_FORMANS` FOREIGN KEY (`formlist_id`) REFERENCES `formlist` (`formlist_id`),
-  ADD CONSTRAINT `FK_FORMDEST_FORMANS` FOREIGN KEY (`formdest_id`) REFERENCES `formdest` (`formdest_id`);
+  ADD CONSTRAINT `FK_FORMDEST_FORMANS` FOREIGN KEY (`formdest_id`) REFERENCES `formdest` (`formdest_id`),
+  ADD CONSTRAINT `FK_FORMLIST_FORMANS` FOREIGN KEY (`formlist_id`) REFERENCES `formlist` (`formlist_id`);
 
 --
 -- Contraintes pour la table `formdest`
 --
 ALTER TABLE `formdest`
-  ADD CONSTRAINT `FK_USER_FORMDEST` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
-  ADD CONSTRAINT `FK_FORM_FORMDEST` FOREIGN KEY (`form_id`) REFERENCES `form` (`form_id`);
+  ADD CONSTRAINT `FK_FORM_FORMDEST` FOREIGN KEY (`form_id`) REFERENCES `form` (`form_id`),
+  ADD CONSTRAINT `FK_USER_FORMDEST` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
 
 --
 -- Contraintes pour la table `formlist`

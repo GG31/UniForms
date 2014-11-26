@@ -10,12 +10,12 @@ class User {
 	
 	// Returns registers which represent forms that user is the creator.
 	public function getCreatedForms(){
-		return mysql_query("SELECT * FROM form WHERE user_id = ".$this->$userId);
+		return mysql_query("SELECT * FROM form WHERE user_id = ".$this->userId);
 	}
 	
 	// Returns registers which represent forms that user is the destinator
 	public function getDestForms(){
-		return mysql_query("SELECT * FROM formdest WHERE user_id = ".$this->$userId);
+		return mysql_query("SELECT * FROM formdest WHERE user_id = ".$this->userId);
 	}
 	
 	// Returns registers of all users

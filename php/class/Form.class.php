@@ -19,17 +19,22 @@ class Form {
 	}
 	
 	// Send the form to all his receivers
-	public function sendForm(){
+	public function validateForm(){
 		mysql_query("UPDATE status FROM form WHERE form_id = ".$this->formId);
 		$this->sendLink();
 	}
 	
 	// Send e-mail with link to form to all his receivers
-	private function sendLink(){
-		
+	public function sendLink(){
+		$qReceivers = getAllFormReceivers();
+		if (mysql_num_rows($qReceivers)){
+			while($Receiver = mysql_fetch_array($qReceivers)){
+				//mail();
+			}
+		}
 	}
 	
-	// $listDest must be a list of IDs of the receivers. Save all elements of listDest in the table form_dest.
+	// $listDest must be a list of IDs of all the receivers. Save all elements of listDest in the table form_dest.
 	public function addDest($listDest = array()){
 		mysql_query("DELETE FROM formdest WHERE form_id = ".$this->formId);
 		foreach ($listDest as $destId){

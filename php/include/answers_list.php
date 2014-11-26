@@ -22,6 +22,9 @@
 		<tbody>
 			<?php
 				while($line = mysql_fetch_array($dest)){
+					var_dump($line);
+					echo '<br>';
+					echo '<br>';
 			?>
 				<tr class="success">
 					<td><?php echo $line["user_id"] ?></td>

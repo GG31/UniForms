@@ -1,5 +1,5 @@
 <div class="col-sm-4">
-	Uniforms :]
+	Uniforms
 </div>
 <div class="col-sm-4">
 	BENATHMANE Ayoub, benathmane.ab@gmail.com

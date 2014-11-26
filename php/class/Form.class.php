@@ -9,8 +9,14 @@ class Form {
 	}
 
 	// Returns all forms receivers
-	public function getAllFormsReceivers() {
-		return mysql_query("SELECT * FROM user JOIN formdest ON user.user_id = formdest.user_id");
+	// Status = -1 : Returns all receivers
+	//		  =  0 : Returns all receivers that didn't answered form yet.
+	//        =  1 : Returns all receivers that already had answered the form.
+	public function getAllFormReceivers($status = -1) {
+		$sql = "SELECT * FROM user JOIN formdest ON user.user_id = formdest.user_id AND formdest.form_id = ".$this->formId;
+		if ($status != -1)
+			$sql .= " AND status = ".$status;
+		return mysql_query($sql);
 	}
 	
 	// Returns all forms
@@ -18,7 +24,23 @@ class Form {
 		return mysql_query("SELECT * FROM form");
 	}
 	
-	// $listDest must be a list of IDs of the receivers. Save all elements of listDest in the table form_dest.
+	// Send the form to all his receivers
+	public function validateForm(){
+		mysql_query("UPDATE status FROM form WHERE form_id = ".$this->formId);
+		$this->sendLink();
+	}
+	
+	// Send e-mail with link to form to all his receivers
+	public function sendLink(){
+		$qReceivers = getAllFormReceivers();
+		if (mysql_num_rows($qReceivers)){
+			while($Receiver = mysql_fetch_array($qReceivers)){
+				//mail();
+			}
+		}
+	}
+	
+	// $listDest must be a list of IDs of all the receivers. Save all elements of listDest in the table form_dest.
 	public function addDest($listDest = array()){
 		mysql_query("DELETE FROM formdest WHERE form_id = ".$this->formId);
 		foreach ($listDest as $destId){

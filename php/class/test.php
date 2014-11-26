@@ -17,13 +17,14 @@ $oneUser = new User(3);
 //echo "<br> User ID: ".$oneUser->userId;
 
 // Creates a form with status "enregistrer"
-$newForm = $oneUser->enregistrerForm(1);
+$newForm = $oneUser->createForm();
 
-$DestList = array(3, 4, 6, 5);
+$otherForm = new Form(4);
 
-$newForm->addDest($DestList);
+//$destList = array(3, 7, 2, 5);
+//$otherForm->addDest($destList);
 
-$resource = $newForm->getAllFormsReceivers();
+$resource = $otherForm->getAllFormReceivers(1);
 
 //$arr = $oneUser->getDestForms();
 while($record = mysql_fetch_array($resource)){

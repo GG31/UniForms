@@ -12,18 +12,19 @@ include("Form.class.php");
 $connect = DBSingleton::getInstance();
  
 // Create object user (this user must already exists in the table users)
-$oneUser = new user(1);
+$oneUser = new User(1);
 
 //echo "<br> User ID: ".$oneUser->userId;
 
 // Creates a form with status "enregistrer"
-$newForm = $oneUser->enregistrerForm(1);
+$newForm = $oneUser->createForm();
 
-$DestList = array(3, 4, 6, 5);
+$otherForm = new Form(2);
 
-$newForm->addDest($DestList);
+$DestList = array(3, 7, 2, 5);
+$otherForm->addDest($DestList);
 
-$resource = $newForm->getAllFormsReceivers();
+$resource = $otherForm->getAllFormsReceivers();
 
 while($record = mysql_fetch_array($resource)){
 	echo "<br> User ID: ".$record["user_id"]." - User name: ".$record["user_name"];

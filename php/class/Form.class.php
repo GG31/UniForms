@@ -1,5 +1,5 @@
 <?php
-class form {
+class Form {
 
 	public $formId;
 	
@@ -16,6 +16,17 @@ class form {
 	// Returns all forms
 	public static function getAllForms() {
 		return mysql_query("SELECT * FROM form");
+	}
+	
+	// Send the form to all his receivers
+	public function sendForm(){
+		mysql_query("UPDATE status FROM form WHERE form_id = ".$this->formId);
+		$this->sendLink();
+	}
+	
+	// Send e-mail with link to form to all his receivers
+	private function sendLink(){
+		
 	}
 	
 	// $listDest must be a list of IDs of the receivers. Save all elements of listDest in the table form_dest.

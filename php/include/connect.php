@@ -1,8 +1,6 @@
-<?
-	$connection = mysqli_connect("localhost","root","root","uniforms");
+<?php
+$connection = mysql_connect("localhost", "root", "root") or die(mysql_error()); 
+$database = mysql_select_db("uniforms") or die(mysql_error());
 
-	if (mysqli_connect_errno()){
-		echo "Failed to connect to MySQL: " . mysqli_connect_error();
-	}
-	
+//$con = mysqli_connect("localhost","root","root","uniforms");
 ?>

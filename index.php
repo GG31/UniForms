@@ -13,7 +13,9 @@
 	<body>
 		<?php include 'php/include/connexion.php'; ?>
 		<div class="container">
-			<?php include('php/include/header.php'); ?>
+			<header class="row page-header">
+				<?php include('php/include/header.php'); ?>
+			</header>
 			<form class="form-horizontal panel panel-default" role="form" action="index.php" method="post"> <!-- No need for .row with .form-horizontal-->
 				<div class="panel-heading">
 					<div class="panel-title">Connection</div>
@@ -40,7 +42,9 @@
 					</div>
 				</div>
 			</form>
-			<?php include 'php/include/footer.php'; ?>
+			<footer class="row well">
+				<?php include 'php/include/footer.php'; ?>
+			</footer>
 		</div>
 	</body>
 </html>

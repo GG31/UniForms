@@ -19,12 +19,12 @@ $oneUser = new User(1);
 // Creates a form with status "enregistrer"
 $newForm = $oneUser->createForm();
 
-$otherForm = new Form(2);
+$otherForm = new Form(4);
 
 $DestList = array(3, 7, 2, 5);
 $otherForm->addDest($DestList);
 
-$resource = $otherForm->getAllFormsReceivers();
+$resource = $otherForm->getAllFormReceivers();
 
 while($record = mysql_fetch_array($resource)){
 	echo "<br> User ID: ".$record["user_id"]." - User name: ".$record["user_name"];

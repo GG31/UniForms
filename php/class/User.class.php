@@ -1,4 +1,5 @@
 <?php
+include 'class/Form.class.php';
 class User {
 
 	public $userId;
@@ -27,7 +28,7 @@ class User {
 	public function createForm(){
 		mysql_query("INSERT INTO form(user_id, status) VALUES (".$this->userId.", 0)") or die('SQL Error<br>'.mysql_error());
 		$idForm = mysql_insert_id();
-		$newForm = new form($idForm);
+		$newForm = new Form($idForm);
 		return $newForm;
 	}
 }

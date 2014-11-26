@@ -15,6 +15,7 @@
 <body>
    <?php
       session_start ();
+      echo 'log '.$_SESSION['login'];
       include ('class/User.class.php');
       include ('include/connect.php');
    ?> 
@@ -38,7 +39,7 @@
                               die('Requête invalide : ' . mysql_error());
                            }
                            while($row = mysql_fetch_assoc($users)) {
-                              echo '<label><input type="checkbox" name="checkboxDestintaire'.$row["user_id"].'" value="'.$row["user_id"].'">'. $row["user_id"]. ' '.$row["user_name"].'</label><br>';
+                              echo '<label><input type="checkbox" name="checkboxDestintaire_'.$row["user_id"].'" value="'.$row["user_id"].'">'. $row["user_id"]. ' '.$row["user_name"].'</label><br>';
                            }
                         ?>
                      </div>
@@ -74,7 +75,7 @@
 	   
 	   <div class="row">
          <input type="submit" class="btn btn-default" value="Enregistrer" form="formDestinataire formCreation">
-	      <input type="submit" class="btn btn-default" value="Valider" form="formDestinataire formCreation">
+	      <input type="submit" class="btn btn-default" value="Valider" form="formDestinataire">
 	   </div>
       <div class="row well">
          <?php include('include/footer.php'); ?>

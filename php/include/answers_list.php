@@ -7,7 +7,7 @@
 	include_once("class/Form.class.php");
 
 	$form = new Form($_GET["form_id"]);
-	$dest = $form->getAllFormsReceivers();
+	$dest = $form->getAllFormReceivers(1);
 ?>
 <div class="panel panel-default">
 	<div class="panel-heading">Personnes ayant soumis le formulaire <?php echo $_GET["form_id"] ?></div>
@@ -22,6 +22,9 @@
 		<tbody>
 			<?php
 				while($line = mysql_fetch_array($dest)){
+					var_dump($line);
+					echo '<br>';
+					echo '<br>';
 			?>
 				<tr class="success">
 					<td><?php echo $line["user_id"] ?></td>

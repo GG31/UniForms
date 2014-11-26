@@ -3,7 +3,7 @@
 	DBSingleton::getInstance();
 	include_once("class/User.class.php");
 
-	$user = new User(1); // TODO $_SESSION["user_id"]
+	$user = new User($_GET["user_id"]); // TODO $_SESSION["user_id"]
 	$crea = $user->getCreatedForms();
 ?>
 <div class="panel panel-default">
@@ -25,7 +25,7 @@
 						<tr class="success">
 							<td><?php echo $line["form_id"] ?></td>
 							<td>Validé</td>
-							<td><a href="answers.php?formid=<?php echo $line["form_id"] ?>">Voir résultats</a></td>
+							<td><a href="answers.php?form_id=<?php echo $line["form_id"] ?>">Voir résultats</a></td>
 						</tr>
 			<?php
 					}else{

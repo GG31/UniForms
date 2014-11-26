@@ -3,7 +3,7 @@
 	DBSingleton::getInstance();
 	include_once("class/User.class.php");
 
-	$user = new User(3); // TODO $_SESSION["user_id"]
+	$user = new User($_GET["user_id"]); // TODO $_SESSION["user_id"]
 	$dest = $user->getDestForms();
 ?>
 <div class="panel panel-default">

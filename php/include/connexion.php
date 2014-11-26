@@ -1,9 +1,10 @@
 <?php
 session_start();
-include("connect.php")
+//include("connect.php");
+
 if (! empty ( $_POST )) {
 
-	$reponse = $bdd->query ( 'SELECT * FROM user' );	
+	/*$reponse = $bdd->query ( 'SELECT * FROM user' );	
 	while ( $donnees = $reponse->fetch () ) {
 		if ($donnees ['login'] == $_POST ['login'] and $donnees ['password'] == md5 ( $_POST ['password'] )) {
 			$_SESSION['user'] = $donnees ['id'];

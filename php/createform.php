@@ -15,7 +15,6 @@
 <body>
    <?php
       session_start ();
-      echo 'log '.$_SESSION['login'];
       include ('class/User.class.php');
       include ('include/connect.php');
    ?> 
@@ -57,11 +56,11 @@
             <div class="panel-body">
                <form class="form-horizontal" role="form" action="ajouter_form_user.php" method="post" id="formCreation">
                   <div class="form-group">
-                     <div id="destinationDraggables" class="zoneDrop" ondragenter="return dragEnter(event)" 
+                     <div id="destinationDraggables" class="zoneDrop" name="zoneDrop" ondragenter="return dragEnter(event)" 
      ondrop="return dragDrop(event)" 
      ondragover="return dragOver(event)" ondragleave="return dragLeave(event)"></div>
                   </div>
-                  
+                  <div id="lol" class="draggable" draggable="true" ondragstart="return dragStart(event)"><input type="checkbox" checked="true" name="test">Checkbox</div>
                </form>
             </div>
          </div>
@@ -74,8 +73,8 @@
 	   </div>
 	   
 	   <div class="row">
-         <input type="submit" class="btn btn-default" value="Enregistrer" form="formDestinataire formCreation">
-	      <input type="submit" class="btn btn-default" value="Valider" form="formDestinataire">
+         <input type="submit" class="btn btn-default" value="Enregistrer" form="formDestinataire">
+	      <input type="submit" class="btn btn-default" value="Valider" form="formCreation">
 	   </div>
       <div class="row well">
          <?php include('include/footer.php'); ?>

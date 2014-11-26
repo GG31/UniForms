@@ -3,7 +3,7 @@ session_start();
 include ('class/User.class.php');
 include ('include/connect.php');
 if (! empty ( $_POST )) {
-	// var_dump($_POST);
+	var_dump($_POST);
 	try {
 		// On se connecte à MySQL
 		$bdd = new PDO ( 'mysql:host=localhost;dbname=uniforms', 'root', 'root' );
@@ -18,6 +18,6 @@ if (! empty ( $_POST )) {
 	$req->bindValue(':user', $_SESSION['user'], PDO::PARAM_INT);
 	$req->execute() or die(print_r($req->errorInfo()));
 	*/
-	header ( "Location: home.php" );
+	//header ( "Location: home.php" );
 }
 ?>

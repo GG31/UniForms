@@ -17,7 +17,7 @@ if (! empty ( $_POST )) {
 	$reponse->closeCursor ();*/
 
 	// LOT 2 : fake users
-	if($_POST ['login'] == "u1"){
+	/*if($_POST ['login'] == "u1"){
 		$_SESSION['user_id'] = 1;
 		header ( "Location: php/home.php" );
 	}else if($_POST ['login'] == "u2"){
@@ -25,6 +25,9 @@ if (! empty ( $_POST )) {
 		header ( "Location: php/home.php" );
 	}else{
 		header ( "Location: index.php" );
-	}
+	}*/
+
+	$_SESSION['user_id'] = $_POST ['login'];
+	header ( "Location: php/home.php" );
 }
 ?>  

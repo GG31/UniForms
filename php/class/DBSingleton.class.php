@@ -1,6 +1,6 @@
 <?php
- 
-class DBFactorySingleton {
+
+class DBSingleton {
 	
 	private static $instance;
 	
@@ -13,7 +13,7 @@ class DBFactorySingleton {
 	
 	public static function getInstance() {
 		if(!isset(self::$instance) || self::$instance == null) {
-			new DBFactorySingleton();
+			new DBSingleton();
 		}
 		return self::$instance;
 	}

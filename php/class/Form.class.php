@@ -1,5 +1,5 @@
 <?php
-class form {
+class Form {
 
 	public $formId;
 	

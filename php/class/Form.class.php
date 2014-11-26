@@ -9,8 +9,8 @@ class Form {
 	}
 
 	// Returns all forms receivers
-	public function getAllFormsReceivers() {
-		return mysql_query("SELECT * FROM user JOIN formdest ON user.user_id = formdest.user_id");
+	public function getAllFormReceivers() {
+		return mysql_query("SELECT * FROM user JOIN formdest ON user.user_id = formdest.user_id AND formdest.form_id = ".$this->formId);
 	}
 	
 	// Returns all forms

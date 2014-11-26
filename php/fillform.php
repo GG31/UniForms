@@ -15,49 +15,39 @@
       session_start ();
    ?> 
 	<div class="container">
-      <div class="row">
          <?php include('include/header.php'); ?>
-      </div>
       <div class="row">
 		   <?php include('include/nav.php'); ?>
-      </div>
-      
+		</div>
       <div class="row">
-         <div class="col-sm-offset-2 col-sm-8">
-            <div class="panel panel-default">
-               <div class="panel-heading">
-                  <h3 class="panel-title"><B>Formulaire</B></h3>
-               </div>
-               <div class="panel-body">
-                  <form class="form-horizontal" role="form" action="ajouter_form_user.php" method="post" id="formCreation">
+         <div class="panel panel-default">
+            <div class="panel-heading">
+               <h3 class="panel-title"><B>Formulaire</B></h3>
+            </div>
+            <div class="panel-body">
+               <form class="form-horizontal" role="form" action="????" method="post" id="answerSheet">
+               
+                  <div class="form-group">
+                     <label>Questions1...</label><br>
+                  </div>
                   
-                     <div class="form-group">
-                        <label>Questions...</label><br>
-                     </div>
-                     
-                  </form>
-               </div>
+                  <div class="form-group">
+                     <label>Questions2...</label><br>
+                  </div>
+                  
+               </form>
             </div>
          </div>
 	   </div>
 	   
 	   <div class="row">
-	      <div class="col-sm-offset-2 col-sm-8">
-	         <input type="submit" class="btn btn-default" value="Enregistrer" form="formDestinataire formCreation">
-		      <input type="submit" class="btn btn-default" value="Valider" form="formDestinataire formCreation">
+	      <div ">
+	         <input type="submit" class="btn btn-default" value="Enregistrer" form="answerSheet">
+		      <input type="submit" class="btn btn-default" value="Valider" form="answerSheet">
 		   </div>
-	   </div>
-               <!--$random = substr( md5(rand()), 0, 7);
-         //echo $random;
-         $_SESSION['id_form'] = $random;
-          *
-          */
-
-         // echo $_SESSION['user'];-->
-         
-      <div class="row">
-	      <?php include('include/footer.php'); ?>
-      </div>
+	   </div>   
+     
+	   <?php include('include/footer.php'); ?>
    </div>
 </body>
 </html>

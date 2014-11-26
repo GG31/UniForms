@@ -6,7 +6,7 @@ class user {
 	// Constructor
 	function __construct($id) {
 		$this->userId = $id;
-    } 
+    }
 	
 	// Returns registers which represent forms that user is the creator.
 	public function getCreatedForms(){

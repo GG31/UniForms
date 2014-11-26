@@ -23,3 +23,10 @@
 		</tbody>
 	</table>
 </div>
+<?php
+
+$u = new user((int)$_SESSION["user_id"]);
+/*
+$u::getAllUsers();
+*/
+?>

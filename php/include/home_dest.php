@@ -23,7 +23,10 @@
 					if($line["status"] == 1){
 			?>
 						<tr class="success">
-							<td><?php echo $line["form_id"] ?></td>
+							<td><?php echo $line["form_id"] ?></td>0
+							
+							
+							
 							<td>Envoyé</td>
 							<td><a href="fillform.php?id=<?php echo $line["form_id"] ?>">Voir</a></td>
 						</tr>

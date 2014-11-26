@@ -28,8 +28,8 @@ $resource = $otherForm->getAllFormReceivers(1);
 
 //$arr = $oneUser->getDestForms();
 while($record = mysql_fetch_array($resource)){
-	//echo "<br> User ID: ".$record["user_id"]." - User name: ".$record["user_name"];
-	print_r($record);
+	echo "<br> User ID: ".$record["user_id"]." - User name: ".$record["user_name"];
+	//print_r($record);
 	echo '<br>';
 }
 ?>

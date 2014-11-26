@@ -13,9 +13,10 @@ class Form {
 	//		  =  0 : Returns all receivers that didn't answered form yet.
 	//        =  1 : Returns all receivers that already had answered the form.
 	public function getAllFormReceivers($status = -1) {
-		$sql = "SELECT * FROM user JOIN formdest ON user.user_id = formdest.user_id AND formdest.form_id = ".$this->formId." ORDER BY user.user_id";
+		$sql = "SELECT * FROM user JOIN formdest ON user.user_id = formdest.user_id AND formdest.form_id = ".$this->formId;
 		if ($status != -1)
 			$sql .= " AND status = ".$status;
+		$sql .= " ORDER BY user.user_id";
 		return mysql_query($sql);
 	}
 	

@@ -13,31 +13,34 @@
 	<body>
 		<?php include 'php/include/connexion.php'; ?>
 		<div class="container">
-			<div class="row">
-				<?php include('php/include/header.php'); ?>
-			</div>
-			<form class="form-horizontal" role="form" action="index.php" method="post"> <!-- No need for .row with .form-horizontal-->
-				<div class="form-group">
-					<label for="login" class="col-sm-2 control-label">Identifiant</label>
-					<div class="col-sm-4">
-						<input type="text" class="form-control" id="login" name="login" placeholder="Identifiant">
+			<?php include('php/include/header.php'); ?>
+			<form class="form-horizontal panel panel-default" role="form" action="index.php" method="post"> <!-- No need for .row with .form-horizontal-->
+				<div class="panel-heading">
+					<div class="panel-title">Connection</div>
+				</div>
+				<div class="panel-body">
+					<div class="form-group">
+						<label for="login" class="col-sm-4 control-label">Identifiant</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="login" name="login" placeholder="Identifiant">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="password" class="col-sm-4 control-label">Mot de Passe</label>
+						<div class="col-sm-4">
+							<input type="password" class="form-control" id="password" name="password" placeholder="Mot de Passe">
+						</div>
 					</div>
 				</div>
-				<div class="form-group">
-					<label for="password" class="col-sm-2 control-label">Mot de Passe</label>
-					<div class="col-sm-4">
-						<input type="password" class="form-control" id="password" name="password" placeholder="Mot de Passe">
-					</div>
-				</div>
-				<div class="form-group">
-   					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-default">Connection</button>
+				<div class="panel-footer">
+					<div class="form-group">
+	   					<div class="col-sm-offset-4 col-sm-10">
+							<button type="submit" class="btn btn-default">Connection</button>
+						</div>
 					</div>
 				</div>
 			</form>
-			<div class="row">
-				<?php include('php/include/footer.php'); ?>
-			</div>
+			<?php include 'php/include/footer.php'; ?>
 		</div>
 	</body>
 </html>

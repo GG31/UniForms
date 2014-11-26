@@ -9,8 +9,14 @@ class Form {
 	}
 
 	// Returns all forms receivers
-	public function getAllFormReceivers() {
-		return mysql_query("SELECT * FROM user JOIN formdest ON user.user_id = formdest.user_id AND formdest.form_id = ".$this->formId);
+	// Status = -1 : Returns all receivers
+	//		  =  0 : Returns all receivers that didn't answered form yet.
+	//        =  1 : Returns all receivers that already had answered the form.
+	public function getAllFormReceivers($status = -1) {
+		$sql = "SELECT * FROM user JOIN formdest ON user.user_id = formdest.user_id AND formdest.form_id = ".$this->formId;
+		if ($status != -1)
+			$sql .= " AND status = ".$status;
+		return mysql_query($sql);
 	}
 	
 	// Returns all forms

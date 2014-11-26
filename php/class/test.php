@@ -22,10 +22,10 @@ $newForm = $oneUser->createForm();
 
 $otherForm = new Form(4);
 
-$destList = array(3, 7, 2, 5);
-$otherForm->addDest($destList);
+//$destList = array(3, 7, 2, 5);
+//$otherForm->addDest($destList);
 
-$resource = $otherForm->getAllFormReceivers();
+$resource = $otherForm->getAllFormReceivers(1);
 
 if (mysql_num_rows($resource)){
 	while($record = mysql_fetch_array($resource)){

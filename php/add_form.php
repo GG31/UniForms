@@ -31,9 +31,7 @@ if (! empty ( $_POST )) {
       $newForm->setState(1);
      //$newForm->validateForm();
    }
-   echo 'save<br>';
    $newForm->save();
-   echo "YOUPI !!!";
-	//header ( "Location: home.php" );
+	header ( "Location: home.php" );
 }
 ?>

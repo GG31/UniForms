@@ -33,7 +33,7 @@ class Form {
 	
 	// Send e-mail with link to form to all his receivers
 	public function sendLink(){
-		$qReceivers = getAllFormReceivers();
+		$qReceivers = $this->getAllFormReceivers();
 		if (mysql_num_rows($qReceivers)){
 			while($Receiver = mysql_fetch_array($qReceivers)){
 				//mail();

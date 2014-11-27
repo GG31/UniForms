@@ -25,7 +25,7 @@
       </div>
       
       
-      <form class="form-horizontal" role="form" action="ajouter_form_user.php" method="post" id="formulaire">
+      <form class="form-horizontal" role="form" action="add_form.php" method="post" id="formulaire">
          <div class="row">
             <div class="panel panel-default">
                <div class="panel-heading">

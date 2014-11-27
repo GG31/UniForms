@@ -1,12 +1,12 @@
 <?php
    session_start ();
    include ('include/includes.php');
-   $user = new User($_SESSION["user_id"]); // TODO $_SESSION["user_id"]
-	$crea = $user->getCreatedForms();
+   //$user = new User($_SESSION["user_id"]); // TODO $_SESSION["user_id"]
+	//$crea = $user->getCreatedForms();
 
 	//$user = new User($_GET["user_id"]); // TODO $_SESSION["user_id"]
-	$user = new User($_SESSION["user_id"]); // TODO $_SESSION["user_id"]
-	$dests = $user->getDestinatairesForms();
+	//$user = new User($_SESSION["user_id"]); // TODO $_SESSION["user_id"]
+	//$dests = $user->getDestinatairesForms();
 ?>
 <div class="panel panel-default">
 	<div class="panel-heading">Formulaires pour lesquels je suis destinataire</div>
@@ -20,6 +20,9 @@
 			</tr>
 		</thead>
 		<tbody>
+		<?php
+		   echo 'HAHAH';
+		   ?>
 			<!--<?php
 				foreach($dests as $dest) {
 					if($dests->getState() == 1){

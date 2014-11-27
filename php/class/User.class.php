@@ -20,6 +20,7 @@ class User {
 	
 	// Returns registers of all users
 	public static function getAllUsers(){
+		mysql_query("SET NAMES 'utf8'");
 		return mysql_query("SELECT * FROM user");
 	}
 	

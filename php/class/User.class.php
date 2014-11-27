@@ -1,4 +1,5 @@
 <?php
+include ('class/Form.class.php');
 class User {
 
 	public $userId;

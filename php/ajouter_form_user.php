@@ -18,6 +18,6 @@ if (! empty ( $_POST )) {
 	$req->bindValue(':user', $_SESSION['user'], PDO::PARAM_INT);
 	$req->execute() or die(print_r($req->errorInfo()));
 	*/
-	//header ( "Location: home.php" );
+	header ( "Location: home.php" );
 }
 ?>

@@ -46,8 +46,9 @@
 		      <input type="submit" class="btn btn-default" value="Valider" form="answerSheet">
 		   </div>
 	   </div>   
-     
+     <div class="row well">
 	   <?php include('include/footer.php'); ?>
+	  </div>
    </div>
 </body>
 </html>

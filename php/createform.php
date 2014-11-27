@@ -55,14 +55,22 @@
                   </div>
                   <div class="panel-body">
                      <div class="form-group">
-                        
+                     </div>
                   </div>
                </div>
             </div>  
             <div class="col-sm-2">
-            
-               
-         </div>   
+               <div class="panel panel-default">
+                  <div class="panel-heading">
+                     <h3 class="panel-title"><B>Éléments</B></h3>
+                  </div>
+                  <div class="panel-body">
+                     
+                        
+                  </div>
+               </div>
+            </div>   
+         </div>
       </form>
 	   <div class="row">
          <input type="submit" class="btn btn-default" value="Enregistrer" form="formulaire">

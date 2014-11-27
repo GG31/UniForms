@@ -1,11 +1,9 @@
 <?php
-	include_once('class/DBSingleton.class.php');
-	DBSingleton::getInstance();
-	include_once("class/User.class.php");
-
-	$user = new User($_GET["user_id"]); // TODO $_SESSION["user_id"]
+   session_start ();
+   include ('include/includes.php');
+   $user = new User($_SESSION["user_id"]); // TODO $_SESSION["user_id"]
 	$crea = $user->getCreatedForms();
-?>
+?> 
 <div class="panel panel-default">
 	<div class="panel-heading">Formulaires que j'ai crée</div>
 

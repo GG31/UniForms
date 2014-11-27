@@ -1,4 +1,8 @@
 <!doctype html>
+<?php
+   session_start ();
+   include ('include/includes.php');
+?> 
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -18,7 +22,7 @@
 				<?php include 'include/nav.php'; ?>
 			</div>
 			<div class="row">
-				<?php include 'include/home_created.php'; ?>
+				<!--<?php include 'include/home_created.php'; ?>-->
 			</div>
 			<div class="row">
 				<?php include 'include/home_dest.php'; ?>

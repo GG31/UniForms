@@ -28,6 +28,7 @@ if (! empty ( $_POST )) {
 	}*/
 
 	$_SESSION['user_id'] = $_POST ['login'];
-	header ( "Location: php/home.php?user_id=" . $_POST ['login']);
+	header ( "Location: php/home.php");
+	//header ( "Location: php/home.php?user_id=" . $_POST ['login']);
 }
 ?>  

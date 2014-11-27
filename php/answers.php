@@ -10,6 +10,7 @@
 		<script src="../lib/bootstrap-3.3.1/min.js"></script>
 	</head>
 	<body>
+		<?php include 'include/verify_creator.php'; ?>
 		<div class="container">
 			<header class="row page-header">
 				<?php include 'include/header.php'; ?>

@@ -1,10 +1,12 @@
 <?php
-	include_once('class/DBSingleton.class.php');
-	DBSingleton::getInstance();
-	include_once("class/User.class.php");
+   session_start ();
+   include ('include/includes.php');
+   $user = new User($_SESSION["user_id"]); // TODO $_SESSION["user_id"]
+	$crea = $user->getCreatedForms();
 
-	$user = new User($_GET["user_id"]); // TODO $_SESSION["user_id"]
-	$dest = $user->getDestForms();
+	//$user = new User($_GET["user_id"]); // TODO $_SESSION["user_id"]
+	$user = new User($_SESSION["user_id"]); // TODO $_SESSION["user_id"]
+	$dests = $user->getDestinatairesForms();
 ?>
 <div class="panel panel-default">
 	<div class="panel-heading">Formulaires pour lesquels je suis destinataire</div>
@@ -18,30 +20,30 @@
 			</tr>
 		</thead>
 		<tbody>
-			<?php
-				while($line = mysql_fetch_array($dest)){
-					if($line["status"] == 1){
+			<!--<?php
+				foreach($dests as $dest) {
+					if($dests->getState() == 1){
 			?>
 						<tr class="success">
-							<td><?php echo $line["form_id"] ?></td>0
+							<td><?php echo $dests->getId() ?></td>0
 							
 							
 							
 							<td>Envoyé</td>
-							<td><a href="fillform.php?id=<?php echo $line["form_id"] ?>">Voir</a></td>
+							<td><a href="fillform.php?id=<?php echo $dests->getId() ?>">Voir</a></td>
 						</tr>
 			<?php
 					}else{
 			?>
 						<tr class="info">
-							<td><?php echo $line["form_id"] ?></td>
+							<td><?php echo $dests->getId() ?></td>
 							<td>Non envoyé</td>
-							<td><a href="fillform.php?id=<?php echo $line["form_id"] ?>">Modifier</a></td>
+							<td><a href="fillform.php?id=<?php echo $dests->getId() ?>">Modifier</a></td>
 						</tr>
 			<?php
 					}
 				}
-			?>
+			?>-->
 		</tbody>
 	</table>
 </div>

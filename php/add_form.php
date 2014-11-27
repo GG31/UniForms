@@ -1,7 +1,6 @@
 <?php
 session_start();
-include ('class/User.class.php');
-include ('include/connect.php');
+include ('include/includes.php');
 if (! empty ( $_POST )) {
 	var_dump($_POST);
 	$destinataires = array();
@@ -22,7 +21,7 @@ if (! empty ( $_POST )) {
 	
 	$user = new User($_SESSION['user_id']);
 	$newForm = $user->createForm();
-	$newForm->addDest($destinataires);
+	$newForm->setDest($destinataires);
 	if (isset($_POST['enregistrer'])) {
 	   //Enregistre
    }

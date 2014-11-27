@@ -15,8 +15,7 @@
 <body>
    <?php
       session_start ();
-      include ('class/User.class.php');
-      include ('include/connect.php');
+      include ('include/includes.php');
    ?> 
 	<div class="container">
       <?php include('include/header.php'); ?>
@@ -34,17 +33,17 @@
                <div class="panel-body">
                   <div class="form-group">
                      <?php
-                        $users = User::getAllUsers();
+                        $users = User::all();
                         if (!$users) {
                            die('Requête invalide : ' . mysql_error());
                         }
-                        while($row = mysql_fetch_assoc($users)) {
+                        foreach ($users as $user) {
                            echo '
                            <div class="input-group">
                               <span class="input-group-addon">
-                                <input type="checkbox" name="checkboxDestinataire_'.$row["user_id"].'" value="'.$row["user_id"].'">
+                                <input type="checkbox" name="checkboxDestinataire_'.$user->getId().'" value="'.$user->getId().'">
                               </span>
-                              <label class="form-control">'.$row["user_id"].' '.$row["user_name"].'</label>
+                              <label class="form-control">'.$user->getId().'</label>
                            </div>'
                            
                           ;
@@ -62,8 +61,9 @@
                      <h3 class="panel-title"><B>Création</B></h3>
                   </div>
                   <div class="panel-body">
-                     <div class="form-group">
-                     </div>
+                     El1
+                     <br>
+                     El2
                   </div>
                </div>
             </div>  
@@ -73,8 +73,9 @@
                      <h3 class="panel-title"><B>Éléments</B></h3>
                   </div>
                   <div class="panel-body">
-                     
-                        
+                     El1
+                     <br>
+                     El2
                   </div>
                </div>
             </div>   

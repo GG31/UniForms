@@ -85,14 +85,14 @@ class User {
 		return FALSE;
 	}
 
-	// -----------------------
+	// ----------------------- deprecated
 
 	// Create a new form (with status "not send") and returns the form object that corresponds to it.
-	public function createForm(){
+	/*public function createForm(){
 		mysql_query("INSERT INTO form(user_id, status) VALUES (".$this->userId.", 0)") or die('SQL Error<br>'.mysql_error());
 		$idForm = mysql_insert_id();
 		$newForm = new form($idForm);
 		return $newForm;
-	}
+	}*/
 }
 ?>

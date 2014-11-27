@@ -36,7 +36,7 @@
 					</li>
 					<li class="divider"></li>
 					<li>
-						<a href="#">Separated link</a>
+						<a href="include/logout.inc.php">Logout</a>
 					</li>
 				</ul>
 			</li>

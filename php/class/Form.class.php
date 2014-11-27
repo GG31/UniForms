@@ -118,12 +118,7 @@ class Form {
 	}
 
 
-
-
-
-
-
-	// ------------------------
+	// ------------------------ DEPRECATED !!!
 
 	// Returns all forms receivers
 	// Status = -1 : Returns all receivers

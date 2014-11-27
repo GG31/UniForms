@@ -6,7 +6,7 @@
 	<br>
 	TRUCHI Romain, romain.truchi.06@gmail.com
 	<br>
-	POLO Luis Philipe, luisfelipepolo@hotmail.com
+	POLO Luís Felipe, luisfelipepolo@hotmail.com
 	<br>
 	CIRERA Geneviève,  genevieve.cirera@gmail.com
 </div>

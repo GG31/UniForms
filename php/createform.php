@@ -14,7 +14,6 @@
 </head>
 <body>
    <?php
-      session_start ();
       include ('include/includes.php');
    ?> 
 	<div class="container">

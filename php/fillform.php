@@ -26,9 +26,11 @@
             </div>
             <div class="panel-body">
                <form class="form-horizontal" role="form" action="????" method="post" id="answerSheet">
-                  <?php
-                     echo 'Formulaire '.$_GET["form"].' user '.$_SESSION['user_id'].'<br>';
-                  ?>
+                  <label> 
+                  	<?php
+               	      echo 'Formulaire '.$_GET["id"].' user '.$_SESSION['user_id'].'<br>';
+            	    ?>
+            	  </label>
                   <div class="form-group">
                      <label>Questions1...</label><br>
                   </div>

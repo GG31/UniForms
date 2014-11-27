@@ -1,5 +1,4 @@
 <?php
-   session_start ();
    include ('include/includes.php');
 ?>
 <!doctype html> 
@@ -22,10 +21,10 @@
 				<?php include 'include/nav.php'; ?>
 			</div>
 			<div class="row">
-				<!--<?php include 'include/home_created.php'; ?>-->
+				<?php include 'include/home_created.php'; ?>
 			</div>
 			<div class="row">
-				<!--<?php include 'include/home_dest.php'; ?>-->
+				<?php include 'include/home_dest.php'; ?>
 			</div>
 			<footer class="row well">
 				<?php include 'include/footer.php'; ?>

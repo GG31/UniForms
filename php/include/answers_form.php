@@ -2,21 +2,20 @@
 	if(isset($_GET["user_id"])){
 ?>
 <?php
-	include_once('class/DBSingleton.class.php');
-	DBSingleton::getInstance();
-	include_once("class/Form.class.php");
+	include_once('include/includes.php');
 
 	$form = new Form($_GET["form_id"]);
+	$dest = $form->getRecipient();
 
-	$dest = $form->getDestinataire(1);
 	$prev = -1;
 	$next = -1;
-	while($line = mysql_fetch_array($dest)){
-		if($line["user_id"] == $_GET["user_id"]){
-			$next = mysql_fetch_array($dest)["user_id"];
-		}else{
-			$prev = $line["user_id"];
+	foreach($dest as $key => $d){
+		if($d->getId() == $_GET["user_id"]){
+			$next = $dest[$key + 1];
+			break;
 		}
+		else
+			$prev = $d;
 	}
 	if($next == NULL)
 		$next = -1;
@@ -39,7 +38,7 @@
 			<?php
 				}else{
 			?>
-					<li><a href="answers.php?form_id=<?php echo $_GET["form_id"] ?>&user_id=<?php echo $prev ?>">&larr; Previous</a></li>
+					<li><a href="answers.php?form_id=<?php echo $_GET["form_id"] ?>&user_id=<?php echo $prev->getId() ?>">&larr; Previous</a></li>
 			<?php
 				}
 			?>
@@ -51,7 +50,7 @@
 			<?php
 				}else{
 			?>
-					<li><a href="answers.php?form_id=<?php echo $_GET["form_id"] ?>&user_id=<?php echo $next ?>">Next &rarr;</a></li>
+					<li><a href="answers.php?form_id=<?php echo $_GET["form_id"] ?>&user_id=<?php echo $next->getId() ?>">Next &rarr;</a></li>
 			<?php
 				}
 			?>

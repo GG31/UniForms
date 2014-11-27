@@ -5,7 +5,7 @@
 	include_once('include/includes.php');
 
 	$form = new Form($_GET["form_id"]);
-	$dest = $form->getDestinataire();
+	$dest = $form->getRecipient();
 ?>
 <div class="panel panel-default">
 	<div class="panel-heading">Personnes ayant soumis le formulaire <?php echo $_GET["form_id"] ?></div>

@@ -7,7 +7,7 @@ if (! empty ( $_POST )) {
 	foreach ($_POST as $key => $value) {
 	   $first = explode("_", $key);
 	   if ($first[0] == "checkboxDestinataire") {
-	      array_push($destinataires, $value);
+	      array_push($destinataires, new User($value));
 	   }
    }
    
@@ -19,16 +19,21 @@ if (! empty ( $_POST )) {
 		die ( 'Erreur : ' . $e->getMessage () );
 	}
 	
-	$user = new User($_SESSION['user_id']);
-	$newForm = $user->createForm();
-	$newForm->setDest($destinataires);
+	
+	$newForm = new Form();
+	$newForm->setCreator(new User($_SESSION["user_id"]));
+	$newForm->setRecipient($destinataires);
 	if (isset($_POST['enregistrer'])) {
 	   //Enregistre
+	   $newForm->setState(0);
    }
    if (isset($_POST['valider'])) {
-     $newForm->validateForm();
+      $newForm->setState(1);
+     //$newForm->validateForm();
    }
-   
-	header ( "Location: home.php" );
+   echo 'save<br>';
+   $newForm->save();
+   echo "YOUPI !!!";
+	//header ( "Location: home.php" );
 }
 ?>

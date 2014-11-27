@@ -5,7 +5,7 @@ class Form {
 	// Form creator
 	private $creator;
 	// Form dest list
-	private $dest;
+	private $recipient;
 	// Form answers list
 	private $ans;
 	// Form status
@@ -21,15 +21,15 @@ class Form {
             case 1: // new Form(id);
                 $this->id = func_get_arg(0);
 
-				$q = mysql_query("SELECT user_id, status FROM form WHERE form_id = " . $this->id);
-				$line = mysql_fetch_array($q);
-				$this->creator = new User($line["user_id"]);
-				$this->state = $line["status"] == 1 ? TRUE : FALSE;
+			   $q = mysql_query("SELECT user_id, status FROM form WHERE form_id = " . $this->id);
+			   $line = mysql_fetch_array($q);
+			   $this->creator = new User($line["user_id"]);
+			   $this->state = $line["status"] == 1 ? TRUE : FALSE;
 
-				$q = mysql_query("SELECT user_id FROM formdest WHERE form_id = " . $this->id);
-				$this->dest = [];
+				$q = mysql_query("SELECT user_id FROM formdest WHERE form_id = " . $this->id . " ORDER BY user_id");
+				$this->recipient = [];
 				while($line = mysql_fetch_array($q)){
-					$this->dest[] = new User($line["user_id"]);
+					$this->recipient[] = new User($line["user_id"]);
 				}
 
 				$q = mysql_query("SELECT formans_id FROM formdest JOIN formans ON formdest.formdest_id = formans.formdest_id AND formdest.form_id = " . $this->id);
@@ -68,11 +68,11 @@ class Form {
 	}
 
 	/*
-		getDest
+		getRecipient
 		Returns form's dest list
 	 */
-	public function getDestinataire(){
-		return $this->dest;
+	public function getRecipient(){
+		return $this->recipient;
 	}
 
 	/*
@@ -92,11 +92,16 @@ class Form {
 	}
 
 	/*
-		setDest
+		setRecipient
 		Sets form's dest list
 	 */
-	public function setDestinataire($destList){
-		$this->dest = $destList;
+	public function setRecipient($recipientList){
+		$this->recipient = $recipientList;
+		var_dump($this->recipient);
+	}
+	
+	public function setState($state){
+		$this->state = $state;
 	}
 
 	/*
@@ -105,10 +110,16 @@ class Form {
 	 */
 	public function save(){
 		// Clean
-		mysql_query("DELETE FROM formdest WHERE form_id = ".$this->id);
+		mysql_query("DELETE FROM form WHERE form_id = ".$this->id);
+		$exist = mysql_query("SELECT form_id FROM form WHERE form_id = ".$this->id);
+		if(!$exist) {
+		   mysql_query("INSERT INTO form(user_id, status) VALUES (".$this->creator->getId().", ".$this->state.")");
+		   $this->id = mysql_insert_id();
+		}
 		// Insert dest
-		foreach ($this->dest as $d){
-			mysql_query("INSERT INTO formdest(form_id, user_id, status) VALUES (".$this->id.",".$d->id().", 0)") or die('SQL Error<br>'.mysql_error());
+		foreach ($this->recipient as $d){
+		   echo 'insert dest '.$this->id.' '.$d->getId().' '.$this->state .'<br>';
+			mysql_query("INSERT INTO formdest(form_id, user_id, status) VALUES (".$this->id.",".$d->getId().", ".$this->state.")") or die('SQL Error<br>'.mysql_error());
 		}
 	}
 

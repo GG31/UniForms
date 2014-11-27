@@ -39,7 +39,15 @@
                            die('Requête invalide : ' . mysql_error());
                         }
                         while($row = mysql_fetch_assoc($users)) {
-                           echo '<label><input type="checkbox" name="checkboxDestintaire_'.$row["user_id"].'" value="'.$row["user_id"].'">'. $row["user_id"]. ' '.$row["user_name"].'</label><br>';
+                           echo '
+                           <div class="input-group">
+                              <span class="input-group-addon">
+                                <input type="checkbox" name="checkboxDestinataire_'.$row["user_id"].'" value="'.$row["user_id"].'">
+                              </span>
+                              <label class="form-control">'.$row["user_id"].' '.$row["user_name"].'</label>
+                           </div>'
+                           
+                          ;
                         }
                      ?>
                   </div>
@@ -72,7 +80,7 @@
             </div>   
          </div>
       </form>
-	   <div class="row">
+	   <div class="row well">
          <input type="submit" class="btn btn-default" value="Enregistrer" name="enregistrer" form="formulaire">
 	      <input type="submit" class="btn btn-default" value="Valider" form="formulaire" name="valider">
 	   </div>

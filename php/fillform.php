@@ -8,7 +8,7 @@
 
 <script src="../lib/jquery-2.1.1/min.js"></script>
 <script src="../lib/bootstrap-3.3.1/min.js"></script>
-
+<!-- ?form=3 $_GET["form"]-->
 </head>
 <body>
    <?php
@@ -26,7 +26,9 @@
             </div>
             <div class="panel-body">
                <form class="form-horizontal" role="form" action="????" method="post" id="answerSheet">
-               
+                  <?php
+                     echo 'Formulaire '.$_GET["form"].' user '.$_SESSION['user_id'].'<br>';
+                  ?>
                   <div class="form-group">
                      <label>Questions1...</label><br>
                   </div>

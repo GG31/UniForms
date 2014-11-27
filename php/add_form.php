@@ -4,7 +4,15 @@ include ('class/User.class.php');
 include ('include/connect.php');
 if (! empty ( $_POST )) {
 	var_dump($_POST);
-	try {
+	$destinataires = array();
+	foreach ($_POST as $key => $value) {
+	   $first = explode("_", $key);
+	   if ($first[0] == "checkboxDestinataire") {
+	      array_push($destinataires, $value);
+	   }
+   }
+   
+   try {
 		// On se connecte à MySQL
 		$bdd = new PDO ( 'mysql:host=localhost;dbname=uniforms', 'root', 'root' );
 	} catch ( Exception $e ) {
@@ -14,6 +22,7 @@ if (! empty ( $_POST )) {
 	
 	$user = new User($_SESSION['user_id']);
 	$newForm = $user->createForm();
+	$newForm->addDest($destinataires);
 	if (isset($_POST['enregistrer'])) {
 	   //Enregistre
    }

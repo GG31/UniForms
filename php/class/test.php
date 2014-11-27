@@ -7,9 +7,13 @@ include_once('DBSingleton.class.php');
 // Include classes
 include("User.class.php");
 include("Form.class.php");
-
+include("Answer.class.php");
 // Instancier la connection à la base de données
 DBSingleton::getInstance();
+
+//$all = User::all();
+$f = new Answer(2);
+/*
  
 // Create object user (this user must already exists in the table users)
 $oneUser = new User(3);
@@ -32,4 +36,5 @@ while($record = mysql_fetch_array($resource)){
 	//print_r($record);
 	echo '<br>';
 }
+*/
 ?>

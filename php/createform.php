@@ -54,8 +54,9 @@
                      <h3 class="panel-title"><B>Création</B></h3>
                   </div>
                   <div class="panel-body">
-                     <div class="form-group">
-                     </div>
+                     El1
+                     <br>
+                     El2
                   </div>
                </div>
             </div>  
@@ -65,8 +66,9 @@
                      <h3 class="panel-title"><B>Éléments</B></h3>
                   </div>
                   <div class="panel-body">
-                     
-                        
+                     El1
+                     <br>
+                     El2
                   </div>
                </div>
             </div>   

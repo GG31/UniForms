@@ -9,7 +9,7 @@ class Form {
 	// Form answers list
 	private $ans;
 	// Form status
-	private $state;
+	private $state = 0;
 	
 	/*
 		Constructor
@@ -127,7 +127,7 @@ class Form {
 		send
 	 */
 	public function send(){
-		save();
+		$this->save();
 		$this->state = TRUE;
 		// Update status
 		mysql_query("UPDATE form SET status = 1 WHERE form_id = ".$this->id);

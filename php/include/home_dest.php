@@ -4,8 +4,8 @@
 	//$crea = $user->getCreatedForms();
 
 	//$user = new User($_GET["user_id"]); // TODO $_SESSION["user_id"]
-	//$user = new User($_SESSION["user_id"]); // TODO $_SESSION["user_id"]
-	//$dests = $user->getDestinatairesForms();
+	$user = new User($_SESSION["user_id"]); // TODO $_SESSION["user_id"]
+	$dests = $user->getDestinatairesForms();
 ?>
 <div class="panel panel-default">
 	<div class="panel-heading">Formulaires pour lesquels je suis destinataire</div>
@@ -20,32 +20,31 @@
 		</thead>
 		<tbody>
 		<?php
-		   echo 'HAHAH';
 		   ?>
-			<!--<?php
+			<?php
 				foreach($dests as $dest) {
-					if($dests->getState() == 1){
+					if($dest->getState() == 1){
 			?>
 						<tr class="success">
-							<td><?php echo $dests->getId() ?></td>0
+							<td><?php echo $dest->getId() ?></td>
 							
 							
 							
 							<td>Envoyé</td>
-							<td><a href="fillform.php?id=<?php echo $dests->getId() ?>">Voir</a></td>
+							<td><a href="fillform.php?id=<?php echo $dest->getId() ?>">Voir</a></td>
 						</tr>
 			<?php
 					}else{
 			?>
 						<tr class="info">
-							<td><?php echo $dests->getId() ?></td>
+							<td><?php echo $dest->getId() ?></td>
 							<td>Non envoyé</td>
-							<td><a href="fillform.php?id=<?php echo $dests->getId() ?>">Modifier</a></td>
+							<td><a href="fillform.php?id=<?php echo $dest->getId() ?>">Modifier</a></td>
 						</tr>
 			<?php
 					}
 				}
-			?>-->
+			?>
 		</tbody>
 	</table>
 </div>

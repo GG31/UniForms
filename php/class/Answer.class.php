@@ -11,7 +11,6 @@ class Answer {
 	
 	/*
 		Constructor
-		TODO
 	 */
 	public function __construct(){
 		switch(func_num_args()){
@@ -65,7 +64,7 @@ class Answer {
 		send
 	 */
 	public function send(){
-		save();
+		$this->save();
 		$this->state = TRUE;
 		// Update status
 		mysql_query("UPDATE formdest SET status = 1 WHERE form_id = ".$this->form->id());

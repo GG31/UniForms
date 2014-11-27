@@ -27,7 +27,7 @@ class Form {
 	
 	// Send the form to all his receivers
 	public function validateForm(){
-		mysql_query("UPDATE status FROM form WHERE form_id = ".$this->formId);
+		mysql_query("UPDATE form SET status = 1 WHERE form_id = ".$this->formId);
 		$this->sendLink();
 	}
 	

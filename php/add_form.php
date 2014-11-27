@@ -2,6 +2,7 @@
 session_start();
 include ('class/User.class.php');
 include ('include/connect.php');
+$_SESSION['login'] = 3;
 if (! empty ( $_POST )) {
 	var_dump($_POST);
 	try {
@@ -11,8 +12,16 @@ if (! empty ( $_POST )) {
 		// En cas d'erreur, on affiche un message et on arrête tout
 		die ( 'Erreur : ' . $e->getMessage () );
 	}
+	
 	$user = new User($_SESSION['login']);
-	$user->createForm();
+	$newForm = $user->createForm();
+	if (isset($_POST['enregistrer'])) {
+	   //Enregistre
+   }
+   if (isset($_POST['valider'])) {
+     $newForm->validateForm();
+   }
+   
 	/*$req = $bdd->prepare('INSERT INTO forms  SET id_user = :user');
 	
 	$req->bindValue(':user', $_SESSION['user'], PDO::PARAM_INT);

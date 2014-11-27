@@ -73,8 +73,8 @@
          </div>
       </form>
 	   <div class="row">
-         <input type="submit" class="btn btn-default" value="Enregistrer" form="formulaire">
-	      <input type="submit" class="btn btn-default" value="Valider" form="formulaire">
+         <input type="submit" class="btn btn-default" value="Enregistrer" name="enregistrer" form="formulaire">
+	      <input type="submit" class="btn btn-default" value="Valider" form="formulaire" name="valider">
 	   </div>
       <div class="row well">
          <?php include('include/footer.php'); ?>

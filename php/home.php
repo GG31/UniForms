@@ -1,8 +1,5 @@
-<?php
-   session_start ();
-   include ('include/includes.php');
-?>
 <!doctype html> 
+<?php include_once ('include/includes.php'); ?>
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -15,9 +12,7 @@
 	</head>
 	<body>
 		<div class="container">
-			<header class="row page-header">
-				<?php include 'include/header.php'; ?>
-			</header>
+			<?php include 'include/header.php'; ?>
 			<div class="row">
 				<?php include 'include/nav.php'; ?>
 			</div>
@@ -27,9 +22,7 @@
 			<div class="row">
 				<!--<?php include 'include/home_dest.php'; ?>-->
 			</div>
-			<footer class="row well">
-				<?php include 'include/footer.php'; ?>
-			</footer>
+			<?php include 'include/footer.php'; ?>
 		</div>
 	</body>
 </html>

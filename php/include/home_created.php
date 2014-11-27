@@ -1,6 +1,5 @@
 <?php
-   session_start ();
-   include ('include/includes.php');
+   include_once ('include/includes.php');
    $user = new User($_SESSION["user_id"]); // TODO $_SESSION["user_id"]
 	$crea = $user->getCreatedForms();
 ?> 

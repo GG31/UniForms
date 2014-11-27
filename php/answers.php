@@ -1,4 +1,5 @@
 <!doctype html>
+<?php include_once ('include/includes.php'); ?>
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -12,9 +13,7 @@
 	<body>
 		<?php //include 'include/verify_creator.php'; ?>
 		<div class="container">
-			<header class="row page-header">
-				<?php include 'include/header.php'; ?>
-			</header>
+			<?php include 'include/header.php'; ?>
 			<div class="row">
 				<?php include 'include/nav.php'; ?>
 			</div>
@@ -24,9 +23,7 @@
 			<!-- 2 rows -->
 				<?php include 'include/answers_form.php'; ?>
 			<!--/2 rows -->
-			<footer class="row well">
-				<?php include 'include/footer.php'; ?>
-			</footer>
+			<?php include 'include/footer.php'; ?>
 		</div>
 	</body>
 </html>

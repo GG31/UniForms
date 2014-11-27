@@ -1,24 +1,21 @@
 <?php
-	if(isset($_GET["user_id"])){
-?>
-<?php
-	include_once('include/includes.php');
+	if(isset($_GET["form_id"]) AND isset($_GET["user_id"])){
+		include_once('include/includes.php');
 
-	$form = new Form($_GET["form_id"]);
-	$dest = $form->getRecipient();
+		$form = new Form($_GET["form_id"]);
+		$dest = $form->getRecipient();
 
-	$prev = -1;
-	$next = -1;
-	foreach($dest as $key => $d){
-		if($d->getId() == $_GET["user_id"]){
-			$next = $dest[$key + 1];
-			break;
+		$prev = NULL;
+		$next = NULL;
+		foreach($dest as $key => $d){
+			if($d->getId() == $_GET["user_id"]){
+				if($key + 1 < count($dest))
+					$next = $dest[$key + 1];
+				break;
+			}
+			else
+				$prev = $d;
 		}
-		else
-			$prev = $d;
-	}
-	if($next == NULL)
-		$next = -1;
 ?>
 <div class="row">
 	<div class="panel panel-default">
@@ -32,7 +29,7 @@
 	<nav>
 		<ul class="pager">
 			<?php
-				if($prev == -1){
+				if(!$prev){
 			?>
 					<li class="disabled"><a href="">&larr; Previous</a></li>
 			<?php
@@ -44,7 +41,7 @@
 			?>
 			<li><a href="answers.php?form_id=<?php echo $_GET["form_id"] ?>">&uarr; Back &uarr;</a></li>
 			<?php
-				if($next == -1){
+				if(!$next){
 			?>
 					<li class="disabled"><a href="">Next &rarr;</a></li>
 			<?php
@@ -57,7 +54,6 @@
 		</ul>
 	</nav>
 </div>
-
 <?php
 	}
 ?>

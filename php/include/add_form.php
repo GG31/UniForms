@@ -1,6 +1,5 @@
 <?php
-session_start();
-include ('include/includes.php');
+include_once ('include/includes.php');
 if (! empty ( $_POST )) {
 	var_dump($_POST);
 	$destinataires = array();

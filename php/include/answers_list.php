@@ -1,11 +1,9 @@
 <?php
-	if(!isset($_GET["user_id"])){
-?>
-<?php
-	include_once('include/includes.php');
+	if(isset($_GET["form_id"]) AND !isset($_GET["user_id"])){
+		include_once('include/includes.php');
 
-	$form = new Form($_GET["form_id"]);
-	$dest = $form->getRecipient();
+		$form = new Form($_GET["form_id"]);
+		$dest = $form->getRecipient();
 ?>
 <div class="panel panel-default">
 	<div class="panel-heading">Personnes ayant soumis le formulaire <?php echo $_GET["form_id"] ?></div>

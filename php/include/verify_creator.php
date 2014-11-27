@@ -1,8 +1,5 @@
 <?php
-	include_once('class/DBSingleton.class.php');
-	DBSingleton::getInstance();
-	include_once("class/User.class.php");
-	include_once("class/Form.class.php");
+	include_once ('include/includes.php');
 
 	//$_GET["form_id"]
 	//$_GET["user_id"]

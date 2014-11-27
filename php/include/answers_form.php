@@ -8,7 +8,7 @@
 
 	$form = new Form($_GET["form_id"]);
 
-	$dest = $form->getAllFormReceivers(1);
+	$dest = $form->getDestinataire(1);
 	$prev = -1;
 	$next = -1;
 	while($line = mysql_fetch_array($dest)){

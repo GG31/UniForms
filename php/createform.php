@@ -13,7 +13,7 @@
 <script src="../lib/jquery-2.1.1/min.js"></script>
 <script src="../lib/bootstrap-3.3.1/min.js"></script>
 <script src="../js/drag.js"></script>
-<script type="text/javascript">
+<script>
 $(document).ready(function(){
 	$('#no_a').click(function onchek() {
 		if($(this).is(':checked')){

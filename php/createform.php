@@ -34,7 +34,7 @@ $(document).ready(function(){
 
 
 		<form class="form-horizontal" role="form"
-			action="include/add_form.php" method="post" id="formulaire">
+			action="include/add_form.php?id=<?php echo $_GET['id'] ?>" method="post" id="formulaire">
 			<div class="row">
 				<div id="hide" class="panel panel-default">
 					<div class="panel-heading">
@@ -45,20 +45,20 @@ $(document).ready(function(){
 					<div class="panel-body">
 						<div class="form-group">
                         <?php
-																								$users = User::all ();
-																								if (! $users) {
-																									die ( 'Requête invalide : ' . mysql_error () );
-																								}
-																								foreach ( $users as $user ) {
-																									echo '
-                              <div class="input-group">
-                                 <span class="input-group-addon">
-                                   <input type="checkbox" name="checkboxDestinataire_' . $user->getId () . '" value="' . $user->getId () . '">
-                                 </span>
-                                 <label class="form-control">' . $user->getId () . '</label>
-                              </div>';
-																								}
-																								?>
+									$users = User::all ();
+									if (! $users) {
+										die ( 'Requête invalide : ' . mysql_error () );
+									}
+									foreach ( $users as $user ) {
+										echo '
+                           <div class="input-group">
+                              <span class="input-group-addon">
+                                <input type="checkbox" name="checkboxDestinataire_' . $user->getId () . '" value="' . $user->getId () . '">
+                              </span>
+                              <label class="form-control">' . $user->getId () . '</label>
+                           </div>';
+									}
+									?>
                      </div>
 					</div>
 				</div>
@@ -97,7 +97,7 @@ $(document).ready(function(){
 							</h3>
 						</div>
 						<div class="panel-body">
-							<input onchange="onchek()" id="no_a" type="checkbox" value="Non_Anonyme" name="Anonymat" form="formulaire"> <label>Anonyme</label> <br>
+							<input onchange="onchek()" id="no_a" type="checkbox" value="1" name="Anonymat" form="formulaire"> <label>Anonyme</label> <br>
 						</div>
 					</div>
 				</div>
@@ -110,7 +110,7 @@ $(document).ready(function(){
 							</h3>
 						</div>
 						<div class="panel-body">
-							<input type="checkbox" value="imprimable" name="type_de_formulaire" form="formulaire"> <label>Imprimable</label>
+							<input type="checkbox" value="1" name="type_de_formulaire" form="formulaire"> <label>Imprimable</label>
 						</div>
 					</div>
 				</div>

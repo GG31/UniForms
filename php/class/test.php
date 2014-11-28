@@ -13,7 +13,7 @@ DBSingleton::getInstance();
 
 
 include '../include/verify_creator.php';
-var_dump(a());
+b();
 //b();
 /*
  

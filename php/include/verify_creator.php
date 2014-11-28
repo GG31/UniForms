@@ -12,13 +12,16 @@
 
 	function b(){
 		$user = new User($_GET["user_id"]);
-		$user->isDestinataire($_GET["form_id"]);
+		echo "1";
+		var_dump($user->isDestinataire($_GET["form_id"]));
 
 		$form = new Form($_GET["form_id"]);
 		$ans = $form->getAnswer([$_GET["user_id"]], 1);
-			var_dump($ans);
+		echo "2";
+		var_dump($ans);
 
 		foreach($ans as $a){
+		echo "3";
 			var_dump($a);
 		}
 	}

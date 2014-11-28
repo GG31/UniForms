@@ -1,4 +1,4 @@
-<footer class="row well">
+﻿<footer class="row well">
 	<div class="col-sm-4">
 		Uniforms
 	</div>
@@ -7,7 +7,7 @@
 		<br>
 		TRUCHI Romain, romain.truchi.06@gmail.com
 		<br>
-		POLO Luis Philipe, luisfelipepolo@hotmail.com
+		POLO Luís Felipe, luisfelipepolo@hotmail.com
 		<br>
 		CIRERA Geneviève,  genevieve.cirera@gmail.com
 	</div>

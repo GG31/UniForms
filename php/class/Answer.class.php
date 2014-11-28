@@ -24,7 +24,7 @@ class Answer {
 				
 				$this->form = $line["form_id"];
 				$this->user = new User($line["user_id"]);
-				$this->state = $line["status"] == 1 ? TRUE : FALSE;
+				$this->state = $line["formdest_status"] == 1 ? TRUE : FALSE;
 				break;
 		}
 	}

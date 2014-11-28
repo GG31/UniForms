@@ -146,7 +146,6 @@ class Form {
 	 */
 	public function setRecipient($recipientList){
 		$this->recipient = $recipientList;
-		var_dump($this->recipient);
 	}
 	
 	public function setState($state){
@@ -159,11 +158,13 @@ class Form {
 	 */
 	public function save(){
 		// Clean
-		mysql_query("DELETE FROM form WHERE form_id = ".$this->id);
+		mysql_query("DELETE FROM formdest WHERE form_id = ".$this->id); //Supprime tout les destinataires du formulaire this
 		$exist = mysql_query("SELECT form_id FROM form WHERE form_id = ".$this->id);
 		if(!$exist) {
-		   mysql_query("INSERT INTO form(user_id, form_status) VALUES (".$this->creator->getId().", ".$this->state.")");
+		   mysql_query("INSERT INTO form(user_id, form_status, form_anonymous, form_printable) VALUES (".$this->creator->getId().", 0, ".$this->anonymous.", ".$this->printable.")");
 		   $this->id = mysql_insert_id();
+		}else {
+		   mysql_query("UPDATE form SET form_status = ".$this->state.", form_anonymous=".$this->anonymous.", form_printable=".$this->printable." WHERE form_id=".$this->id);
 		}
 		// Insert dest
 		foreach ($this->recipient as $d){

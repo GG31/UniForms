@@ -110,7 +110,7 @@ $(document).ready(function(){
 							</h3>
 						</div>
 						<div class="panel-body">
-							<input type="checkbox" value="1" name="type_de_formulaire" form="formulaire"> <label>Imprimable</label>
+							<input type="checkbox" value="1" name="printable" form="formulaire"> <label>Imprimable</label>
 						</div>
 					</div>
 				</div>

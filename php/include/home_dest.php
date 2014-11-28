@@ -17,7 +17,7 @@
 		<tbody>
 			<?php
 				foreach($dests as $dest) {
-					if($dest->getStateOf($_SESSION["user_id"]) == 1){
+					if($dest->getStateOf($_SESSION["user_id"]) != NULL){
 			?>
 						<tr class="success">
 							<td><?php echo $dest->getId() ?></td>

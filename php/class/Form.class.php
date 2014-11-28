@@ -33,10 +33,10 @@ class Form {
 			   $this->printable = $line["form_printable"] == 1 ? TRUE : FALSE;
 			   $this->anonymous = $line["form_anonymous"] == 1 ? TRUE : FALSE;
 
-				   $q = mysql_query("SELECT user_id, status FROM formdest WHERE form_id = " . $this->id . " ORDER BY user_id");
+				   $q = mysql_query("SELECT user_id, formdest_status FROM formdest WHERE form_id = " . $this->id . " ORDER BY user_id");
 				   $this->recipient = [];
 				   while($line = mysql_fetch_array($q)){
-					   $this->recipient[new User($line["user_id"])] = $line["status"];
+					   $this->recipient[] = new User($line["user_id"]);
 				   }
 
 				   $q = mysql_query("SELECT formans_id FROM formdest JOIN formans ON formdest.formdest_id = formans.formdest_id AND formdest.form_id = " . $this->id);

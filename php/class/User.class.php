@@ -69,12 +69,11 @@ class User {
 	}
 
 	/*
-		isCreator(int formID)
+		isCreator(int formId)
 		Returns TRUE (FALSE) if user is (not) creator of form
 	 */
-	public function isCreator($formID){
+	public function isCreator($formId){
 		$f = new Form($formId);
-		var_dump($f->getCreator());
 		if($f->getCreator()->getId() == $this->id)
 			return TRUE;
 		else

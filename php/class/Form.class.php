@@ -27,9 +27,8 @@ class Form {
 
 			   $q = mysql_query("SELECT * FROM form WHERE form_id = " . $this->id);
 			   $line = mysql_fetch_array($q);
+
 			   $this->creator = new User($line["user_id"]);
-			   var_dump($this->creator);
-			   var_dump($line);
 			   $this->state = $line["form_status"] == 1 ? TRUE : FALSE;
 			   $this->printable = $line["form_printable"] == 1 ? TRUE : FALSE;
 			   $this->anonymous = $line["form_anonymous"] == 1 ? TRUE : FALSE;
@@ -181,7 +180,7 @@ class Form {
 		$this->save();
 		$this->state = TRUE;
 		// Update status
-		mysql_query("UPDATE form SET status = 1 WHERE form_id = ".$this->id);
+		mysql_query("UPDATE form SET form_status = 1 WHERE form_id = ".$this->id);
 	}
 }
 ?>

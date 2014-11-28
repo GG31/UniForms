@@ -49,8 +49,16 @@ class Answer {
 		getUser
 		Returns answer's answerer
 	 */
-	public function state(){
+	public function getUser(){
 		return $this->user;
+	}
+
+	/*
+		getState
+		Returns answer's state
+	 */
+	public function getState(){
+		return $this->state;
 	}
 
 	/*

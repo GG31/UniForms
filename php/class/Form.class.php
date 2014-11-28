@@ -28,9 +28,11 @@ class Form {
 			   $q = mysql_query("SELECT * FROM form WHERE form_id = " . $this->id);
 			   $line = mysql_fetch_array($q);
 			   $this->creator = new User($line["user_id"]);
+			   var_dump($this->creator);
+			   var_dump($line);
 			   $this->state = $line["form_status"] == 1 ? TRUE : FALSE;
-			   $this->printable = $line["form_printable"];
-			   $this->anonymous = $line["form_anonymous"];
+			   $this->printable = $line["form_printable"] == 1 ? TRUE : FALSE;
+			   $this->anonymous = $line["form_anonymous"] == 1 ? TRUE : FALSE;
 
 				   $q = mysql_query("SELECT user_id, status FROM formdest WHERE form_id = " . $this->id . " ORDER BY user_id");
 				   $this->recipient = [];
@@ -82,11 +84,22 @@ class Form {
 	}
 
 	/*
-		getAns
+		getAnswer
 		Returns form's answers list
 	 */
-	public function getAnswer(){
-		return $this->ans;
+	public function getAnswer($user_ids = [], $state = -1){
+		$res = [];
+		foreach($ans as $a){
+			$ok = TRUE;
+			if(count($user_ids) AND !in_array($a->getUser()->getId(), $user_ids))
+				$ok = FALSE;
+			if($state != -1 AND $a->getState() != $state)
+				$ok = FALSE;
+
+			if($ok)
+				$res[] = $a;
+		}
+		return $res;
 	}
 	
 	/*

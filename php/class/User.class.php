@@ -74,7 +74,8 @@ class User {
 	 */
 	public function isCreator($formID){
 		$f = new Form($formId);
-		if($f->getCreator()->id() == $this.id)
+		var_dump($f->getCreator());
+		if($f->getCreator()->getId() == $this->id)
 			return TRUE;
 		else
 			return FALSE;
@@ -86,9 +87,9 @@ class User {
 	 */
 	public function isDestinataire($formID){
 		$f = new Form($formId);
-		$d = $f.getDest();
+		$d = $f->getRecipient();
 		foreach($d as $dest){
-			if($dest->getDest()->id() == $this.id)
+			if($dest->id == $this->id)
 				return TRUE;
 		}
 		return FALSE;

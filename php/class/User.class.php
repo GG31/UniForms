@@ -60,10 +60,10 @@ class User {
 		Returns list of forms destinated to user
 	 */
 	public function getDestinatairesForms(){
-		$q = mysql_query("SELECT form_id FROM formdest WHERE user_id = ".$this->id);
+	   $q = mysql_query("SELECT formdest.form_id FROM formdest, form WHERE formdest.form_id=form.form_id AND formdest.user_id=".$this->id." AND form.status=1");
 		$res = [];
 		while($line = mysql_fetch_array($q)){
-			$res[] = new Form($line["form_id"]);
+		   $res[] = new Form($line["form_id"]);
 		}
 		return $res;
 	}

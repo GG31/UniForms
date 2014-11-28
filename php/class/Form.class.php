@@ -10,6 +10,10 @@ class Form {
 	private $ans;
 	// Form status
 	private $state = 0;
+	// Form anonymous
+	private $anonymous;
+	// Form printable
+	private $printable;
 	
 	/*
 		Constructor
@@ -21,10 +25,12 @@ class Form {
             case 1: // new Form(id);
                $this->id = func_get_arg(0);
 
-			      $q = mysql_query("SELECT user_id, status FROM form WHERE form_id = " . $this->id);
-			      $line = mysql_fetch_array($q);
-			      $this->creator = new User($line["user_id"]);
-			      $this->state = $line["status"] == 1 ? TRUE : FALSE;
+			   $q = mysql_query("SELECT * FROM form WHERE form_id = " . $this->id);
+			   $line = mysql_fetch_array($q);
+			   $this->creator = new User($line["user_id"]);
+			   $this->state = $line["form_status"] == 1 ? TRUE : FALSE;
+			   $this->printable = $line["form_printable"];
+			   $this->anonymous = $line["form_anonymous"];
 
 				   $q = mysql_query("SELECT user_id, status FROM formdest WHERE form_id = " . $this->id . " ORDER BY user_id");
 				   $this->recipient = [];
@@ -82,6 +88,22 @@ class Form {
 	public function getAnswer(){
 		return $this->ans;
 	}
+	
+	/*
+		getPrintable
+		Returns if form is printable
+	 */
+	public function getPrintable(){
+		return $this->printable;
+	}
+	
+	/*
+		getAnonymous
+		Sets if form is anonymous
+	 */
+	public function getAnonymous(){
+		return $this->anonymous;
+	}
 
 	/*
 		setCreator
@@ -89,6 +111,22 @@ class Form {
 	 */
 	public function setCreator($user){
 		$this->creator = $user;
+	}
+	
+	/*
+		setPrintable
+		Sets if form is printable
+	 */
+	public function setPrintable($isPrintable){
+		$this->printable = $isPrintable;
+	}
+	
+	/*
+		setAnonymous
+		Sets if form is anonymous
+	 */
+	public function setAnonymous($isAnonymous){
+		$this->anonymous = $isAnonymous;
 	}
 
 	/*
@@ -113,12 +151,13 @@ class Form {
 		mysql_query("DELETE FROM form WHERE form_id = ".$this->id);
 		$exist = mysql_query("SELECT form_id FROM form WHERE form_id = ".$this->id);
 		if(!$exist) {
-		   mysql_query("INSERT INTO form(user_id, status) VALUES (".$this->creator->getId().", ".$this->state.")");
+		   mysql_query("INSERT INTO form(user_id, form_status) VALUES (".$this->creator->getId().", ".$this->state.")");
 		   $this->id = mysql_insert_id();
 		}
 		// Insert dest
 		foreach ($this->recipient as $d){
 			mysql_query("INSERT INTO formdest(form_id, user_id, status) VALUES (".$this->id.",".$d->getId().", 0)") or die('SQL Error<br>'.mysql_error());
+
 		}
 	}
 

@@ -17,9 +17,9 @@
 $(document).ready(function(){
 	$('#no_a').click(function onchek() {
 		if($(this).is(':checked')){
-			$( "#hide" ).show();
-		}else {
 			$( "#hide" ).hide();
+		}else {
+			$( "#hide" ).show();
 		}
 	});	
 });	
@@ -97,7 +97,7 @@ $(document).ready(function(){
 							</h3>
 						</div>
 						<div class="panel-body">
-							<input onchange="onchek()" id="no_a" type="checkbox" value="Non_Anonyme" name="Anonymat" form="formulaire" checked> <label>Non Anonyme</label> <br>
+							<input onchange="onchek()" id="no_a" type="checkbox" value="Non_Anonyme" name="Anonymat" form="formulaire"> <label>Anonyme</label> <br>
 						</div>
 					</div>
 				</div>

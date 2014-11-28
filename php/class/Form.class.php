@@ -45,8 +45,6 @@ class Form {
 				   $this->ans[] = new Answer($line["formans_id"]);
 			   }
                break;
-            default:
-            	break;
         }
 	}
 

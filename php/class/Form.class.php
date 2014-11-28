@@ -168,8 +168,8 @@ class Form {
 		}
 		// Insert dest
 		foreach ($this->recipient as $d){
-			mysql_query("INSERT INTO formdest(form_id, user_id, status) VALUES (".$this->id.",".$d->getId().", 0)") or die('SQL Error<br>'.mysql_error());
-
+		   echo 'insert dest '.$this->id.' '.$d->getId().' '.$this->state .'<br>';
+			mysql_query("INSERT INTO formdest(form_id, user_id, formdest_status) VALUES (".$this->id.",".$d->getId().", 0)") or die('SQL Error<br>'.mysql_error());
 		}
 	}
 

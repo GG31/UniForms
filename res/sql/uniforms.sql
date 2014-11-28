@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 28 Novembre 2014 à 11:00
+-- Généré le :  Ven 28 Novembre 2014 à 11:32
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `formdest` (
   `formdest_id` int(11) NOT NULL AUTO_INCREMENT,
   `form_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `status` int(11) NOT NULL,
+  `formdest_status` int(11) NOT NULL,
   PRIMARY KEY (`formdest_id`),
   KEY `FK_FORM_FORMDEST` (`form_id`),
   KEY `FK_USER_FORMDEST` (`user_id`)
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `formdest` (
 -- Contenu de la table `formdest`
 --
 
-INSERT INTO `formdest` (`formdest_id`, `form_id`, `user_id`, `status`) VALUES
+INSERT INTO `formdest` (`formdest_id`, `form_id`, `user_id`, `formdest_status`) VALUES
 (34, 1, 4, 0),
 (35, 1, 6, 0),
 (36, 1, 5, 0),

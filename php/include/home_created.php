@@ -1,6 +1,6 @@
 <?php
    include_once ('include/includes.php');
-   $user = new User($_SESSION["user_id"]); // TODO $_SESSION["user_id"]
+   $user = new User($_SESSION["user_id"]);
    $creas = $user->getCreatedForms();
 ?> 
 <div class="panel panel-default">

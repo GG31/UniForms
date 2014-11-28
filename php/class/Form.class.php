@@ -24,6 +24,8 @@ class Form {
 			   $q = mysql_query("SELECT user_id, status FROM form WHERE form_id = " . $this->id);
 			   $line = mysql_fetch_array($q);
 			   $this->creator = new User($line["user_id"]);
+			   var_dump($this->creator);
+			   var_dump($line);
 			   $this->state = $line["status"] == 1 ? TRUE : FALSE;
 
 				$q = mysql_query("SELECT user_id FROM formdest WHERE form_id = " . $this->id . " ORDER BY user_id");
@@ -76,11 +78,22 @@ class Form {
 	}
 
 	/*
-		getAns
+		getAnswer
 		Returns form's answers list
 	 */
-	public function getAnswer(){
-		return $this->ans;
+	public function getAnswer($user_ids = [], $state = -1){
+		$res = [];
+		foreach($ans as $a){
+			$ok = TRUE;
+			if(count($user_ids) AND !in_array($a->getUser()->getId(), $user_ids))
+				$ok = FALSE;
+			if($state != -1 AND $a->getState() != $state)
+				$ok = FALSE;
+
+			if($ok)
+				$res[] = $a;
+		}
+		return $res;
 	}
 
 	/*

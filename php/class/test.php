@@ -11,8 +11,10 @@ include("Answer.class.php");
 // Instancier la connection à la base de données
 DBSingleton::getInstance();
 
-//$all = User::all();
-$f = new Answer(2);
+
+include '../include/verify_creator.php';
+var_dump(a());
+//b();
 /*
  
 // Create object user (this user must already exists in the table users)

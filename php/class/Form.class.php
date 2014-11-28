@@ -10,6 +10,10 @@ class Form {
 	private $ans;
 	// Form status
 	private $state = 0;
+	// Form anonymous
+	private $anonymous;
+	// Form printable
+	private $printable;
 	
 	/*
 		Constructor
@@ -19,25 +23,28 @@ class Form {
             case 0: // new Form();
                 break;
             case 1: // new Form(id);
-                $this->id = func_get_arg(0);
+               $this->id = func_get_arg(0);
 
-			   $q = mysql_query("SELECT user_id, status FROM form WHERE form_id = " . $this->id);
+			   $q = mysql_query("SELECT * FROM form WHERE form_id = " . $this->id);
 			   $line = mysql_fetch_array($q);
+
 			   $this->creator = new User($line["user_id"]);
-			   $this->state = $line["status"] == 1 ? TRUE : FALSE;
+			   $this->state = $line["form_status"] == 1 ? TRUE : FALSE;
+			   $this->printable = $line["form_printable"] == 1 ? TRUE : FALSE;
+			   $this->anonymous = $line["form_anonymous"] == 1 ? TRUE : FALSE;
 
-				$q = mysql_query("SELECT user_id FROM formdest WHERE form_id = " . $this->id . " ORDER BY user_id");
-				$this->recipient = [];
-				while($line = mysql_fetch_array($q)){
-					$this->recipient[] = new User($line["user_id"]);
-				}
+				   $q = mysql_query("SELECT user_id, status FROM formdest WHERE form_id = " . $this->id . " ORDER BY user_id");
+				   $this->recipient = [];
+				   while($line = mysql_fetch_array($q)){
+					   $this->recipient[new User($line["user_id"])] = $line["status"];
+				   }
 
-				$q = mysql_query("SELECT formans_id FROM formdest JOIN formans ON formdest.formdest_id = formans.formdest_id AND formdest.form_id = " . $this->id);
-				$this->ans = [];
-				while($line = mysql_fetch_array($q)){
-					$this->ans[] = new Answer($line["formans_id"]);
-				}
-                break;
+				   $q = mysql_query("SELECT formans_id FROM formdest JOIN formans ON formdest.formdest_id = formans.formdest_id AND formdest.form_id = " . $this->id);
+				   $this->ans = [];
+				   while($line = mysql_fetch_array($q)){
+					   $this->ans[] = new Answer($line["formans_id"]);
+				   }
+               break;
             default:
             	break;
         }
@@ -76,11 +83,38 @@ class Form {
 	}
 
 	/*
-		getAns
+		getAnswer
 		Returns form's answers list
 	 */
-	public function getAnswer(){
-		return $this->ans;
+	public function getAnswer($user_ids = [], $state = -1){
+		$res = [];
+		foreach($ans as $a){
+			$ok = TRUE;
+			if(count($user_ids) AND !in_array($a->getUser()->getId(), $user_ids))
+				$ok = FALSE;
+			if($state != -1 AND $a->getState() != $state)
+				$ok = FALSE;
+
+			if($ok)
+				$res[] = $a;
+		}
+		return $res;
+	}
+	
+	/*
+		getPrintable
+		Returns if form is printable
+	 */
+	public function getPrintable(){
+		return $this->printable;
+	}
+	
+	/*
+		getAnonymous
+		Sets if form is anonymous
+	 */
+	public function getAnonymous(){
+		return $this->anonymous;
 	}
 
 	/*
@@ -89,6 +123,22 @@ class Form {
 	 */
 	public function setCreator($user){
 		$this->creator = $user;
+	}
+	
+	/*
+		setPrintable
+		Sets if form is printable
+	 */
+	public function setPrintable($isPrintable){
+		$this->printable = $isPrintable;
+	}
+	
+	/*
+		setAnonymous
+		Sets if form is anonymous
+	 */
+	public function setAnonymous($isAnonymous){
+		$this->anonymous = $isAnonymous;
 	}
 
 	/*
@@ -113,13 +163,13 @@ class Form {
 		mysql_query("DELETE FROM form WHERE form_id = ".$this->id);
 		$exist = mysql_query("SELECT form_id FROM form WHERE form_id = ".$this->id);
 		if(!$exist) {
-		   mysql_query("INSERT INTO form(user_id, status) VALUES (".$this->creator->getId().", ".$this->state.")");
+		   mysql_query("INSERT INTO form(user_id, form_status) VALUES (".$this->creator->getId().", ".$this->state.")");
 		   $this->id = mysql_insert_id();
 		}
 		// Insert dest
 		foreach ($this->recipient as $d){
-		   echo 'insert dest '.$this->id.' '.$d->getId().' '.$this->state .'<br>';
-			mysql_query("INSERT INTO formdest(form_id, user_id, status) VALUES (".$this->id.",".$d->getId().", ".$this->state.")") or die('SQL Error<br>'.mysql_error());
+			mysql_query("INSERT INTO formdest(form_id, user_id, status) VALUES (".$this->id.",".$d->getId().", 0)") or die('SQL Error<br>'.mysql_error());
+
 		}
 	}
 
@@ -130,7 +180,11 @@ class Form {
 		$this->save();
 		$this->state = TRUE;
 		// Update status
-		mysql_query("UPDATE form SET status = 1 WHERE form_id = ".$this->id);
+		mysql_query("UPDATE form SET form_status = 1 WHERE form_id = ".$this->id);
+	}
+	
+	public function getStateOf($id_user) {
+	   return $this->recipient[$id_user];
 	}
 }
 ?>

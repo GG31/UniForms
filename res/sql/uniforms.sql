@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.1
+-- version 4.1.14
 -- http://www.phpmyadmin.net
 --
--- Client: localhost
--- Généré le: Jeu 27 Novembre 2014 à 08:06
--- Version du serveur: 5.5.24-log
--- Version de PHP: 5.4.3
+-- Client :  127.0.0.1
+-- Généré le :  Ven 28 Novembre 2014 à 11:00
+-- Version du serveur :  5.6.17
+-- Version de PHP :  5.5.12
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de données: `uniforms`
+-- Base de données :  `uniforms`
 --
 
 -- --------------------------------------------------------
@@ -56,22 +56,38 @@ CREATE TABLE IF NOT EXISTS `ch_input` (
 CREATE TABLE IF NOT EXISTS `form` (
   `form_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `status` int(11) NOT NULL,
+  `form_status` int(11) NOT NULL,
+  `form_anonymous` tinyint(1) NOT NULL DEFAULT '0',
+  `form_printable` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`form_id`),
   KEY `FK_USER_FORM` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
 
 --
 -- Contenu de la table `form`
 --
 
-INSERT INTO `form` (`form_id`, `user_id`, `status`) VALUES
-(1, 1, 0),
-(2, 1, 0),
-(3, 1, 1),
-(4, 1, 1),
-(5, 1, 0),
-(6, 1, 0);
+INSERT INTO `form` (`form_id`, `user_id`, `form_status`, `form_anonymous`, `form_printable`) VALUES
+(1, 1, 0, 0, 1),
+(2, 1, 0, 0, 1),
+(3, 1, 0, 0, 1),
+(4, 1, 0, 0, 1),
+(5, 1, 0, 0, 1),
+(6, 1, 0, 0, 1),
+(7, 1, 0, 0, 1),
+(8, 1, 0, 0, 1),
+(9, 1, 0, 0, 1),
+(10, 1, 0, 0, 1),
+(11, 1, 0, 0, 1),
+(12, 1, 0, 0, 1),
+(13, 1, 0, 0, 1),
+(14, 1, 0, 0, 1),
+(15, 1, 0, 0, 1),
+(16, 1, 0, 0, 1),
+(17, 1, 0, 0, 1),
+(18, 1, 0, 0, 1),
+(19, 3, 0, 0, 1),
+(20, 3, 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -102,21 +118,21 @@ CREATE TABLE IF NOT EXISTS `formdest` (
   PRIMARY KEY (`formdest_id`),
   KEY `FK_FORM_FORMDEST` (`form_id`),
   KEY `FK_USER_FORMDEST` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=69 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=77 ;
 
 --
 -- Contenu de la table `formdest`
 --
 
 INSERT INTO `formdest` (`formdest_id`, `form_id`, `user_id`, `status`) VALUES
-(61, 1, 3, 0),
-(62, 1, 4, 0),
-(63, 1, 6, 0),
-(64, 1, 5, 0),
-(65, 4, 3, 1),
-(66, 4, 7, 1),
-(67, 4, 2, 0),
-(68, 4, 5, 0);
+(34, 1, 4, 0),
+(35, 1, 6, 0),
+(36, 1, 5, 0),
+(38, 2, 7, 0),
+(39, 2, 2, 0),
+(74, 4, 7, 0),
+(75, 4, 2, 0),
+(76, 4, 5, 0);
 
 -- --------------------------------------------------------
 

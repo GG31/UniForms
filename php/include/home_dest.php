@@ -19,11 +19,9 @@
 			</tr>
 		</thead>
 		<tbody>
-		<?php
-		   ?>
 			<?php
 				foreach($dests as $dest) {
-					if($dest->getState() == 1){
+					if($dest->getStateOf($_SESSION["user_id"]) == 1){
 			?>
 						<tr class="success">
 							<td><?php echo $dest->getId() ?></td>

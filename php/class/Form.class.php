@@ -23,27 +23,28 @@ class Form {
             case 0: // new Form();
                 break;
             case 1: // new Form(id);
-                $this->id = func_get_arg(0);
+               $this->id = func_get_arg(0);
 
 			   $q = mysql_query("SELECT * FROM form WHERE form_id = " . $this->id);
 			   $line = mysql_fetch_array($q);
+
 			   $this->creator = new User($line["user_id"]);
 			   $this->state = $line["form_status"] == 1 ? TRUE : FALSE;
-			   $this->printable = $line["form_printable"];
-			   $this->anonymous = $line["form_anonymous"];
+			   $this->printable = $line["form_printable"] == 1 ? TRUE : FALSE;
+			   $this->anonymous = $line["form_anonymous"] == 1 ? TRUE : FALSE;
 
-				$q = mysql_query("SELECT user_id FROM formdest WHERE form_id = " . $this->id . " ORDER BY user_id");
-				$this->recipient = [];
-				while($line = mysql_fetch_array($q)){
-					$this->recipient[] = new User($line["user_id"]);
-				}
+				   $q = mysql_query("SELECT user_id, status FROM formdest WHERE form_id = " . $this->id . " ORDER BY user_id");
+				   $this->recipient = [];
+				   while($line = mysql_fetch_array($q)){
+					   $this->recipient[new User($line["user_id"])] = $line["status"];
+				   }
 
-				$q = mysql_query("SELECT formans_id FROM formdest JOIN formans ON formdest.formdest_id = formans.formdest_id AND formdest.form_id = " . $this->id);
-				$this->ans = [];
-				while($line = mysql_fetch_array($q)){
-					$this->ans[] = new Answer($line["formans_id"]);
-				}
-                break;
+				   $q = mysql_query("SELECT formans_id FROM formdest JOIN formans ON formdest.formdest_id = formans.formdest_id AND formdest.form_id = " . $this->id);
+				   $this->ans = [];
+				   while($line = mysql_fetch_array($q)){
+					   $this->ans[] = new Answer($line["formans_id"]);
+				   }
+               break;
             default:
             	break;
         }
@@ -82,11 +83,22 @@ class Form {
 	}
 
 	/*
-		getAns
+		getAnswer
 		Returns form's answers list
 	 */
-	public function getAnswer(){
-		return $this->ans;
+	public function getAnswer($user_ids = [], $state = -1){
+		$res = [];
+		foreach($ans as $a){
+			$ok = TRUE;
+			if(count($user_ids) AND !in_array($a->getUser()->getId(), $user_ids))
+				$ok = FALSE;
+			if($state != -1 AND $a->getState() != $state)
+				$ok = FALSE;
+
+			if($ok)
+				$res[] = $a;
+		}
+		return $res;
 	}
 	
 	/*
@@ -157,7 +169,7 @@ class Form {
 		// Insert dest
 		foreach ($this->recipient as $d){
 		   echo 'insert dest '.$this->id.' '.$d->getId().' '.$this->state .'<br>';
-			mysql_query("INSERT INTO formdest(form_id, user_id, form_dest_status) VALUES (".$this->id.",".$d->getId().", 0)") or die('SQL Error<br>'.mysql_error());
+			mysql_query("INSERT INTO formdest(form_id, user_id, formdest_status) VALUES (".$this->id.",".$d->getId().", 0)") or die('SQL Error<br>'.mysql_error());
 		}
 	}
 
@@ -169,6 +181,10 @@ class Form {
 		$this->state = TRUE;
 		// Update status
 		mysql_query("UPDATE form SET form_status = 1 WHERE form_id = ".$this->id);
+	}
+	
+	public function getStateOf($id_user) {
+	   return $this->recipient[$id_user];
 	}
 }
 ?>

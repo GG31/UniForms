@@ -7,6 +7,7 @@ class User {
 
     /*
     	Constructor
+    	TODO name
      */	
 	function __construct($userId) {
 		$this->id = $userId;
@@ -60,7 +61,7 @@ class User {
 		Returns list of forms destinated to user
 	 */
 	public function getDestinatairesForms(){
-	   $q = mysql_query("SELECT formdest.form_id FROM formdest, form WHERE formdest.form_id=form.form_id AND formdest.user_id=".$this->id." AND form.status=1");
+	   $q = mysql_query("SELECT formdest.form_id FROM formdest, form WHERE formdest.form_id=form.form_id AND formdest.user_id=".$this->id." AND form.form_status=1");
 		$res = [];
 		while($line = mysql_fetch_array($q)){
 		   $res[] = new Form($line["form_id"]);

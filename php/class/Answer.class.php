@@ -19,7 +19,7 @@ class Answer {
             case 1: // new Answer(id);
                 $this->id = func_get_arg(0);
 		
-				$q = mysql_query("SELECT form_id, user_id, status FROM formans JOIN formdest ON formans.formdest_id = formdest.formdest_id AND formans.formans_id = " . $this->id);
+				$q = mysql_query("SELECT form_id, user_id, formdest_status FROM formans JOIN formdest ON formans.formdest_id = formdest.formdest_id AND formans.formans_id = " . $this->id);
 				$line = mysql_fetch_array($q);
 				
 				$this->form = $line["form_id"];
@@ -75,7 +75,7 @@ class Answer {
 		$this->save();
 		$this->state = TRUE;
 		// Update status
-		mysql_query("UPDATE formdest SET status = 1 WHERE form_id = ".$this->form->id());
+		mysql_query("UPDATE formdest SET formdest_status = 1 WHERE form_id = ".$this->form->id());
 	}
 }
 ?>

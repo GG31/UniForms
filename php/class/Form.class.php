@@ -86,7 +86,8 @@ class Form {
 	 */
 	public function getAnswer($user_ids = [], $state = -1){
 		$res = [];
-		foreach($ans as $a){
+		foreach($this->ans as $a){
+
 			$ok = TRUE;
 			if(count($user_ids) AND !in_array($a->getUser()->getId(), $user_ids))
 				$ok = FALSE;

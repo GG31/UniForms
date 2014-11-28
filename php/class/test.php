@@ -13,7 +13,9 @@ DBSingleton::getInstance();
 
 
 include '../include/verify_creator.php';
-b();
+var_dump(a());
+var_dump(b());
+var_dump(c());
 //b();
 /*
  

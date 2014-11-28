@@ -1,33 +1,29 @@
 <?php
 	include_once ('include/includes.php');
 
+	/*
+		ANSWERS.PHP
+	 */
 	$_SESSION["user_id"] = 1;
-	$_GET["user_id"] = 3;
+	$_GET["user_id"] = 4;
 	$_GET["form_id"] = 1;
 
 	function a(){
-		$user = new User($_SESSION["user_id"]);
-		return $user->isCreator($_GET["form_id"]);
+		return (new User($_SESSION["user_id"]))->isCreator($_GET["form_id"]);
 	}
 
 	function b(){
-		$user = new User($_GET["user_id"]);
-		echo "1";
-		var_dump($user->isDestinataire($_GET["form_id"]));
-
-		$form = new Form($_GET["form_id"]);
-		$ans = $form->getAnswer([$_GET["user_id"]], 1);
-		echo "2";
-		var_dump($ans);
-
-		foreach($ans as $a){
-		echo "3";
-			var_dump($a);
-		}
+		$ans = (new Form($_GET["form_id"]))->getAnswer([$_GET["user_id"]], 1);
+		return count($ans) > 0 ? TRUE : FALSE;
 	}
 
 
-
+	/*
+		CREATEFORM.PHP
+	 */
+	function c(){
+		return (new Form($_GET["form_id"]))->getState() == FALSE;
+	}
 
 
 

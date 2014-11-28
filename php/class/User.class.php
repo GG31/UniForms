@@ -85,7 +85,7 @@ class User {
 		isDest(int formID)
 		Returns TRUE (FALSE) if form is (not) destinated to user
 	 */
-	public function isDestinataire($formID){
+	public function isDestinataire($formId){
 		$f = new Form($formId);
 		$d = $f->getRecipient();
 		foreach($d as $dest){

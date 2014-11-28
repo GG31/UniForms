@@ -10,15 +10,15 @@ include("Form.class.php");
 include("Answer.class.php");
 // Instancier la connection à la base de données
 DBSingleton::getInstance();
+include '../include/verify_access.php';
+echo "ANSWER: ";
+var_dump(verify_access_answers());
+echo "<br>CREATE: ";
+var_dump(verify_access_create());
+echo "<br>......FILL: ";
+var_dump(verify_access_fill());
 
-
-include '../include/verify_creator.php';
-var_dump(a());
-var_dump(b());
-var_dump(c());
-//b();
 /*
- 
 // Create object user (this user must already exists in the table users)
 $oneUser = new User(3);
 

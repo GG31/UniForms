@@ -89,7 +89,7 @@ class User {
 		$f = new Form($formId);
 		$d = $f->getRecipient();
 		foreach($d as $dest){
-			if($dest->id == $this->id)
+			if($dest->getId() == $this->id)
 				return TRUE;
 		}
 		return FALSE;

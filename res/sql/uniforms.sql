@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 28 Novembre 2014 à 10:34
+-- Généré le :  Ven 28 Novembre 2014 à 10:49
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `form` (
   `user_id` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   `form_anonymous` tinyint(1) NOT NULL DEFAULT '0',
-  `form_webonly` tinyint(1) NOT NULL DEFAULT '0',
+  `form_printable` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`form_id`),
   KEY `FK_USER_FORM` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
@@ -67,27 +67,27 @@ CREATE TABLE IF NOT EXISTS `form` (
 -- Contenu de la table `form`
 --
 
-INSERT INTO `form` (`form_id`, `user_id`, `status`, `form_anonymous`, `form_webonly`) VALUES
-(1, 1, 0, 0, 0),
-(2, 1, 0, 0, 0),
-(3, 1, 0, 0, 0),
-(4, 1, 0, 0, 0),
-(5, 1, 0, 0, 0),
-(6, 1, 0, 0, 0),
-(7, 1, 0, 0, 0),
-(8, 1, 0, 0, 0),
-(9, 1, 0, 0, 0),
-(10, 1, 0, 0, 0),
-(11, 1, 0, 0, 0),
-(12, 1, 0, 0, 0),
-(13, 1, 0, 0, 0),
-(14, 1, 0, 0, 0),
-(15, 1, 0, 0, 0),
-(16, 1, 0, 0, 0),
-(17, 1, 0, 0, 0),
-(18, 1, 0, 0, 0),
-(19, 3, 0, 0, 0),
-(20, 3, 0, 0, 0);
+INSERT INTO `form` (`form_id`, `user_id`, `status`, `form_anonymous`, `form_printable`) VALUES
+(1, 1, 0, 0, 1),
+(2, 1, 0, 0, 1),
+(3, 1, 0, 0, 1),
+(4, 1, 0, 0, 1),
+(5, 1, 0, 0, 1),
+(6, 1, 0, 0, 1),
+(7, 1, 0, 0, 1),
+(8, 1, 0, 0, 1),
+(9, 1, 0, 0, 1),
+(10, 1, 0, 0, 1),
+(11, 1, 0, 0, 1),
+(12, 1, 0, 0, 1),
+(13, 1, 0, 0, 1),
+(14, 1, 0, 0, 1),
+(15, 1, 0, 0, 1),
+(16, 1, 0, 0, 1),
+(17, 1, 0, 0, 1),
+(18, 1, 0, 0, 1),
+(19, 3, 0, 0, 1),
+(20, 3, 0, 0, 1);
 
 -- --------------------------------------------------------
 

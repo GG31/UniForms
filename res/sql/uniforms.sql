@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 28 Novembre 2014 à 10:49
+-- Généré le :  Ven 28 Novembre 2014 à 11:00
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `ch_input` (
 CREATE TABLE IF NOT EXISTS `form` (
   `form_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `status` int(11) NOT NULL,
+  `form_status` int(11) NOT NULL,
   `form_anonymous` tinyint(1) NOT NULL DEFAULT '0',
   `form_printable` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`form_id`),
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `form` (
 -- Contenu de la table `form`
 --
 
-INSERT INTO `form` (`form_id`, `user_id`, `status`, `form_anonymous`, `form_printable`) VALUES
+INSERT INTO `form` (`form_id`, `user_id`, `form_status`, `form_anonymous`, `form_printable`) VALUES
 (1, 1, 0, 0, 1),
 (2, 1, 0, 0, 1),
 (3, 1, 0, 0, 1),

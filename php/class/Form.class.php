@@ -157,7 +157,7 @@ class Form {
 		// Insert dest
 		foreach ($this->recipient as $d){
 		   echo 'insert dest '.$this->id.' '.$d->getId().' '.$this->state .'<br>';
-			mysql_query("INSERT INTO formdest(form_id, user_id, form_status) VALUES (".$this->id.",".$d->getId().", ".$this->state.")") or die('SQL Error<br>'.mysql_error());
+			mysql_query("INSERT INTO formdest(form_id, user_id, form_dest_status) VALUES (".$this->id.",".$d->getId().", 0)") or die('SQL Error<br>'.mysql_error());
 		}
 	}
 
@@ -168,7 +168,7 @@ class Form {
 		$this->save();
 		$this->state = TRUE;
 		// Update status
-		mysql_query("UPDATE form SET status = 1 WHERE form_id = ".$this->id);
+		mysql_query("UPDATE form SET form_status = 1 WHERE form_id = ".$this->id);
 	}
 }
 ?>

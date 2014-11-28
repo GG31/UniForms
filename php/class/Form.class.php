@@ -28,7 +28,7 @@ class Form {
 			   $q = mysql_query("SELECT * FROM form WHERE form_id = " . $this->id);
 			   $line = mysql_fetch_array($q);
 			   $this->creator = new User($line["user_id"]);
-			   $this->state = $line["status"] == 1 ? TRUE : FALSE;
+			   $this->state = $line["form_status"] == 1 ? TRUE : FALSE;
 			   $this->printable = $line["form_printable"];
 			   $this->anonymous = $line["form_anonymous"];
 
@@ -151,13 +151,13 @@ class Form {
 		mysql_query("DELETE FROM form WHERE form_id = ".$this->id);
 		$exist = mysql_query("SELECT form_id FROM form WHERE form_id = ".$this->id);
 		if(!$exist) {
-		   mysql_query("INSERT INTO form(user_id, status) VALUES (".$this->creator->getId().", ".$this->state.")");
+		   mysql_query("INSERT INTO form(user_id, form_status) VALUES (".$this->creator->getId().", ".$this->state.")");
 		   $this->id = mysql_insert_id();
 		}
 		// Insert dest
 		foreach ($this->recipient as $d){
 		   echo 'insert dest '.$this->id.' '.$d->getId().' '.$this->state .'<br>';
-			mysql_query("INSERT INTO formdest(form_id, user_id, status) VALUES (".$this->id.",".$d->getId().", ".$this->state.")") or die('SQL Error<br>'.mysql_error());
+			mysql_query("INSERT INTO formdest(form_id, user_id, form_status) VALUES (".$this->id.",".$d->getId().", ".$this->state.")") or die('SQL Error<br>'.mysql_error());
 		}
 	}
 

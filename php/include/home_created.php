@@ -1,8 +1,7 @@
 <?php
-   session_start ();
-   include ('include/includes.php');
+   include_once ('include/includes.php');
    $user = new User($_SESSION["user_id"]); // TODO $_SESSION["user_id"]
-	$crea = $user->getCreatedForms();
+   $creas = $user->getCreatedForms();
 ?> 
 <div class="panel panel-default">
 	<div class="panel-heading">Formulaires que j'ai crée</div>
@@ -17,21 +16,21 @@
 		</thead>
 		<tbody>
 			<?php
-				while($line = mysql_fetch_array($crea)){
-					if($line["status"] == 1){
+				foreach($creas as $crea) {
+					if($crea->getState() == 1){
 			?>
 						<tr class="success">
-							<td><?php echo $line["form_id"] ?></td>
+							<td><?php echo $crea->getId() ?></td>
 							<td>Validé</td>
-							<td><a href="answers.php?form_id=<?php echo $line["form_id"] ?>">Voir résultats</a></td>
+							<td><a href="answers.php?form_id=<?php echo $crea->getId() ?>">Voir résultats</a></td>
 						</tr>
 			<?php
 					}else{
 			?>
 						<tr class="info">
-							<td><?php echo $line["form_id"] ?></td>
+							<td><?php echo $crea->getId() ?></td>
 							<td>Non validé</td>
-							<td><a href="createform.php?id=<?php echo $line["form_id"] ?>">Modifier</a></td>
+							<td><a href="createform.php?id=<?php echo $crea->getId() ?>">Modifier</a></td>
 						</tr>
 			<?php
 					}

@@ -2,21 +2,30 @@
 class User {
 	// User id (user_id)
 	private $id;
+	// User name
+	private $name;
 
     /*
     	Constructor
-    	TODO
      */	
 	function __construct($userId) {
 		$this->id = $userId;
     }
 
     /*
-    	id
+    	getId
     	Returns user's id
      */
 	public function getId(){
 		return $this->id;
+	}
+
+    /*
+    	getName
+    	Returns user's name
+     */
+	public function getName(){
+		return $this->name;
 	}
 
     /*
@@ -51,7 +60,7 @@ class User {
 		Returns list of forms destinated to user
 	 */
 	public function getDestinatairesForms(){
-		$q = mysql_query("SELECT form_id FROM formdest WHERE user_id = ".$this->userId);
+		$q = mysql_query("SELECT form_id FROM formdest WHERE user_id = ".$this->id);
 		$res = [];
 		while($line = mysql_fetch_array($q)){
 			$res[] = new Form($line["form_id"]);
@@ -65,7 +74,7 @@ class User {
 	 */
 	public function isCreator($formID){
 		$f = new Form($formId);
-		if($f.getCreator().id() == $this.id)
+		if($f->getCreator()->id() == $this.id)
 			return TRUE;
 		else
 			return FALSE;
@@ -79,20 +88,10 @@ class User {
 		$f = new Form($formId);
 		$d = $f.getDest();
 		foreach($d as $dest){
-			if($dest.getDest().id() == $this.id)
+			if($dest->getDest()->id() == $this.id)
 				return TRUE;
 		}
 		return FALSE;
 	}
-
-	// ----------------------- deprecated
-
-	// Create a new form (with status "not send") and returns the form object that corresponds to it.
-	/*public function createForm(){
-		mysql_query("INSERT INTO form(user_id, status) VALUES (".$this->userId.", 0)") or die('SQL Error<br>'.mysql_error());
-		$idForm = mysql_insert_id();
-		$newForm = new form($idForm);
-		return $newForm;
-	}*/
 }
 ?>

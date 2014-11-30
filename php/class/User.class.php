@@ -11,6 +11,10 @@ class User {
      */	
 	function __construct($userId) {
 		$this->id = $userId;
+
+		$q = mysql_query("SELECT * FROM user WHERE user_id = " . $this->id);
+		$line = mysql_fetch_array($q);
+		$this->name = $line["user_name"];
     }
 
     /*
@@ -37,7 +41,8 @@ class User {
 		$q = mysql_query("SELECT user_id FROM user");
 		$res = [];
 		while($line = mysql_fetch_array($q)){
-			$res[] = new User($line["user_id"]);
+			if($line["user_id"] != 0) // User 0 is Anonymous
+				$res[] = new User($line["user_id"]);
 		}
 		return $res;
 	}

@@ -1,128 +1,180 @@
 <!doctype html>
-<?php include_once ('include/includes.php'); ?>
+<?php include_once 'include/includes.php'; ?>
+<?php
+	/*
+		$_GET["form_id"] =>
+			$_POST["form_id"] == $_GET["form_id"] (already existing form)
+		XXXXXXXXXXXXXXXX =>
+			$_POST["form_id"] == -1 (new form)
+	 */
+	$form_id = isset($_GET["form_id"]) ? $_GET["form_id"] : -1;
+	$form = new Form($form_id);
+?>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>UniForms</title>
-<link rel="shortcut icon" href="../res/img/favicon.png" />
-<link rel="stylesheet" href="../lib/bootstrap-3.3.1/min.css"
-	type="text/css" />
-<link rel="stylesheet" href="../css/styles.css" type="text/css" />
-<link rel="stylesheet" href="../css/drag.css" type="text/css" />
+	<head>
+		<meta charset="UTF-8">
+		<title>UniForms</title>
+		<link rel="shortcut icon" href="../res/img/favicon.png" />
+		<link rel="stylesheet" href="../lib/bootstrap-3.3.1/min.css"
+			type="text/css" />
+		<link rel="stylesheet" href="../css/styles.css" type="text/css" />
+		<link rel="stylesheet" href="../css/drag.css" type="text/css" />
 
-<script src="../lib/jquery-2.1.1/min.js"></script>
-<script src="../lib/bootstrap-3.3.1/min.js"></script>
-<script src="../js/drag.js"></script>
-<script>
-$(document).ready(function(){
-	$('#no_a').click(function onchek() {
-		if($(this).is(':checked')){
-			$( "#hide" ).hide();
-		}else {
-			$( "#hide" ).show();
-		}
-	});	
-});	
-</script>
-</head>
-<body>
-	<div class="container">
-         <?php include('include/header.php'); ?>
-         <div class="row">
-   		   <?php include('include/nav.php'); ?>
-         </div>
-
-
-		<form class="form-horizontal" role="form"
-			action="include/add_form.php?id=<?php echo $_GET['id'] ?>" method="post" id="formulaire">
-			<div class="row">
-				<div id="hide" class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">
-							<B>Destinataires</B>
-						</h3>
+		<script src="../lib/jquery-2.1.1/min.js"></script>
+		<script src="../lib/bootstrap-3.3.1/min.js"></script>
+		<script src="../js/drag.js"></script>
+		<script>
+			$(document).ready(function(){
+				$('#anon').on('change', function() {
+					if($(this).is(':checked')){
+						$( "#dest" ).hide("slow", function(){
+							$(this).parent().removeClass("panel-primary");
+							$(this).parent().addClass("panel-default");
+						});
+						$("#dest input").prop("disabled", true);
+					}else {
+						$( "#dest" ).show("slow", function(){
+							$(this).parent().removeClass("panel-default");
+							$(this).parent().addClass("panel-primary");
+						});
+						$("#dest input").prop("disabled", false);
+					}
+				});	
+			});	
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<?php include 'include/header.php'; ?>
+			<?php include 'include/nav.php'; ?>
+			<?php
+				if($form->getState() == TRUE){
+			?>
+					<div class="alert alert-warning text-center" role="alert">
+						Ce formulaire a déjà été validé !
 					</div>
-					<div class="panel-body">
-						<div class="form-group">
-                        <?php
-									$users = User::all ();
-									if (! $users) {
-										die ( 'Requête invalide : ' . mysql_error () );
-									}
-									foreach ( $users as $user ) {
-										echo '
-                           <div class="input-group">
-                              <span class="input-group-addon">
-                                <input type="checkbox" name="checkboxDestinataire_' . $user->getId () . '" value="' . $user->getId () . '">
-                              </span>
-                              <label class="form-control">' . $user->getId () . '</label>
-                           </div>';
-									}
-									?>
-                     </div>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-sm-10">
-					<div class="panel panel-default">
-						<div class="panel-heading">
+			<?php
+				}
+			?>
+			<form
+				id="formulaire"
+				class="form-inline"
+				role="form"
+				action="include/add_form.php"
+				method="post">
+				<div class="row">
+					<div class="panel panel-primary">
+						<div class="panel-heading text-center text-capitalize">
 							<h3 class="panel-title">
-								<B>Création</B>
+								<strong>Paramètres</strong>
 							</h3>
 						</div>
 						<div class="panel-body">
-							El1 <br> El2
+							<div class="form-group">
+								<input
+									id="print"
+									type="checkbox"
+									value="print"
+									name="param[]"
+									CHECKED>
+								<label for="print">Imprimable</label>
+								<input
+									id="anon"
+									type="checkbox"
+									value="anon"
+									name="param[]">
+								<label for="anon">Anonyme</label>
+								<br>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-2">
-					<div class="panel panel-default">
-						<div class="panel-heading">
+				<div class="row">
+					<div class="panel panel-primary">
+						<div class="panel-heading text-center text-capitalize">
 							<h3 class="panel-title">
-								<B>Éléments</B>
+								<strong>Destinataires</strong>
 							</h3>
 						</div>
-						<div class="panel-body">
-							El1 <br> El2
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-2">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h3 class="panel-title">
-								<B>Anonymat</B>
-							</h3>
-						</div>
-						<div class="panel-body">
-							<input onchange="onchek()" id="no_a" type="checkbox" value="1" name="Anonymat" form="formulaire"> <label>Anonyme</label> <br>
+						<div id="dest" class="panel-body">
+							<div class="form-group">
+	                        <?php
+								$users = User::all ();
+								foreach ( $users as $user ) {
+							?>
+								<div class="input-group">
+									<span class="input-group-addon">
+										<input
+											id="user<?php echo $user->getId() ?>"
+											type="checkbox"
+											name="recipient[]"
+											value=<?php echo $user->getId() ?>>
+									</span>
+									<label
+										class="form-control"
+										for="user<?php echo $user->getId() ?>">
+										<?php echo $user->getName() ?>
+									</label>
+								</div>
+	                        <?php
+								}
+							?>
+	                    	</div>
 						</div>
 					</div>
 				</div>
 
-				<div class="col-sm-3">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<h3 class="panel-title">
-								<B>Type</B>
-							</h3>
-						</div>
-						<div class="panel-body">
-							<input type="checkbox" value="1" name="printable" form="formulaire"> <label>Imprimable</label>
+				<div class="row">
+					<div><!-- class="col-sm-10" -->
+						<div class="panel panel-primary">
+							<div class="panel-heading text-center text-capitalize">
+								<h3 class="panel-title">
+									<strong>Formulaire</strong>
+								</h3>
+							</div>
+							<div class="panel-body">
+							</div>
 						</div>
 					</div>
+					<!--<div class="col-sm-2">
+						<div class="panel panel-primary">
+							<div class="panel-heading text-center text-capitalize">
+								<h3 class="panel-title">
+									<B>Éléments</B>
+								</h3>
+							</div>
+							<div class="panel-body">
+								Text<br>
+								Paragraphe<br>
+								Liste<br>
+								...
+							</div>
+						</div>
+					</div>-->
 				</div>
-			</div>
-		</form>
-		<div class="row well">
-			<input type="submit" class="btn btn-default" value="Enregistrer"
-				name="enregistrer" form="formulaire"> <input type="submit"
-				class="btn btn-default" value="Valider" form="formulaire"
-				name="valider">
-		</div>
-            <?php include('include/footer.php'); ?>
-      </div>
-</body>
+				<div class="row">
+					<div class="col-sm-offset-3 col-sm-6">
+						<input type="hidden" name="form_id" value=<?php echo $form_id ?>>
+						<input
+							type="submit"
+							class="btn btn-default btn-lg btn-block"
+							value="Enregistrer"
+							name="save"
+							form="formulaire"
+							<?php echo $form->getState() ? "DISABLED" : "" ?>
+							>
+						<input
+							type="submit"
+							class="btn btn-primary btn-lg btn-block"
+							value="Valider"
+							name="send"
+							form="formulaire"
+							<?php echo $form->getState() ? "DISABLED" : "" ?>
+							>
+					</div>
+				</div>
+			</form>
+	        <?php include 'include/footer.php'; ?>
+	    </div>
+	</body>
 </html>

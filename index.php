@@ -1,4 +1,5 @@
 <!doctype html>
+<?php include 'php/include/login.php'; ?>
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -11,14 +12,11 @@
 		<script src="lib/bootstrap-3.3.1/min.js"></script>
 	</head>
 	<body>
-		<?php include 'php/include/connexion.php'; ?>
 		<div class="container">
-			<header class="row page-header">
-				<?php include('php/include/header.php'); ?>
-			</header>
-			<form class="form-horizontal panel panel-default" role="form" action="index.php" method="post"> <!-- No need for .row with .form-horizontal-->
-				<div class="panel-heading">
-					<div class="panel-title">Connection</div>
+			<?php include 'php/include/header.php'; ?>
+			<form class="form-horizontal panel panel-primary" role="form" action="index.php" method="post"> <!-- No need for .row with .form-horizontal-->
+				<div class="panel-heading text-center">
+					<div class="panel-title"><strong>Connection</strong></div>
 				</div>
 				<div class="panel-body">
 					<div class="form-group">
@@ -42,9 +40,7 @@
 					</div>
 				</div>
 			</form>
-			<footer class="row well">
-				<?php include 'php/include/footer.php'; ?>
-			</footer>
+			<?php include 'php/include/footer.php'; ?>
 		</div>
 	</body>
 </html>

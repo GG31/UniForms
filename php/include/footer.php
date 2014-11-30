@@ -1,6 +1,6 @@
 ﻿<footer class="row well">
 	<div class="col-sm-4">
-		Uniforms
+		UniForms
 	</div>
 	<div class="col-sm-4">
 		BENATHMANE Ayoub, benathmane.ab@gmail.com

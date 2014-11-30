@@ -15,6 +15,7 @@ class Answer {
 	public function __construct(){
 		switch(func_num_args()){
             case 0: // new Answer();
+            	$this->state = FALSE;
                 break;
             case 1: // new Answer(id);
                 $this->id = func_get_arg(0);
@@ -33,7 +34,7 @@ class Answer {
 		id
 		Returns answer's id
 	 */
-	public function id(){
+	public function getId(){
 		return $this->id;
 	}
 
@@ -62,6 +63,22 @@ class Answer {
 	}
 
 	/*
+		setForm
+		Sets answer's general form
+	 */
+	public function setForm($form){
+		$this->form = $form;
+	}
+
+	/*
+		setUser
+		Sets answer's answerer
+	 */
+	public function setUser($user){
+		$this->user = $user;
+	}
+
+	/*
 		save
 		TODO !=NULL
 	 */
@@ -75,7 +92,7 @@ class Answer {
 		$this->save();
 		$this->state = TRUE;
 		// Update status
-		mysql_query("UPDATE formdest SET formdest_status = 1 WHERE form_id = ".$this->form->id());
+		mysql_query("UPDATE formdest SET formdest_status = 1 WHERE form_id = ".$this->form . " AND user_id = " . $this->user->getId());
 	}
 }
 ?>

@@ -11,12 +11,9 @@
 		<script src="../lib/bootstrap-3.3.1/min.js"></script>
 	</head>
 	<body>
-		<?php //include 'include/verify_creator.php'; ?>
 		<div class="container">
 			<?php include 'include/header.php'; ?>
-			<div class="row">
-				<?php include 'include/nav.php'; ?>
-			</div>
+			<?php include 'include/nav.php'; ?>
 			<div class="row">
 				<?php include 'include/answers_list.php'; ?>
 			</div>

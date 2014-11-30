@@ -1,12 +1,13 @@
 <?php
-   include_once ('include/includes.php');
-   $user = new User($_SESSION["user_id"]);
-   $creas = $user->getCreatedForms();
+	$user = new User($_SESSION["user_id"]);
+	$creas = $user->getCreatedForms();
 ?> 
-<div class="panel panel-default">
-	<div class="panel-heading">Formulaires que j'ai crée</div>
+<div class="panel panel-primary">
+	<div class="panel-heading text-center text-capitalize">
+		<h3 class="panel-title"><strong>Formulaires que j'ai crée</strong></h3>
+	</div>
 
-	<table class="table table-hover"><!-- table-hover vs table-striped -->
+	<table class="table table-hover">
 		<thead>
 			<tr>
 				<th>Form</th>
@@ -30,7 +31,7 @@
 						<tr class="info">
 							<td><?php echo $crea->getId() ?></td>
 							<td>Non validé</td>
-							<td><a href="createform.php?id=<?php echo $crea->getId() ?>">Modifier</a></td>
+							<td><a href="createform.php?form_id=<?php echo $crea->getId() ?>">Modifier</a></td>
 						</tr>
 			<?php
 					}

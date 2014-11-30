@@ -1,12 +1,17 @@
 <?php
 	error_reporting(E_ALL);
 
-	require_once ("include/connect.php");
-	require_once ("include/verify_session.php");
+	function require_once_UniForms($path){
+		require_once dirname(dirname(dirname(__FILE__)))
+									. '/php/' . $path . '.php';
+	}
 
-	include_once ("class/User.class.php");
-	include_once ("class/Form.class.php");
-	include_once ("class/Answer.class.php");
+	require_once_UniForms("include/connect");
+	require_once_UniForms("include/verify_session");
+
+	require_once_UniForms("class/User.class");
+	require_once_UniForms("class/Form.class");
+	require_once_UniForms("class/Answer.class");
 	
-	require_once ("include/verify_access.php");
+	require_once_UniForms("include/verify_access");
 ?>

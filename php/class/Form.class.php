@@ -9,7 +9,7 @@ class Form {
 	// Form answers list
 	private $ans;
 	// Form status
-	private $state = 0;
+	private $state;
 	// Form anonymous
 	private $anonymous;
 	// Form printable
@@ -21,6 +21,7 @@ class Form {
 	public function __construct() {
 		switch(func_num_args()){
             case 0: // new Form();
+            	$this->state = FALSE;
                 break;
             case 1: // new Form(id);
                $this->id = func_get_arg(0);
@@ -147,29 +148,59 @@ class Form {
 	public function setRecipient($recipientList){
 		$this->recipient = $recipientList;
 	}
-	
-	public function setState($state){
-		$this->state = $state;
-	}
 
 	/*
 		save
 		TODO verif attr!=NULL
 	 */
 	public function save(){
-		// Clean
-		mysql_query("DELETE FROM formdest WHERE form_id = ".$this->id); //Supprime tout les destinataires du formulaire this
-		$exist = mysql_query("SELECT form_id FROM form WHERE form_id = ".$this->id);
-		if(!$exist) {
-		   mysql_query("INSERT INTO form(user_id, form_status, form_anonymous, form_printable) VALUES (".$this->creator->getId().", 0, ".$this->anonymous.", ".$this->printable.")");
-		   $this->id = mysql_insert_id();
-		}else {
-		   mysql_query("UPDATE form SET form_status = ".$this->state.", form_anonymous=".$this->anonymous.", form_printable=".$this->printable." WHERE form_id=".$this->id);
+		// Forms can be created or loaded
+		if($this->id == NULL) {			// Creates new form
+			echo "<br>NOT EXISTS<br>";
+			// Inserts status, anon & print
+			mysql_query("INSERT INTO form(user_id, form_status, form_anonymous, form_printable) VALUES ("
+									. $this->creator->getId()
+									. ", 0, "
+									. ($this->anonymous ? 1 : 0) . ", "
+									. ($this->printable ? 1 : 0) . ")"
+			) or die('<br><strong>SQL Error (1)</strong>:<br>'.mysql_error());
+
+			// Gets generated ID back
+			$this->id = mysql_insert_id();
+
+		} else {				// Updates old form
+			echo "<br>EXISTS<br>";
+			// Updates status, anon & print
+			mysql_query("UPDATE form SET form_status = "   . ($this->state ? 1 : 0)
+									.", form_anonymous = " . ($this->anonymous ? 1 : 0)
+									.", form_printable = " . ($this->printable ? 1 : 0)
+									." WHERE form_id = "   . $this->id
+			) or die('<br><strong>SQL Error (2)</strong>:<br>'.mysql_error());
+
+			// Cleans answers & recipients lines
+			mysql_query("DELETE a FROM formans a JOIN formdest d ON a.formdest_id = d.formdest_id WHERE d.form_id = ".$this->id
+			) or die('<br><strong>SQL Error (3)</strong>:<br>'.mysql_error());
+
+			mysql_query("DELETE FROM formdest WHERE form_id = ".$this->id
+			) or die('<br><strong>SQL Error (4)</strong>:<br>'.mysql_error());
 		}
-		// Insert dest
+
+		// Inserts recipients & answers lines
+		// We also have to set $this->ans to its new value
+		$this->ans = [];
+		var_dump($this->recipient);
 		foreach ($this->recipient as $d){
-		   echo 'insert dest '.$this->id.' '.$d->getId().' '.$this->state .'<br>';
-			mysql_query("INSERT INTO formdest(form_id, user_id, formdest_status) VALUES (".$this->id.",".$d->getId().", 0)") or die('SQL Error<br>'.mysql_error());
+			mysql_query("INSERT INTO formdest(form_id, user_id, formdest_status) VALUES ("
+									. $this->id.","
+									. $d->getId()
+									. ", 0)"
+			) or die('<br><strong>SQL Error (5)</strong>:<br>'.mysql_error());
+
+			$ans_id = mysql_insert_id();
+			mysql_query("INSERT INTO formans(formdest_id) VALUES (" . $ans_id . ")"
+			) or die('<br><strong>SQL Error (6)</strong>:<br>'.mysql_error());
+			
+			$this->ans = new Answer($ans_id);
 		}
 	}
 
@@ -180,11 +211,8 @@ class Form {
 		$this->save();
 		$this->state = TRUE;
 		// Update status
-		mysql_query("UPDATE form SET form_status = 1 WHERE form_id = ".$this->id);
-	}
-	
-	public function getStateOf($id_user) {
-	   return $this->recipient[$id_user];
+		mysql_query("UPDATE form SET form_status = 1 WHERE form_id = ".$this->id
+		) or die('<br><strong>SQL Error (7)</strong>:<br>'.mysql_error());
 	}
 }
 ?>

@@ -3,25 +3,23 @@
 		include_once('include/includes.php');
 
 		$form = new Form($_GET["form_id"]);
-		$dest = $form->getRecipient();
+		$ans = $form->getAnswer([], 1);
 
 		$prev = NULL;
 		$next = NULL;
-		foreach($dest as $key => $d){
-			if($d->getId() == $_GET["user_id"]){
+		foreach ($ans as $key => $a) {
+			if($a->getUser()->getId() == $_GET["user_id"]){
 				if($key + 1 < count($dest))
-					$next = $dest[$key + 1];
+					$next = $ans[$key + 1]->getUser();
 				break;
-			}
-			else
-				$prev = $d;
+			}else
+				$prev = $a->getUser();
 		}
 ?>
 <div class="row">
 	<div class="panel panel-default">
 		<div class="panel-heading"><?php echo $_GET["user_id"] ?></div>
 		<div class="panel-body">
-			Bla
 		</div>
 	</div>
 </div>

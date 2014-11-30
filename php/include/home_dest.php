@@ -1,12 +1,13 @@
 <?php
-	include_once ('include/includes.php');
 	$user = new User($_SESSION["user_id"]);
-	$dests = $user->getDestinatairesForms();
+	$dest = $user->getDestinatairesForms();
 ?>
-<div class="panel panel-default">
-	<div class="panel-heading">Formulaires pour lesquels je suis destinataire</div>
+<div class="panel panel-primary">
+	<div class="panel-heading text-center text-capitalize">
+		<h3 class="panel-title"><strong>Formulaires pour lesquels je suis destinataire</strong></h3>
+	</div>
 
-	<table class="table table-hover"><!-- table-hover vs table-striped -->
+	<table class="table table-hover">
 		<thead>
 			<tr>
 				<th>Form</th>
@@ -16,24 +17,22 @@
 		</thead>
 		<tbody>
 			<?php
-				foreach($dests as $dest) {
-					if($dest->getStateOf($_SESSION["user_id"]) != NULL){
+				foreach($dest as $d) {
+					$a = $d->getAnswer([$user->getId()])[0];
+					if($a->getState() == TRUE){
 			?>
 						<tr class="success">
-							<td><?php echo $dest->getId() ?></td>
-							
-							
-							
+							<td><?php echo $d->getId() ?></td>
 							<td>Envoyé</td>
-							<td><a href="fillform.php?id=<?php echo $dest->getId() ?>">Voir</a></td>
+							<td><a href="fillform.php?ans_id=<?php echo $a->getId() ?>">Voir</a></td>
 						</tr>
 			<?php
 					}else{
 			?>
 						<tr class="info">
-							<td><?php echo $dest->getId() ?></td>
+							<td><?php echo $d->getId() ?></td>
 							<td>Non envoyé</td>
-							<td><a href="fillform.php?id=<?php echo $dest->getId() ?>">Modifier</a></td>
+							<td><a href="fillform.php?ans_id=<?php echo $a->getId() ?>">Modifier</a></td>
 						</tr>
 			<?php
 					}

@@ -1,5 +1,27 @@
 <!doctype html> 
 <?php include_once 'include/includes.php'; ?>
+<?php
+	switch($_GET["e"]){
+		case 1:
+			$error = "Vous n'êtes pas le créateur de ce formualire !";
+			break;
+		case 2:
+			$error = "Cette personne n'a pas répondu à ce formulaire !";
+			break;
+		case 3:
+			$error = "Vous nêtes pas le créateur de ce formulaire !";
+			break;
+		case 4:
+			$error = "Ce formulaire n'existe pas !";
+			break;
+		case 5:
+			$error = "Ce formulaire ne vous est pas destiné !";
+			break;
+		default:
+			$error = "Il semblerait qu'il y ait eu une erreur !";
+			break;
+	}
+?>
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -15,10 +37,9 @@
 			<?php include 'include/header.php'; ?>
 			<?php include 'include/nav.php'; ?>
 			<div class="row">
-				<?php include 'include/home_created.php'; ?>
-			</div>
-			<div class="row">
-				<?php include 'include/home_dest.php'; ?>
+				<div class="alert alert-danger text-center" role="alert">
+					<?php echo $error ?>
+				</div>
 			</div>
 			<?php include 'include/footer.php'; ?>
 		</div>

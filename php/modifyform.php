@@ -34,7 +34,7 @@ $(document).ready(function(){
 
 
 		<form class="form-horizontal" role="form"
-			action="include/add_form.php" method="post" id="formulaire">
+			action="include/add_form.php?id=<?php echo $_GET['id'] ?>" method="post" id="formulaire">
 			<div class="row">
 				<div id="hide" class="panel panel-default">
 					<div class="panel-heading">

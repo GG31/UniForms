@@ -30,7 +30,7 @@
 						<tr class="info">
 							<td><?php echo $crea->getId() ?></td>
 							<td>Non validé</td>
-							<td><a href="createform.php?id=<?php echo $crea->getId() ?>">Modifier</a></td>
+							<td><a href="modifyform.php?id=<?php echo $crea->getId() ?>">Modifier</a></td>
 						</tr>
 			<?php
 					}

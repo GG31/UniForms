@@ -4,13 +4,13 @@
 		$form = new Form($_GET["form_id"]);
 		$ans = $form->getAnswer([], 1);
 ?>
-<div class="panel panel-default">
-	<div class="panel-heading">Personnes ayant soumis le formulaire <?php echo $_GET["form_id"] ?></div>
+<div class="panel panel-primary">
+	<div class="panel-heading text-center text-capitalize"><strong>Personnes ayant soumis le formulaire <?php echo $_GET["form_id"] ?></strong></div>
 
 	<table class="table table-hover"><!-- table-hover vs table-striped -->
 		<thead>
 			<tr>
-				<th>Users</th>
+				<th>Destinataires</th>
 				<th>Action</th>
 			</tr>
 		</thead>
@@ -20,7 +20,7 @@
 
 			?>
 				<tr class="success">
-					<td><?php echo $a->getUser()->getId() ?></td>
+					<td><?php echo $a->getUser()->getName() ?></td>
 					<td><a href="answers.php?form_id=<?php echo $_GET["form_id"] ?>&user_id=<?php echo $a->getUser()->getId() ?>">Voir</a> (CSV BDD coming soon...)</td>
 				</tr>
 			<?php 

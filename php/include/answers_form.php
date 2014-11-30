@@ -2,6 +2,8 @@
 	if(isset($_GET["form_id"]) AND isset($_GET["user_id"])){
 		include_once('include/includes.php');
 
+		$user = new User($_GET["user_id"]);
+
 		$form = new Form($_GET["form_id"]);
 		$ans = $form->getAnswer([], 1);
 
@@ -9,16 +11,17 @@
 		$next = NULL;
 		foreach ($ans as $key => $a) {
 			if($a->getUser()->getId() == $_GET["user_id"]){
-				if($key + 1 < count($dest))
+				if($key + 1 < count($ans))
 					$next = $ans[$key + 1]->getUser();
 				break;
-			}else
+			}else{
 				$prev = $a->getUser();
+			}
 		}
 ?>
 <div class="row">
-	<div class="panel panel-default">
-		<div class="panel-heading"><?php echo $_GET["user_id"] ?></div>
+	<div class="panel panel-primary">
+		<div class="panel-heading text-center text-capitalize"><strong><?php echo $user->getName() ?></strong></div>
 		<div class="panel-body">
 		</div>
 	</div>

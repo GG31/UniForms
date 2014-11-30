@@ -9,6 +9,13 @@
 	 */
 	$form_id = isset($_GET["form_id"]) ? $_GET["form_id"] : -1;
 	$form = new Form($form_id);
+
+	$checkedAnon  = FALSE;
+	$checkedPrint = TRUE;
+	if(isset($_GET["form_id"])){
+		$checkedAnon = $form->getAnonymous();
+		$checkedPrint = $form->getPrintable();
+	}
 ?>
 <html>
 	<head>
@@ -76,13 +83,16 @@
 									type="checkbox"
 									value="print"
 									name="param[]"
-									CHECKED>
+									<?php echo $checkedPrint ? "CHECKED" : "" ?>
+									>
 								<label for="print">Imprimable</label>
 								<input
 									id="anon"
 									type="checkbox"
 									value="anon"
-									name="param[]">
+									name="param[]"
+									<?php echo $checkedAnon ? "CHECKED" : "" ?>
+									>
 								<label for="anon">Anonyme</label>
 								<br>
 							</div>
@@ -90,13 +100,18 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="panel panel-primary">
+					<?php
+						$destClass 	= "panel-";
+						$destClass .= $checkedAnon ? "default " : "primary ";
+						$destStyle  = $checkedAnon ? "display:none;" : "";
+					?>
+					<div class="panel <?php echo $destClass ?>">
 						<div class="panel-heading text-center text-capitalize">
 							<h3 class="panel-title">
 								<strong>Destinataires</strong>
 							</h3>
 						</div>
-						<div id="dest" class="panel-body">
+						<div id="dest" class="panel-body" style="<?php echo $destStyle ?>">
 							<div class="form-group">
 	                        <?php
 								$users = User::all ();
@@ -108,7 +123,9 @@
 											id="user<?php echo $user->getId() ?>"
 											type="checkbox"
 											name="recipient[]"
-											value=<?php echo $user->getId() ?>>
+											value=<?php echo $user->getId() ?>
+	<?php echo $user->isDestinataire($form_id) ? "CHECKED" : "" ?>
+											>
 									</span>
 									<label
 										class="form-control"

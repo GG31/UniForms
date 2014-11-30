@@ -156,7 +156,6 @@ class Form {
 	public function save(){
 		// Forms can be created or loaded
 		if($this->id == NULL) {			// Creates new form
-			echo "<br>NOT EXISTS<br>";
 			// Inserts status, anon & print
 			mysql_query("INSERT INTO form(user_id, form_status, form_anonymous, form_printable) VALUES ("
 									. $this->creator->getId()
@@ -169,7 +168,6 @@ class Form {
 			$this->id = mysql_insert_id();
 
 		} else {				// Updates old form
-			echo "<br>EXISTS<br>";
 			// Updates status, anon & print
 			mysql_query("UPDATE form SET form_status = "   . ($this->state ? 1 : 0)
 									.", form_anonymous = " . ($this->anonymous ? 1 : 0)
@@ -188,7 +186,6 @@ class Form {
 		// Inserts recipients & answers lines
 		// We also have to set $this->ans to its new value
 		$this->ans = [];
-		var_dump($this->recipient);
 		foreach ($this->recipient as $d){
 			mysql_query("INSERT INTO formdest(form_id, user_id, formdest_status) VALUES ("
 									. $this->id.","

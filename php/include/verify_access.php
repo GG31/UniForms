@@ -5,15 +5,12 @@
 	//var_dump($_SESSION["user_id"]);echo "<br>";
 	switch (explode('.', basename($_SERVER["REQUEST_URI"]), 2)[0]) {
 		case 'answers':
-			// var_dump(verify_access_answers());
 			verify_access_answers();
 			break;
 		case 'createform':
-			//var_dump(verify_access_create());
 			verify_access_create();
 			break;
 		case 'fillform':
-			//var_dump(verify_access_fill());
 			verify_access_fill();
 			break;
 	}
@@ -55,7 +52,6 @@
 		if(isset($_GET["form_id"])){
 			$b = (new User($_SESSION["user_id"]))->isCreator($_GET["form_id"]);
 			$b ? TRUE : header("Location: error.php?e=3" );
-			//$error = $b1 ? "" : "Vous nêtes pas le créateur de ce formulaire !";
 		}
 	}
 
@@ -67,24 +63,22 @@
 
 	 */
 	function verify_access_fill(){
-		$error = "";
 		$b1 = FALSE;
 		$b2 = FALSE;
 
-		if(isset($_GET["ans_id"])){
-			$ans = new Answer($_GET["ans_id"]);
-			$form_id = $ans->getForm();
+		$ans = new Answer($_GET["ans_id"]);
+		$form_id = $ans->getForm();
 
-			$f 	 = new Form($form_id);
-			$b1  = $f->getState() == TRUE;
-			$b1 ? TRUE : header("Location: error.php?e=4" );
-			//$error = $b1 ? "" : "Ce formulaire n'existe pas !";
+		if($ans->getUser()->isAnonymous())// Access granted for anonymous form
+			return;
 
-			if($b1){
-				$b2  = $ans->getUser()->getId() == $_SESSION["user_id"];
-				$b2 ? TRUE : header("Location: error.php?e=5" );
-				//$error = $b2 ? "" : "Ce formulaire ne vous est pas destiné !";
-			}
+		$f 	 = new Form($form_id);
+		$b1  = $f->getState() == TRUE;
+		$b1 ? TRUE : header("Location: error.php?e=4" );
+
+		if($b1){
+			$b2  = $ans->getUser()->getId() == $_SESSION["user_id"];
+			$b2 ? TRUE : header("Location: error.php?e=5" );
 		}
 	}
 ?>

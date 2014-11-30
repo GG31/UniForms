@@ -79,6 +79,8 @@ class User {
 		Returns TRUE (FALSE) if user is (not) creator of form
 	 */
 	public function isCreator($formId){
+		if($formId == -1) return FALSE;
+
 		$f = new Form($formId);
 		if($f->getCreator()->getId() == $this->id)
 			return TRUE;
@@ -91,6 +93,8 @@ class User {
 		Returns TRUE (FALSE) if form is (not) destinated to user
 	 */
 	public function isDestinataire($formId){
+		if($formId == -1) return FALSE;
+		
 		$f = new Form($formId);
 		$d = $f->getRecipient();
 		foreach($d as $dest){
@@ -98,6 +102,15 @@ class User {
 				return TRUE;
 		}
 		return FALSE;
+	}
+
+	/*
+		isAnonymous
+		Returns TRUE if user is anonymous user (user_id =0)
+		Anonymous user is used to deal with anonymous forms
+	 */
+	public function isAnonymous(){
+		return $this->id == 0;
 	}
 }
 ?>

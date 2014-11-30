@@ -2,7 +2,6 @@
 	include_once 'includes.php';
 	
 	if (! empty ( $_POST )) {
-		var_dump($_POST);
 		/*
 			Getting a Form object
 		 */
@@ -49,15 +48,10 @@
 		 */
 		if (isset($_POST['save'])) {
 			$form->save();
-			/*header ( "Location: createform.php"
-									 . $_POST["form_id"] == -1 
-									 		? ''
-									 		: $_POST["form_id"]
-					);*/
 		}
 		if (isset($_POST['send'])) {
 			$form->send();
-			//header ( "Location: ../home.php" );
 		}
+		header( "Location: ../home.php" );
 	}
 ?>

@@ -1,239 +1,199 @@
 <?php
 class Form {
 	// Form id (form_id)
-	private $id;
-	// Form creator
-	private $creator;
-	// Form dest list
-	private $recipient;
-	// Form answers list
-	private $ans;
-	// Form status
-	private $state;
-	// Form anonymous
-	private $anonymous;
-	// Form printable
-	private $printable;
-	// Form multifill
-	private $multifill;
+	private $id = NULL;
 	
-	/*
-		Constructor
-	 */
-	public function __construct() {
-		switch(func_num_args()){
-            case 0: // new Form();
+	// Form creator (User object which represents the creator)
+	private $creator;
+	
+	// Form status (TRUE (validated) or FALSE(not validated yet))
+	private $state;
+	
+	// Form anonymous (TRUE or FALSE)
+	private $anonymous;
+	
+	// Form printable (TRUE or FALSE)
+	private $printable;
+	
+	//Form  (Integer - Sets the number of times that the form can be answered)
+	private $maxAnswers;
+	
+	// Form dest-answers list (One list that contains three elements: one object user that is the recipient, one status and one object answer)
+	private $listRecipient;
+	
+	//Form elements list (The list of all elements of one form)
+	private $formElements = array();
+	
+	/* Constructor */
+	public function __construct($idForm = -1) {
+        if ($idForm == -1)
             	$this->state = FALSE;
-                break;
-            case 1: // new Form(id);
-               $this->id = func_get_arg(0);
+		else{   
+			$qForm = mysql_query("SELECT * FROM form WHERE form_id = " . $idForm);
+			if(!mysql_num_rows($qForm)){
+				//Error...
+				exit;
+			}
+				
+			$this->id = $idForm;
+			$rForm = mysql_fetch_array($qForm);
 
-			   $q = mysql_query("SELECT * FROM form WHERE form_id = " . $this->id);
-			   $line = mysql_fetch_array($q);
-
-			   $this->creator = new User($line["user_id"]);
-			   $this->state = $line["form_status"] == 1 ? TRUE : FALSE;
-			   $this->printable = $line["form_printable"] == 1 ? TRUE : FALSE;
-			   $this->anonymous = $line["form_anonymous"] == 1 ? TRUE : FALSE;
-            $this->multifill = $line["form_multifill"]; //Nom de colonne à syncronizer avec la bdd
-			   $q = mysql_query("SELECT user_id, formdest_status FROM formdest WHERE form_id = " . $this->id . " ORDER BY user_id");
-			   $this->recipient = [];
-			   while($line = mysql_fetch_array($q)){
-				   $this->recipient[] = new User($line["user_id"]);
-			   }
-
-			   $q = mysql_query("SELECT formans_id FROM formdest JOIN formans ON formdest.formdest_id = formans.formdest_id AND formdest.form_id = " . $this->id);
-			   $this->ans = [];
-			   while($line = mysql_fetch_array($q)){
-				   $this->ans[] = new Answer($line["formans_id"]);
-			   }
-               break;
-        }
-	}
-
-	/*
-		Quirk
-		To be deleted when new class Form is up & ready
-	 */
-	public function getListRecipient($ids, $state){
-		$res = [];
-		if($state == 0){
-			$res[] = ["FormDestId" => 63, "User" => new User(1), "Status" => FALSE, "Answer" => new Answer(63)];
-			$res[] = ["FormDestId" => 64, "User" => new User(1), "Status" => FALSE, "Answer" => NULL];
-			$res[] = ["FormDestId" => 65, "User" => new User(1), "Status" => FALSE, "Answer" => new Answer(65)];
-		}else{
-			$res[] = ["FormDestId" => 63, "User" => new User(1), "Status" => TRUE, "Answer" => new Answer(63)];
-			$res[] = ["FormDestId" => 64, "User" => new User(1), "Status" => TRUE, "Answer" => new Answer(64)];
+			$this->creator = new User($rForm["user_id"]);
+			$this->state = $rForm["form_status"] == 1 ? TRUE : FALSE;
+			$this->printable = $rForm["form_printable"] == 1 ? TRUE : FALSE;
+			$this->anonymous = $rForm["form_anonymous"] == 1 ? TRUE : FALSE;
+			$this->maxAnswers = $rForm["form_maxanswers"];
+	
+			$this->listRecipient = array();
+			$qFormDest = mysql_query("SELECT formdest_id, user_id, formdest_status FROM formdest WHERE form_id = " . $this->id . " ORDER BY user_id, formdest_id");
+			while($rFormDest = mysql_fetch_array($qFormDest)){
+				$recipient = array("User" => new User($rFormDest["user_id"]), "Status" => $rFormDest["formdest_status"], "Answer" => new Answer($rFormDest["formdest_id"]), "formDestId" => $rFormDest["formdest_id"]);
+				array_push($this->listRecipient, $recipient);
+			}
+			
 		}
-		return $res;
 	}
 
-	/*
-		id
-		Returns form's id
-	 */
+	/*  id
+		Returns form's id */
 	public function getId(){
 		return $this->id;
 	}
 
-	/*
-		state
-		Returns form's status
-	 */
+	/*  state
+		Returns form's status */
 	public function getState(){
 		return $this->state;
 	}
 
-	/*
-		getCreator
-		Returns form's creator
-	 */
+	/*  getCreator
+		Returns form's creator */
 	public function getCreator(){
 		return $this->creator;
 	}
-
-	/*
-		getRecipient
-		Returns form's dest list
-	 */
-	public function getRecipient(){
-		return $this->recipient;
-	}
-
-	/*
-		getAnswer
-		Returns form's answers list
-	 */
-	public function getAnswer($user_ids = [], $state = -1){
-		$res = [];
-		foreach($this->ans as $a){
-
-			$ok = TRUE;
-			if(count($user_ids) AND !in_array($a->getUser()->getId(), $user_ids))
-				$ok = FALSE;
-			if($state != -1 AND $a->getState() != $state)
-				$ok = FALSE;
-
-			if($ok)
-				$res[] = $a;
-		}
-		return $res;
+	
+	/*  getMaxAnswers
+		Returns number of maximum answers by user */
+	public function getMaxAnswers(){
+		return $this->maxAnswers;
 	}
 	
-	/*
-		getPrintable
-		Returns if form is printable
-	 */
+	/*  getRecipient
+		Returns form's dest list */
+	public function getRecipient(){
+		$recipients = array();
+		foreach($this->listRecipient as $user)
+			if(!in_array($user["User"], $recipients))
+				array_push($recipients, $user["User"]);
+		return $recipients;
+	}
+	
+	/*  getPrintable
+		Returns if form is printable */
 	public function getPrintable(){
 		return $this->printable;
 	}
 	
-	/*
-		getAnonymous
-		Sets if form is anonymous
-	 */
+	/*  getAnonymous
+		Sets if form is anonymous  */
 	public function getAnonymous(){
 		return $this->anonymous;
 	}
+	
+	/*  getAnonymous
+		Sets if form is anonymous  */
+	public function getListRecipient(){
+		return $this->listRecipient;
+	}
+	
+	/*  getAnonymous
+		Sets if form is anonymous  */
+	public function getFormElements(){
+		return $this->formElements;
+	}
 
-	/*
-		setCreator
-		Sets form's creator
-	 */
+	/*  setCreator
+		Sets form's creator  */
 	public function setCreator($user){
 		$this->creator = $user;
 	}
 	
-	/*
-		setPrintable
-		Sets if form is printable
-	 */
+	/*  setPrintable
+		Sets if form is printable  */
 	public function setPrintable($isPrintable){
 		$this->printable = $isPrintable;
 	}
 	
-	/*
-		setAnonymous
-		Sets if form is anonymous
-	 */
+	/*  setAnonymous
+		Sets if form is anonymous */
 	public function setAnonymous($isAnonymous){
 		$this->anonymous = $isAnonymous;
 	}
+
+	/*  setMaxAnswers
+		Sets MaxAnswers */
+	public function setMaxAnswers($maxAnswers){
+		$this->maxAnswers = $maxAnswers;
+	}
 	
-	/*
-		setMultifill
-		Set the number or fill allowed
-	 */
-	public function setMultifill($multifill){
-		$this->multifill = $multifill;
-	}
-
-	/*
+	/*  Use only on form create!
 		setRecipient
-		Sets form's dest list
-	 */
+		Sets form's dest list  */
 	public function setRecipient($recipientList){
-		$this->recipient = $recipientList;
+		$this->listRecipient = array();
+		foreach ($recipientList as $recipient){
+			$recipient = array("User" => $recipient, "Status" => "False", "Answer" => NULL, "formDestId" => NULL);
+			array_push($this->listRecipient, $recipient);
+		}
 	}
 
-	/*
-		save
-		TODO verif attr!=NULL
-	 */
+	/*  save  */
 	public function save(){
 		// Forms can be created or loaded
 		if($this->id == NULL) {			// Creates new form
-			// Inserts status, anon & print
-			mysql_query("INSERT INTO form(user_id, form_status, form_anonymous, form_printable) VALUES ("
+			// Inserts status, anonymous, print and maxAnswers
+			mysql_query("INSERT INTO form(user_id, form_status, form_anonymous, form_printable, form_maxanswers) VALUES ("
 									. $this->creator->getId()
 									. ", 0, "
 									. ($this->anonymous ? 1 : 0) . ", "
-									. ($this->printable ? 1 : 0) . ")"
+									. ($this->printable ? 1 : 0) . ", "
+									. $this->maxAnswers 
+									. ") "
 			) or die('<br><strong>SQL Error (1)</strong>:<br>'.mysql_error());
-
-			// Gets generated ID back
 			$this->id = mysql_insert_id();
 
-		} else {				// Updates old form
-			// Updates status, anon & print
+		} else {				// Updates existing form
+			// Updates status, anonymous, print and maxAnswers
 			mysql_query("UPDATE form SET form_status = "   . ($this->state ? 1 : 0)
 									.", form_anonymous = " . ($this->anonymous ? 1 : 0)
 									.", form_printable = " . ($this->printable ? 1 : 0)
+									.", form_maxanswers = " . $this->maxAnswers
 									." WHERE form_id = "   . $this->id
 			) or die('<br><strong>SQL Error (2)</strong>:<br>'.mysql_error());
-
-			// Cleans answers & recipients lines
-			mysql_query("DELETE a FROM formans a JOIN formdest d ON a.formdest_id = d.formdest_id WHERE d.form_id = ".$this->id
-			) or die('<br><strong>SQL Error (3)</strong>:<br>'.mysql_error());
-
+			
 			mysql_query("DELETE FROM formdest WHERE form_id = ".$this->id
 			) or die('<br><strong>SQL Error (4)</strong>:<br>'.mysql_error());
+			
+			// Delete form elements here...
 		}
-
-		// Inserts recipients & answers lines
-		// We also have to set $this->ans to its new value
-		$this->ans = [];
-		foreach ($this->recipient as $d){
-			mysql_query("INSERT INTO formdest(form_id, user_id, formdest_status) VALUES ("
-									. $this->id.","
-									. $d->getId()
-									. ", 0)"
-			) or die('<br><strong>SQL Error (5)</strong>:<br>'.mysql_error());
-
-			$dest_id = mysql_insert_id();
-			
-			mysql_query("INSERT INTO formans(formdest_id) VALUES (" . $dest_id . ")"
-			) or die('<br><strong>SQL Error (6)</strong>:<br>'.mysql_error());
-			
-			$ans_id = mysql_insert_id();
-			
-			$this->ans = new Answer($ans_id);
+		
+		// Inserts recipients in formdest
+		foreach ($this->listRecipient as $key => $recipient){
+			for ($i = 0; $i < 1; $i++){  // Includes this->maxAnsers times for each recipient
+				mysql_query("INSERT INTO formdest(form_id, user_id, formdest_status) VALUES ("
+										. $this->id.","
+										. $recipient["User"]->getId()
+										. ", 0)"
+				) or die('<br><strong>SQL Error (5)</strong>:<br>'.mysql_error());
+				// Preencher $this->listRecipient com o novo formdest
+				$this->listRecipient[$key]["formDestId"] = mysql_insert_id();
+			}
 		}
+	
+		//Insert FormElements here...
 	}
 
-	/*
-		send
-	 */
+	/* save() and update status */
 	public function send(){
 		$this->save();
 		$this->state = TRUE;

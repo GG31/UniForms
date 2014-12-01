@@ -100,16 +100,28 @@ class Form {
 		return $this->anonymous;
 	}
 	
-	/*  getAnonymous
-		Sets if form is anonymous  */
-	public function getListRecipient(){
-		return $this->listRecipient;
-	}
-	
-	/*  getAnonymous
-		Sets if form is anonymous  */
+	/*  getFormElements
+		Returns elements of the form  */
 	public function getFormElements(){
 		return $this->formElements;
+	}
+	
+	/*    
+	public function getListRecipient(){
+		return $this->listRecipient;
+	}*/
+	
+	public function getListRecipient($ids, $state){
+		$res = [];
+		if($state == 0){
+			$res[] = ["FormDestId" => 63, "User" => new User(1), "Status" => FALSE, "Answer" => new Answer(63)];
+			$res[] = ["FormDestId" => 64, "User" => new User(1), "Status" => FALSE, "Answer" => NULL];
+			$res[] = ["FormDestId" => 65, "User" => new User(1), "Status" => FALSE, "Answer" => new Answer(65)];
+		}else{
+			$res[] = ["FormDestId" => 63, "User" => new User(1), "Status" => TRUE, "Answer" => new Answer(63)];
+			$res[] = ["FormDestId" => 64, "User" => new User(1), "Status" => TRUE, "Answer" => new Answer(64)];
+		}
+		return $res;
 	}
 
 	/*  setCreator

@@ -57,9 +57,14 @@ class Form {
 	 */
 	public function getListRecipient($ids, $state){
 		$res = [];
-		$res[] = ["FormDestId" => 63, "User" => new User(1), "Status" => FALSE, "Answer" => new Answer(63)];
-		$res[] = ["FormDestId" => 64, "User" => new User(1), "Status" => FALSE, "Answer" => new Answer(63)];
-		$res[] = ["FormDestId" => 65, "User" => new User(1), "Status" => FALSE, "Answer" => new Answer(63)];
+		if($state == 0){
+			$res[] = ["FormDestId" => 63, "User" => new User(1), "Status" => FALSE, "Answer" => new Answer(63)];
+			$res[] = ["FormDestId" => 64, "User" => new User(1), "Status" => FALSE, "Answer" => new Answer(64)];
+			$res[] = ["FormDestId" => 65, "User" => new User(1), "Status" => FALSE, "Answer" => new Answer(65)];
+		}else{
+			$res[] = ["FormDestId" => 63, "User" => new User(1), "Status" => TRUE, "Answer" => new Answer(63)];
+			$res[] = ["FormDestId" => 64, "User" => new User(1), "Status" => TRUE, "Answer" => new Answer(64)];
+		}
 		return $res;
 	}
 

@@ -18,7 +18,7 @@
 		<tbody>
 			<?php
 				foreach($forms as $f) {
-					$list = $f->getListRecipient([$user->getId()], 0);//([$user->getId()])[0];
+					$list = $f->getListRecipient([$user->getId()], 0);
 					if(count($list)){
 						$null  = FALSE;
 						foreach ($list as $line) {
@@ -36,7 +36,7 @@
 			<?php
 						}else{
 			?>
-							<tr class="warning">
+							<tr class="">
 								<td><?php echo $f->getId() ?></td>
 								<td>Formulaire <?php echo $f->getId() ?></td>
 								<td></td>

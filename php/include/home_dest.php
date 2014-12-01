@@ -20,18 +20,21 @@
 				foreach($forms as $f) {
 					$list = $f->getListRecipient([$user->getId()], 0);
 					if(count($list)){
-						$null  = FALSE;
+						$null  = 0;
 						foreach ($list as $line) {
 							if($line["Answer"] == NULL){
-								$null = TRUE;
+								$null++;
 							}
 						}
 						if($null){
 			?>
 							<tr class="info">
-								<td><?php echo $f->getId() ?></td>
+								<td><?php echo $f->getId() ?> </td>
 								<td>Formulaire <?php echo $f->getId() ?></td>
-								<td><a href="fillform.php?form_id=<?php echo $f->getId() ?>">Nouvelle réponse</a></td>
+								<td><a href="fillform.php?form_id=<?php echo $f->getId() ?>">Nouvelle réponse</a>
+									<span class="badge alert-success">
+									<?php echo $null ?> restante<?php echo $null > 1 ? "s" : "" ?></span>
+								</td>
 							</tr>
 			<?php
 						}else{

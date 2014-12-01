@@ -193,9 +193,12 @@ class Form {
 									. ", 0)"
 			) or die('<br><strong>SQL Error (5)</strong>:<br>'.mysql_error());
 
-			$ans_id = mysql_insert_id();
-			mysql_query("INSERT INTO formans(formdest_id) VALUES (" . $ans_id . ")"
+			$dest_id = mysql_insert_id();
+			
+			mysql_query("INSERT INTO formans(formdest_id) VALUES (" . $dest_id . ")"
 			) or die('<br><strong>SQL Error (6)</strong>:<br>'.mysql_error());
+			
+			$ans_id = mysql_insert_id();
 			
 			$this->ans = new Answer($ans_id);
 		}

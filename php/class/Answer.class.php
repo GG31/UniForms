@@ -19,7 +19,7 @@ class Answer {
                 break;
             case 1: // new Answer(id);
                 $this->id = func_get_arg(0);
-		
+				
 				$q = mysql_query("SELECT form_id, user_id, formdest_status FROM formans JOIN formdest ON formans.formdest_id = formdest.formdest_id AND formans.formans_id = " . $this->id);
 				$line = mysql_fetch_array($q);
 				

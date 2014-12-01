@@ -29,7 +29,9 @@
 
 		$form->setPrintable($printable);
 		$form->setAnonymous($anonymous);
-
+	
+		var_dump($_POST["recipient"]);
+	
 		/*
 			Recipients
 		 */
@@ -41,6 +43,9 @@
 				$recipients[] = new User($id);
 			}
 		}
+		
+		print_r($recipients);
+		
 		$form->setRecipient($recipients);
 
 		/*

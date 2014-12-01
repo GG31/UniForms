@@ -1,6 +1,6 @@
 <?php
 	$user = new User($_SESSION["user_id"]);
-	$dest = $user->getDestinatairesForms();
+	$forms = $user->getDestinatairesForms();
 ?>
 <div class="panel panel-primary">
 	<div class="panel-heading text-center text-capitalize">
@@ -17,24 +17,43 @@
 		</thead>
 		<tbody>
 			<?php
-				foreach($dest as $d) {
-					$a = $d->getAnswer([$user->getId()])[0];
-					if($a->getState() == TRUE){
+				foreach($forms as $f) {
+					$list = $f->getListRecipient([$user->getId()], 0);//([$user->getId()])[0];
+					if(count($list)){
+						$null  = FALSE;
+						foreach ($list as $line) {
+							if($line["Answer"] == NULL){
+								$null = TRUE;
+							}
+						}
+						if($null){
 			?>
-						<tr class="success">
-							<td><?php echo $d->getId() ?></td>
-							<td>Envoyé</td>
-							<td><a href="fillform.php?ans_id=<?php echo $a->getId() ?>">Voir</a></td>
-						</tr>
+							<tr class="info">
+								<td><?php echo $f->getId() ?></td>
+								<td>Formulaire <?php echo $f->getId() ?></td>
+								<td><a href="fillform.php?form_id=<?php echo $f->getId() ?>">Nouvelle réponse</a></td>
+							</tr>
 			<?php
-					}else{
+						}else{
 			?>
-						<tr class="info">
-							<td><?php echo $d->getId() ?></td>
-							<td>Non envoyé</td>
-							<td><a href="fillform.php?ans_id=<?php echo $a->getId() ?>">Modifier</a></td>
-						</tr>
+							<tr class="warning">
+								<td><?php echo $f->getId() ?></td>
+								<td>Formulaire <?php echo $f->getId() ?></td>
+								<td></td>
+							</tr>
 			<?php
+						}
+						foreach ($list as $key => $line) {
+							if($line["Answer"] != NULL){
+			?>
+								<tr class="info">
+									<td>"</td>
+									<td>Réponse : <?php echo $key ?></td>
+									<td><a href="fillform.php?ans_id=<?php echo $line["FormDestId"] ?>">Modifier</a></td>
+								</tr>
+			<?php
+							}
+						}
 					}
 				}
 			?>

@@ -41,7 +41,7 @@
    	   </div>
          <div class= "row">
                <div class="col-sm-offset-3 col-sm-6">
-                  <input type="hidden" name="ans_id" form="answerSheet" value=<?php echo $_GET["ans_id"] ?>><!-- TODO del if unused -->
+                  <input type="hidden" name="ans_id" form="answerSheet" value=<?php echo $_GET["ans_id"] ?>>
                   <input
                      type="submit"
                      class="btn btn-default btn-lg btn-block"

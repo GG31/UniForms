@@ -20,15 +20,19 @@
 		 */
 		$printable = FALSE;
 		$anonymous = FALSE;
-
+      $multifill = 1;
+      
 		if(isset($_POST["param"])){		// A checkbox is checked
 			$printable = in_array("print", $_POST["param"]) ? TRUE : FALSE;
 			$anonymous = in_array("anon", $_POST["param"]) ? TRUE : FALSE;
-
 		}// Else : no param checked -> FALSE
+		if(isset($_POST["parammulti"])) {
+		   $multifill = $_POST["parammulti"];
+		}
 
 		$form->setPrintable($printable);
 		$form->setAnonymous($anonymous);
+		$form->setMultifill($multifill);
 	
 		/*
 			Recipients

@@ -14,18 +14,8 @@ class Form {
 	private $anonymous;
 	// Form printable
 	private $printable;
-
-	/*
-		Quirk
-		To be deleted when new class Form is up & ready
-	 */
-	public function getListRecipient($ids, $state){
-		$res = [];
-		$res[] = ["FormDestId" => 63, "User" => new User(1), "Status" => FALSE, "Answer" => new Answer(63)];
-		$res[] = ["FormDestId" => 64, "User" => new User(1), "Status" => FALSE, "Answer" => new Answer(63)];
-		$res[] = ["FormDestId" => 65, "User" => new User(1), "Status" => FALSE, "Answer" => new Answer(63)];
-		return $res;
-	}
+	// Form multifill
+	private $multifill;
 	
 	/*
 		Constructor
@@ -45,7 +35,7 @@ class Form {
 			   $this->state = $line["form_status"] == 1 ? TRUE : FALSE;
 			   $this->printable = $line["form_printable"] == 1 ? TRUE : FALSE;
 			   $this->anonymous = $line["form_anonymous"] == 1 ? TRUE : FALSE;
-
+            $this->multifill = $line["form_multifill"]; //Nom de colonne à syncronizer avec la bdd
 			   $q = mysql_query("SELECT user_id, formdest_status FROM formdest WHERE form_id = " . $this->id . " ORDER BY user_id");
 			   $this->recipient = [];
 			   while($line = mysql_fetch_array($q)){
@@ -59,6 +49,18 @@ class Form {
 			   }
                break;
         }
+	}
+
+	/*
+		Quirk
+		To be deleted when new class Form is up & ready
+	 */
+	public function getListRecipient($ids, $state){
+		$res = [];
+		$res[] = ["FormDestId" => 63, "User" => new User(1), "Status" => FALSE, "Answer" => new Answer(63)];
+		$res[] = ["FormDestId" => 64, "User" => new User(1), "Status" => FALSE, "Answer" => new Answer(63)];
+		$res[] = ["FormDestId" => 65, "User" => new User(1), "Status" => FALSE, "Answer" => new Answer(63)];
+		return $res;
 	}
 
 	/*
@@ -151,6 +153,14 @@ class Form {
 	 */
 	public function setAnonymous($isAnonymous){
 		$this->anonymous = $isAnonymous;
+	}
+	
+	/*
+		setMultifill
+		Set the number or fill allowed
+	 */
+	public function setMultifill($multifill){
+		$this->multifill = $multifill;
 	}
 
 	/*

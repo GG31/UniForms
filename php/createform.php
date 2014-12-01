@@ -48,6 +48,9 @@
 					}
 				});	
 			});	
+			$(function () {
+           $('[data-toggle="tooltip"]').tooltip()
+         })
 		</script>
 	</head>
 	<body>
@@ -94,6 +97,17 @@
 									<?php echo $checkedAnon ? "CHECKED" : "" ?>
 									>
 								<label for="anon">Anonyme</label>
+								<input 
+								   id = "multiple"
+								   type="number" 
+								   name="parammulti"
+								   value="1"
+								   min="0"
+								   class="form-control bfh-number" 
+								   data-toggle="tooltip" 
+								   data-placement="top" 
+								   title="Entrez le nombre de fois que le formulaire pourra être rempli par le(s) destinataire(s), 0 pour infini">
+								<label for="multiple">Autorisation de remplissage</label>
 								<br>
 							</div>
 						</div>

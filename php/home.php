@@ -1,4 +1,4 @@
-<!doctype html> 
+﻿<!doctype html> 
 <?php include_once 'include/includes.php'; ?>
 <html>
 	<head>

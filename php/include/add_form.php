@@ -32,7 +32,7 @@
 
 		$form->setPrintable($printable);
 		$form->setAnonymous($anonymous);
-		$form->setMultifill($multifill);
+		$form->setMaxAnswers($multifill);
 	
 		/*
 			Recipients

@@ -14,6 +14,12 @@
 					<a href="#">Link</a>
 				</li>-->
 			</ul>
+			
+			<ul class="nav navbar-nav">
+				<li>
+					<a href="archive_forms.php">Mes Archives</a>
+				</li>
+			</ul>
 
 			<!--<form class="navbar-form navbar-left" role="search">
 				<div class="form-group">

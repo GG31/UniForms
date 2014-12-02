@@ -72,12 +72,15 @@
 
 		if(isset($_GET["form_id"])){
 			$form_id = $_GET["form_id"];
-			$form = new Form($form_id);
 		}
 		if(isset($_GET["ans_id"])){
 			$ans = new Answer($_GET["ans_id"]);
 			$form_id = $ans->getFormId();
 		}
+		$form = new Form($form_id);
+
+		if($form->getAnonymous()) // Anonymous allowed if anonymous form
+			return;
 
 		$user = new User($_SESSION["user_id"]);
 		$forms = $user->getDestinatairesForms(); // Returns validated (creation) forms

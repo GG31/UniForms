@@ -19,7 +19,6 @@ class Answer {
 		}else{
 			$qFormDest = mysql_query("SELECT * FROM formdest WHERE formdest_id = ".$formdest_id);
 
-<<<<<<< HEAD
 			if (!mysql_num_rows($qFormDest)){
 				//error
 				exit();
@@ -41,29 +40,6 @@ class Answer {
 					$answer = array("elementId" => $ans["formelement_id"], "value" => $ans["value"]);
 					array_push($this->answers, $answer);
 				}
-=======
-		if (!mysql_num_rows($qFormDest)){
-			//error
-			exit();
-		}
-		$rFormDest = mysql_fetch_array($qFormDest);
-		$this->formDest = $rFormDest["formdest_id"];
-		$this->formId = $rFormDest["form_id"];
-		$this->recipient = new User($rFormDest["user_id"]);
-		$sql = "SELECT formelement_id, value 
-			FROM answervalue 
-			JOIN elementanswer ON elementanswer.elementanswer_id = answervalue.elementanswer_id 
-			WHERE elementanswer.formdest_id = " . $formdest_id;
-		$q = mysql_query ( $sql );
-		
-		if (mysql_num_rows ( $q )) {
-			while ( $ans = mysql_fetch_array ( $q ) ) {
-				$answer = array (
-						"elementId" => $ans ["formelement_id"],
-						"value" => $ans ["value"] 
-				);
-				array_push ( $this->answers, $answer );
->>>>>>> 1bf716b5da4617c2ca09f19af039499114d7a1fc
 			}
 		}
 	}
@@ -75,21 +51,13 @@ class Answer {
 	public function getFormId() {
 		return $this->formId;
 	}
-<<<<<<< HEAD
-
-	/*  getFormId
-		Returns formdest id */
-	public function getId(){
-		return $this->formDest;
-=======
 	
 	/*
-	 * getFormId
+	 * getId
 	 * Returns formdest id
 	 */
 	public function getId() {
-		return $this->formDestId;
->>>>>>> 1bf716b5da4617c2ca09f19af039499114d7a1fc
+		return $this->formDest;
 	}
 
 	/*  getRecipient
@@ -142,31 +110,16 @@ class Answer {
 		}
 
 		//Fill array answers and after...
-<<<<<<< HEAD
 		foreach($this->answers as $answer){
 			mysql_query("INSERT INTO elementanswer (formelementid, formdestid) VALUES(".$answer["elementId"].",".$this->formDest.")");
 			$idElementAnswer = mysql_insert_id();	
 			mysql_query("INSERT INTO answervalue (value, elementanswer_id) VALUES(".$answer["value"].",".$idElementAnswer.")");			
 		}
 	}
-
-	/*  send  */
-	public function send(){
-=======
-		
-		mysql_query("DELETE FROM elementanswer WHERE form_dest = ".$this->formDest);
-
-		foreach ( $this->answers as $answer ) {
-			mysql_query ( "INSERT INTO elementanswer (formelementid, formdestid) VALUES(" . $answer ["elementId"] . "," . $this->formDest . ")" );
-			$idElementAnswer = mysql_insert_id ();
-			mysql_query ( "INSERT INTO answervalue (value, elementanswer_id) VALUES(" . $answer ["value"] . "," . $idElementAnswer . ")" );
-		}
-	}
 	
 	/* send */
 	public function send() {
 		$this->save ();
->>>>>>> 1bf716b5da4617c2ca09f19af039499114d7a1fc
 		$this->state = TRUE;
 		// Update status
 		mysql_query ( "UPDATE formdest SET formdest_status = 1 WHERE formdest_id = " . $this->formDest );

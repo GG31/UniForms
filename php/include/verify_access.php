@@ -4,10 +4,10 @@
 	 */
 	switch (explode('.', basename($_SERVER["REQUEST_URI"]), 2)[0]) {
 		case 'answers':
-			verify_access_answers();
+			//verify_access_answers();
 			break;
 		case 'createform':
-			verify_access_create();
+			//verify_access_create();
 			break;
 		case 'fillform':
 			//verify_access_fill();
@@ -37,23 +37,22 @@
 			}
 		}
 	}
-}
 
-/*
- * CREATEFORM.PHP:
- * $_GET["form_id"]:
- * $_SESSION["user_id"] is creator of $_GET["form_id"]
- * void:
- * ok
- */
-function verify_access_create() {
-	$b = TRUE;
-	
-	if (isset ( $_GET ["form_id"] )) {
-		$b = (new User ( $_SESSION ["user_id"] ))->isCreator ( $_GET ["form_id"] );
-		$b ? TRUE : header ( "Location: error.php?e=3" );
+	/*
+	 * CREATEFORM.PHP:
+	 * $_GET["form_id"]:
+	 * $_SESSION["user_id"] is creator of $_GET["form_id"]
+	 * void:
+	 * ok
+	 */
+	function verify_access_create() {
+		$b = TRUE;
+		
+		if (isset ( $_GET ["form_id"] )) {
+			$b = (new User ( $_SESSION ["user_id"] ))->isCreator ( $_GET ["form_id"] );
+			$b ? TRUE : header ( "Location: error.php?e=3" );
+		}
 	}
-}
 
 	/*
 		FILLFORM.PHP: TODO
@@ -86,5 +85,4 @@ function verify_access_create() {
 			$b2 ? TRUE : header("Location: error.php?e=5" );
 		}
 	}
-
 ?>

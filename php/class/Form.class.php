@@ -29,31 +29,32 @@ class Form {
 		if ($idForm == - 1)
 			$this->state = FALSE;
 		else {
+			$this->id = $idForm;
+			
 			$qForm = mysql_query ( "SELECT * FROM form WHERE form_id = " . $idForm );
 			if (! mysql_num_rows ( $qForm )) {
 				// Error...
 				exit ();
 			}
 			
-			$this->id = $idForm;
-			$rForm = mysql_fetch_array($qForm);
-
-			$this->creator = new User($rForm["user_id"]);
-			$this->state = $rForm["form_status"] == 1 ? TRUE : FALSE;
-			$this->printable = $rForm["form_printable"] == 1 ? TRUE : FALSE;
-			$this->anonymous = $rForm["form_anonymous"] == 1 ? TRUE : FALSE;
-			$this->maxAnswers = $rForm["form_maxanswers"];
-	
-			$this->listRecipient = array();
-			$qFormDest = mysql_query("SELECT formdest_id, user_id, formdest_status FROM formdest WHERE form_id = " . $this->id . " ORDER BY user_id, formdest_id");
-			while($rFormDest = mysql_fetch_array($qFormDest)){
-				$recipient = array(
-					"User" => new User($rFormDest["user_id"]),
-					"Status" => $rFormDest["formdest_status"] == 1 ? TRUE : FALSE,
-					"Answer" => new Answer($rFormDest["formdest_id"]),
-					"formDestId" => $rFormDest["formdest_id"]
+			$rForm = mysql_fetch_array ( $qForm );
+			
+			$this->creator = new User ( $rForm ["user_id"] );
+			$this->state = $rForm ["form_status"] == 1 ? TRUE : FALSE;
+			$this->printable = $rForm ["form_printable"] == 1 ? TRUE : FALSE;
+			$this->anonymous = $rForm ["form_anonymous"] == 1 ? TRUE : FALSE;
+			$this->maxAnswers = $rForm ["form_maxanswers"];
+			
+			$this->listRecipient = array ();
+			$qFormDest = mysql_query ( "SELECT formdest_id, user_id, formdest_status FROM formdest WHERE form_id = " . $this->id . " ORDER BY user_id, formdest_id" );
+			while ( $rFormDest = mysql_fetch_array ( $qFormDest ) ) {
+				$recipient = array (
+						"User" => new User ( $rFormDest ["user_id"] ),
+						"Status" => $rFormDest ["formdest_status"],
+						"Answer" => new Answer ( $rFormDest ["formdest_id"] ),
+						"formDestId" => $rFormDest ["formdest_id"] 
 				);
-				array_push($this->listRecipient, $recipient);
+				array_push ( $this->listRecipient, $recipient );
 			}
 		}
 	}
@@ -125,6 +126,7 @@ class Form {
 	public function getFormElements() {
 		return $this->formElements;
 	}	
+
 	   
 	/*public function getListRecipient(){
 		return $this->listRecipient;

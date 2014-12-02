@@ -37,22 +37,23 @@
 			}
 		}
 	}
+}
 
-	/*
-		CREATEFORM.PHP:
-			$_GET["form_id"]:
-				$_SESSION["user_id"] is creator of $_GET["form_id"]
-			void:
-				ok
-	 */
-	function verify_access_create(){
-		$b = TRUE;
-
-		if(isset($_GET["form_id"])){
-			$b = (new User($_SESSION["user_id"]))->isCreator($_GET["form_id"]);
-			$b ? TRUE : header("Location: error.php?e=3" );
-		}
+/*
+ * CREATEFORM.PHP:
+ * $_GET["form_id"]:
+ * $_SESSION["user_id"] is creator of $_GET["form_id"]
+ * void:
+ * ok
+ */
+function verify_access_create() {
+	$b = TRUE;
+	
+	if (isset ( $_GET ["form_id"] )) {
+		$b = (new User ( $_SESSION ["user_id"] ))->isCreator ( $_GET ["form_id"] );
+		$b ? TRUE : header ( "Location: error.php?e=3" );
 	}
+}
 
 	/*
 		FILLFORM.PHP: TODO
@@ -70,12 +71,20 @@
 			return;
 
 		$f 	 = new Form($ans->getFormId());
+		
 		$b1  = $f->getState() == TRUE;
 		$b1 ? TRUE : header("Location: error.php?e=4" );
+		if($f->getAnonymous()){// Access granted for anonymous form
+		   //Créer une answer
+		   $form->createAnswer(0);
+		   //header("Location: fillform.php?ans_id=4" );
+	   }
+
 
 		if($b1){
 			$b2  = $ans->getRecipient()->getId() == $_SESSION["user_id"];
 			$b2 ? TRUE : header("Location: error.php?e=5" );
 		}
 	}
+
 ?>

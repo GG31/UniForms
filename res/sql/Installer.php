@@ -1,6 +1,6 @@
 <?php
 mysql_pconnect ( "localhost", "root", "" );
-//mysql_pconnect ( "localhost", "root", "root" );
+// mysql_pconnect ( "localhost", "root", "root" );
 $sql = "DROP DATABASE IF EXISTS uniforms;";
 mysql_query ( $sql ) or die ( mysql_error () );
 

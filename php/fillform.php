@@ -16,30 +16,32 @@
    }
 ?>
 <html>
-   <head>
-      <meta charset="UTF-8">
-      <title>UniForms</title>
-      <link rel="shortcut icon" href="../res/img/favicon.png" />
-      <link rel="stylesheet" href="../lib/bootstrap-3.3.1/min.css" type="text/css" />
-      <link rel="stylesheet" href="../css/styles.css" type="text/css" />
-      
-      <script src="../lib/jquery-2.1.1/min.js"></script>
-      <script src="../lib/bootstrap-3.3.1/min.js"></script>
-   </head>
-   <body>
-   	<div class="container">
+<head>
+<meta charset="UTF-8">
+<title>UniForms</title>
+<link rel="shortcut icon" href="../res/img/favicon.png" />
+<link rel="stylesheet" href="../lib/bootstrap-3.3.1/min.css"
+	type="text/css" />
+<link rel="stylesheet" href="../css/styles.css" type="text/css" />
+
+<script src="../lib/jquery-2.1.1/min.js"></script>
+<script src="../lib/bootstrap-3.3.1/min.js"></script>
+</head>
+<body>
+	<div class="container">
          <?php include 'include/header.php'; ?>
   		   <?php include 'include/nav.php'; ?>
          <?php
+
             if($state == TRUE){
          ?>
                <div class="alert alert-warning text-center" role="alert">
-                  Ce formulaire a déjà été renvoyé !
-               </div>
+			Ce formulaire a déjà été renvoyé !</div>
          <?php
-            }
-         ?>
+									}
+									?>
          <div class="row">
+
             <div class="panel panel-primary">
                <div class="panel-heading text-center text-capitalize">
                   <h3 class="panel-title"><strong>Formulaire <?php echo $form_id ?></strong></h3>
@@ -78,5 +80,5 @@
          </div>
    	   <?php include 'include/footer.php'; ?>
       </div>
-   </body>
+</body>
 </html>

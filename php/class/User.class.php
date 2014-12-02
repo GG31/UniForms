@@ -4,66 +4,65 @@ class User {
 	private $id;
 	// User name
 	private $name;
-
-    /*
-    	Constructor
-    	TODO name
-     */	
+	
+	/*
+	 * Constructor
+	 * TODO name
+	 */
 	function __construct($userId) {
 		$this->id = $userId;
-
-		$q = mysql_query("SELECT * FROM user WHERE user_id = " . $this->id);
-		$line = mysql_fetch_array($q);
-		$this->name = $line["user_name"];
-    }
-
-    /*
-    	getId
-    	Returns user's id
-     */
-	public function getId(){
+		
+		$q = mysql_query ( "SELECT * FROM user WHERE user_id = " . $this->id );
+		$line = mysql_fetch_array ( $q );
+		$this->name = $line ["user_name"];
+	}
+	
+	/*
+	 * getId
+	 * Returns user's id
+	 */
+	public function getId() {
 		return $this->id;
 	}
-
-    /*
-    	getName
-    	Returns user's name
-     */
-	public function getName(){
+	
+	/*
+	 * getName
+	 * Returns user's name
+	 */
+	public function getName() {
 		return $this->name;
 	}
-
-    /*
-    	all
-    	Returns array of all users
-     */
-	public static function all(){
-		$q = mysql_query("SELECT user_id FROM user");
-		$res = [];
-		while($line = mysql_fetch_array($q)){
-			if($line["user_id"] != 0) // User 0 is Anonymous
-				$res[] = new User($line["user_id"]);
-		}
-		return $res;
-	}
-
+	
 	/*
-		getCreated
-		Returns list of forms created by user
+	 * all
+	 * Returns array of all users
 	 */
-	public function getCreatedForms(){
-		$q = mysql_query("SELECT form_id FROM form WHERE user_id = ".$this->id);
-		$res = [];
-		while($line = mysql_fetch_array($q)){
-			$res[] = new Form($line["form_id"]);
+	public static function all() {
+		$q = mysql_query ( "SELECT user_id FROM user" );
+		$res = [ ];
+		while ( $line = mysql_fetch_array ( $q ) ) {
+			if ($line ["user_id"] != 0) // User 0 is Anonymous
+				$res [] = new User ( $line ["user_id"] );
 		}
 		return $res;
-
 	}
-
+	
 	/*
-		getDest
-		Returns list of forms destinated to user
+	 * getCreated
+	 * Returns list of forms created by user
+	 */
+	public function getCreatedForms() {
+		$q = mysql_query ( "SELECT form_id FROM form WHERE user_id = " . $this->id );
+		$res = [ ];
+		while ( $line = mysql_fetch_array ( $q ) ) {
+			$res [] = new Form ( $line ["form_id"] );
+		}
+		return $res;
+	}
+	
+	/*
+	 * getDest
+	 * Returns list of forms destinated to user
 	 */
 	public function getDestinatairesForms(){
 	   $q = mysql_query("SELECT formdest.form_id FROM formdest, form WHERE formdest.form_id=form.form_id AND formdest.user_id=".$this->id." AND form_status=1 GROUP BY formdest.user_id");
@@ -73,43 +72,45 @@ class User {
 		}
 		return $res;
 	}
-
+	
 	/*
-		isCreator(int formId)
-		Returns TRUE (FALSE) if user is (not) creator of form
+	 * isCreator(int formId)
+	 * Returns TRUE (FALSE) if user is (not) creator of form
 	 */
-	public function isCreator($formId){
-		if($formId == -1) return FALSE;
-
-		$f = new Form($formId);
-		if($f->getCreator()->getId() == $this->id)
+	public function isCreator($formId) {
+		if ($formId == - 1)
+			return FALSE;
+		
+		$f = new Form ( $formId );
+		if ($f->getCreator ()->getId () == $this->id)
 			return TRUE;
 		else
 			return FALSE;
 	}
-
+	
 	/*
-		isDest(int formID)
-		Returns TRUE (FALSE) if form is (not) destinated to user
+	 * isDest(int formID)
+	 * Returns TRUE (FALSE) if form is (not) destinated to user
 	 */
-	public function isDestinataire($formId){
-		if($formId == -1) return FALSE;
+	public function isDestinataire($formId) {
+		if ($formId == - 1)
+			return FALSE;
 		
-		$f = new Form($formId);
-		$d = $f->getRecipient();
-		foreach($d as $dest){
-			if($dest->getId() == $this->id)
+		$f = new Form ( $formId );
+		$d = $f->getRecipient ();
+		foreach ( $d as $dest ) {
+			if ($dest->getId () == $this->id)
 				return TRUE;
 		}
 		return FALSE;
 	}
-
+	
 	/*
-		isAnonymous
-		Returns TRUE if user is anonymous user (user_id =0)
-		Anonymous user is used to deal with anonymous forms
+	 * isAnonymous
+	 * Returns TRUE if user is anonymous user (user_id =0)
+	 * Anonymous user is used to deal with anonymous forms
 	 */
-	public function isAnonymous(){
+	public function isAnonymous() {
 		return $this->id == 0;
 	}
 }

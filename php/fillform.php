@@ -6,7 +6,6 @@
    $form_id = $ans->getFormId();
    $form = new Form($form_id);
    $state = $form->getState();*/
-
 ?>
 <html>
 <head>

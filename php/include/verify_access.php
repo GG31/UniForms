@@ -38,7 +38,6 @@
 				$b2 ? TRUE : header ( "Location: error.php?e=2" );
 			}
 		}
-		echo "VERIF ANS";
 	}
 
 	/*
@@ -55,7 +54,6 @@
 			$b = (new User ( $_SESSION ["user_id"] ))->isCreator ( $_GET ["form_id"] );
 			$b ? TRUE : header ( "Location: error.php?e=3" );
 		}
-		echo "VERIF CREATE";
 	}
 
 	/*

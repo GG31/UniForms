@@ -30,7 +30,7 @@ class Form {
 			$this->state = FALSE;
 		else {
 			$this->id = $idForm;
-			
+
 			$qForm = mysql_query ( "SELECT * FROM form WHERE form_id = " . $idForm );
 			if (! mysql_num_rows ( $qForm )) {
 				// Error...
@@ -125,12 +125,7 @@ class Form {
 	 */
 	public function getFormElements() {
 		return $this->formElements;
-	}	
-
-	   
-	/*public function getListRecipient(){
-		return $this->listRecipient;
-	}*/
+	}
 	
 	public function getListRecipient($user_ids = [], $state = -1){
 		$res = [];
@@ -142,16 +137,16 @@ class Form {
 
 		foreach($this->listRecipient as $r){
 			// $r : User Status Answer formDestId
+			$ok = TRUE;
 			if(count($user_ids) AND !in_array($r["User"]->getId(), $user_ids))
 				$ok = FALSE;
 			if($state != -1 AND $r["Status"] != $state)
 				$ok = FALSE;
-			$ok = TRUE;
 			if($ok)
 				$res[] = $r;
 		}
 		return $res;
-	}/**/
+	}
 
 	/*  setCreator
 		Sets form's creator  */

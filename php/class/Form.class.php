@@ -127,20 +127,15 @@ class Form {
 		return $this->formElements;
 	}
 	
-	public function getListRecipient($user_ids = [], $state = -1){
+	public function getListRecipient($user_ids = [], $state2 = -1){
 		$res = [];
-
-		if($state == 0)
-			$state = FALSE;
-		if($state == 1)
-			$state = TRUE;
 
 		foreach($this->listRecipient as $r){
 			// $r : User Status Answer formDestId
 			$ok = TRUE;
 			if(count($user_ids) AND !in_array($r["User"]->getId(), $user_ids))
 				$ok = FALSE;
-			if($state != -1 AND $r["Status"] != $state)
+			if($state2 != -1 AND $r["Status"] != $state2)
 				$ok = FALSE;
 			if($ok)
 				$res[] = $r;

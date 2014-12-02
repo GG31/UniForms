@@ -2,7 +2,6 @@
 	/*
 		Triggers verification
 	 */
-	//var_dump($_SESSION["user_id"]);echo "<br>";
 	switch (explode('.', basename($_SERVER["REQUEST_URI"]), 2)[0]) {
 		case 'answers':
 			verify_access_answers();

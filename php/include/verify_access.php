@@ -10,7 +10,7 @@
 			verify_access_create();
 			break;
 		case 'fillform':
-			verify_access_fill();
+			//verify_access_fill();
 			break;
 	}
 
@@ -33,7 +33,7 @@
 			if(isset($_GET["user_id"])){
 				$ans = (new Form($_GET["form_id"]))->getAnswer([$_GET["user_id"]], 1);
 				$b2  = count($ans) == 1 ? TRUE : FALSE;
-				$b2 ? TRUE : header("Location: ../error.php?e=2" );
+				$b2 ? TRUE : header("Location: error.php?e=2" );
 			}
 		}
 	}
@@ -65,9 +65,7 @@
 		$b1 = FALSE;
 		$b2 = FALSE;
 
-
 		$ans = new Answer($_GET["ans_id"]);
-
 		if($ans->getRecipient()->isAnonymous())// Access granted for anonymous form
 			return;
 

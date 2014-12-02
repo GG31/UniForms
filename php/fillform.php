@@ -1,10 +1,19 @@
 <!doctype html>
 <?php include_once 'include/includes.php'; ?>
 <?php
-   /*$ans = new Answer($_GET["ans_id"]);
-   $form_id = $ans->getFormId();
-   $form = new Form($form_id);
-   $state = $form->getState();*/
+   // TODO access !!
+   if(isset($_GET["form_id"])){     // New answer
+      $form_id = $_GET["form_id"];
+      $state = FALSE;
+      $new = TRUE;
+   }
+   if(isset($_GET["ans_id"])){      // Load answer
+      $ans_id = $_GET["ans_id"];
+      $ans = new Answer($ans_id);
+      $form_id = $ans->getFormId();
+      $state = $ans->getState();
+      $new = FALSE;
+   }
 ?>
 <html>
    <head>
@@ -45,9 +54,9 @@
             <div class="col-sm-offset-3 col-sm-6">
                <input
                   type="hidden"
-                  name="ans_id"
+                  name=<?php echo $new ? "form_id" : "ans_id" ?>
                   form="answerSheet"
-                  value=<?php echo $_GET["ans_id"] ?>
+                  value=<?php echo $new ? $form_id : $ans_id ?>
                   >
                <input
                   type="submit"

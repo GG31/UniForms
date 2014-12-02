@@ -19,8 +19,6 @@
 			<?php
 				foreach($forms as $f) {
 					$list = $f->getListRecipient([$user->getId()], 0);
-					var_dump($list);
-					echo "<br>";
 					if(count($list)){
 						$null  = 0;
 						foreach ($list as $line) {

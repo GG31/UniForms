@@ -19,6 +19,8 @@
 			<?php
 				foreach($forms as $f) {
 					$list = $f->getListRecipient([$user->getId()], 0);
+					var_dump($list);
+					echo "<br>";
 					if(count($list)){
 						$null  = 0;
 						foreach ($list as $line) {
@@ -52,7 +54,7 @@
 								<tr class="info">
 									<td>"</td>
 									<td>Réponse : <?php echo $key ?></td>
-									<td><a href="fillform.php?ans_id=<?php echo $line["FormDestId"] ?>">Modifier</a></td>
+									<td><a href="fillform.php?ans_id=<?php echo $line["formDestId"] ?>">Modifier</a></td>
 								</tr>
 			<?php
 							}

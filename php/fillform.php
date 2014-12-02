@@ -1,8 +1,10 @@
 <!doctype html>
 <?php include_once 'include/includes.php'; ?>
 <?php
-   $ans = new Answer($_GET["ans_id"]);
-   $form_id = $ans->getForm();
+   /*$ans = new Answer($_GET["ans_id"]);
+   $form_id = $ans->getFormId();
+   $form = new Form($form_id);
+   $state = $form->getState();*/
 ?>
 <html>
    <head>
@@ -20,7 +22,7 @@
          <?php include 'include/header.php'; ?>
   		   <?php include 'include/nav.php'; ?>
          <?php
-            if($ans->getState() == TRUE){
+            if($state == TRUE){
          ?>
                <div class="alert alert-warning text-center" role="alert">
                   Ce formulaire a déjà été renvoyé !
@@ -40,26 +42,31 @@
             </div>
    	   </div>
          <div class= "row">
-               <div class="col-sm-offset-3 col-sm-6">
-                  <input type="hidden" name="ans_id" form="answerSheet" value=<?php echo $_GET["ans_id"] ?>>
-                  <input
-                     type="submit"
-                     class="btn btn-default btn-lg btn-block"
-                     value="Enregistrer"
-                     name="save"
-                     form="answerSheet"
-                     <?php echo $ans->getState() ? "DISABLED" : "" ?>
-                     >
-                  <input
-                     type="submit"
-                     class="btn btn-primary btn-lg btn-block"
-                     value="Valider"
-                     name="send"
-                     form="answerSheet"
-                     <?php echo $ans->getState() ? "DISABLED" : "" ?>
-                     >
-               </div>
+            <div class="col-sm-offset-3 col-sm-6">
+               <input
+                  type="hidden"
+                  name="ans_id"
+                  form="answerSheet"
+                  value=<?php echo $_GET["ans_id"] ?>
+                  >
+               <input
+                  type="submit"
+                  class="btn btn-default btn-lg btn-block"
+                  value="Enregistrer"
+                  name="save"
+                  form="answerSheet"
+                  <?php echo $state ? "DISABLED" : "" ?>
+                  >
+               <input
+                  type="submit"
+                  class="btn btn-primary btn-lg btn-block"
+                  value="Valider"
+                  name="send"
+                  form="answerSheet"
+                  <?php echo $state ? "DISABLED" : "" ?>
+                  >
             </div>
+         </div>
    	   <?php include 'include/footer.php'; ?>
       </div>
    </body>

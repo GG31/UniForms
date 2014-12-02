@@ -57,26 +57,26 @@
 	/*
 		FILLFORM.PHP: TODO
 			$_GET["ans_id"]:
-				$_SESSION["user_id"] is dest of form
 				form is validated (creation)
+				$_SESSION["user_id"] is dest of form
 
 	 */
 	function verify_access_fill(){
 		$b1 = FALSE;
 		$b2 = FALSE;
 
-		$ans = new Answer($_GET["ans_id"]);
-		$form_id = $ans->getForm();
 
-		if($ans->getUser()->isAnonymous())// Access granted for anonymous form
+		$ans = new Answer($_GET["ans_id"]);
+
+		if($ans->getRecipient()->isAnonymous())// Access granted for anonymous form
 			return;
 
-		$f 	 = new Form($form_id);
+		$f 	 = new Form($ans->getFormId());
 		$b1  = $f->getState() == TRUE;
 		$b1 ? TRUE : header("Location: error.php?e=4" );
 
 		if($b1){
-			$b2  = $ans->getUser()->getId() == $_SESSION["user_id"];
+			$b2  = $ans->getRecipient()->getId() == $_SESSION["user_id"];
 			$b2 ? TRUE : header("Location: error.php?e=5" );
 		}
 	}

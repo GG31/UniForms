@@ -52,7 +52,7 @@
 										<tr class="success">
 											<td></td>
 											<td>Envoyé</td>
-											<td><a href="fillform.php?ans_id=<?php echo $line["FormDestId"] ?>">Voir</a></td>
+											<td><a href="fillform.php?ans_id=<?php echo $line["formDestId"] ?>">Voir</a></td>
 										</tr>
 						<?php
 									}

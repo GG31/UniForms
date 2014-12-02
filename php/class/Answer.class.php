@@ -1,98 +1,79 @@
 <?php
 class Answer {
-	// Answer id (formans_id)
-	private $id;
-	// Form id to answer
-	private $form;
-	// Answerer
-	private $user;
-	// Answer status
-	private $state;
+	// Form dest id (it identifies an answer)
+	private $formDest;
+	// User whose the form is destinated to
+	private $recipient;
+	// Form id
+	private $formId;
 	
-	/*
-		Constructor
-	 */
-	public function __construct(){
-		switch(func_num_args()){
-            case 0: // new Answer();
-            	$this->state = FALSE;
-                break;
-            case 1: // new Answer(id);
-                $this->id = func_get_arg(0);
-				
-				$q = mysql_query("SELECT form_id, user_id, formdest_status FROM formans JOIN formdest ON formans.formdest_id = formdest.formdest_id AND formans.formans_id = " . $this->id);
-				$line = mysql_fetch_array($q);
-				
-				$this->form = $line["form_id"];
-				$this->user = new User($line["user_id"]);
-				$this->state = $line["formdest_status"] == 1 ? TRUE : FALSE;
-				break;
+	// Answers array
+	private $answers = array();
+	
+	/*  Constructor	 */
+	public function __construct($formdest_id){
+		$qFormDest = mysql_query("SELECT * FROM formdest WHERE formdest_id = ".$formdest_id);
+
+		if (!mysql_num_rows($qFormDest)){
+			//error
+			exit();
+		}
+		$rFormDest = mysql_fetch_array($qFormDest);
+		$this->formDest = $rFormDest["formdest_id"];
+		$this->formId = $rFormDest["form_id"];
+		$this->recipient = new User($rFormDest["user_id"]);
+		$sql = "SELECT formelement_id, value 
+			FROM answervalue 
+			JOIN elementanswer ON elementanswer.elementanswer_id = answervalue.elementanswer_id 
+			WHERE elementanswer.formdest_id = ".$formdest_id;
+		$q = mysql_query($sql);
+		
+		if (mysql_num_rows($q)){
+			while($ans = mysql_fetch_array($q)){
+				$answer = array("elementId" => $ans["formelement_id"], "value" => $ans["value"]);
+				array_push($this->answers, $answer);
+			}
 		}
 	}
 
-	/*
-		id
-		Returns answer's id
-	 */
+	/*  getFormId
+		Returns form's id */
+	public function getFormId(){
+		return $this->formId;
+	}
+
+	/*  getFormId
+		Returns formdest id */
 	public function getId(){
-		return $this->id;
+		return $this->formDestId;
 	}
 
-	/*
-		getForm
-		Returns answer's general form
-	 */
-	public function getForm(){
-		return $this->form;
+	/*  getRecipient
+		Returns $this->recipient
+	*/
+	public function getRecipient(){
+		return $this->recipient;
 	}
 
-	/*
-		getUser
-		Returns answer's answerer
-	 */
-	public function getUser(){
-		return $this->user;
-	}
-
-	/*
-		getState
-		Returns answer's state
-	 */
-	public function getState(){
-		return $this->state;
-	}
-
-	/*
-		setForm
-		Sets answer's general form
-	 */
-	public function setForm($form){
-		$this->form = $form;
-	}
-
-	/*
-		setUser
-		Sets answer's answerer
-	 */
-	public function setUser($user){
-		$this->user = $user;
-	}
-
-	/*
-		save
-		TODO !=NULL
-	 */
+	/*  save  */
 	public function save(){
+		//Fill array answers and after...
+		
+		mysql_query("DELETE FROM elementanswer WHERE form_dest = ".$this->formDest);
+		
+		foreach($this->answers as $answer){
+			mysql_query("INSERT INTO elementanswer (formelementid, formdestid) VALUES(".$answer["elementId"].",".$this->formDest.")");
+			$idElementAnswer = mysql_insert_id();	
+			mysql_query("INSERT INTO answervalue (value, elementanswer_id) VALUES(".$answer["value"].",".$idElementAnswer.")");			
+		}
 	}
 
-	/*
-		send
-	 */
+	/*  send  */
 	public function send(){
 		$this->save();
 		$this->state = TRUE;
 		// Update status
-		mysql_query("UPDATE formdest SET formdest_status = 1 WHERE form_id = ".$this->form . " AND user_id = " . $this->user->getId());
+		mysql_query("UPDATE formdest SET formdest_status = 1 WHERE formdest_id = ".$this->formDest);
 	}
 }
 ?>

@@ -17,23 +17,13 @@
 		</thead>
 		<tbody>
 			<?php
-				//var_dump($list);
-				/*echo '<br/>';
-				echo $form->getId();
-				echo $line["formDestId"];
-				echo '<br/>';*/
 				foreach ( $list as $key => $line ){
-				//echo $line["formDestId"];
-				/*foreach ($line["Answer"] as $k => $v){*/
-				//var_dump($line["User"]);
-		
-				//}		*/
 			?>
 				<tr class="success">
 					<td><?php echo $line["User"]->getName(); ?></td>
 					<td><a href="answers.php?ans_id=<?php echo $line["formDestId"] ?>">Voir</a> (CSV BDD coming soon...)</td>
 					<!-- <td><a href="include/download_csv.php?form_id=<?php //echo $_GET["form_id"] ?>&user_id=<?php //echo $a->getUser()->getId() ?>">Download in CSV format</a></td> -->
-					<td><a href="include/download_csv.php">Download in CSV format</a></td>
+					<td><a href="include/download_csv.php?ans_id=<?php echo $line["formDestId"] ?>">Download in CSV format</a></td>
 				</tr>
 			<?php 
 				

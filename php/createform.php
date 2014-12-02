@@ -134,7 +134,25 @@ if (isset ( $_GET ["form_id"] )) {
 								<strong>Formulaire</strong>
 							</h3>
 						</div>
-						<div class="panel-body"></div>
+						<div class="panel-body">
+						
+						<div class="panel panel-default">
+                     <div class="panel-body col-sm-10">
+                        <div id="destinationDraggables" class="zoneDrop" name="zoneDrop" ondragenter="return dragEnter(event)" 
+        ondrop="return dragDrop(event)" 
+        ondragover="return dragOver(event)" ondragleave="return dragLeave(event)"></div>
+                     </div>
+                     <div class="col-sm-2">
+            
+                        <div id="draggable" class="draggable" draggable="true" ondragstart="return dragStart(event)"><input type="checkbox" name="checkbox">Checkbox</div>
+                        <div id="draggable2" class="draggable" draggable="true" ondragstart="return dragStart(event)"><input type="textbox" name="textBox"></div>
+                        
+                     </div> 
+                  </div>
+						
+						
+						
+						</div>
 					</div>
 				</div>
 				<!--<div class="col-sm-2">

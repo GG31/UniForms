@@ -1,8 +1,8 @@
 <?php
 	if(isset($_GET["form_id"]) AND !isset($_GET["user_id"])){
-
+		$user = new User($_SESSION["user_id"]);
 		$form = new Form($_GET["form_id"]);
-		$ans = $form->getAnswer([], 1);
+		$forms = $form->getListRecipient();
 ?>
 <div class="panel panel-primary">
 	<div class="panel-heading text-center text-capitalize"><strong>Personnes ayant soumis le formulaire <?php echo $_GET["form_id"] ?></strong></div>
@@ -16,15 +16,16 @@
 		</thead>
 		<tbody>
 			<?php
-				foreach($ans as $a){
+				var_dump($forms);
+				//foreach($forms as $f){
 
 			?>
 				<tr class="success">
-					<td><?php echo $a->getUser()->getName() ?></td>
-					<td><a href="answers.php?form_id=<?php echo $_GET["form_id"] ?>&user_id=<?php echo $a->getUser()->getId() ?>">Voir</a> (CSV BDD coming soon...)</td>
+					<td><?php //echo $f->getUser()->getName() ?></td>
+					<td><a>Voir</a> (CSV BDD coming soon...)</td>
 				</tr>
 			<?php 
-				}
+				//}
 			?>
 		</tbody>
 	</table>

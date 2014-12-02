@@ -4,13 +4,13 @@
 	 */
 	switch (explode('.', basename($_SERVER["REQUEST_URI"]), 2)[0]) {
 		case 'answers':
-			//verify_access_answers();
+			verify_access_answers();
 			break;
 		case 'createform':
-			//verify_access_create();
+			verify_access_create();
 			break;
 		case 'fillform':
-			//verify_access_fill();
+			verify_access_fill();
 			break;
 	}
 
@@ -32,20 +32,21 @@
 			
 			if (isset ( $_GET ["user_id"] )) {
 				$ans = (new Form ( $_GET ["form_id"] ))->getListRecipient ( [ 
-						$_GET ["user_id"] 
-				], 1 );
-				$b2 = count ( $ans ) == 1 ? TRUE : FALSE;
+															$_GET ["user_id"] 
+														], 1 );
+				$b2 = count ( $ans ) == 1 ? TRUE : FALSE;// ? TODO
 				$b2 ? TRUE : header ( "Location: error.php?e=2" );
 			}
 		}
+		echo "VERIF ANS";
 	}
 
 	/*
 	 * CREATEFORM.PHP:
-	 * $_GET["form_id"]:
-	 * $_SESSION["user_id"] is creator of $_GET["form_id"]
-	 * void:
-	 * ok
+	 * 		$_GET["form_id"]:
+	 *   		$_SESSION["user_id"] is creator of $_GET["form_id"]
+	 *     void:
+	 *     		ok
 	 */
 	function verify_access_create() {
 		$b = TRUE;
@@ -54,36 +55,47 @@
 			$b = (new User ( $_SESSION ["user_id"] ))->isCreator ( $_GET ["form_id"] );
 			$b ? TRUE : header ( "Location: error.php?e=3" );
 		}
+		echo "VERIF CREATE";
 	}
 
 	/*
-		FILLFORM.PHP: TODO
+		FILLFORM.PHP: (Anonymous are allowed if form is anonymous)
+			$_GET["form_id"]:
+				form is validated (creation) & user is dest of form
+				answer limit not reached
 			$_GET["ans_id"]:
-				form is validated (creation)
-				$_SESSION["user_id"] is dest of form
-
+				form is validated (creation) & user is dest of form
 	 */
 	function verify_access_fill(){
 		$b1 = FALSE;
 		$b2 = FALSE;
 
-		$ans = new Answer($_GET["ans_id"]);
-		if($ans->getRecipient()->isAnonymous())// Access granted for anonymous form
+		if(isset($_GET["form_id"])){
+			$form_id = $_GET["form_id"];
+		}
+		if(isset($_GET["ans_id"])){
+			$ans = new Answer($_GET["ans_id"]);
+			$form_id = $ans->getFormId();
+		}
+		$form = new Form($form_id);
+
+		if($form->getAnonymous()) // Anonymous allowed if anonymous form
 			return;
 
-		$f 	 = new Form($ans->getFormId());
-		
-		$b1  = $f->getState() == TRUE;
+		$user = new User($_SESSION["user_id"]);
+		$forms = $user->getDestinatairesForms(); // Returns validated (creation) forms
+		foreach ($forms as $f) {
+			if($f->getId() == $form_id){
+				$b1 = TRUE;
+				break;
+			}
+		}
 		$b1 ? TRUE : header("Location: error.php?e=4" );
-		if($f->getAnonymous()){// Access granted for anonymous form
-		   //Créer une answer
-		   $form->createAnswer(0);
-		   //header("Location: fillform.php?ans_id=4" );
-	   }
 
-
-		if($b1){
-			$b2  = $ans->getRecipient()->getId() == $_SESSION["user_id"];
+		if(isset($_GET["form_id"])){
+			$max = $form->getMaxAnswers();
+			$current = count($form->getListRecipient([$_SESSION["user_id"]]));
+			$b2 = $max - $current > 0;
 			$b2 ? TRUE : header("Location: error.php?e=5" );
 		}
 	}

@@ -1,41 +1,23 @@
 <?php
-//if (isset ( $_GET ["form_id"] ) and isset ( $_GET ["user_id"] )) {
 if (isset ( $_GET ["ans_id"])) {
 	include_once ('include/includes.php');
 	$answer = new Answer($_GET ["ans_id"]);
 	$recipient = $answer->getRecipient();
 	$idform = $answer->getFormId();
-	//echo $idform;
 	$form = new Form($idform);
 	$ans = $form->getListRecipient ( [ ], 1 );
-	
-	/*$form = new Form ( $_GET ["form_id"] );
-	$ans = $form->getListRecipient ( [ ], 1 );*/
-	//var_dump ($ans);
 	$prev = NULL;
 	$next = NULL;
-	foreach ( $ans as $key => $line ){
-		var_dump($line["Answer"]);
-		//echo $line["Answer"]->getId();
-		/*if ($line["Answer"]->getId() == $_GET ["ans_id"]){
-			var_dump($line["Answer"]);
-		}*/
-	}
 	
-	/*foreach ($line["Answer"] as $k => $ln){
-		if ($ln["formDest"] == $_GET ["ans_id"]){
-			echo "oui";
-		}
-	}*/
-	/*foreach ( $ans as $key => $line ) {
+	foreach ( $ans as $key => $line ) {
 		if ($line["Answer"]->getId() == $_GET ["ans_id"]) {
 			if ($key + 1 < count ( $ans ))
-				$next = $ans [$key + 1]->getUser ();
+				$next = $ans [$key + 1]["Answer"]->getId();
 			break;
 		} else {
-			$prev = $a->getUser ();
+			$prev = $line["Answer"]->getId();
 		}
-	}*/
+	}
 	?>
 <div class="row">
 	<div class="panel panel-primary">
@@ -56,7 +38,7 @@ if (isset ( $_GET ["ans_id"])) {
 	} else {
 		?>
 					<li><a
-				href="answers.php?form_id=<?php //echo $_GET["form_id"] ?>&user_id=<?php //echo $prev->getId() ?>">&larr;
+				href="answers.php?ans_id=<?php echo $prev ?>">&larr;
 					Previous</a></li>
 			<?php
 	}
@@ -71,7 +53,7 @@ if (isset ( $_GET ["ans_id"])) {
 	} else {
 		?>
 					<li><a
-				href="answers.php?form_id=<?php //echo $_GET["form_id"] ?>&user_id=<?php //echo $next->getId() ?>">Next
+				href="answers.php?ans_id=<?php echo $next ?>">Next
 					&rarr;</a></li>
 			<?php
 	}

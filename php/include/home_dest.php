@@ -52,7 +52,7 @@
 								<tr class="info">
 									<td>"</td>
 									<td>Réponse : <?php echo $key ?></td>
-									<td><a href="fillform.php?ans_id=<?php echo $line["FormDestId"] ?>">Modifier</a></td>
+									<td><a href="fillform.php?ans_id=<?php echo $line["formDestId"] ?>">Modifier</a></td>
 								</tr>
 			<?php
 							}

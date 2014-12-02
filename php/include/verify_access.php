@@ -10,7 +10,7 @@
 		case 'createform':
 			verify_access_create();
 			break;
-		case 'fillform':
+		case 'lol':
 			verify_access_fill();
 			break;
 	}
@@ -65,16 +65,17 @@
 	function verify_access_fill(){
 		$b1 = FALSE;
 		$b2 = FALSE;
-
 		$ans = new Answer($_GET["ans_id"]);
-		$form_id = $ans->getForm();
-
-		if($ans->getUser()->isAnonymous())// Access granted for anonymous form
-			return;
-
-		$f 	 = new Form($form_id);
+		$form_id = $ans->getFormId();
+      $f    = new Form($form_id);
 		$b1  = $f->getState() == TRUE;
 		$b1 ? TRUE : header("Location: error.php?e=4" );
+		if($f->getAnonymous()){// Access granted for anonymous form
+		   //Créer une answer
+		   $form->createAnswer(0);
+		   //header("Location: fillform.php?ans_id=4" );
+	   }
+
 
 		if($b1){
 			$b2  = $ans->getUser()->getId() == $_SESSION["user_id"];

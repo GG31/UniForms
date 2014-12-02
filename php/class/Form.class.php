@@ -204,6 +204,14 @@ class Form {
 	
 		//Insert FormElements here...
 	}
+	
+	public function createAnswer($idUser) {
+	   mysql_query("INSERT INTO formdest(form_id, user_id, formdest_status) VALUES ("
+										. $this->id.","
+										. $idUser
+										. ", 0)"
+				) or die('<br><strong>SQL Error (5)</strong>:<br>'.mysql_error());
+	}
 
 	/* save() and update status */
 	public function send(){

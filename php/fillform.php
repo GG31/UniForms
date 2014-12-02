@@ -1,8 +1,9 @@
 <!doctype html>
 <?php include_once 'include/includes.php'; ?>
+ljljk
 <?php
    $ans = new Answer($_GET["ans_id"]);
-   $form_id = $ans->getForm();
+   $form_id = $ans->getFormId();
 ?>
 <html>
    <head>

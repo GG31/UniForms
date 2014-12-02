@@ -18,7 +18,7 @@ class Form {
 	// Form (Integer - Sets the number of times that the form can be answered)
 	private $maxAnswers;
 	
-	// Form dest-answers list (One list that contains three elements: one object user that is the recipient, one status and one object answer)
+	// Form dest-answers list (One list that contains four elements: one object user that is the recipient, one status, one object answer and formDestId)
 	private $listRecipient;
 	
 	// Form elements list (The list of all elements of one form)
@@ -36,6 +36,7 @@ class Form {
 			}
 			
 			$this->id = $idForm;
+<<<<<<< HEAD
 			$rForm = mysql_fetch_array ( $qForm );
 			
 			$this->creator = new User ( $rForm ["user_id"] );
@@ -54,6 +55,21 @@ class Form {
 						"formDestId" => $rFormDest ["formdest_id"] 
 				);
 				array_push ( $this->listRecipient, $recipient );
+=======
+			$rForm = mysql_fetch_array($qForm);
+
+			$this->creator = new User($rForm["user_id"]);
+			$this->state = $rForm["form_status"] == 1 ? TRUE : FALSE;
+			$this->printable = $rForm["form_printable"] == 1 ? TRUE : FALSE;
+			$this->anonymous = $rForm["form_anonymous"] == 1 ? TRUE : FALSE;
+			$this->maxAnswers = $rForm["form_maxanswers"];
+	
+			$this->listRecipient = array();
+			$qFormDest = mysql_query("SELECT formdest_id, user_id, formdest_status FROM formdest WHERE form_id = " . $this->id . " ORDER BY user_id, formdest_id");
+			while($rFormDest = mysql_fetch_array($qFormDest)){
+				$recipient = array("User" => new User($rFormDest["user_id"]), "Status" => $rFormDest["formdest_status"], "Answer" => new Answer($rFormDest["formdest_id"]), "formDestId" => $rFormDest["formdest_id"]);
+				array_push($this->listRecipient, $recipient);
+>>>>>>> 6fc410bc8f19675bb388f224e0890d593d1c2d04
 			}
 		}
 	}
@@ -125,6 +141,7 @@ class Form {
 	public function getFormElements() {
 		return $this->formElements;
 	}
+<<<<<<< HEAD
 	public function getListRecipient() {
 		return $this->listRecipient;
 	}
@@ -149,6 +166,31 @@ class Form {
 	 * Sets form's creator
 	 */
 	public function setCreator($user) {
+=======
+	
+	   
+	public function getListRecipient(){
+		return $this->listRecipient;
+	}
+	
+	/*public function getListRecipient($ids = [], $state = -1){
+		$res = [];
+		foreach($this->ans as $a){
+			$ok = TRUE;
+			if(count($user_ids) AND !in_array($a->getUser()->getId(), $user_ids))
+			$ok = FALSE;
+			if($state != -1 AND $a->getState() != $state)
+			$ok = FALSE;
+			if($ok)
+			$res[] = $a;
+		}
+		return $res;
+	}*/
+
+	/*  setCreator
+		Sets form's creator  */
+	public function setCreator($user){
+>>>>>>> 6fc410bc8f19675bb388f224e0890d593d1c2d04
 		$this->creator = $user;
 	}
 	

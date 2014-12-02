@@ -52,11 +52,12 @@ $forms = $user->getDestinatairesForms ();
 								foreach ( $list as $key => $line ) {
 									?>
 										<tr class="success">
-							<td></td>
-							<td>Envoyé</td>
-							<td><a
-								href="fillform.php?ans_id=<?php echo $line["formDestId"] ?>">Voir</a></td>
-						</tr>
+
+											<td></td>
+											<td>Envoyé</td>
+											<td><a href="fillform.php?ans_id=<?php echo $line["formDestId"] ?>">Voir</a></td>
+										</tr>
+
 						<?php
 								}
 							}

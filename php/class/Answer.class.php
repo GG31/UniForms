@@ -52,7 +52,7 @@ class Answer {
 	 * Returns formdest id
 	 */
 	public function getId() {
-		return $this->formDestId;
+		return $this->formDest;
 	}
 
 	/*  getRecipient

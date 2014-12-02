@@ -32,11 +32,11 @@ function verify_access_answers() {
 		$b1 ? TRUE : header ( "Location: error.php?e=1" );
 		
 		if (isset ( $_GET ["user_id"] )) {
-			$ans = (new Form ( $_GET ["form_id"] ))->getAnswer ( [ 
+			$ans = (new Form ( $_GET ["form_id"] ))->getListRecipient ( [ 
 					$_GET ["user_id"] 
 			], 1 );
 			$b2 = count ( $ans ) == 1 ? TRUE : FALSE;
-			$b2 ? TRUE : header ( "Location: ../error.php?e=2" );
+			$b2 ? TRUE : header ( "Location: error.php?e=2" );
 		}
 	}
 }

@@ -1,17 +1,18 @@
 <?php
-if (isset ( $_GET ["form_id"] ) and isset ( $_GET ["user_id"] )) {
+//if (isset ( $_GET ["form_id"] ) and isset ( $_GET ["user_id"] )) {
 	include_once ('includes.php');
 	
-	$user = new User ( $_GET ["user_id"] );
+	//$user = new User ( $_GET ["user_id"] );
 	
-	$form = new Form ( $_GET ["form_id"] );
-	$ans = $form->getAnswer ( [ ], 1 );
+	//$form = new Form ( $_GET ["form_id"] );
+	//$ans = $form->getAnswer ( [ ], 1 );
 	
 	// la variable qui va contenir les données CSV
 	$outputCsv = '';
 	
 	// Nom du fichier final
-	$fileName = "Form_" . $_GET ["form_id"] . "Answers";
+	//$fileName = "Form_" . $_GET ["form_id"] . "Answers";
+	$fileName = "Form_Answers";
 	$fileName .= date ( 'Y-m-d_H:i:s' );
 	$fileName .= ".csv";
 	/*
@@ -36,5 +37,5 @@ if (isset ( $_GET ["form_id"] ) and isset ( $_GET ["user_id"] )) {
 	
 	echo $outputCsv;
 	exit ();
-}
+//}
 ?>

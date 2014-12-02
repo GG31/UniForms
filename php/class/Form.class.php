@@ -36,7 +36,7 @@ class Form {
 			}
 			
 			$this->id = $idForm;
-<<<<<<< HEAD
+
 			$rForm = mysql_fetch_array ( $qForm );
 			
 			$this->creator = new User ( $rForm ["user_id"] );
@@ -55,21 +55,6 @@ class Form {
 						"formDestId" => $rFormDest ["formdest_id"] 
 				);
 				array_push ( $this->listRecipient, $recipient );
-=======
-			$rForm = mysql_fetch_array($qForm);
-
-			$this->creator = new User($rForm["user_id"]);
-			$this->state = $rForm["form_status"] == 1 ? TRUE : FALSE;
-			$this->printable = $rForm["form_printable"] == 1 ? TRUE : FALSE;
-			$this->anonymous = $rForm["form_anonymous"] == 1 ? TRUE : FALSE;
-			$this->maxAnswers = $rForm["form_maxanswers"];
-	
-			$this->listRecipient = array();
-			$qFormDest = mysql_query("SELECT formdest_id, user_id, formdest_status FROM formdest WHERE form_id = " . $this->id . " ORDER BY user_id, formdest_id");
-			while($rFormDest = mysql_fetch_array($qFormDest)){
-				$recipient = array("User" => new User($rFormDest["user_id"]), "Status" => $rFormDest["formdest_status"], "Answer" => new Answer($rFormDest["formdest_id"]), "formDestId" => $rFormDest["formdest_id"]);
-				array_push($this->listRecipient, $recipient);
->>>>>>> 6fc410bc8f19675bb388f224e0890d593d1c2d04
 			}
 		}
 	}
@@ -141,32 +126,6 @@ class Form {
 	public function getFormElements() {
 		return $this->formElements;
 	}
-<<<<<<< HEAD
-	public function getListRecipient() {
-		return $this->listRecipient;
-	}
-	
-	/*
-	 * public function getListRecipient($ids, $state){
-	 * $res = [];
-	 * /*if($state == 0){
-	 * $res[] = ["FormDestId" => 63, "User" => new User(1), "Status" => FALSE, "Answer" => new Answer(63)];
-	 * $res[] = ["FormDestId" => 64, "User" => new User(1), "Status" => FALSE, "Answer" => NULL];
-	 * $res[] = ["FormDestId" => 65, "User" => new User(1), "Status" => FALSE, "Answer" => new Answer(65)];
-	 * }else{
-	 * $res[] = ["FormDestId" => 63, "User" => new User(1), "Status" => TRUE, "Answer" => new Answer(63)];
-	 * $res[] = ["FormDestId" => 64, "User" => new User(1), "Status" => TRUE, "Answer" => new Answer(64)];
-	 * }
-	 * return $res;
-	 * }
-	 */
-	
-	/*
-	 * setCreator
-	 * Sets form's creator
-	 */
-	public function setCreator($user) {
-=======
 	
 	   
 	public function getListRecipient(){
@@ -190,7 +149,6 @@ class Form {
 	/*  setCreator
 		Sets form's creator  */
 	public function setCreator($user){
->>>>>>> 6fc410bc8f19675bb388f224e0890d593d1c2d04
 		$this->creator = $user;
 	}
 	

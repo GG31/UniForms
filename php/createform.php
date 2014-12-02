@@ -7,14 +7,16 @@
 		XXXXXXXXXXXXXXXX =>
 			$_POST["form_id"] == -1 (new form)
 	 */
-	$form_id = isset($_GET["form_id"]) ? $_GET["form_id"] : -1;
-	$form = new Form($form_id);
+	$form_id 	= isset($_GET["form_id"]) ? $_GET["form_id"] : -1;
+	$form 		= new Form($form_id);
 
-	$checkedAnon  = FALSE;
-	$checkedPrint = TRUE;
+	$checkedAnon  	= FALSE;
+	$checkedPrint 	= TRUE;
+	$maxAnswers 	= 1;
 	if(isset($_GET["form_id"])){
-		$checkedAnon = $form->getAnonymous();
-		$checkedPrint = $form->getPrintable();
+		$checkedAnon 	= $form->getAnonymous();
+		$checkedPrint 	= $form->getPrintable();
+		$maxAnswers   	= $form->getMaxAnswers();
 	}
 ?>
 <html>
@@ -101,14 +103,14 @@
 								   id = "multiple"
 								   type="number" 
 								   name="parammulti"
-								   value="1"
+								   value=<?php echo $maxAnswers ?>
 								   min="0"
-								   class="form-control bfh-number" 
+								   class="form-control bfh-number"
+								   style="width: 50pt;"
 								   data-toggle="tooltip" 
 								   data-placement="top" 
 								   title="Entrez le nombre de fois que le formulaire pourra être rempli par le(s) destinataire(s), 0 pour infini">
-								<label for="multiple">Autorisation de remplissage</label>
-								<br>
+								<label for="multiple">Nombre de réponses max.</label>
 							</div>
 						</div>
 					</div>

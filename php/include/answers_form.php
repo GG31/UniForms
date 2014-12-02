@@ -27,8 +27,8 @@ if (isset ( $_GET ["ans_id"])) {
 			echo "oui";
 		}
 	}*/
-	/*foreach ( $ans as $key => $a ) {
-		if ($a["User"]->getId () == $_GET ["user_id"]) {
+	/*foreach ( $ans as $key => $line ) {
+		if ($line["Answer"]->getId() == $_GET ["ans_id"]) {
 			if ($key + 1 < count ( $ans ))
 				$next = $ans [$key + 1]->getUser ();
 			break;

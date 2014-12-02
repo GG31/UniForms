@@ -7,10 +7,13 @@ if (isset ( $_GET ["ans_id"] )) {
 	$idform = $answer->getFormId();
 	$form = new Form($idform);
 	$ans = $form->getListRecipient ( [ ], 1 );
-	var_dump($ans);
-	/*
+	//var_dump($ans);
+	foreach ( $ans as $key => $value ) {
+			echo "formDest : ".$value["Answer"]->getId()."<br/>";
+	}
+	
 	// la variable qui va contenir les données CSV
-	$outputCsv = '';
+	/*$outputCsv = '';
 	
 	// Nom du fichier final
 	//$fileName = "Form_" . $_GET ["form_id"] . "Answers";
@@ -29,6 +32,7 @@ if (isset ( $_GET ["ans_id"] )) {
 	 * }
 	 */
 	/*$outputCsv .= "Exemple Simple d'exportation des donnees";
+	$outputCsv .= "<br/><br/>";
 	// Entêtes (headers) PHP qui vont bien pour la création d'un fichier Excel CSV
 	header ( "Content-disposition: attachment; filename=" . $fileName );
 	header ( "Content-Type: application/force-download" );

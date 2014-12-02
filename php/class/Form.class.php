@@ -50,7 +50,7 @@ class Form {
 			while ( $rFormDest = mysql_fetch_array ( $qFormDest ) ) {
 				$recipient = array (
 						"User" => new User ( $rFormDest ["user_id"] ),
-						"Status" => $rFormDest ["formdest_status"],
+						"Status" => $rFormDest ["formdest_status"] == 1 ? TRUE : FALSE,
 						"Answer" => new Answer ( $rFormDest ["formdest_id"] ),
 						"formDestId" => $rFormDest ["formdest_id"] 
 				);

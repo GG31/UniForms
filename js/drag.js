@@ -49,5 +49,6 @@ function dragDrop(ev) {
    ev.target.style.border = "none";
    ev.preventDefault();
    ev.stopPropagation();
+   
    return false;
 }

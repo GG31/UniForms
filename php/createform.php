@@ -137,7 +137,7 @@ if (isset ( $_GET ["form_id"] )) {
 						<div class="panel-body">
 						
 						<div class="panel panel-default">
-                     <div class="panel-body col-sm-10">
+                     <div class="panel-body col-sm-8">
                         <div id="destinationDraggables" class="zoneDrop" name="zoneDrop" ondragenter="return dragEnter(event)" 
         ondrop="return dragDrop(event)" 
         ondragover="return dragOver(event)" ondragleave="return dragLeave(event)"></div>

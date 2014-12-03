@@ -11,7 +11,6 @@ class User {
 	 */
 	function __construct($userId) {
 		$this->id = $userId;
-		
 		$q = mysql_query ( "SELECT * FROM user WHERE user_id = " . $this->id );
 		$line = mysql_fetch_array ( $q );
 		$this->name = $line ["user_name"];

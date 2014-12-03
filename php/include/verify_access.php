@@ -12,6 +12,11 @@
 		case 'fillform':
 			verify_access_fill();
 			break;
+	   default:
+	      if ($_SESSION["user_id"] == 0) {
+	         header("Location: include/logout.php" );
+	      }
+	      break;
 	}
 
 	/*
@@ -25,6 +30,10 @@
 	function verify_access_answers() {
 		$b1 = FALSE;
 		$b2 = TRUE;
+		
+		if ($_SESSION["user_id"] == 0) {
+		   header("Location: include/logout.php" );
+		}
 		
 		if (isset ( $_GET ["form_id"] )) {
 			$b1 = (new User ( $_SESSION ["user_id"] ))->isCreator ( $_GET ["form_id"] );
@@ -53,6 +62,8 @@
 		if (isset ( $_GET ["form_id"] )) {
 			$b = (new User ( $_SESSION ["user_id"] ))->isCreator ( $_GET ["form_id"] );
 			$b ? TRUE : header ( "Location: error.php?e=3" );
+		} else if ($_SESSION["user_id"] == 0) {
+		   header("Location: include/logout.php" );
 		}
 	}
 

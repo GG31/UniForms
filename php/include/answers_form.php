@@ -1,28 +1,28 @@
 <?php
-if (isset ( $_GET ["form_id"] ) and isset ( $_GET ["user_id"] )) {
+if (isset ( $_GET ["ans_id"])) {
 	include_once ('include/includes.php');
-	
-	$user = new User ( $_GET ["user_id"] );
-	
-	$form = new Form ( $_GET ["form_id"] );
-	$ans = $form->getAnswer ( [ ], 1 );
-	
+	$answer = new Answer($_GET ["ans_id"]);
+	$recipient = $answer->getRecipient();
+	$idform = $answer->getFormId();
+	$form = new Form($idform);
+	$ans = $form->getListRecipient ( [ ], 1 );
 	$prev = NULL;
 	$next = NULL;
-	foreach ( $ans as $key => $a ) {
-		if ($a->getUser ()->getId () == $_GET ["user_id"]) {
+	
+	foreach ( $ans as $key => $line ) {
+		if ($line["Answer"]->getId() == $_GET ["ans_id"]) {
 			if ($key + 1 < count ( $ans ))
-				$next = $ans [$key + 1]->getUser ();
+				$next = $ans [$key + 1]["Answer"]->getId();
 			break;
 		} else {
-			$prev = $a->getUser ();
+			$prev = $line["Answer"]->getId();
 		}
 	}
 	?>
 <div class="row">
 	<div class="panel panel-primary">
 		<div class="panel-heading text-center text-capitalize">
-			<strong><?php echo $user->getName() ?></strong>
+			<strong><?php echo $recipient->getName(); ?></strong>
 		</div>
 		<div class="panel-body"></div>
 	</div>
@@ -38,12 +38,12 @@ if (isset ( $_GET ["form_id"] ) and isset ( $_GET ["user_id"] )) {
 	} else {
 		?>
 					<li><a
-				href="answers.php?form_id=<?php echo $_GET["form_id"] ?>&user_id=<?php echo $prev->getId() ?>">&larr;
+				href="answers.php?ans_id=<?php echo $prev ?>">&larr;
 					Previous</a></li>
 			<?php
 	}
 	?>
-			<li><a href="answers.php?form_id=<?php echo $_GET["form_id"] ?>">&uarr;
+			<li><a href="answers.php?form_id=<?php echo $answer->getFormId(); ?>">&uarr;
 					Back &uarr;</a></li>
 			<?php
 	if (! $next) {
@@ -53,7 +53,7 @@ if (isset ( $_GET ["form_id"] ) and isset ( $_GET ["user_id"] )) {
 	} else {
 		?>
 					<li><a
-				href="answers.php?form_id=<?php echo $_GET["form_id"] ?>&user_id=<?php echo $next->getId() ?>">Next
+				href="answers.php?ans_id=<?php echo $next ?>">Next
 					&rarr;</a></li>
 			<?php
 	}

@@ -1,13 +1,23 @@
 <?php
+/**
+ * Represent a user, he has an id and a name.
+ */
 class User {
-	// User id (user_id)
+	/**
+     * @access private
+     * @var integer 
+     */
 	private $id;
-	// User name
+	
+	/**
+     * @access private
+     * @var string 
+     */
 	private $name;
 	
-	/*
-	 * Constructor
-	 * TODO name
+	/**
+	 * Constructor, create a user
+	 * @param integer $userId the id of the user
 	 */
 	function __construct($userId) {
 		$this->id = $userId;
@@ -16,25 +26,26 @@ class User {
 		$this->name = $line ["user_name"];
 	}
 	
-	/*
-	 * getId
-	 * Returns user's id
+	/**
+	 * Give the user's id
+	 * @return integer
 	 */
 	public function getId() {
 		return $this->id;
 	}
 	
-	/*
-	 * getName
-	 * Returns user's name
+	/**
+	 * Give the user's name
+	 * @return string
 	 */
 	public function getName() {
 		return $this->name;
 	}
 	
-	/*
-	 * all
-	 * Returns array of all users
+	/**
+	 * Give all users
+	 * @static
+	 * @return array of User
 	 */
 	public static function all() {
 		$q = mysql_query ( "SELECT user_id FROM user" );
@@ -46,9 +57,9 @@ class User {
 		return $res;
 	}
 	
-	/*
-	 * getCreated
-	 * Returns list of forms created by user
+	/**
+	 * Give the forms created by the user
+	 * @return array of Form
 	 */
 	public function getCreatedForms() {
 		$q = mysql_query ( "SELECT form_id FROM form WHERE user_id = " . $this->id );
@@ -59,9 +70,9 @@ class User {
 		return $res;
 	}
 	
-	/*
-	 * getDest
-	 * Returns list of validated forms destinated to user
+	/**
+	 * Give the forms which the user is recipient
+	 * @return array of Form
 	 */
 	public function getDestinatairesForms(){
 	   $q = mysql_query("SELECT DISTINCT formdest.form_id FROM formdest, form WHERE formdest.form_id=form.form_id AND formdest.user_id=".$this->id." AND form_status=1");
@@ -72,9 +83,10 @@ class User {
 		return $res;
 	}
 	
-	/*
-	 * isCreator(int formId)
-	 * Returns TRUE (FALSE) if user is (not) creator of form
+	/**
+	 * The user is creator of the form formId
+	 * @param integer $formId id's form
+	 * @return boolean TRUE (FALSE) if user is (not) creator of form
 	 */
 	public function isCreator($formId) {
 		if ($formId == - 1)
@@ -87,9 +99,10 @@ class User {
 			return FALSE;
 	}
 	
-	/*
-	 * isDest(int formID)
-	 * Returns TRUE (FALSE) if form is (not) destinated to user
+	/**
+	 * The user is recipient of the form formId
+	 * @param integer $formId id's form
+	 * @return boolean TRUE (FALSE) if form is (not) destinated to user
 	 */
 	public function isDestinataire($formId) {
 		if ($formId == - 1)
@@ -104,10 +117,9 @@ class User {
 		return FALSE;
 	}
 	
-	/*
-	 * isAnonymous
-	 * Returns TRUE if user is anonymous user (user_id =0)
-	 * Anonymous user is used to deal with anonymous forms
+	/**
+	 * The user is anonymous. Anonymous user is used to deal with anonymous forms
+	 * @return boolean TRUE if user is anonymous user (user_id = 0)
 	 */
 	public function isAnonymous() {
 		return $this->id == 0;

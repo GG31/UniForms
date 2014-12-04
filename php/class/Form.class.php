@@ -1,30 +1,67 @@
 <?php
+/**
+ * Represents a form which have an id, creator, state, can be anonymous, printable and have a list of recipient and elements.
+ */
 class Form {
-	// Form id (form_id)
+	/**
+     * @access private
+     * @var integer 
+     */
 	private $id = NULL;
 	
-	// Form creator (User object which represents the creator)
+	/**
+	  * Creator of this form
+     * @access private
+     * @var User 
+     */
 	private $creator;
-	
-	// Form status (TRUE (validated) or FALSE(not validated yet))
+
+	/**
+	  * State of the form 
+     * @access private
+     * @var boolean TRUE (validated) or FALSE(not validated yet)
+     */
 	private $state;
 	
-	// Form anonymous (TRUE or FALSE)
+	/**
+	  * Form which can be filled by everybody 
+     * @access private
+     * @var boolean TRUE (anonymous) or FALSE(not anonymous)
+     */
 	private $anonymous;
 	
-	// Form printable (TRUE or FALSE)
+	/**
+	  * Form which can be printed
+     * @access private
+     * @var boolean TRUE (printable) or FALSE(not printable)
+     */
 	private $printable;
 	
-	// Form (Integer - Sets the number of times that the form can be answered)
+	/**
+	  * The number of answer accepted by a recipient.
+     * @access private
+     * @var integer number of allowed answers
+     */
 	private $maxAnswers;
 	
-	// Form dest-answers list (One list that contains four elements: one object user that is the recipient, one status, one object answer and formDestId)
+	/**
+	  * List of recipient for this form, for each recipient there are the status, the Answer and the formDestId associated.
+     * @access private
+     * @var array of User 
+     */
 	private $listRecipient;
 	
-	// Form elements list (The list of all elements of one form)
+	/**
+	 * List of elements of this formDestId
+	 * @access private
+	 * @var string (for now)
+	 */
 	private $formElements = array ();
 	
-	/* Constructor */
+	/** Constructor
+	 * Create a form, if already exist, find the information on the database to fill the attributes
+	 * @param integer $idForm the id's form default -1
+	 */
 	public function __construct($idForm = -1) {
 		if ($idForm == - 1)
 			$this->state = FALSE;
@@ -59,41 +96,41 @@ class Form {
 		}
 	}
 	
-	/*
-	 * id
-	 * Returns form's id
+	/**
+	 * Give the form's id
+	 * @return integer
 	 */
 	public function getId() {
 		return $this->id;
 	}
 	
-	/*
-	 * state
-	 * Returns form's status
+	/**
+	 * Give the form's state
+	 * @return boolean TRUE (validated) or FALSE(not validated yet)
 	 */
 	public function getState() {
 		return $this->state;
 	}
 	
-	/*
-	 * getCreator
-	 * Returns form's creator
+	/**
+	 * Give the form's creator
+	 * @return User
 	 */
 	public function getCreator() {
 		return $this->creator;
 	}
 	
-	/*
-	 * getMaxAnswers
-	 * Returns number of maximum answers by user
+	/**
+	 * Give the form's maxAnswers, the maximum of fill possibilities by one recipient
+	 * @return integer
 	 */
 	public function getMaxAnswers() {
 		return $this->maxAnswers;
 	}
 	
-	/*
-	 * getRecipient
-	 * Returns form's dest list
+	/**
+	 * Give all recipients of the form
+	 * @return array of User
 	 */
 	public function getRecipient() {
 		$recipients = array ();
@@ -104,29 +141,35 @@ class Form {
 	}
 	
 	/*
-	 * getPrintable
-	 * Returns if form is printable
+	 * Give printable variable
+	 * @return boolean true if printable, false if is not
 	 */
 	public function getPrintable() {
 		return $this->printable;
 	}
 	
 	/*
-	 * getAnonymous
-	 * Sets if form is anonymous
+	 * Give anonymous variable
+	 * @return boolean true if is anonymous, false if is not
 	 */
 	public function getAnonymous() {
 		return $this->anonymous;
 	}
 	
 	/*
-	 * getFormElements
-	 * Returns elements of the form
+	 * Give all elements of the form
+	 * @return array of elements
 	 */
 	public function getFormElements() {
 		return $this->formElements;
 	}
 	
+	/**
+	 * Give the list of recipient who have the status of its anwers equals to $state2
+	 * @param array of User $user_ids
+	 * @param integer $state2 state of answers
+	 * return array of User
+	 */
 	public function getListRecipient($user_ids = [], $state2 = -1){
 		$res = [];
 
@@ -143,55 +186,60 @@ class Form {
 		return $res;
 	}
 
-	/*  setCreator
-		Sets form's creator  */
+   /**
+    * Sets the creator of the form
+    * @param User $user
+    */
 	public function setCreator($user){
 		$this->creator = $user;
 	}
 	
-	/*
-	 * setPrintable
-	 * Sets if form is printable
-	 */
+	/**
+    * Sets the printable value
+    * @param boolean $isPrintable
+    */
 	public function setPrintable($isPrintable) {
 		$this->printable = $isPrintable;
 	}
 	
-	/*
-	 * setAnonymous
-	 * Sets if form is anonymous
-	 */
+	/**
+    * Sets the anonymous value
+    * @param boolean $isAnonymous
+    */
 	public function setAnonymous($isAnonymous) {
 		$this->anonymous = $isAnonymous;
 	}
 	
-	/*
-	 * setMaxAnswers
-	 * Sets MaxAnswers
+	/**
+	 * Set the maxAnswers value, number maximum of answers by a recipient
+	 * @param integer $maxAnswers
 	 */
 	public function setMaxAnswers($maxAnswers) {
 		$this->maxAnswers = $maxAnswers;
 	}
 	
-	/*
-	 * Use only on form create!
-	 * setRecipient
-	 * Sets form's dest list
+	/**
+	 * Give recipient to the form, if the form is already sent, the method will do nothing.
+	 * @param array of User $recipientList
 	 */
 	public function setRecipient($recipientList) {
-		$this->listRecipient = array ();
-		foreach ( $recipientList as $recipient ) {
-			$recipient = array (
-					"User" => $recipient,
-					"Status" => "False",
-					"Answer" => NULL,
-					"formDestId" => NULL 
-			);
-			array_push ( $this->listRecipient, $recipient );
+	   if (!$this->state) {
+		   $this->listRecipient = array ();
+		   foreach ( $recipientList as $recipient ) {
+			   $recipient = array (
+					   "User" => $recipient,
+					   "Status" => "False",
+					   "Answer" => NULL,
+					   "formDestId" => NULL 
+			   );
+			   array_push ( $this->listRecipient, $recipient );
+		   }
 		}
 	}
 	
-	/* save */
+	/**
+	 * Save the form on the database
+	 */
 	public function save() {
 		// Forms can be created or loaded
 		if($this->id == NULL) {			// Creates new form
@@ -229,14 +277,17 @@ class Form {
 									. $recipient["User"]->getId()
 									. ", 0)"
 			) or die('<br><strong>SQL Error (5)</strong>:<br>'.mysql_error());
-			// Preencher $this->listRecipient com o novo formdest
-			// (bitte französe sprechen !!!!!!!!!!!!!!!)
+			
 			$this->listRecipient[$key]["formDestId"] = mysql_insert_id();
 		}
 		
 		// Insert FormElements here...
 	}
 
+   /**
+    * Create answer for a user defined by $idUser
+    * @param integer $idUser
+    */
 	public function createAnswer($idUser) {
 	   mysql_query("INSERT INTO formdest(form_id, user_id, formdest_status) VALUES ("
 										. $this->id.","

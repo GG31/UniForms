@@ -28,7 +28,7 @@ $creas = $user->getCreatedForms ();
 				<td>Validé</td>
 				<td><a href="answers.php?form_id=<?php echo $crea->getId() ?>">Voir
 						résultats</a></td>
-			   <td><a href="deleteform.php?form_id=<?php echo $crea->getId() ?>" class="text-muted"> <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a></td>
+			   <td><a href="include/deleteform.php?form_id=<?php echo $crea->getId() ?>" class="text-muted"> <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a></td>
 			</tr>
 			<?php
 				} else {
@@ -37,7 +37,7 @@ $creas = $user->getCreatedForms ();
 				<td><?php echo $crea->getId() ?></td>
 				<td>Non validé</td>
 				<td><a href="createform.php?form_id=<?php echo $crea->getId() ?>">Modifier</a></td>
-				<td><a href="deleteform.php?form_id=<?php echo $crea->getId() ?>" class="text-muted"> <span  class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a> </td>
+				<td><a href="include/deleteform.php?form_id=<?php echo $crea->getId() ?>" class="text-muted"> <span  class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a> </td>
 			</tr>
 			<?php
 				}

@@ -306,7 +306,8 @@ class Form {
 		mysql_query ( "UPDATE form SET form_status = 1 WHERE form_id = " . $this->id ) or die ( '<br><strong>SQL Error (7)</strong>:<br>' . mysql_error () );
 	}
 	
-	/* Delete one form and all registers related to it in other tables (formdest, formelement, elementanswer, answervalue) */
+	/**
+	 * Delete one form and all registers related to it in other tables (formdest, formelement, elementanswer, answervalue) */
 	public function deleteForm(){
 		// Delete the form. All related to this form is deleted on cascade according to the definition of the foreign keys
 		mysql_query("DELETE FROM form WHERE form_id = ".$this->getId());

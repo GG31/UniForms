@@ -41,9 +41,10 @@
     function testConstruct1_State() {
       //Test State
       $Form = new Form(1);
-      $this->assertFalse($Form->getstate());
+      $this->assertTrue($Form->getstate());
     }
     
+    function testConstruct1_Printable() {
       //Test printable
       $Form = new Form(1);
       $this->assertFalse($Form->getprintable());

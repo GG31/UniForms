@@ -87,10 +87,18 @@ class Answer {
 	public function setRecipient($recipient){
 		$this->recipient = $recipient;
 	}
+	
+	// Created for the test (at the moment, there's no way to fill this array...)
+	public function setAnswers($answers){
+		 $this->answers = $answers;
+	}
 
-	/*
-		save
-	*/
+	// Get answers array
+	public function getAnswers(){
+		return $this->answers;
+	}
+	
+	/* save */
 	public function save(){
 		// Ans can be created or loaded
 		if($this->formDest == NULL) {			// Creates new ans
@@ -108,10 +116,11 @@ class Answer {
 			// (status is still 0, same form & dest)
 			mysql_query("DELETE FROM elementanswer WHERE form_dest = ".$this->formDest);
 		}
-
-		//Fill array answers and after...
-		foreach($this->answers as $answer){
-			mysql_query("INSERT INTO elementanswer (formelementid, formdestid) VALUES(".$answer["elementId"].",".$this->formDest.")");
+		
+		// Update tables elementanswer and answervalue
+		$answers = $this->getAnswers();
+		foreach($answers as $answer){
+			mysql_query("INSERT INTO elementanswer (formelement_id, formdest_id) VALUES(".$answer["elementId"].",".$this->getId().")");
 			$idElementAnswer = mysql_insert_id();	
 			mysql_query("INSERT INTO answervalue (value, elementanswer_id) VALUES(".$answer["value"].",".$idElementAnswer.")");			
 		}

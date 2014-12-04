@@ -3,13 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
-<title>Scenario de test</title>
+<link rel="selenium.base" href="http://localhost/phpmyadmin/" />
+<title>Test Reponse à un formulaire (avec un nombre max de reponse)</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Scenario de test</td></tr>
+<tr><td rowspan="1" colspan="3">Test Reponse à un formulaire (avec un nombre max de reponse)</td></tr>
 </thead><tbody>
 <tr>
 	<td>open</td>
@@ -28,43 +28,38 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//a[contains(text(),'Voir<br />						résultats')]</td>
+	<td>xpath=(//a[contains(text(),'Voir<br />						résultats')])[2]</td>
 	<td>Voir résultats</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Voir</td>
-	<td>Voir</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//a[contains(text(),'Next<br />					→')]</td>
-	<td>Next →</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//a[contains(text(),'↑<br />					Back ↑')]</td>
-	<td>↑ Back ↑</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Créer un formulaire</td>
-	<td>Créer un formulaire</td>
+	<td>link=Logout</td>
+	<td>Logout</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=multiple</td>
-	<td>3</td>
+	<td>name=login</td>
+	<td>Luis</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>id=user1</td>
+	<td>clickAndWait</td>
+	<td>css=button.btn.btn-default</td>
+	<td>Connection</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Nouvelle réponse</td>
+	<td>Nouvelle réponse</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=save</td>
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>id=user3</td>
-	<td></td>
+	<td>clickAndWait</td>
+	<td>xpath=(//a[contains(text(),'Modifier')])[2]</td>
+	<td>Modifier</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -79,7 +74,7 @@
 <tr>
 	<td>type</td>
 	<td>name=login</td>
-	<td>luis</td>
+	<td>Ayoub</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -88,23 +83,28 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
+	<td>xpath=(//a[contains(text(),'Voir<br />						résultats')])[2]</td>
+	<td>Voir résultats</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=UniForms</td>
+	<td>UniForms</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
 	<td>link=Logout</td>
 	<td>Logout</td>
 </tr>
 <tr>
 	<td>open</td>
-	<td>http://localhost/phpmyadmin/</td>
 	<td></td>
+	<td>http://localhost/phpmyadmin/</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
 	<td>link=uniforms</td>
 	<td>uniforms</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>id=uniforms.form</td>
-	<td>form</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -116,6 +116,7 @@
 	<td>http://localhost/e-formulaire/UniForms/index.php</td>
 	<td></td>
 </tr>
+
 </tbody></table>
 </body>
 </html>

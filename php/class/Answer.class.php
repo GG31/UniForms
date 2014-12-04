@@ -176,5 +176,12 @@ class Answer {
 		// Update status
 		mysql_query ( "UPDATE formdest SET formdest_status = 1 WHERE formdest_id = " . $this->formDest );
 	}
+	
+	// Delete all registers related to an answer and in the tables formdest, elementanswer, answervalue
+	public function deleteAnswer(){
+		// Delete the form. All related to this form is deleted on cascade according to the definition of the foreign keys
+		mysql_query("DELETE FROM formdest WHERE formdest_id = ".$this->getId());
+	}
+	
 }
 ?>

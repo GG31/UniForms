@@ -15,6 +15,7 @@ $creas = $user->getCreatedForms ();
 				<th>Form</th>
 				<th>Etat</th>
 				<th>Action</th>
+				<th>Supprimer</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -27,14 +28,16 @@ $creas = $user->getCreatedForms ();
 				<td>Validé</td>
 				<td><a href="answers.php?form_id=<?php echo $crea->getId() ?>">Voir
 						résultats</a></td>
+			   <td> <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </td>
 			</tr>
 			<?php
 				} else {
 					?>
 						<tr class="info">
-				<td><?php echo $crea->getId() ?></td>
+				<td><input type="checkbox"><?php echo $crea->getId() ?></td>
 				<td>Non validé</td>
 				<td><a href="createform.php?form_id=<?php echo $crea->getId() ?>">Modifier</a></td>
+				<td> <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </td>
 			</tr>
 			<?php
 				}

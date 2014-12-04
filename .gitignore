@@ -5,3 +5,4 @@ lib/bootstrap-3.3.1/css/
 lib/bootstrap-3.3.1/fonts/
 lib/bootstrap-3.3.1/js/
 test/simpletest/
+php/include/connect.php

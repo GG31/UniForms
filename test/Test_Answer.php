@@ -47,6 +47,10 @@ class TestOfAnswer extends UnitTestCase {
 		
 		$newAnswer->send();
 		$this->assertEqual($newAnswer->getState(), TRUE);
+		
+		$newAnswer->deleteAnswer();
+		$this->assertFalse(mysql_num_rows(mysql_query("SELECT * FROM formdest WHERE formdest_id = ".$newFormDestId)));
+		$this->assertFalse(mysql_num_rows(mysql_query("SELECT * FROM elementanswer WHERE formdest_id = ".$newFormDestId)));
 	}
 }
 ?>

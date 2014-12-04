@@ -2,6 +2,7 @@
 
   require_once('simpletest/autorun.php');
   require_once('/../php/include/connect.php');
+  
   require_once('/../php/class/Answer.class.php');
   require_once('/../php/class/User.class.php');
 

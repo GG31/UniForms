@@ -88,7 +88,7 @@
 		$form = new Form($form_id);
 		if($form->getAnonymous()){ // Anonymous allowed if anonymous form
 			return;
-	   }
+	    }
 	   
 	   //Si l'utilisateur est anonyme et formulaire non anonyme
 	   if ($_SESSION["user_id"] == 0) {

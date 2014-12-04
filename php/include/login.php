@@ -17,7 +17,6 @@ if (isset ( $_POST ["login"] )) { // AND isset ( $_POST["password"] )
 	if ($line != FALSE) { // Something were found
 	                    // Saving USER_ID & USER_NAME in SESSION
 		$_SESSION ['user_id'] = $line ["user_id"];
-		$_SESSION ['user_name'] = $line ["user_name"];
 		// Going HOME
 		header ( "Location: php/home.php" );
 	} else { // Nothing found

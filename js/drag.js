@@ -1,54 +1,107 @@
-var ids = 0;
-function dragStart(ev) {
-/*Le drag commence*/
-   ev.dataTransfer.effectAllowed='move';
-   //ev.dataTransfer.effectAllowed='move';
-   ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
-   //ev.dataTransfer.setDragImage(ev.target,0,0);
-   return true;
-}
-function dragEnter(ev) {
-/*L'utilisateur entre dans le d√©p√¥t*/
-   ev.target.style.border = "2px dashed #000";
-   event.preventDefault();
-   return true;
+	
+function newFormModel () {
+var
+	elt;
+	
+	elt= document.getElementById("x");
+	elt.addEventListener("dragstart", drag, false);
 }
 
-function dragLeave(ev){
-/*L'utilisateur quitte le d√©p√¥t*/
-    ev.target.style.border = "none";
+function newActions () {
+	alert("hello");
 }
 
-function dragOver(ev) {
-    ev.dataTransfer.dropEffect = "move";
-    ev.preventDefault();
-    return false;
+function valideNF (ev) {
+var
+	n;
+var
+	elt;
+
+alert(ev.target.id);
+	n=ev.target.id.substring(2);
+	elt= document.getElementById("nomForm" + n);
+	alert(elt.nodeValue);
+	if (elt.nodeValue == "") {
+		alert("vide");
+	} else {
+		alert("ok");
+	}
+	return false;
 }
-function dragDrop(ev) {
-/*Lach√© de l'√©l√©ment draggu√©*/
-   //ev.preventDefault();
-   var data=ev.dataTransfer.getData("Text");
-   
-   if (data<=ids) {
-     ev.target.appendChild(document.getElementById(data));
-   } else {
-  /* If you use DOM manipulation functions, their default behaviour it not to 
-     copy but to alter and move elements. By appending a ".cloneNode(true)", 
-     you will not move the original element, but create a copy. */
-     var elmnt = document.getElementById(data)
-     var nodeCopy = elmnt.cloneNode(true);
-     nodeCopy.id = ids; /* We cannot use the same ID */
-     nodeCopy.text = ids;
-     var name = elmnt.getAttribute("name");
-     nodeCopy.setAttribute("name", name + "_" + ids);
-     nodeCopy.removeEventListener("ondragover", dragOver, false);
-     ev.target.appendChild(nodeCopy);
-     ids = ids+1;
-   }
-   ev.target.style.background = "white";
-   ev.target.style.border = "none";
-   ev.preventDefault();
-   ev.stopPropagation();
-   
-   return false;
+
+function drag(ev)
+{
+  var
+     x, y;
+  var
+     s;
+  x= ev.clientX - ev.target.offsetLeft;
+  y= ev.clientY - ev.target.offsetTop;
+  s= ev.target.id + "/" + x + "/" + y;
+  ev.dataTransfer.setData("Text", s);
 }
+
+function allowDrop(ev)
+{
+  ev.preventDefault();
+}
+
+function drop(ev)
+{
+	var 
+		datas;
+	var	decX= 0;
+	var decY= 0;
+	var	elt;
+	var dup;
+	var id;
+	
+  // On empeche l'action par dÈfaut du drop, ouvrir un lien
+  ev.preventDefault();
+  // On rÈcupËre l'information transmise par le drop, ici l'id de l'ÈlÈment dragger
+  datas=ev.dataTransfer.getData("Text");
+  datas=datas.split("/");
+// On rÈcupËre l'ÈlÈment dragger
+  elt= document.getElementById(datas[0]);
+  if (elt) {
+  	// Elt de la fenetre de depart
+// On le duplique
+  	dup= elt.cloneNode(true);
+// On met un nouvel id ‡ ce nouveau noeud
+  	dup.id="new";
+  	decX= ev.clientX - datas[1];
+  	decY= ev.clientY - datas[2];
+  	dup.style.position="absolute";
+  	dup.style.top= "" + decY + "px";
+  	dup.style.left= "" + decX + "px";
+  	dup.setAttribute("draggable", "true");
+  	dup.addEventListener("dragstart", drag, false);
+	// On l'ajoute
+  	ev.target.appendChild(dup);
+  } else {
+  	// DnD dans la fenetre de construction
+  	elt= document.getElementById(datas[0]);
+  	decX= ev.clientX - datas[1];
+  	decY= ev.clientY - datas[2];
+  	elt.style.position="absolute";
+  	elt.style.top= "" + decY + "px";
+  	elt.style.left= "" + decX + "px";
+  }
+}
+
+function send () {
+var 
+	form;
+var
+	newElt;
+	
+	newElt= document.createElement("input");
+	newElt.setAttribute("type", "hidden");
+	newElt.setAttribute("id", "info");
+	newElt.nodeValue=document.getElementById("panneau").innerHTML;
+	
+	form= document.getElementById("send");
+	form.appendChild(newElt);
+	form.submit();
+}
+

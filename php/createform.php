@@ -55,7 +55,7 @@
 	        });
 		</script>
 	</head>
-	<body>
+	<body onload="newFormModel();">
 		<div class="container">
 			<?php include 'include/header.php'; ?>
 			<?php include 'include/nav.php'; ?>
@@ -167,17 +167,16 @@
 							</h3>
 						</div>
 						<div class="panel-body">
-						
 						<div class="panel panel-default">
+						
                      <div class="panel-body col-sm-8">
-                        <div id="destinationDraggables" class="zoneDrop" name="zoneDrop" ondragenter="return dragEnter(event)" 
-        ondrop="return dragDrop(event)" 
-        ondragover="return dragOver(event)" ondragleave="return dragLeave(event)"></div>
+                        <div id="panneau" ondrop="drop(event)" ondragover="allowDrop(event)">x</div>
+                        
                      </div>
                      <div class="col-sm-2">
             
-                        <div id="draggable" class="draggable" draggable="true" ondragstart="return dragStart(event)"><input type="checkbox" name="checkbox">Checkbox</div>
-                        <div id="draggable2" class="draggable" draggable="true" ondragstart="return dragStart(event)"><input type="textbox" name="textBox"></div>
+                        <div class="draggable" id="x" draggable="true"><input id="ligneTexte" name="ligneTexte"
+        type="text"></div>
                         
                      </div> 
                   </div>

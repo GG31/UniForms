@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 05 Décembre 2014 à 09:36
+-- Généré le :  Ven 05 Décembre 2014 à 09:59
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -295,14 +295,14 @@ INSERT INTO `user` (`user_id`, `user_name`) VALUES
 -- Contraintes pour la table `answervalue`
 --
 ALTER TABLE `answervalue`
-  ADD CONSTRAINT `fk_answervalue_elementanswer1` FOREIGN KEY (`elementanswer_id`) REFERENCES `elementanswer` (`elementanswer_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_answervalue_elementanswer` FOREIGN KEY (`elementanswer_id`) REFERENCES `elementanswer` (`elementanswer_id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `elementanswer`
 --
 ALTER TABLE `elementanswer`
-  ADD CONSTRAINT `fk_formanswers_formdest1` FOREIGN KEY (`formdest_id`) REFERENCES `formdest` (`formdest_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_formanswers_formlist1` FOREIGN KEY (`formelement_id`) REFERENCES `formelement` (`formelement_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_elementanswer_formelement` FOREIGN KEY (`formelement_id`) REFERENCES `formelement` (`formelement_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_elementanswer_formdest` FOREIGN KEY (`formdest_id`) REFERENCES `formdest` (`formdest_id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `form`

@@ -173,16 +173,17 @@
                         </div>
                      </div>
                      <div class="col-sm-2">
-                        <div class="draggable" id="draggable1" draggable="true"><input id="ligneTexte" name="ligneTexte"
+                        <div class="draggable" id="draggable1" draggable="true"><input id="ligneTexte" name="input_text"
   type="text" class="form-control"></div>
   
   
                         <div class="input-group draggable" id="draggable2" draggable="true">
                            <span class="input-group-addon">
-                              <input type="checkbox" id="lignecheck" name="ligneTexte">
+                              <input type="checkbox" id="lignecheck" name="input_checkbox">
                            </span>
-                           <input type="text" class="form-control">
+                           <input type="text" class="form-control" name="input_text">
                         </div>
+                        <input id="info" name="info" type="hidden">
                      
 		               </div>
 						</div>
@@ -197,6 +198,7 @@
 							value="Enregistrer"
 							name="save"
 							form="formulaire"
+							onclick="send()"
 							<?php echo $form->getState() ? "DISABLED" : "" ?>
 							>
 						<input
@@ -205,6 +207,7 @@
 							value="Valider"
 							name="send"
 							form="formulaire"
+							onclick="send()"
 							<?php echo $form->getState() ? "DISABLED" : "" ?>
 							>
 					</div>

@@ -1,3 +1,4 @@
+var inputList = [];
 var ids = 0;
 var
 	elt;
@@ -75,6 +76,7 @@ function drop(ev)
       elt.style.position="absolute";
       elt.style.top= "" + decY + "px";
       elt.style.left= "" + decX + "px";
+      inputList[elt.getAttribute("name")] = elt.innerHTML;
    } else {
       // Elt de la fenetre de depart
       // On le duplique
@@ -86,27 +88,44 @@ function drop(ev)
       dup.style.position = "absolute";
       dup.style.top = "" + decY + "px";
       dup.style.left = "" + decX + "px";
+      dup.setAttribute("name", "element_"+ids);
       dup.setAttribute("draggable", "true");
+      
+      //inputList["element_"+ids] = dup.innerHTML;
+      //inputList[] = dup.id;
+      inputList.push(dup.id);
+      
       dup.addEventListener("dragstart", drag, false);
       // On l'ajoute
       ev.target.appendChild(dup);
       ids = ids + 1;
    }
+   //document.getElementById("info").value = inputList.toString();
+   send();
 }
 
 function send () {
 var 
-	form;
-var
-	newElt;
+	e;
 	
-	newElt= document.createElement("input");
-	newElt.setAttribute("type", "hidden");
-	newElt.setAttribute("id", "info");
-	newElt.nodeValue=document.getElementById("panneau").innerHTML;
+	//newElt= document.createElement("input");
+	//newElt.setAttribute("type", "hidden");
+	//newElt.setAttribute("id", "info");
+	//newElt.setAttribute("name", "info");
+	/*var chaine = "";
+	for(var valeur in inputList){
+	   chaine = chaine + '{' + valeur + '$' + inputList[valeur] + '}';
+     //document.write(valeur + ' : ' + inputList[valeur] + '  ');
+   }*/
+   /*var chaine = "";
+   for (i = 0; i < inputList.length; i++) {
+      e = document.getElementById(inputList[i]);
+      chaine = chaine + '{' + e.getAttribute("name") + "$" + e.innerHTML + '}';
+   }*/
+	document.getElementById("info").value = document.getElementById("panneau").innerHTML;//document.getElementById("panneau").innerHTML;
 	
-	form= document.getElementById("send");
-	form.appendChild(newElt);
-	form.submit();
+	//form= document.getElementById("send");
+	//form.appendChild(newElt);
+	//form.submit();
 }
 

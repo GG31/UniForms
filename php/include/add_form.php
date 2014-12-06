@@ -47,6 +47,9 @@ if (! empty ( $_POST )) {
 	
 	$form->setRecipient ( $recipients );
 	
+	/* Elements */
+   //var_dump($_POST['info']);
+	
 	/*
 	 * Actions
 	 */

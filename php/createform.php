@@ -31,7 +31,7 @@
 
 		<script src="../lib/jquery-2.1.1/min.js"></script>
 		<script src="../lib/bootstrap-3.3.1/js/min.js"></script>
-		<script src="../js/drag.js"></script>
+		
 		<script>
 			$(document).ready(function(){
 				$('#anon').on('change', function() {
@@ -55,7 +55,7 @@
 	        });
 		</script>
 	</head>
-	<body onload="newFormModel();">
+	<body>
 		<div class="container">
 			<?php include 'include/header.php'; ?>
 			<?php include 'include/nav.php'; ?>
@@ -157,49 +157,38 @@
 					</div>
 				</div>
 				
-			<div class="row">
-				<div>
+         <div class="row">
+			   <div>
 					<!-- class="col-sm-10" -->
 					<div class="panel panel-primary">
-						<div class="panel-heading text-center text-capitalize">
-							<h3 class="panel-title">
+					   <div class="panel-heading text-center text-capitalize">
+						   <h3 class="panel-title">
 								<strong>Formulaire</strong>
 							</h3>
 						</div>
 						<div class="panel-body">
-						<div class="panel panel-default">
-						
-                     <div class="panel-body col-sm-8">
-                        <div id="panneau" ondrop="drop(event)" ondragover="allowDrop(event)">x</div>
-                        
+						   <div class="panel panel-default col-sm-8">
+						      <div class="panel-body">
+                           <div id="panneau" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                        </div>
                      </div>
                      <div class="col-sm-2">
-            
-                        <div class="draggable" id="x" draggable="true"><input id="ligneTexte" name="ligneTexte"
-        type="text"></div>
-                        
-                     </div> 
-                  </div>
-		
+                        <div class="draggable" id="draggable1" draggable="true"><input id="ligneTexte" name="ligneTexte"
+  type="text" class="form-control"></div>
+  
+  
+                        <div class="input-group draggable" id="draggable2" draggable="true">
+                           <span class="input-group-addon">
+                              <input type="checkbox" id="lignecheck" name="ligneTexte">
+                           </span>
+                           <input type="text" class="form-control">
+                        </div>
+                     
+		               </div>
 						</div>
 					</div>
-					<!--<div class="col-sm-2">
-						<div class="panel panel-primary">
-							<div class="panel-heading text-center text-capitalize">
-								<h3 class="panel-title">
-									<B>Éléments</B>
-								</h3>
-							</div>
-							<div class="panel-body">
-								Text<br>
-								Paragraphe<br>
-								Liste<br>
-								...
-							</div>
-						</div>
-					</div>-->
 				</div>
-				<div class="row">
+				<div class="row" onload="newFormModel();">
 					<div class="col-sm-offset-3 col-sm-6">
 						<input type="hidden" name="form_id" value=<?php echo $form_id ?>>
 						<input
@@ -225,3 +214,4 @@
 	    </div>
 	</body>
 </html>
+<script src="../js/drag.js"></script>

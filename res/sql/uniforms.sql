@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 05 Décembre 2014 à 09:36
+-- Généré le :  Sam 06 Décembre 2014 à 17:50
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -149,6 +149,21 @@ INSERT INTO `elementanswer` (`elementanswer_id`, `formelement_id`, `formdest_id`
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `elementoption`
+--
+
+DROP TABLE IF EXISTS `elementoption`;
+CREATE TABLE IF NOT EXISTS `elementoption` (
+  `elementoption_id` int(11) NOT NULL AUTO_INCREMENT,
+  `optionvalue` varchar(255) NOT NULL DEFAULT '0',
+  `optionordre` int(11) NOT NULL DEFAULT '0',
+  `optiondefault` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`elementoption_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `form`
 --
 
@@ -163,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `form` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`form_id`),
   KEY `fk_form_user_idx` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Contenu de la table `form`
@@ -177,8 +192,7 @@ INSERT INTO `form` (`form_id`, `form_name`, `form_status`, `form_anonymous`, `fo
 (5, NULL, 1, 0, 1, 1, 1),
 (6, NULL, 1, 0, 1, 3, 1),
 (7, NULL, 0, 0, 1, 2, 1),
-(8, NULL, 0, 0, 0, 1, 1),
-(9, NULL, 0, 0, 0, 1, 1);
+(8, NULL, 0, 0, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -195,7 +209,7 @@ CREATE TABLE IF NOT EXISTS `formdest` (
   PRIMARY KEY (`formdest_id`),
   KEY `fk_formdest_user1_idx` (`user_id`),
   KEY `fk_formdest_form1_idx` (`form_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=92 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=90 ;
 
 --
 -- Contenu de la table `formdest`
@@ -236,9 +250,7 @@ INSERT INTO `formdest` (`formdest_id`, `formdest_status`, `user_id`, `form_id`) 
 (69, 1, 1, 4),
 (72, 1, 1, 4),
 (88, 0, 2, 8),
-(89, 0, 3, 8),
-(90, 0, 2, 9),
-(91, 0, 3, 9);
+(89, 0, 3, 8);
 
 -- --------------------------------------------------------
 
@@ -251,6 +263,15 @@ CREATE TABLE IF NOT EXISTS `formelement` (
   `formelement_id` int(11) NOT NULL AUTO_INCREMENT,
   `type_element` int(11) DEFAULT NULL,
   `form_id` int(11) NOT NULL,
+  `x` int(11) NOT NULL,
+  `y` int(11) NOT NULL,
+  `default` varchar(255) DEFAULT NULL,
+  `required` tinyint(1) DEFAULT '0',
+  `width` int(11) DEFAULT NULL,
+  `height` int(11) DEFAULT NULL,
+  `placeholder` varchar(255) DEFAULT NULL,
+  `direction` tinyint(1) DEFAULT '0',
+  `isbiglist` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`formelement_id`),
   KEY `fk_formlist_form1_idx` (`form_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
@@ -259,9 +280,9 @@ CREATE TABLE IF NOT EXISTS `formelement` (
 -- Contenu de la table `formelement`
 --
 
-INSERT INTO `formelement` (`formelement_id`, `type_element`, `form_id`) VALUES
-(1, NULL, 1),
-(2, NULL, 1);
+INSERT INTO `formelement` (`formelement_id`, `type_element`, `form_id`, `x`, `y`, `default`, `required`, `width`, `height`, `placeholder`, `direction`, `isbiglist`) VALUES
+(1, NULL, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, 0),
+(2, NULL, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -295,14 +316,14 @@ INSERT INTO `user` (`user_id`, `user_name`) VALUES
 -- Contraintes pour la table `answervalue`
 --
 ALTER TABLE `answervalue`
-  ADD CONSTRAINT `fk_answervalue_elementanswer1` FOREIGN KEY (`elementanswer_id`) REFERENCES `elementanswer` (`elementanswer_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_answervalue_elementanswer` FOREIGN KEY (`elementanswer_id`) REFERENCES `elementanswer` (`elementanswer_id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `elementanswer`
 --
 ALTER TABLE `elementanswer`
-  ADD CONSTRAINT `fk_formanswers_formdest1` FOREIGN KEY (`formdest_id`) REFERENCES `formdest` (`formdest_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_formanswers_formlist1` FOREIGN KEY (`formelement_id`) REFERENCES `formelement` (`formelement_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_elementanswer_formdest` FOREIGN KEY (`formdest_id`) REFERENCES `formdest` (`formdest_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_elementanswer_formelement` FOREIGN KEY (`formelement_id`) REFERENCES `formelement` (`formelement_id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `form`

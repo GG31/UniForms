@@ -56,14 +56,14 @@ function drop(ev)
    var dup;
    var id;
 
-   // On empeche l'action par défaut du drop, ouvrir un lien
+   // On empeche l'action par dÃ©faut du drop, ouvrir un lien
    ev.preventDefault();
-   // On récupère l'information transmise par le drop, ici l'id de l'élément dragger
+   // On rÃ©cupÃ¨re l'information transmise par le drop, ici l'id de l'Ã©lÃ©ment dragger
    datas = ev.dataTransfer.getData("Text");
    //document.write("datas " + datas + "<br>");
    datas = datas.split("/");
    //document.write("data split " + datas + "<br>");
-   // On récupère l'élément dragger
+   // On rÃ©cupÃ¨re l'Ã©lÃ©ment dragger
    elt= document.getElementById(datas[0]);
    //document.write("data[0] " + datas[0] + "<br>");
    if (datas[0]<=elt) {
@@ -81,7 +81,7 @@ function drop(ev)
       // Elt de la fenetre de depart
       // On le duplique
       dup = elt.cloneNode(true);
-      // On met un nouvel id à ce nouveau noeud
+      // On met un nouvel id Ã  ce nouveau noeud
       dup.id = ids;
       decX = ev.clientX - datas[1];
       decY = ev.clientY - datas[2];
@@ -128,4 +128,3 @@ var
 	//form.appendChild(newElt);
 	//form.submit();
 }
-

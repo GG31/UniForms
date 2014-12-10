@@ -173,15 +173,15 @@
                         </div>
                      </div>
                      <div class="col-sm-2">
-                        <div class="draggable" id="draggable1" draggable="true"><input id="ligneTexte" name="input_text"
-  type="text" class="form-control"></div>
+                        <div class="draggable" id="draggable1" draggable="true"><input name="input_text"
+  type="text" class="form-control" onchange="onChange(event, this.value)" value="fuck"></div>
   
   
                         <div class="input-group draggable" id="draggable2" draggable="true">
                            <span class="input-group-addon">
-                              <input type="checkbox" id="lignecheck" name="input_checkbox">
+                              <input type="checkbox" name="input_checkbox" onchange="onChange(event, this.value)">
                            </span>
-                           <input type="text" class="form-control" name="input_text">
+                           <input type="text" class="form-control" name="input_text" onchange="onChange(event, this.value)" value="">
                         </div>
                         <input id="info" name="info" type="hidden">
                      

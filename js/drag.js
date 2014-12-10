@@ -88,6 +88,7 @@ function drop(ev)
       dup.style.position = "absolute";
       dup.style.top = "" + decY + "px";
       dup.style.left = "" + decX + "px";
+      //dup.setAttribute("onchange", "onChange("+ids+",this.value)");
       dup.setAttribute("name", "element_"+ids);
       dup.setAttribute("draggable", "true");
       
@@ -127,5 +128,12 @@ var
 	//form= document.getElementById("send");
 	//form.appendChild(newElt);
 	//form.submit();
+}
+
+function onChange(ev, value) {
+   ev.currentTarget.innerHTML = "lol";
+   //alert(ev.currentTarget.value + " " + value);
+   //ev.setAttribute("value", value);
+   //alert(value);
 }
 

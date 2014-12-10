@@ -48,7 +48,7 @@ if (! empty ( $_POST )) {
 	$form->setRecipient ( $recipients );
 	
 	/* Elements */
-   //var_dump($_POST['info']);
+   var_dump($_POST['info']);
 	
 	/*
 	 * Actions
@@ -59,6 +59,6 @@ if (! empty ( $_POST )) {
 	if (isset ( $_POST ['send'] )) {
 		$form->send ();
 	}
-	header ( "Location: ../home.php" );
+	//header ( "Location: ../home.php" );
 }
 ?>

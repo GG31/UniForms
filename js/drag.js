@@ -1,5 +1,11 @@
+$('#inputValueGroup').hide();
+$('#checkboxRequiredGroup').hide();
+var label = ["value"];
+var textbox = ["required"];
 var inputList = [];
+var elementList = [];
 var ids = 0;
+var currentElement;
 var
 	elt;
 	
@@ -56,14 +62,14 @@ function drop(ev)
    var dup;
    var id;
 
-   // On empeche l'action par défaut du drop, ouvrir un lien
+   // On empeche l'action par dÃ©faut du drop, ouvrir un lien
    ev.preventDefault();
-   // On récupère l'information transmise par le drop, ici l'id de l'élément dragger
+   // On rÃ©cupÃ¨re l'information transmise par le drop, ici l'id de l'Ã©lÃ©ment dragger
    datas = ev.dataTransfer.getData("Text");
    //document.write("datas " + datas + "<br>");
    datas = datas.split("/");
    //document.write("data split " + datas + "<br>");
-   // On récupère l'élément dragger
+   // On rÃ©cupÃ¨re l'Ã©lÃ©ment dragger
    elt= document.getElementById(datas[0]);
    //document.write("data[0] " + datas[0] + "<br>");
    if (datas[0]<=elt) {
@@ -81,21 +87,24 @@ function drop(ev)
       // Elt de la fenetre de depart
       // On le duplique
       dup = elt.cloneNode(true);
-      // On met un nouvel id à ce nouveau noeud
+      // On met un nouvel id Ã  ce nouveau noeud
       dup.id = ids;
-      decX = ev.clientX - datas[1];
-      decY = ev.clientY - datas[2];
+      decX = datas[1];
+      decY = datas[2];
       dup.style.position = "absolute";
       dup.style.top = "" + decY + "px";
       dup.style.left = "" + decX + "px";
       //dup.setAttribute("onchange", "onChange("+ids+",this.value)");
       dup.setAttribute("name", "element_"+ids);
       dup.setAttribute("draggable", "true");
+      dup.firstChild.id = "child_" + ids;
       
       //inputList["element_"+ids] = dup.innerHTML;
       //inputList[] = dup.id;
       inputList.push(dup.id);
-      
+      var newElement = new Object();
+      newElement.id = "child_" + ids;
+      elementList[newElement.id] = newElement;
       dup.addEventListener("dragstart", drag, false);
       // On l'ajoute
       ev.target.appendChild(dup);
@@ -137,3 +146,39 @@ function onChange(ev, value) {
    //alert(value);
 }
 
+$( "#panneau" ).click(function(e) {
+//alert( "Handler for .click() called." );
+   hideAll();
+   var el= e.target||e.srcElement;
+   //alert (el.id);
+   //alert ($('#child_0').attr('type'));
+   currentElement = el.id;
+   //alert($("#"+el.id).is("input"));
+   //alert ($("#"+el.id).attr('type'));
+   if($("#"+el.id).is("input")) {
+      // Si input
+      if ($("#"+el.id).attr('type') == 'text') {
+         // Si Textbox
+         $('#checkboxRequiredGroup').show();
+         $('#checkboxRequired').prop('checked', elementList[currentElement].required);
+      }
+   }else if($("#"+el.id).is("span")) {
+      // Si label
+      $('#inputValueGroup').show();
+      $('#inputValue').val(elementList[currentElement].value);
+   }
+});
+
+$( "#checkboxRequired" ).click(function(e) {
+   elementList[currentElement].required = $('#checkboxRequired').is(':checked');
+});
+
+$('#inputValue').change(function() {
+   $("#"+currentElement).text($('#inputValue').val());
+   elementList[currentElement].value = $('#inputValue').val();
+});
+
+function hideAll() {
+   $('#inputValueGroup').hide();
+   $('#checkboxRequiredGroup').hide();
+}

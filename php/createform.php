@@ -172,19 +172,34 @@
                            <div id="panneau" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
                         </div>
                      </div>
-                     <div class="col-sm-2">
+                     <div class="col-sm-4">
+                        <div class="draggable" id="draggable3" draggable="true"><span>Text</span></div>
+                        
                         <div class="draggable" id="draggable1" draggable="true"><input name="input_text"
   type="text" class="form-control" onchange="onChange(event, this.value)" value="fuck"></div>
+  <div class="draggable" id="draggable4" draggable="true"><input type="radio"> <span>radio<span></div>
   
   
-                        <div class="input-group draggable" id="draggable2" draggable="true">
-                           <span class="input-group-addon">
-                              <input type="checkbox" name="input_checkbox" onchange="onChange(event, this.value)">
-                           </span>
-                           <input type="text" class="form-control" name="input_text" onchange="onChange(event, this.value)" value="">
-                        </div>
+  
+                        <!--<div class="input-group draggable checkbox" id="draggable2" draggable="true">
+                          <label>
+                            <input type="checkbox"> Check me out
+                          </label>
+                        </div>-->
+                        
                         <input id="info" name="info" type="hidden">
                      
+                        <div class="panel panel-default">
+                          <div id="divDetail" class="panel-body">
+                            <div id="checkboxRequiredGroup">
+                              <input type="Checkbox" id="checkboxRequired"> Required
+                            </div>
+                            <div id="inputValueGroup">
+                            Value <input type="Text" id="inputValue">
+                            </div>
+                            
+                          </div>
+                        </div>
 		               </div>
 						</div>
 					</div>

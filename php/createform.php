@@ -176,8 +176,8 @@
                         <div class="draggable" id="draggable3" draggable="true"><span>Text</span></div>
                         
                         <div class="draggable" id="draggable1" draggable="true"><input name="input_text"
-  type="text" class="form-control" onchange="onChange(event, this.value)" value="fuck"></div>
-  <div class="draggable" id="draggable4" draggable="true"><input type="radio"> <span>radio<span></div>
+  type="text" class="form-control" onchange="onChange(event, this.value)"></div>
+                        <div class="draggable" id="draggable4" draggable="true"><input type="radio"> <span>radio<span></div>
   
   
   
@@ -196,6 +196,13 @@
                             </div>
                             <div id="inputValueGroup">
                             Value <input type="Text" id="inputValue">
+                            </div>
+                            <div id="radioGroup">
+                            Values <button type="button" id="moreRadio" class="btn btn-default btn-lg">
+  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+</button>
+<br><div><input type="Text" class="radioValue"></div><br>
+                            
                             </div>
                             
                           </div>

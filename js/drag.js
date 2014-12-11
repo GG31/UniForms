@@ -97,6 +97,8 @@ function drop(ev)
       dup.setAttribute("name", "element_"+ids);
       dup.setAttribute("draggable", "true");
       dup.firstChild.id = "child_" + ids;
+     
+         //dup.firstChild.attr("name",dup.firstChild.id);
       
       //inputList["element_"+ids] = dup.innerHTML;
       //inputList[] = dup.id;
@@ -168,22 +170,61 @@ $('#inputValue').change(function() {
 });
 
 $('#moreRadio').click(function() {
-   var newTextBoxDiv = $(document.createElement('div'));
- 
-	newTextBoxDiv.after().html('<div><input type="Text" class="radioValue_'+elementList[currentElement].id+'"></div><br>');
- 
-	newTextBoxDiv.appendTo("#radioGroup");
+   var nb = $("input[name="+currentElement+"]").length;
+   var newTextBoxDiv = $('<br><div><input type="Text" class="radioValue" id="radioValue_'+currentElement+'_'+$("input[name="+currentElement+"]").length+'" onchange="radioValueChange('+nb+')"></div>');
+	$("#radioGroup").append(newTextBoxDiv);
+	
+    var te = $('<br><input type="radio" name="'+currentElement+'"> <span>radio<span>');
+	$("#"+elementList[currentElement].id).append(te);
+});
+
+function radioValueChange(nb) {
+   //alert("change "+currentElement + " "+ nb + " " +$('#radioValue_'+currentElement+'_'+nb).val());
+   elementList[currentElement].value[nb] = $('#radioValue_'+currentElement+'_'+nb).val();
+}
+
+$('#inputNumberMin').change(function() {
+   //alert($("#"+currentElement).next().text("haha"));
+   elementList[currentElement].min = $('#inputNumberMin').val();
+});
+$('#inputNumberMax').change(function() {
+   //alert($("#"+currentElement).next().text("haha"));
+   elementList[currentElement].max = $('#inputNumberMax').val();
 });
 
 function hideAll() {
    $('#inputValueGroup').hide();
    $('#checkboxRequiredGroup').hide();
    $('#radioGroup').hide();
+   $('#inputNumberGroup').hide();
 }
 
 function updatePanelDetail() {
    hideAll();
-   if($("#"+currentElement).is("input")) {
+   //alert(currentElement);
+   if($("#"+currentElement).is("fieldset")){
+      $('#radioGroup').show();
+      $("#"+currentElement).children().attr("name", currentElement);
+      $("#radioValue_0").attr("id", 'radioValue_'+currentElement+'_0');
+      alert(currentElement);
+      if(!elementList[currentElement].hasOwnProperty("value")) {
+         elementList[currentElement].value = [];
+         elementList[currentElement].value[0] = "";
+      }
+      $(".radioValue").next().remove();
+      $(".radioValue").remove();
+      for (var i = 0; i<elementList[currentElement].value.length; i++) {
+         var newTextBoxDiv = $('<input type="Text" class="radioValue" id="radioValue_'+currentElement+'_'+i+'" onchange="radioValueChange('+$("input[name="+currentElement+"]").length+')" value="'+elementList[currentElement].value[i]+'"><br>');
+	      $("#radioGroup").append(newTextBoxDiv);
+	      //$("#"+currentElement).child(i).next().text(elementList[currentElement].value[i]);
+	      
+      }
+   } else if($("#"+currentElement).is("textarea")){//Ne marche pas
+      $('#checkboxRequiredGroup').show();
+      $("#"+currentElement).children().attr("name", currentElement);
+      $('#checkboxRequired').prop('checked', elementList[currentElement].required);
+   }
+   else if($("#"+currentElement).is("input")) {
       // Si input
       if ($("#"+currentElement).attr('type') == 'text') {
          // Si Textbox
@@ -191,7 +232,14 @@ function updatePanelDetail() {
          $('#checkboxRequired').prop('checked', elementList[currentElement].required);
       } else if($("#"+currentElement).attr('type') == 'radio') {
          //Si radio button
-         $('#radioGroup').show();
+         //$('#radioGroup').show();
+         //alert("oo");
+         
+      } else if($("#"+currentElement).attr('type') == 'number') {
+         //Si radio button
+         $('#inputNumberGroup').show();
+         $('#inputNumberMin').val(elementList[currentElement].min);
+         $('#inputNumberMax').val(elementList[currentElement].max);
       }
    }else if($("#"+currentElement).is("span")) {
       // Si label

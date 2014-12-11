@@ -169,15 +169,20 @@
 						<div class="panel-body">
 						   <div class="panel panel-default col-sm-8">
 						      <div class="panel-body">
-                           <div id="panneau" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                           <div id="panneau" ondrop="drop(event)" ondragover="allowDrop(event)">
+                           </div>
                         </div>
                      </div>
                      <div class="col-sm-4">
-                        <div class="draggable" id="draggable3" draggable="true"><span>Text</span></div>
+                        <div class="draggable" id="draggableLabel" draggable="true"><span>Text</span></div>
+                        <div class="draggable" id="draggableNumber" draggable="true"><input type="number"></div>
+                        <!--<div class="draggable" id="draggableTextarea" draggable="true"> <textarea class="textarea" rows="4" cols="40">
+</textarea> </div>
+<div class="draggable" id="draggableDate" draggable="true"><input type="date"></div>-->
                         
                         <div class="draggable" id="draggable1" draggable="true"><input name="input_text"
   type="text" class="form-control" onchange="onChange(event, this.value)"></div>
-                        <div class="draggable" id="draggable4" draggable="true"><input type="radio"> <span>radio<span></div>
+                        <div class="draggable" id="draggable4" draggable="true"><fieldset><input type="radio"> <span>radio<span></fieldset></div>
   
   
   
@@ -197,11 +202,15 @@
                             <div id="inputValueGroup">
                             Value <input type="Text" id="inputValue">
                             </div>
+                            <div id="inputNumberGroup">
+                            Min <input type="number" id="inputNumberMin"><br>
+                            Max <input type="number" id="inputNumberMax">
+                            </div>
                             <div id="radioGroup">
                             Values <button type="button" id="moreRadio" class="btn btn-default btn-lg">
   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 </button>
-<br><div><input type="Text" class="radioValue"></div><br>
+<br><div><input type="Text" class="radioValue" id="radioValue_0" onchange="radioValueChange(0)"></div><br>
                             
                             </div>
                             

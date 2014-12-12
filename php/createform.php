@@ -229,7 +229,7 @@
 							value="Enregistrer"
 							name="save"
 							form="formulaire"
-							onclick="send()"
+							onclick="sendJson()"
 							<?php echo $form->getState() ? "DISABLED" : "" ?>
 							>
 						<input
@@ -238,7 +238,7 @@
 							value="Valider"
 							name="send"
 							form="formulaire"
-							onclick="send()"
+							onclick="sendJson()"
 							<?php echo $form->getState() ? "DISABLED" : "" ?>
 							>
 					</div>

@@ -1,7 +1,6 @@
 hideAll();
 var label = ["value"];
 var textbox = ["required"];
-var inputList = [];
 var elementList = {};
 var ids = 0;
 var currentElement;
@@ -71,17 +70,16 @@ function drop(ev)
    // On récupère l'élément dragger
    elt= document.getElementById(datas[0]);
    //document.write("data[0] " + datas[0] + "<br>");
+   //alert(currentElement + " " + datas[0]);
    if (datas[0]<=elt) {
       // DnD dans la fenetre de construction
       elt = document.getElementById(datas[0]);
-      //decX = ev.clientX - datas[1];
-      //decY = ev.clientY - datas[2];
       decX = ev.clientX - datas[1];
       decY = ev.clientY - datas[2];
       elt.style.position="absolute";
       elt.style.top= "" + decY + "px";
       elt.style.left= "" + decX + "px";
-      inputList[elt.getAttribute("name")] = elt.innerHTML;
+      currentElement = elt.firstChild.id;
    } else {
       // Elt de la fenetre de depart
       // On le duplique
@@ -93,16 +91,10 @@ function drop(ev)
       dup.style.position = "absolute";
       dup.style.top = "" + decY + "px";
       dup.style.left = "" + decX + "px";
-      //dup.setAttribute("onchange", "onChange("+ids+",this.value)");
       dup.setAttribute("name", "element_"+ids);
       dup.setAttribute("draggable", "true");
       dup.firstChild.id = "child_" + ids;
-     
-         //dup.firstChild.attr("name",dup.firstChild.id);
-      
-      //inputList["element_"+ids] = dup.innerHTML;
-      //inputList[] = dup.id;
-      inputList.push(dup.id);
+
       var newElement = new Object();
       newElement.id = "child_" + ids;
       elementList[newElement.id] = newElement;
@@ -111,8 +103,11 @@ function drop(ev)
       // On l'ajoute
       ev.target.appendChild(dup);
       ids = ids + 1;
-      updatePanelDetail();
    }
+   elementList[currentElement].posX = decX;
+   elementList[currentElement].posY = decY;
+   //alert(elementList[currentElement].posX+" "+elementList[currentElement].posY);
+   updatePanelDetail();
 }
 
 function sendJson() {
@@ -154,19 +149,20 @@ $('#moreRadio').click(function() {
 	
     var te = $('<br><input type="radio" name="'+currentElement+'"> <span>radio<span>');
 	$("#"+elementList[currentElement].id).append(te);
+	
+	elementList[currentElement].value[nb] = "";
 });
 
 function radioValueChange(nb) {
-   //alert("change "+currentElement + " "+ nb + " " +$('#radioValue_'+currentElement+'_'+nb).val());
    elementList[currentElement].value[nb] = $('#radioValue_'+currentElement+'_'+nb).val();
+   $("#"+currentElement).children('input').eq(nb).next().text(elementList[currentElement].value[nb]);
+   
 }
 
 $('#inputNumberMin').change(function() {
-   //alert($("#"+currentElement).next().text("haha"));
    elementList[currentElement].min = $('#inputNumberMin').val();
 });
 $('#inputNumberMax').change(function() {
-   //alert($("#"+currentElement).next().text("haha"));
    elementList[currentElement].max = $('#inputNumberMax').val();
 });
 
@@ -179,7 +175,6 @@ function hideAll() {
 
 function updatePanelDetail() {
    hideAll();
-   //alert(currentElement);
    if($("#"+currentElement).is("fieldset")){
       $('#radioGroup').show();
       $("#"+currentElement).children().attr("name", currentElement);
@@ -191,11 +186,10 @@ function updatePanelDetail() {
       }
       $(".radioValue").next().remove();
       $(".radioValue").remove();
-      for (var i = 0; i<elementList[currentElement].value.length; i++) {
-         var newTextBoxDiv = $('<input type="Text" class="radioValue" id="radioValue_'+currentElement+'_'+i+'" onchange="radioValueChange('+$("input[name="+currentElement+"]").length+')" value="'+elementList[currentElement].value[i]+'"><br>');
+      for (var i = 0; i<Object.keys(elementList[currentElement].value).length; i++) {
+         var newTextBoxDiv = $('<input type="Text" class="radioValue" id="radioValue_'+currentElement+'_'+i+'" onchange="radioValueChange('+i+')" value="'+elementList[currentElement].value[i]+'"><br>');
 	      $("#radioGroup").append(newTextBoxDiv);
-	      //$("#"+currentElement).child(i).next().text(elementList[currentElement].value[i]);
-	      
+	      $("#"+currentElement).children('input').eq(i).next().text(elementList[currentElement].value[i]);
       }
    } /*else if($("#"+currentElement).is("textarea")){//Ne marche pas
       $('#checkboxRequiredGroup').show();
@@ -206,27 +200,35 @@ function updatePanelDetail() {
       // Si input
       if ($("#"+currentElement).attr('type') == 'text') {
          // Si Textbox
-         $('#checkboxRequiredGroup').show();
-         if(!elementList[currentElement].hasOwnProperty("required")) {
-            elementList[currentElement].required = false;
-         }
-         $('#checkboxRequired').prop('checked', elementList[currentElement].required);
-      } else if($("#"+currentElement).attr('type') == 'radio') {
-         //Si radio button
-         //$('#radioGroup').show();
-         //alert("oo");
-         
+         hasRequired();
       } else if($("#"+currentElement).attr('type') == 'number') {
          //Si radio button
-         $('#inputNumberGroup').show();
-         $('#inputNumberMin').val(elementList[currentElement].min);
-         $('#inputNumberMax').val(elementList[currentElement].max);
+         hasRequired();
+         hasMinMax();
       }
    }else if($("#"+currentElement).is("span")) {
       // Si label
-      $('#inputValueGroup').show();
-      $('#inputValue').val(elementList[currentElement].value);
+      hasValueText();
    }
+}
+
+function hasRequired() {
+   $('#checkboxRequiredGroup').show();
+   if(!elementList[currentElement].hasOwnProperty("required")) {
+      elementList[currentElement].required = false;
+   }
+   $('#checkboxRequired').prop('checked', elementList[currentElement].required);
+}
+
+function hasMinMax() {
+   $('#inputNumberGroup').show();
+   $('#inputNumberMin').val(elementList[currentElement].min);
+   $('#inputNumberMax').val(elementList[currentElement].max);
+}
+
+function hasValueText() {
+   $('#inputValueGroup').show();
+   $('#inputValue').val(elementList[currentElement].value);
 }
 
 

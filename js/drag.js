@@ -2,7 +2,7 @@ hideAll();
 var label = ["value"];
 var textbox = ["required"];
 var inputList = [];
-var elementList = [];
+var elementList = {};
 var ids = 0;
 var currentElement;
 var
@@ -113,33 +113,10 @@ function drop(ev)
       ids = ids + 1;
       updatePanelDetail();
    }
-   //document.getElementById("info").value = inputList.toString();
-   send();
 }
 
-function send () {
-var 
-	e;
-	
-	//newElt= document.createElement("input");
-	//newElt.setAttribute("type", "hidden");
-	//newElt.setAttribute("id", "info");
-	//newElt.setAttribute("name", "info");
-	/*var chaine = "";
-	for(var valeur in inputList){
-	   chaine = chaine + '{' + valeur + '$' + inputList[valeur] + '}';
-     //document.write(valeur + ' : ' + inputList[valeur] + '  ');
-   }*/
-   /*var chaine = "";
-   for (i = 0; i < inputList.length; i++) {
-      e = document.getElementById(inputList[i]);
-      chaine = chaine + '{' + e.getAttribute("name") + "$" + e.innerHTML + '}';
-   }*/
-	document.getElementById("info").value = document.getElementById("panneau").innerHTML;//document.getElementById("panneau").innerHTML;
-	
-	//form= document.getElementById("send");
-	//form.appendChild(newElt);
-	//form.submit();
+function sendJson() {
+	document.getElementById("info").value = JSON.stringify(elementList);
 }
 
 function onChange(ev, value) {
@@ -162,6 +139,7 @@ $( "#panneau" ).click(function(e) {
 
 $( "#checkboxRequired" ).click(function(e) {
    elementList[currentElement].required = $('#checkboxRequired').is(':checked');
+   //alert(currentElement+" "+elementList[currentElement].required);
 });
 
 $('#inputValue').change(function() {
@@ -206,9 +184,9 @@ function updatePanelDetail() {
       $('#radioGroup').show();
       $("#"+currentElement).children().attr("name", currentElement);
       $("#radioValue_0").attr("id", 'radioValue_'+currentElement+'_0');
-      alert(currentElement);
+      //alert(currentElement);
       if(!elementList[currentElement].hasOwnProperty("value")) {
-         elementList[currentElement].value = [];
+         elementList[currentElement].value = {};
          elementList[currentElement].value[0] = "";
       }
       $(".radioValue").next().remove();
@@ -219,16 +197,19 @@ function updatePanelDetail() {
 	      //$("#"+currentElement).child(i).next().text(elementList[currentElement].value[i]);
 	      
       }
-   } else if($("#"+currentElement).is("textarea")){//Ne marche pas
+   } /*else if($("#"+currentElement).is("textarea")){//Ne marche pas
       $('#checkboxRequiredGroup').show();
       $("#"+currentElement).children().attr("name", currentElement);
       $('#checkboxRequired').prop('checked', elementList[currentElement].required);
-   }
+   }*/
    else if($("#"+currentElement).is("input")) {
       // Si input
       if ($("#"+currentElement).attr('type') == 'text') {
          // Si Textbox
          $('#checkboxRequiredGroup').show();
+         if(!elementList[currentElement].hasOwnProperty("required")) {
+            elementList[currentElement].required = false;
+         }
          $('#checkboxRequired').prop('checked', elementList[currentElement].required);
       } else if($("#"+currentElement).attr('type') == 'radio') {
          //Si radio button
@@ -247,3 +228,5 @@ function updatePanelDetail() {
       $('#inputValue').val(elementList[currentElement].value);
    }
 }
+
+

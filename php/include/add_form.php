@@ -1,7 +1,14 @@
 <?php
 include_once 'includes.php';
-
 if (! empty ( $_POST )) {
+   /*
+    * Récupère les données des éléments
+    */
+   if(isset($_POST['info'])) {
+      $obj=json_decode($_POST['info']);
+      //var_dump($obj);
+   }
+   
 	/*
 	 * Getting a Form object
 	 */
@@ -59,6 +66,6 @@ if (! empty ( $_POST )) {
 	if (isset ( $_POST ['send'] )) {
 		$form->send ();
 	}
-	//header ( "Location: ../home.php" );
+	header ( "Location: ../home.php" );
 }
 ?>

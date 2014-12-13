@@ -1,6 +1,5 @@
 hideAll();
-var label = ["value"];
-var textbox = ["required"];
+var type = "radio";
 var elementList = {};
 var ids = 0;
 var currentElement;
@@ -142,19 +141,19 @@ $('#inputValue').change(function() {
    elementList[currentElement].value = $('#inputValue').val();
 });
 
-$('#moreRadio').click(function() {
+$('#moreValues').click(function() {
    var nb = $("input[name="+currentElement+"]").length;
-   var newTextBoxDiv = $('<br><div><input type="Text" class="radioValue" id="radioValue_'+currentElement+'_'+$("input[name="+currentElement+"]").length+'" onchange="radioValueChange('+nb+')"></div>');
-	$("#radioGroup").append(newTextBoxDiv);
+   var newTextBoxDiv = $('<br><div><input type="Text" class="valueItem" id="valueItem_'+currentElement+'_'+$("input[name="+currentElement+"]").length+'" onchange="valueItemChange('+nb+')"></div>');
+	$("#valuesGroup").append(newTextBoxDiv);
 	
-    var te = $('<br><input type="radio" name="'+currentElement+'"> <span>radio<span>');
+    var te = $('<br><input type="'+type+'" name="'+currentElement+'"> <span><span>');
 	$("#"+elementList[currentElement].id).append(te);
 	
 	elementList[currentElement].value[nb] = "";
 });
 
-function radioValueChange(nb) {
-   elementList[currentElement].value[nb] = $('#radioValue_'+currentElement+'_'+nb).val();
+function valueItemChange(nb) {
+   elementList[currentElement].value[nb] = $('#valueItem_'+currentElement+'_'+nb).val();
    $("#"+currentElement).children('input').eq(nb).next().text(elementList[currentElement].value[nb]);
    
 }
@@ -169,28 +168,16 @@ $('#inputNumberMax').change(function() {
 function hideAll() {
    $('#inputValueGroup').hide();
    $('#checkboxRequiredGroup').hide();
-   $('#radioGroup').hide();
+   $('#valuesGroup').hide();
    $('#inputNumberGroup').hide();
 }
 
 function updatePanelDetail() {
    hideAll();
    if($("#"+currentElement).is("fieldset")){
-      $('#radioGroup').show();
-      $("#"+currentElement).children().attr("name", currentElement);
-      $("#radioValue_0").attr("id", 'radioValue_'+currentElement+'_0');
-      //alert(currentElement);
-      if(!elementList[currentElement].hasOwnProperty("value")) {
-         elementList[currentElement].value = {};
-         elementList[currentElement].value[0] = "";
-      }
-      $(".radioValue").next().remove();
-      $(".radioValue").remove();
-      for (var i = 0; i<Object.keys(elementList[currentElement].value).length; i++) {
-         var newTextBoxDiv = $('<input type="Text" class="radioValue" id="radioValue_'+currentElement+'_'+i+'" onchange="radioValueChange('+i+')" value="'+elementList[currentElement].value[i]+'"><br>');
-	      $("#radioGroup").append(newTextBoxDiv);
-	      $("#"+currentElement).children('input').eq(i).next().text(elementList[currentElement].value[i]);
-      }
+      hasRequired();
+      type = $("#"+currentElement).children('input').attr("type");
+      hasSeveralValues();
    } /*else if($("#"+currentElement).is("textarea")){//Ne marche pas
       $('#checkboxRequiredGroup').show();
       $("#"+currentElement).children().attr("name", currentElement);
@@ -229,6 +216,25 @@ function hasMinMax() {
 function hasValueText() {
    $('#inputValueGroup').show();
    $('#inputValue').val(elementList[currentElement].value);
+}
+
+function hasSeveralValues() {
+   $('#valuesGroup').show();
+   $("#"+currentElement).children().attr("name", currentElement);
+   $("#valueItem_0").attr("id", 'valueItem_'+currentElement+'_0');
+   //alert(currentElement);
+   if(!elementList[currentElement].hasOwnProperty("value")) {
+      elementList[currentElement].value = {};
+      elementList[currentElement].value[0] = "";
+   }
+   $(".valueItem").next().remove();
+   $(".valueItem").remove();
+   
+   for (var i = 0; i<Object.keys(elementList[currentElement].value).length; i++) {
+      var newTextBoxDiv = $('<input type="Text" class="valueItem" id="valueItem_'+currentElement+'_'+i+'" onchange="valueItemChange('+i+')" value="'+elementList[currentElement].value[i]+'"><br>');
+      $("#valuesGroup").append(newTextBoxDiv);
+      $("#"+currentElement).children('input').eq(i).next().text(elementList[currentElement].value[i]);
+   }
 }
 
 

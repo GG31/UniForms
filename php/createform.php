@@ -183,14 +183,8 @@
                         <div class="draggable" id="draggable1" draggable="true"><input name="input_text"
   type="text" class="form-control" onchange="onChange(event, this.value)"></div>
                         <div class="draggable" id="draggable4" draggable="true"><fieldset><input type="radio"> <span>radio<span></fieldset></div>
+                        <div class="draggable" id="draggableCheckbox" draggable="true"><fieldset><input type="checkbox"> <span>checkbox<span></fieldset></div>
   
-  
-  
-                        <!--<div class="input-group draggable checkbox" id="draggable2" draggable="true">
-                          <label>
-                            <input type="checkbox"> Check me out
-                          </label>
-                        </div>-->
                         
                         <input id="info" name="info" type="hidden">
                      
@@ -206,11 +200,11 @@
                             Min <input type="number" id="inputNumberMin"><br>
                             Max <input type="number" id="inputNumberMax">
                             </div>
-                            <div id="radioGroup">
-                            Values <button type="button" id="moreRadio" class="btn btn-default btn-lg">
+                            <div id="valuesGroup">
+                            Values <button type="button" id="moreValues" class="btn btn-default btn-lg">
   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 </button>
-<br><div><input type="Text" class="radioValue" id="radioValue_0" onchange="radioValueChange(0)"></div><br>
+<br><div><input type="Text" class="valueItem" id="valueItem_0" onchange="valueItemChange(0)"></div><br>
                             
                             </div>
                             

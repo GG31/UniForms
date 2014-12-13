@@ -31,7 +31,6 @@
 
 		<script src="../lib/jquery-2.1.1/min.js"></script>
 		<script src="../lib/bootstrap-3.3.1/js/min.js"></script>
-		
 		<script>
 			$(document).ready(function(){
 				$('#anon').on('change', function() {
@@ -176,12 +175,14 @@
                      <div class="col-sm-4">
                         <div class="draggable" id="draggableLabel" draggable="true"><span>Text</span></div>
                         <div class="draggable" id="draggableNumber" draggable="true"><input type="number"></div>
+                        <div class="draggable" id="draggableDate" draggable="true"><input type="text" id="datepicker" placeholder="jj/mm/aaaa"/></div>
+                        <div class="draggable" id="draggableTime" draggable="true"><input id="timepicker" type="time" placeholder="hh:mm"/></div>
                         <!--<div class="draggable" id="draggableTextarea" draggable="true"> <textarea class="textarea" rows="4" cols="40">
 </textarea> </div>
 <div class="draggable" id="draggableDate" draggable="true"><input type="date"></div>-->
                         
                         <div class="draggable" id="draggable1" draggable="true"><input name="input_text"
-  type="text" class="form-control" onchange="onChange(event, this.value)"></div>
+  type="text" class="form-control"></div>
                         <div class="draggable" id="draggable4" draggable="true"><fieldset><input type="radio"> <span>radio<span></fieldset></div>
                         <div class="draggable" id="draggableCheckbox" draggable="true"><fieldset><input type="checkbox"> <span>checkbox<span></fieldset></div>
   
@@ -204,7 +205,7 @@
                             Values <button type="button" id="moreValues" class="btn btn-default btn-lg">
   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 </button>
-<br><div><input type="Text" class="valueItem" id="valueItem_0" onchange="valueItemChange(0)"></div><br>
+<br><div><input type="Text" class="valueItem" id="valueItem_0" onchange="valueItemChange(0)"><button type="button" id="lessValues_0" class="btn btn-default btn-lg valueItemLess" onclick="valueItemLess(0)"><span>-</span></button></div><br>
                             
                             </div>
                             

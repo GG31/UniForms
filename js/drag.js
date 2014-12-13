@@ -3,34 +3,11 @@ var type = "radio";
 var elementList = {};
 var ids = 0;
 var currentElement;
-var
-	elt;
+var elt;
 	
-	//elt= document.getElementById("x");
-	//elt.addEventListener("dragstart", drag, false);
-	elt = document.getElementsByClassName("draggable");
-	for (i = 0; i < elt.length; i++) {
-      elt[i].addEventListener("dragstart", drag, false);
-   }
-
-function newActions () {
-	alert("hello");
-}
-
-function valideNF (ev) {
-   var n;
-   var elt;
-
-   alert(ev.target.id);
-	n=ev.target.id.substring(2);
-	elt= document.getElementById("nomForm" + n);
-	alert(elt.nodeValue);
-	if (elt.nodeValue == "") {
-		alert("vide");
-	} else {
-		alert("ok");
-	}
-	return false;
+elt = document.getElementsByClassName("draggable");
+for (i = 0; i < elt.length; i++) {
+   elt[i].addEventListener("dragstart", drag, false);
 }
 
 function drag(ev)
@@ -113,13 +90,6 @@ function sendJson() {
 	document.getElementById("info").value = JSON.stringify(elementList);
 }
 
-function onChange(ev, value) {
-   ev.currentTarget.innerHTML = "lol";
-   //alert(ev.currentTarget.value + " " + value);
-   //ev.setAttribute("value", value);
-   //alert(value);
-}
-
 $( "#panneau" ).click(function(e) {
 //alert( "Handler for .click() called." );
    var el= e.target||e.srcElement;
@@ -133,7 +103,6 @@ $( "#panneau" ).click(function(e) {
 
 $( "#checkboxRequired" ).click(function(e) {
    elementList[currentElement].required = $('#checkboxRequired').is(':checked');
-   //alert(currentElement+" "+elementList[currentElement].required);
 });
 
 $('#inputValue').change(function() {
@@ -188,10 +157,14 @@ function updatePanelDetail() {
       if ($("#"+currentElement).attr('type') == 'text') {
          // Si Textbox
          hasRequired();
-      } else if($("#"+currentElement).attr('type') == 'number') {
+      } else if ($("#"+currentElement).attr('type') == 'number') {
          //Si radio button
          hasRequired();
          hasMinMax();
+      } else if ($("#"+currentElement).attr('type') == 'date') {
+         hasRequired();
+      } else if ($("#"+currentElement).attr('type') == 'time') {
+         hasRequired();
       }
    }else if($("#"+currentElement).is("span")) {
       // Si label
@@ -236,5 +209,3 @@ function hasSeveralValues() {
       $("#"+currentElement).children('input').eq(i).next().text(elementList[currentElement].value[i]);
    }
 }
-
-

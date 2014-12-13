@@ -10,6 +10,7 @@ require_once_UniForms ( "include/verify_session" );
 require_once_UniForms ( "class/User.class" );
 require_once_UniForms ( "class/Form.class" );
 require_once_UniForms ( "class/Answer.class" );
+require_once_UniForms ( "class/Element.class" );
 
 require_once_UniForms ( "include/verify_access" );
 ?>

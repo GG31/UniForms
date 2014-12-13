@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Sam 06 Décembre 2014 à 17:50
+-- Généré le :  Sam 13 Décembre 2014 à 23:33
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -40,49 +40,10 @@ CREATE TABLE IF NOT EXISTS `answervalue` (
 --
 
 INSERT INTO `answervalue` (`answervalue_id`, `value`, `elementanswer_id`) VALUES
-(1, '10', 1),
 (2, '12', 6),
-(3, '1', 3),
-(4, '2', 3),
 (5, '2', 7),
 (6, '4', 7),
-(7, '3', 7),
-(100, '15', 8),
-(101, '0', 9),
-(102, '56', 10),
-(103, '29', 11),
-(104, '15', 12),
-(105, '0', 13),
-(106, '56', 14),
-(107, '29', 15),
-(108, '15', 16),
-(109, '0', 17),
-(110, '56', 18),
-(111, '29', 19),
-(112, '15', 20),
-(113, '0', 21),
-(114, '56', 22),
-(115, '29', 23),
-(116, '15', 24),
-(117, '0', 25),
-(118, '56', 26),
-(119, '29', 27),
-(120, '15', 28),
-(121, '0', 29),
-(122, '56', 30),
-(123, '29', 31),
-(124, '15', 32),
-(125, '0', 33),
-(126, '56', 34),
-(127, '29', 35),
-(144, '15', 52),
-(145, '0', 53),
-(146, '56', 54),
-(147, '29', 55),
-(148, '15', 56),
-(149, '0', 57),
-(150, '56', 58),
-(151, '29', 59);
+(7, '3', 7);
 
 -- --------------------------------------------------------
 
@@ -105,46 +66,8 @@ CREATE TABLE IF NOT EXISTS `elementanswer` (
 --
 
 INSERT INTO `elementanswer` (`elementanswer_id`, `formelement_id`, `formdest_id`) VALUES
-(1, 1, 1),
-(3, 2, 1),
 (6, 1, 2),
-(7, 2, 2),
-(8, 1, 65),
-(9, 2, 65),
-(10, 2, 65),
-(11, 2, 65),
-(12, 1, 66),
-(13, 2, 66),
-(14, 2, 66),
-(15, 2, 66),
-(16, 1, 66),
-(17, 2, 66),
-(18, 2, 66),
-(19, 2, 66),
-(20, 1, 67),
-(21, 2, 67),
-(22, 2, 67),
-(23, 2, 67),
-(24, 1, 67),
-(25, 2, 67),
-(26, 2, 67),
-(27, 2, 67),
-(28, 1, 69),
-(29, 2, 69),
-(30, 2, 69),
-(31, 2, 69),
-(32, 1, 69),
-(33, 2, 69),
-(34, 2, 69),
-(35, 2, 69),
-(52, 1, 72),
-(53, 2, 72),
-(54, 2, 72),
-(55, 2, 72),
-(56, 1, 72),
-(57, 2, 72),
-(58, 2, 72),
-(59, 2, 72);
+(7, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -156,10 +79,23 @@ DROP TABLE IF EXISTS `elementoption`;
 CREATE TABLE IF NOT EXISTS `elementoption` (
   `elementoption_id` int(11) NOT NULL AUTO_INCREMENT,
   `optionvalue` varchar(255) NOT NULL DEFAULT '0',
-  `optionordre` int(11) NOT NULL DEFAULT '0',
+  `optionorder` int(11) NOT NULL DEFAULT '0',
   `optiondefault` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`elementoption_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `formelement_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`elementoption_id`),
+  KEY `FK_elementoption_formelement` (`formelement_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
+
+--
+-- Contenu de la table `elementoption`
+--
+
+INSERT INTO `elementoption` (`elementoption_id`, `optionvalue`, `optionorder`, `optiondefault`, `formelement_id`) VALUES
+(1, 'op1', 3, 0, 4),
+(2, 'op2', 2, 1, 4),
+(18, 'secondoption', 2, 1, 24),
+(19, 'thirdoption', 3, 0, 24),
+(20, 'firstoption', 1, 1, 24);
 
 -- --------------------------------------------------------
 
@@ -188,7 +124,7 @@ INSERT INTO `form` (`form_id`, `form_name`, `form_status`, `form_anonymous`, `fo
 (1, 'teste', 1, 0, 0, 1, 1),
 (2, 'teste2', 1, 0, 0, 1, 1),
 (3, 'teste3', 1, 0, 1, 1, 2),
-(4, 'teste4', 1, 1, 1, 25, 4),
+(4, 'teste4', 0, 1, 1, 25, 4),
 (5, NULL, 1, 0, 1, 1, 1),
 (6, NULL, 1, 0, 1, 3, 1),
 (7, NULL, 0, 0, 1, 2, 1),
@@ -209,14 +145,13 @@ CREATE TABLE IF NOT EXISTS `formdest` (
   PRIMARY KEY (`formdest_id`),
   KEY `fk_formdest_user1_idx` (`user_id`),
   KEY `fk_formdest_form1_idx` (`form_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=90 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=402 ;
 
 --
 -- Contenu de la table `formdest`
 --
 
 INSERT INTO `formdest` (`formdest_id`, `formdest_status`, `user_id`, `form_id`) VALUES
-(1, 0, 1, 4),
 (2, 0, 1, 3),
 (36, 0, 2, 1),
 (37, 0, 3, 1),
@@ -226,31 +161,32 @@ INSERT INTO `formdest` (`formdest_id`, `formdest_status`, `user_id`, `form_id`) 
 (45, 0, 4, 6),
 (46, 0, 2, 7),
 (47, 0, 3, 7),
-(48, 0, 1, 4),
-(49, 0, 1, 4),
-(50, 0, 1, 4),
-(51, 1, 1, 4),
-(52, 1, 1, 4),
-(53, 1, 1, 4),
-(54, 1, 1, 4),
-(55, 1, 1, 4),
-(56, 1, 1, 4),
-(57, 1, 1, 4),
-(58, 1, 1, 4),
-(59, 1, 1, 4),
-(60, 1, 1, 4),
-(61, 1, 1, 4),
-(62, 1, 1, 4),
-(63, 0, 1, 4),
-(64, 0, 1, 4),
-(65, 0, 1, 4),
-(66, 1, 1, 4),
-(67, 1, 1, 4),
-(68, 0, 1, 4),
-(69, 1, 1, 4),
-(72, 1, 1, 4),
 (88, 0, 2, 8),
-(89, 0, 3, 8);
+(89, 0, 3, 8),
+(378, 0, 1, 4),
+(379, 0, 1, 4),
+(380, 0, 1, 4),
+(381, 0, 1, 4),
+(382, 0, 1, 4),
+(383, 0, 1, 4),
+(384, 0, 1, 4),
+(385, 0, 1, 4),
+(386, 0, 1, 4),
+(387, 0, 1, 4),
+(388, 0, 1, 4),
+(389, 0, 1, 4),
+(390, 0, 1, 4),
+(391, 0, 1, 4),
+(392, 0, 1, 4),
+(393, 0, 1, 4),
+(394, 0, 1, 4),
+(395, 0, 1, 4),
+(396, 0, 1, 4),
+(397, 0, 1, 4),
+(398, 0, 1, 4),
+(399, 0, 1, 4),
+(400, 0, 1, 4),
+(401, 0, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -263,9 +199,9 @@ CREATE TABLE IF NOT EXISTS `formelement` (
   `formelement_id` int(11) NOT NULL AUTO_INCREMENT,
   `type_element` int(11) DEFAULT NULL,
   `form_id` int(11) NOT NULL,
-  `x` int(11) NOT NULL,
-  `y` int(11) NOT NULL,
-  `default` varchar(255) DEFAULT NULL,
+  `pos_x` int(11) NOT NULL,
+  `pos_y` int(11) NOT NULL,
+  `default_value` varchar(255) DEFAULT NULL,
   `required` tinyint(1) DEFAULT '0',
   `width` int(11) DEFAULT NULL,
   `height` int(11) DEFAULT NULL,
@@ -274,15 +210,19 @@ CREATE TABLE IF NOT EXISTS `formelement` (
   `isbiglist` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`formelement_id`),
   KEY `fk_formlist_form1_idx` (`form_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
 --
 -- Contenu de la table `formelement`
 --
 
-INSERT INTO `formelement` (`formelement_id`, `type_element`, `form_id`, `x`, `y`, `default`, `required`, `width`, `height`, `placeholder`, `direction`, `isbiglist`) VALUES
+INSERT INTO `formelement` (`formelement_id`, `type_element`, `form_id`, `pos_x`, `pos_y`, `default_value`, `required`, `width`, `height`, `placeholder`, `direction`, `isbiglist`) VALUES
 (1, NULL, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, 0),
-(2, NULL, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, 0);
+(2, NULL, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, 0),
+(3, 1, 3, 15, 14, 'edfaulti', 1, 300, 15, 'place', 1, 0),
+(4, 2, 3, 34, 455, NULL, 0, NULL, NULL, NULL, 0, 1),
+(23, 1, 4, 25, 12, 'default', 1, 123, 23, '', 0, 0),
+(24, 2, 4, 234, 15, '', 0, 0, 0, '', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -324,6 +264,12 @@ ALTER TABLE `answervalue`
 ALTER TABLE `elementanswer`
   ADD CONSTRAINT `fk_elementanswer_formdest` FOREIGN KEY (`formdest_id`) REFERENCES `formdest` (`formdest_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_elementanswer_formelement` FOREIGN KEY (`formelement_id`) REFERENCES `formelement` (`formelement_id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `elementoption`
+--
+ALTER TABLE `elementoption`
+  ADD CONSTRAINT `FK_elementoption_formelement` FOREIGN KEY (`formelement_id`) REFERENCES `formelement` (`formelement_id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `form`

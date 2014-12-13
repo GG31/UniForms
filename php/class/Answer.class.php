@@ -32,7 +32,7 @@ class Answer {
 	
 	/**
      * @access private
-     * @var array of elements
+     * @var array of answer. An answer is an array of two elements, "elementId" and "value". "elementId" represents one element of the form and "value" the value of the answer to this element 
      */
 	private $answers = array ();
 	
@@ -177,7 +177,9 @@ class Answer {
 		mysql_query ( "UPDATE formdest SET formdest_status = 1 WHERE formdest_id = " . $this->formDest );
 	}
 	
-	// Delete all registers related to an answer and in the tables formdest, elementanswer, answervalue
+	/** 
+	* Delete all registers related to an answer and in the tables formdest, elementanswer, answervalue
+	*/
 	public function deleteAnswer(){
 		// Delete the form. All related to this form is deleted on cascade according to the definition of the foreign keys
 		mysql_query("DELETE FROM formdest WHERE formdest_id = ".$this->getId());

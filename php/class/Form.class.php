@@ -47,16 +47,16 @@ class Form {
 	/**
 	  * List of recipient for this form, for each recipient there are the status, the Answer and the formDestId associated.
      * @access private
-     * @var array of User 
+     * @var array of elements 
      */
 	private $listRecipient;
 	
 	/**
-	 * List of elements of this formDestId
+	 * List of elements of this form. Each element of this list is basically a representation of one line of the table formelement.
 	 * @access private
-	 * @var string (for now)
+	 * @var array of elements
 	 */
-	private $formElements = array ();
+	private $formElements;
 	
 	/** Constructor
 	 * Create a form, if already exist, find the information on the database to fill the attributes
@@ -82,6 +82,7 @@ class Form {
 			$this->anonymous = $rForm ["form_anonymous"] == 1 ? TRUE : FALSE;
 			$this->maxAnswers = $rForm ["form_maxanswers"];
 			
+			// Load listRecipient
 			$this->listRecipient = array ();
 			$qFormDest = mysql_query ( "SELECT formdest_id, user_id, formdest_status FROM formdest WHERE form_id = " . $this->id . " ORDER BY user_id, formdest_id" );
 			while ( $rFormDest = mysql_fetch_array ( $qFormDest ) ) {
@@ -92,6 +93,14 @@ class Form {
 						"formDestId" => $rFormDest ["formdest_id"] 
 				);
 				array_push ( $this->listRecipient, $recipient );
+			}
+			
+			// Load formElements
+			$this->formElements = array ();
+			$qFormElements = mysql_query("SELECT * FROM formelement WHERE form_id = " . $this->id);
+			while ( $rFormElements = mysql_fetch_array ( $qFormElements ) ) {
+				$element = new Element ( $rFormElements ["formelement_id"] );
+				array_push ( $this->formElements, $element );
 			}
 		}
 	}
@@ -219,6 +228,14 @@ class Form {
 	}
 	
 	/**
+	 * Set the elements of form
+	 * @param array of Element
+	 */
+	public function setFormElements($elementsList) {
+		$this->formElements = $elementsList;
+	}
+	
+	/**
 	 * Give recipient to the form, if the form is already sent, the method will do nothing.
 	 * @param array of User $recipientList
 	 */
@@ -265,23 +282,65 @@ class Form {
 			
 			// Cleans dest list in DB
 			mysql_query("DELETE FROM formdest WHERE form_id = ".$this->id
-			) or die('<br><strong>SQL Error (4)</strong>:<br>'.mysql_error());
+			) or die('<br><strong>SQL Error (3)</strong>:<br>'.mysql_error());
 			
-			// Delete form elements here...
+			// Clean form elements list in db
+			mysql_query("DELETE FROM formelement WHERE form_id = ".$this->id
+			) or die('<br><strong>SQL Error (4)</strong>:<br>'.mysql_error());
 		}
 		
 		// Inserts recipients in formdest
-		foreach ($this->listRecipient as $key => $recipient){
+		foreach ($this->listRecipient as $index => $recipient){
 			mysql_query("INSERT INTO formdest(form_id, user_id, formdest_status) VALUES ("
 									. $this->id.","
 									. $recipient["User"]->getId()
 									. ", 0)"
 			) or die('<br><strong>SQL Error (5)</strong>:<br>'.mysql_error());
 			
-			$this->listRecipient[$key]["formDestId"] = mysql_insert_id();
+			$this->listRecipient[$index]["formDestId"] = mysql_insert_id();
 		}
 		
-		// Insert FormElements here...
+		// Insert elements of the form in formelement
+		foreach ($this->formElements as $index => $element){
+			mysql_query("INSERT INTO formelement(form_id, type_element, pos_x, pos_y, default_value, required, width, height, placeholder, direction, isbiglist) VALUES ("
+									. $this->id . ","
+									. $element->getTypeElement() . ","
+									. $element->getX() . ","
+									. $element->getY() . ","
+									. "'" . $element->getDefaultValue() . "',"
+									. ($element->getRequired() ? 1 : 0) . ", "
+									. $element->getWidth() . ","
+									. $element->getHeight() . ","
+									. "'" . $element->getPlaceholder() . "',"
+									. $element->getDirection() . ","
+									. ($element->getIsbiglist() ? 1 : 0) .
+						")"
+			) or die('<br><strong>SQL Error (6)</strong>:<br>'.mysql_error());
+			
+			$formElementId = mysql_insert_id();
+			//update new id
+			$this->formElements[$index]->setId($formElementId);
+			
+			// Insert the options of an element
+			if (is_array($element->getOptions())){
+				$optionsList = $element->getOptions();
+				foreach ($optionsList as $optIndex => $option){
+					mysql_query("INSERT INTO elementoption(formelement_id, optionvalue, optionorder, optiondefault) VALUES ("
+											. $formElementId . ","
+											. "'" . $option["value"] . "',"
+											. $option["order"] . ","
+											. ($option["default"] ? 1 : 0) .
+								")"
+					) or die('<br><strong>SQL Error (7)</strong>:<br>'.mysql_error());
+					
+					// update new id
+					$option["elementoption_id"] = mysql_insert_id();
+					$optionsList[$optIndex] = $option;
+				}
+				$element->setOptions($optionsList);
+			}
+		}
+		
 	}
 
    /**
@@ -307,7 +366,8 @@ class Form {
 	}
 	
 	/**
-	 * Delete one form and all registers related to it in other tables (formdest, formelement, elementanswer, answervalue) */
+	 * Delete one form and all registers related to it in other tables (formdest, formelement, elementanswer, answervalue) 
+	 */
 	public function deleteForm(){
 		// Delete the form. All related to this form is deleted on cascade according to the definition of the foreign keys
 		mysql_query("DELETE FROM form WHERE form_id = ".$this->getId());

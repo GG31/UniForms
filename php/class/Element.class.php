@@ -1,0 +1,327 @@
+<?php
+/**
+ * Represents an element of a form
+ */
+class Element {
+
+	/**
+     * @access private
+     * @var integer 
+     */
+	private $id;
+
+	/**
+	 * type of the element. Use the constants typeCheckbox, typeInput, typeTextArea, typeRadioButton... they are all defined below this class
+     * @access private
+     * @var integer 
+     */
+	private $typeElement;
+	
+	/**
+	 * position x of the element
+     * @access private
+     * @var integer 
+     */
+	private $x = 0;
+	
+	/**
+	 * position y of the element
+     * @access private
+     * @var integer 
+     */
+	private $y = 0;
+	
+	/**
+	 * default value of the field
+     * @access private
+     * @var string 
+     */
+	private $defaultValue = "";
+	
+	/**
+	 * defines if it is a required field
+     * @access private
+     * @var boolean TRUE (required) or FALSE(not required)
+     */
+	private $required = FALSE;
+	
+	/**
+     * @access private
+     * @var integer 
+     */
+	private $width = 0;
+	
+	/**
+     * @access private
+     * @var integer 
+     */
+	private $height = 0;
+	
+	/**
+     * @access private
+     * @var string 
+     */
+	private $placeholder = "";
+	
+	/**
+	 * direction that options are shown (1 - vertical or  0 - horizontal)
+     * @access private
+     * @var integer 
+     */
+	private $direction = 0;
+	
+	/**
+	 * defines if the list of options is big (the representation in paper will be diferent).
+     * @access private
+     * @var integer 
+     */
+	private $isbiglist = FALSE;
+	
+	/**
+	 * list of options of this element. array with four fields: elementoption id, option value, option order and option default
+     * @access private
+     * @var array of options 
+     */
+	private $optionsList = NULL;
+
+	/*
+	* Constructor
+	*/
+	public function __construct($idFormElement = -1) {
+		if ($idFormElement != -1){
+			$qElement = mysql_query("SELECT * FROM formelement WHERE formelement_id = ".$idFormElement);
+			if (! mysql_num_rows ( $qElement )) {
+				// Error...
+				exit();
+			}
+			
+			$rElement = mysql_fetch_array($qElement);
+			
+			$this->id = $rElement["formelement_id"];
+			$this->typeElement = $rElement["type_element"];
+			$this->x = $rElement["pos_x"];
+			$this->y = $rElement["pos_y"];
+			$this->defaultValue = $rElement["default_value"];
+			$this->required = $rElement["required"] == 1 ? TRUE : FALSE;
+			$this->width = $rElement["width"];
+			$this->height = $rElement["height"];
+			$this->placeholder = $rElement["placeholder"];
+			$this->direction = $rElement["direction"];
+			$this->isbiglist = $rElement["isbiglist"] == 1 ? TRUE : FALSE;
+			
+			$this->optionsList = array();
+			$qElementOptions = mysql_query("SELECT * FROM elementoption WHERE formelement_id = ".$idFormElement." ORDER BY optionorder, optionvalue");
+			while ($rElementOptions = mysql_fetch_array($qElementOptions)){
+				$option = array (
+					"elementoption_id" => $rElementOptions ["elementoption_id"],
+					"value" => $rElementOptions ["optionvalue"],
+					"order" => $rElementOptions ["optionorder"],
+					"default" => $rElementOptions ["optiondefault"] 
+				);
+				array_push ( $this->optionsList, $option );
+			}
+		}
+	}
+	
+	/**
+	 * Give the element's id
+	 * @return integer
+	 */
+	public function getId() {
+		return $this->id;
+	}
+	
+	/**
+	 * Give the element's type
+	 * @return integer
+	 */
+	public function getTypeElement() {
+		return $this->typeElement;
+	}
+	
+	/**
+	 * Give the x position
+	 * @return integer
+	 */
+	public function getX() {
+		return $this->x;
+	}
+	
+	/**
+	 * Give the y position
+	 * @return integer
+	 */
+	public function getY() {
+		return $this->y;
+	}
+	
+	/**
+	 * Give the default value
+	 * @return string
+	 */
+	public function getDefaultValue() {
+		return $this->defaultValue;
+	}
+	
+	/**
+	 * Returns true if form is anonymous
+	 * @return boolean
+	 */
+	public function getRequired() {
+		return $this->required;
+	}
+	
+	/**
+	 * Give the width
+	 * @return integer
+	 */
+	public function getWidth() {
+		return $this->width;
+	}
+	
+	/**
+	 * Give the height
+	 * @return integer
+	 */
+	public function getHeight() {
+		return $this->height;
+	}
+	
+	/**
+	 * Give the placeholder
+	 * @return string
+	 */
+	public function getPlaceholder() {
+		return $this->placeholder;
+	}
+	
+	/**
+	 * Give the direction that options are shown (1 - vertical or  0 - horizontal)
+	 * @return integer
+	 */
+	public function getDirection() {
+		return $this->direction;
+	}
+	
+	/**
+	 * Returns true if the list of options is big
+	 * @return boolean
+	 */
+	public function getIsbiglist() {
+		return $this->isbiglist;
+	}
+	
+	/**
+	 * Returns the options of the element.
+	 * @return array of array. for each option there is an array with four values: "elementoption_id" "value" "order" "default". (see constructor...)
+	 */
+	public function getOptions() {
+		return $this->optionsList;
+	}
+	
+	/**
+    * Sets the id 
+    * @param integer $id
+    */
+	public function setId($id){
+		$this->id = $id;
+	}
+	
+	/**
+    * Sets the element type 
+    * @param integer $type
+    */
+	public function setTypeElement($type){
+		$this->typeElement = $type;
+	}
+	
+	/**
+    * Sets the x position 
+    * @param integer $x
+    */
+	public function setX($x){
+		$this->x = $x;
+	}
+
+	/**
+    * Sets the y position 
+    * @param integer $y
+    */
+	public function setY($y){
+		$this->y = $y;
+	}
+	
+	/**
+    * Sets the default value
+    * @param string $value
+    */
+	public function setDefaultValue($value){
+		$this->defaultValue = $value;
+	}
+	
+	/**
+    * Sets if the element is required
+    * @param boolean $required
+    */
+	public function setRequired($required){
+		$this->required = $required;
+	}
+	
+	/**
+    * Sets the width
+    * @param integer $width
+    */
+	public function setWidth($width){
+		$this->width = $width;
+	}
+	
+	/**
+    * Sets the height
+    * @param integer $height
+    */
+	public function setHeight($height){
+		$this->height = $height;
+	}
+	
+	/**
+    * Sets the placeholder
+    * @param string $placeholder
+    */
+	public function setPlaceholder($placeholder){
+		$this->placeholder = $placeholder;
+	}
+	
+	/**
+    * Sets the direction
+    * @param integer $direction
+    */
+	public function setDirection($direction){
+		$this->direction = $direction;
+	}
+	
+	/**
+    * Sets if the list big
+    * @param boolean $bigList
+    */
+	public function setIsbiglist($bigList){
+		$this->isbiglist = $bigList;
+	}
+	
+	/**
+    * Sets the element's options
+    * @param array of array $options. for each option must exist an array with: "value" "order" "default". 
+    */
+	public function setOptions($options){
+		$this->optionsList = $options;
+	}
+	
+}
+
+// to use this do constant("nameoftheconstant"), ex: constant("typeRadioButton") returns 3
+define("typeInput", 1);
+define("typeCheckbox", 2);
+define("typeRadioButton", 3);
+define("typeTextArea", 4);
+
+
+?>

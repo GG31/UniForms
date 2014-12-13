@@ -177,9 +177,7 @@
                         <div class="draggable" id="draggableNumber" draggable="true"><input type="number"></div>
                         <div class="draggable" id="draggableDate" draggable="true"><input type="text" id="datepicker" placeholder="jj/mm/aaaa"/></div>
                         <div class="draggable" id="draggableTime" draggable="true"><input id="timepicker" type="time" placeholder="hh:mm"/></div>
-                        <!--<div class="draggable" id="draggableTextarea" draggable="true"> <textarea class="textarea" rows="4" cols="40">
-</textarea> </div>
-<div class="draggable" id="draggableDate" draggable="true"><input type="date"></div>-->
+                        <div class="draggable" id="draggableTextarea" draggable="true"><textarea rows="4" cols="40"></textarea></div>
                         
                         <div class="draggable" id="draggable1" draggable="true"><input name="input_text"
   type="text" class="form-control"></div>

@@ -147,11 +147,9 @@ function updatePanelDetail() {
       hasRequired();
       type = $("#"+currentElement).children('input').attr("type");
       hasSeveralValues();
-   } /*else if($("#"+currentElement).is("textarea")){//Ne marche pas
-      $('#checkboxRequiredGroup').show();
-      $("#"+currentElement).children().attr("name", currentElement);
-      $('#checkboxRequired').prop('checked', elementList[currentElement].required);
-   }*/
+   } else if($("#"+currentElement).is("textarea")){//Ne marche pas
+      hasRequired();
+   }
    else if($("#"+currentElement).is("input")) {
       // Si input
       if ($("#"+currentElement).attr('type') == 'text') {

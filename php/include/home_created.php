@@ -2,6 +2,21 @@
 $user = new User ( $_SESSION ["user_id"] );
 $creas = $user->getCreatedForms ();
 ?>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover({
+        placement : 'top'
+    });
+});
+</script>
+<style type="text/css">
+	.bs-example{
+    	margin: 150px 50px;
+    }
+    .popover-examples{
+        margin-bottom: 20px;
+    }
+</style>
 <div class="panel panel-primary">
 	<div class="panel-heading text-center text-capitalize">
 		<h3 class="panel-title">
@@ -15,6 +30,8 @@ $creas = $user->getCreatedForms ();
 				<th>Form</th>
 				<th>Etat</th>
 				<th>Action</th>
+				<th></th>
+				<!-- <th>URL</th> -->
 				<th>Supprimer</th>
 			</tr>
 		</thead>
@@ -28,6 +45,7 @@ $creas = $user->getCreatedForms ();
 				<td>Validé</td>
 				<td><a href="answers.php?form_id=<?php echo $crea->getId() ?>">Voir
 						résultats</a></td>
+						<td><?php  echo "<button type='button' class='btn btn-primary' data-toggle='popover' title='A copier' data-content='http://".$_SERVER['HTTP_HOST']."/e-formulaire/UniForms/php/fillform.php?form_id=".$crea->getId()."'>URL</button>"  ?> </td>
 			   <td><a href="include/deleteform.php?form_id=<?php echo $crea->getId() ?>" class="text-muted"> <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a></td>
 			</tr>
 			<?php
@@ -37,6 +55,7 @@ $creas = $user->getCreatedForms ();
 				<td><?php echo $crea->getId() ?></td>
 				<td>Non validé</td>
 				<td><a href="createform.php?form_id=<?php echo $crea->getId() ?>">Modifier</a></td>
+				<td></td>	
 				<td><a href="include/deleteform.php?form_id=<?php echo $crea->getId() ?>" class="text-muted"> <span  class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a> </td>
 			</tr>
 			<?php

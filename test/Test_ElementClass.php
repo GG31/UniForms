@@ -8,7 +8,7 @@
   require_once('../php/class/Form.class.php');
   require_once('../php/class/Element.class.php');
   
-  class TestOfAnswer extends UnitTestCase {
+  class TestOfElementClass extends UnitTestCase {
 	function testExample(){
 		/***********************************
 		It's not the unitary test, just a quick example of how to use the class form element.

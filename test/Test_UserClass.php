@@ -6,8 +6,9 @@ require_once('../php/include/connect.php');
 require_once('../php/class/Form.class.php');
 require_once('../php/class/User.class.php');
 require_once('../php/class/Answer.class.php');
+require_once('../php/class/Element.class.php');
 
-class UserTest extends UnitTestCase {
+class TestOfUserClass extends UnitTestCase {
    private $user;
 
    function setUp() {
@@ -50,14 +51,14 @@ class UserTest extends UnitTestCase {
    {
      $user = new User(1);
      $user_forms = $user->getCreatedForms();
-     $this->assertEqual(count($user_forms), 3);
+     $this->assertEqual(count($user_forms), 6);
    }
 
    function testDestinatairesForms()
    {
       $user = new User(1);
       $user_forms = $user->getDestinatairesForms();
-      $this->assertEqual(count($user_forms), 2);
+      $this->assertEqual(count($user_forms), 1);
    }
 
    function testIsCreator1() {

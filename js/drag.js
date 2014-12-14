@@ -79,6 +79,20 @@ function drop(ev)
       // On l'ajoute
       ev.target.appendChild(dup);
       ids = ids + 1;
+      if($("#"+currentElement).is("textarea")){
+         elementList[currentElement].type = "TextArea";
+      }else if($("#"+currentElement).is("fieldset")){
+         if($("#"+currentElement).children('input').attr("type") == 'radio') {
+            elementList[currentElement].type = 'RadioButton';
+         } else if($("#"+currentElement).children('input').attr("type") == 'checkbox') {
+            elementList[currentElement].type = 'Checkbox';
+         }
+         
+      } else if($("#"+currentElement).is("input")) {
+         elementList[currentElement].type = "Input";
+      } else if($("#"+currentElement).is("span")){
+         elementList[currentElement].type = "Span";
+      }
    }
    elementList[currentElement].posX = decX;
    elementList[currentElement].posY = decY;
@@ -118,12 +132,12 @@ $('#moreValues').click(function() {
     var te = $('<br><input type="'+type+'" name="'+currentElement+'"> <span><span>');
 	$("#"+elementList[currentElement].id).append(te);
 	
-	elementList[currentElement].value[nb] = "";
+	elementList[currentElement].values[nb] = "";
 });
 
 function valueItemChange(nb) {
-   elementList[currentElement].value[nb] = $('#valueItem_'+currentElement+'_'+nb).val();
-   $("#"+currentElement).children('input').eq(nb).next().text(elementList[currentElement].value[nb]);
+   elementList[currentElement].values[nb] = $('#valueItem_'+currentElement+'_'+nb).val();
+   $("#"+currentElement).children('input').eq(nb).next().text(elementList[currentElement].values[nb]);
    
 }
 
@@ -194,16 +208,16 @@ function hasSeveralValues() {
    $("#"+currentElement).children().attr("name", currentElement);
    $("#valueItem_0").attr("id", 'valueItem_'+currentElement+'_0');
    //alert(currentElement);
-   if(!elementList[currentElement].hasOwnProperty("value")) {
-      elementList[currentElement].value = {};
-      elementList[currentElement].value[0] = "";
+   if(!elementList[currentElement].hasOwnProperty("values")) {
+      elementList[currentElement].values = {};
+      elementList[currentElement].values[0] = "";
    }
    $(".valueItem").next().remove();
    $(".valueItem").remove();
    
-   for (var i = 0; i<Object.keys(elementList[currentElement].value).length; i++) {
-      var newTextBoxDiv = $('<input type="Text" class="valueItem" id="valueItem_'+currentElement+'_'+i+'" onchange="valueItemChange('+i+')" value="'+elementList[currentElement].value[i]+'"><br>');
+   for (var i = 0; i<Object.keys(elementList[currentElement].values).length; i++) {
+      var newTextBoxDiv = $('<input type="Text" class="valueItem" id="valueItem_'+currentElement+'_'+i+'" onchange="valueItemChange('+i+')" value="'+elementList[currentElement].values[i]+'"><br>');
       $("#valuesGroup").append(newTextBoxDiv);
-      $("#"+currentElement).children('input').eq(i).next().text(elementList[currentElement].value[i]);
+      $("#"+currentElement).children('input').eq(i).next().text(elementList[currentElement].values[i]);
    }
 }

@@ -1,14 +1,6 @@
 <?php
 include_once 'includes.php';
-if (! empty ( $_POST )) {
-   /*
-    * Récupère les données des éléments
-    */
-   if(isset($_POST['info'])) {
-      $obj=json_decode($_POST['info']);
-      //var_dump($obj);
-   }
-   
+if (! empty ( $_POST )) {   
 	/*
 	 * Getting a Form object
 	 */
@@ -54,9 +46,19 @@ if (! empty ( $_POST )) {
 	
 	$form->setRecipient ( $recipients );
 	
-	/* Elements */
-   var_dump($_POST['info']);
 	
+	/*
+    * Récupère les données des éléments
+    */
+   if(isset($_POST['info'])) {     
+      $obj=json_decode($_POST['info'], true, 4);
+      $arrayElements = [];
+      foreach ($obj as $key => $array){
+         $arrayElements[] = treatmentElement($key, $array);
+      }
+   }
+   
+   $form->setFormElements($arrayElements);
 	/*
 	 * Actions
 	 */
@@ -67,5 +69,26 @@ if (! empty ( $_POST )) {
 		$form->send ();
 	}
 	header ( "Location: ../home.php" );
+}
+
+function treatmentElement($key, $array) {
+   $e = new Element();
+   $e->setTypeElement(constant('type'.$array['type']));
+   $e->setX($array['posX']);
+   $e->setY($array['posY']);
+   if(array_key_exists("required", $array)) {
+      $e->setRequired($array['required']);
+   }
+   if(array_key_exists("values", $array)) {
+      $options = array();
+      $order = 1;
+      foreach ($array['values'] as $value){
+         $opt = array("value" => $value, "order" => $order, "default" => false);
+         $order = $order + 1;
+         $options[] = $opt;
+      }
+		$e->setOptions($options);
+   }
+   return $e;
 }
 ?>

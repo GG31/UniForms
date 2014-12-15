@@ -174,12 +174,12 @@ class Form {
 	}
 	
 	/**
-	 * Give the list of recipient who have the status of its anwers equals to $state2
+	 * Give the list of recipient who have the status of its answers equals to $state
 	 * @param array of User $user_ids
-	 * @param integer $state2. (default: -1) state of answers
+	 * @param integer $state. (default: -1) state of answers
 	 * return array of User
 	 */
-	public function getListRecipient($user_ids = [], $state2 = -1){
+	public function getListRecipient($user_ids = [], $state = -1){
 		$res = [];
 
 		foreach($this->listRecipient as $r){
@@ -187,7 +187,7 @@ class Form {
 			$ok = TRUE;
 			if(count($user_ids) AND !in_array($r["User"]->getId(), $user_ids))
 				$ok = FALSE;
-			if($state2 != -1 AND $r["Status"] != $state2)
+			if($state != -1 AND $r["Status"] != $state)
 				$ok = FALSE;
 			if($ok)
 				$res[] = $r;

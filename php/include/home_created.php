@@ -46,7 +46,7 @@ $(document).ready(function(){
 				<td><a href="answers.php?form_id=<?php echo $crea->getId() ?>">Voir
 						résultats</a></td>
 						<td><?php  echo "<button type='button' class='btn btn-primary' data-toggle='popover' title='A copier' data-content='http://".$_SERVER['HTTP_HOST']."/e-formulaire/UniForms/php/fillform.php?form_id=".$crea->getId()."'>URL</button>"  ?> </td>
-			   <td><a href="include/deleteform.php?form_id=<?php echo $crea->getId() ?>" class="text-muted"> <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a></td>
+			   <td><a href="include/deleteform.php?form_id=<?php echo $crea->getId() ?>" class="text-muted"> <span class="glyphicon glyphicon-trash" aria-hidden="true" onclick="return confirm('Voulez-vous vraiment supprimer ?');"></span> </a></td>
 			</tr>
 			<?php
 				} else {
@@ -56,7 +56,7 @@ $(document).ready(function(){
 				<td>Non validé</td>
 				<td><a href="createform.php?form_id=<?php echo $crea->getId() ?>">Modifier</a></td>
 				<td></td>	
-				<td><a href="include/deleteform.php?form_id=<?php echo $crea->getId() ?>" class="text-muted"> <span  class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a> </td>
+				<td><a href="include/deleteform.php?form_id=<?php echo $crea->getId() ?>" class="text-muted"> <span  class="glyphicon glyphicon-trash" aria-hidden="true" onclick="return confirm('Voulez-vous vraiment supprimer ?');"></span> </a> </td>
 			</tr>
 			<?php
 				}

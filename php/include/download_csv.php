@@ -15,11 +15,11 @@ if (isset ( $_GET ["ans_id"] )) {
 	$fileName = "Form_" . $_GET["ans_id"] . "Answers";
 	$fileName .= date ( 'Y-m-d_H:i:s' );
 	$fileName .= ".csv";
-	$outputCsv .= "formDest; Destinataire; Status; Answer value";
+	$outputCsv .= "No formulaire; Destinataire; Status; Answers value";
 	$outputCsv .= "\n";
 	foreach ( $ans as $key => $value ) {
 			//echo " formDest : ".$value["Answer"]->getId().",";
-			$outputCsv .= trim($value["Answer"]->getId()) . ';';
+			$outputCsv .= trim($value["Answer"]->getFormId()) . ';';
 			//echo " Destinataire : ".$value["User"]->getName().",";
 			$outputCsv .= trim($value["User"]->getName()) . ';';
 			//echo " Status : ".$value["Status"].",";

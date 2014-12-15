@@ -1,3 +1,5 @@
+Pour mieux comprendre, voir Wiki :)
+
 e-formulaire
 
 	Avec le développement du web, l’envie ou le besoin de créer et d’utiliser des formulaires sur le web 
@@ -51,10 +53,3 @@ Participants :
 	TRUCHI, Romain, romain.truchi.06@gmail.com, M2 IFI (WEB)
 	POLO, Luis Philipe, luisfelipepolo@hotmail.com, SI 5 (WEB)
 	CIRERA, Geneviève,  genevieve.cirera@gmail.com, SI 5 (WEB)
-	
-	
-vous trouverez ci-joint un truc basique : formulaire d'authentification avec login et password stocker dans une base de données, qui nous raméne dans une page (de création de formulaire qui n'est pas implémenter encore :P), l'idée c'est de concevoir une template pour notre application (cette feuille de style que j'ai développé dans le cadre de mon stage).
-
-pour tester, il faut importer le script SQL uniforms.sql dans base de donnée, et pour se logger : login => ScoTTisH et password => admin.
-
-Dans mon cas j'ai utilisé wampserver avec une bd mysql phpmyadmin.

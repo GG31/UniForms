@@ -26,7 +26,7 @@ class Answer {
 	/**
 	  * Answer's state, TRUE if sent, FALSE if not
      * @access private
-     * @var boolean 
+     * @var boolean
      */
 	private $state;
 	
@@ -131,10 +131,21 @@ class Answer {
 
 	/**
 	 * Give the answers
+	 * @param  elem_id (optional) specify an element's id to get its value(s)
 	 * @return array of ??
 	 */
-	public function getAnswers(){
-		return $this->answers;
+	public function getAnswers($elem_id = NULL){
+		if($elem_id == NULL) // No elem filtered, return whole answer array
+			return $this->answers;
+		else{				// Filter on elem, return its value(s)
+			$res = [];
+			foreach ($this->answers as $id => $val) {
+				if($elem_id = $id)
+					$res[] = $val;
+			}
+			return $res;
+		}
+
 	}
 	
 	/**

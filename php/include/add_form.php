@@ -79,6 +79,15 @@ function treatmentElement($key, $array) {
    if(array_key_exists("required", $array)) {
       $e->setRequired($array['required']);
    }
+   if(array_key_exists("defaultValue", $array)) {
+      $e->setDefaultValue($array['defaultValue']);
+   }
+   if(array_key_exists("min", $array)) {
+      $e->setMinvalue($array['min']);
+   }
+   if(array_key_exists("max", $array)) {
+      $e->setMaxvalue($array['max']);
+   }
    if(array_key_exists("values", $array)) {
       $options = array();
       $order = 1;

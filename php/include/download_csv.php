@@ -1,60 +1,42 @@
 <?php
 if (isset ( $_GET ["ans_id"] )) {
 	include_once ('includes.php');
-	
 	$answer = new Answer($_GET ["ans_id"]);
 	$recipient = $answer->getRecipient();
 	$idform = $answer->getFormId();
 	$form = new Form($idform);
 	$ans = $form->getListRecipient ( [ ], 1 );
-	//var_dump($ans);
-	//echo "<br/><br/><br/><br/>";
+	
+	// $outputCsv : Variable qui va contenir les données CSV
 	$outputCsv = '';
+	
+	// Entéte de notre fichier
 	$outputCsv .= "Exemple Simple d'exportation des donnees en CSV";
+	
+	// des espaces pour separer l'entete du contenu
 	$outputCsv .= "\n\n\n";
+	
+	// $fileName : c'est le nom du fichier .csv (Form_AnswerID_Answers_date_et_heure_actuel.csv
 	$fileName = "Form_" . $_GET["ans_id"] . "Answers";
 	$fileName .= date ( 'Y-m-d_H:i:s' );
 	$fileName .= ".csv";
+	
+	// Ajouter dans la variable $outputCsv les noms des colonnes
 	$outputCsv .= "No formulaire; Destinataire; Status; Answers value";
 	$outputCsv .= "\n";
+	
+	// ici on parcour le resultat de $ans
+	// trim — Supprime les espaces (ou d'autres caractères ex : ";") en début et fin de chaîne 
 	foreach ( $ans as $key => $value ) {
-			//echo " formDest : ".$value["Answer"]->getId().",";
 			$outputCsv .= trim($value["Answer"]->getFormId()) . ';';
-			//echo " Destinataire : ".$value["User"]->getName().",";
 			$outputCsv .= trim($value["User"]->getName()) . ';';
-			//echo " Status : ".$value["Status"].",";
 			$outputCsv .= trim($value["Status"]) . ';';
-			//var_dump($value["Answer"]->getAnswers());
 			foreach ( $value["Answer"]->getAnswers() as $k => $v ) {
-				//echo " Value : ".$v["value"].",";
 				$outputCsv .= trim($v["value"]) . ';';
 			}
 			$outputCsv = rtrim($outputCsv, ';');
 			$outputCsv .= "\n";
 	}
-	
-	//echo $outputCsv;
-	
-	// la variable qui va contenir les données CSV
-	/*$outputCsv = '';
-	
-	// Nom du fichier final
-	//$fileName = "Form_" . $_GET ["form_id"] . "Answers";
-	$fileName = "Form_Results";
-	//$fileName .= date ( 'Y-m-d_H:i:s' );
-	$fileName .= ".csv";
-	/*
-	 * foreach ($ans as $clef => $valeur) {
-	 * //$outputCsv .= trim($valeur) . ';';
-	 *
-	 * // Suppression du ; qui traine à la fin
-	 * // $outputCsv = rtrim($outputCsv, ';');
-	 *
-	 * // Saut de ligne
-	 * $outputCsv .= "\n";
-	 * }
-	 */
-	//$outputCsv .= "<br/><br/>";
 	// Entêtes (headers) PHP qui vont bien pour la création d'un fichier Excel CSV
 	header ( "Content-disposition: attachment; filename=" . $fileName );
 	header ( "Content-Type: application/force-download" );
@@ -63,6 +45,7 @@ if (isset ( $_GET ["ans_id"] )) {
 	header ( "Cache-Control: must-revalidate, post-check=0, pre-check=0, public" );
 	header ( "Expires: 0" );
 	
+	// ecriture du contenu de la variable $outputCsv dans le fchier $fileName
 	echo $outputCsv;
 	exit ();
 }

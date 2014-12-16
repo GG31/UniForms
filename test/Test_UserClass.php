@@ -51,7 +51,7 @@ class TestOfUserClass extends UnitTestCase {
    {
      $user = new User(1);
      $user_forms = $user->getCreatedForms();
-     $this->assertEqual(count($user_forms), 6);
+     $this->assertEqual(count($user_forms), 5);
    }
 
    function testDestinatairesForms()

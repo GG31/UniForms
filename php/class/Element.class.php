@@ -83,6 +83,20 @@ class Element {
      * @var array of options 
      */
 	private $optionsList = NULL;
+	
+	/**
+	 * maximum value accepted by the element
+     * @access private
+     * @var integer 
+     */
+	private $maxvalue = 0;
+	
+	/**
+	 * minimum value accepted by the element
+     * @access private
+     * @var integer 
+     */
+	private $minvalue = 0;
 
 	/*
 	* Constructor
@@ -108,6 +122,8 @@ class Element {
 			$this->placeholder = $rElement["placeholder"];
 			$this->direction = $rElement["direction"];
 			$this->isbiglist = $rElement["isbiglist"] == 1 ? TRUE : FALSE;
+			$this->maxvalue = $rElement["max_value"];
+			$this->minvalue = $rElement["min_value"];
 			
 			$this->optionsList = array();
 			$qElementOptions = mysql_query("SELECT * FROM elementoption WHERE formelement_id = ".$idFormElement." ORDER BY optionorder, optionvalue");
@@ -280,6 +296,22 @@ class Element {
 	public function getOptions() {
 		return $this->optionsList;
 	}
+		/**
+	 * Returns the max value allowed
+	 * @return integer
+	 */
+	 
+	public function getMaxvalue() {
+		return $this->maxvalue;
+	}
+
+	/**
+	 * Returns the min value allowed
+	 * @return integer
+	 */
+	public function getMinvalue() {
+		return $this->minvalue;
+	}
 	
 	/**
     * Sets the id 
@@ -375,6 +407,22 @@ class Element {
     */
 	public function setOptions($options){
 		$this->optionsList = $options;
+	}
+	
+	/**
+    * Sets the max value allowed
+    * @param integer $maxvalue
+    */
+	public function setMaxvalue($maxvalue){
+		$this->maxvalue = $maxvalue;
+	}
+	
+	/**
+    * Sets the min value allowed
+    * @param integer $minvalue
+    */
+	public function setMinvalue($minvalue){
+		$this->minvalue = $minvalue;
 	}
 	
 }

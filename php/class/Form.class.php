@@ -302,7 +302,8 @@ class Form {
 		
 		// Insert elements of the form in formelement
 		foreach ($this->formElements as $index => $element){
-			mysql_query("INSERT INTO formelement(form_id, type_element, pos_x, pos_y, default_value, required, width, height, placeholder, direction, isbiglist) VALUES ("
+			mysql_query("INSERT INTO formelement(form_id, type_element, pos_x, pos_y, default_value, required, width, height, placeholder, direction, isbiglist, max_value, min_value) 
+						VALUES ("
 									. $this->id . ","
 									. $element->getTypeElement() . ","
 									. $element->getX() . ","
@@ -313,7 +314,9 @@ class Form {
 									. $element->getHeight() . ","
 									. "'" . $element->getPlaceholder() . "',"
 									. $element->getDirection() . ","
-									. ($element->getIsbiglist() ? 1 : 0) .
+									. ($element->getIsbiglist() ? 1 : 0) . ","
+									. $element->getMaxvalue() . ","
+									. $element->getMinvalue() .
 						")"
 			) or die('<br><strong>SQL Error (6)</strong>:<br>'.mysql_error());
 			

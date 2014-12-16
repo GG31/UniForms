@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Sam 13 Décembre 2014 à 23:33
+-- Généré le :  Mar 16 Décembre 2014 à 10:55
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `answervalue` (
   `elementanswer_id` int(11) NOT NULL,
   PRIMARY KEY (`answervalue_id`),
   KEY `fk_answervalue_elementanswer1_idx` (`elementanswer_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=152 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Contenu de la table `answervalue`
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `elementanswer` (
   PRIMARY KEY (`elementanswer_id`),
   KEY `fk_formanswers_formlist1_idx` (`formelement_id`),
   KEY `fk_formanswers_formdest1_idx` (`formdest_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=60 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Contenu de la table `elementanswer`
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `elementoption` (
   `formelement_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`elementoption_id`),
   KEY `FK_elementoption_formelement` (`formelement_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=51 ;
 
 --
 -- Contenu de la table `elementoption`
@@ -93,9 +93,9 @@ CREATE TABLE IF NOT EXISTS `elementoption` (
 INSERT INTO `elementoption` (`elementoption_id`, `optionvalue`, `optionorder`, `optiondefault`, `formelement_id`) VALUES
 (1, 'op1', 3, 0, 4),
 (2, 'op2', 2, 1, 4),
-(18, 'secondoption', 2, 1, 24),
-(19, 'thirdoption', 3, 0, 24),
-(20, 'firstoption', 1, 1, 24);
+(48, 'secondoption', 2, 1, 45),
+(49, 'thirdoption', 3, 0, 45),
+(50, 'firstoption', 1, 1, 45);
 
 -- --------------------------------------------------------
 
@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `formdest` (
   PRIMARY KEY (`formdest_id`),
   KEY `fk_formdest_user1_idx` (`user_id`),
   KEY `fk_formdest_form1_idx` (`form_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=402 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=714 ;
 
 --
 -- Contenu de la table `formdest`
@@ -163,30 +163,30 @@ INSERT INTO `formdest` (`formdest_id`, `formdest_status`, `user_id`, `form_id`) 
 (47, 0, 3, 7),
 (88, 0, 2, 8),
 (89, 0, 3, 8),
-(378, 0, 1, 4),
-(379, 0, 1, 4),
-(380, 0, 1, 4),
-(381, 0, 1, 4),
-(382, 0, 1, 4),
-(383, 0, 1, 4),
-(384, 0, 1, 4),
-(385, 0, 1, 4),
-(386, 0, 1, 4),
-(387, 0, 1, 4),
-(388, 0, 1, 4),
-(389, 0, 1, 4),
-(390, 0, 1, 4),
-(391, 0, 1, 4),
-(392, 0, 1, 4),
-(393, 0, 1, 4),
-(394, 0, 1, 4),
-(395, 0, 1, 4),
-(396, 0, 1, 4),
-(397, 0, 1, 4),
-(398, 0, 1, 4),
-(399, 0, 1, 4),
-(400, 0, 1, 4),
-(401, 0, 1, 4);
+(690, 0, 1, 4),
+(691, 0, 1, 4),
+(692, 0, 1, 4),
+(693, 0, 1, 4),
+(694, 0, 1, 4),
+(695, 0, 1, 4),
+(696, 0, 1, 4),
+(697, 0, 1, 4),
+(698, 0, 1, 4),
+(699, 0, 1, 4),
+(700, 0, 1, 4),
+(701, 0, 1, 4),
+(702, 0, 1, 4),
+(703, 0, 1, 4),
+(704, 0, 1, 4),
+(705, 0, 1, 4),
+(706, 0, 1, 4),
+(707, 0, 1, 4),
+(708, 0, 1, 4),
+(709, 0, 1, 4),
+(710, 0, 1, 4),
+(711, 0, 1, 4),
+(712, 0, 1, 4),
+(713, 0, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -208,21 +208,23 @@ CREATE TABLE IF NOT EXISTS `formelement` (
   `placeholder` varchar(255) DEFAULT NULL,
   `direction` tinyint(1) DEFAULT '0',
   `isbiglist` tinyint(1) DEFAULT '0',
+  `max_value` int(11) DEFAULT NULL,
+  `min_value` int(11) DEFAULT NULL,
   PRIMARY KEY (`formelement_id`),
   KEY `fk_formlist_form1_idx` (`form_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=46 ;
 
 --
 -- Contenu de la table `formelement`
 --
 
-INSERT INTO `formelement` (`formelement_id`, `type_element`, `form_id`, `pos_x`, `pos_y`, `default_value`, `required`, `width`, `height`, `placeholder`, `direction`, `isbiglist`) VALUES
-(1, NULL, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, 0),
-(2, NULL, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, 0),
-(3, 1, 3, 15, 14, 'edfaulti', 1, 300, 15, 'place', 1, 0),
-(4, 2, 3, 34, 455, NULL, 0, NULL, NULL, NULL, 0, 1),
-(23, 1, 4, 25, 12, 'default', 1, 123, 23, '', 0, 0),
-(24, 2, 4, 234, 15, '', 0, 0, 0, '', 1, 1);
+INSERT INTO `formelement` (`formelement_id`, `type_element`, `form_id`, `pos_x`, `pos_y`, `default_value`, `required`, `width`, `height`, `placeholder`, `direction`, `isbiglist`, `max_value`, `min_value`) VALUES
+(1, NULL, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL),
+(2, NULL, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL),
+(3, 1, 3, 15, 14, 'edfaulti', 1, 300, 15, 'place', 1, 0, NULL, NULL),
+(4, 2, 3, 34, 455, NULL, 0, NULL, NULL, NULL, 0, 1, NULL, NULL),
+(44, 1, 4, 25, 12, 'default', 1, 123, 23, 'placeholder', 0, 0, 100, 1),
+(45, 2, 4, 234, 15, '', 0, 0, 0, '', 1, 1, 0, 0);
 
 -- --------------------------------------------------------
 

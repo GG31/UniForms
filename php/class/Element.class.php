@@ -130,6 +130,68 @@ class Element {
 	public function getId() {
 		return $this->id;
 	}
+
+	//TODO doc, switch type
+	public function getAll(){
+/**
+ * FORMELEMENT :
+ * ___________
+ *
+ * all 	: 	lbl, x, y, req, dflt
+ * 
+ * 			wdth 	hght 	plchldr 	dir 	bglst 
+ * txt 	:	x 				x 							
+ * num 	:	x 				x 							
+ * tel 	:	x 				x 							
+ * url 	:	x 				x 							
+ * date	:	x 				x 							
+ * heure:	x 				x 							
+ * $	: 	x 		x 		x 							
+ * radio:								x 		x
+ * scale:								hrztl	 		
+ * chckb:								x 		 		
+ * upld : 												 	
+ *
+ *
+ * ELEMENTOPTION :
+ * _____________
+ *
+ * 			val 	order 	default
+ * radio: 	x 		x 		x
+ * chckb: 	x 		x 		x
+ * scale: 	x 		x 		x
+ * upld : 	mime 	
+ */
+		$type = '';
+		switch($this->getTypeElement()){
+			case 1:
+				$type = 'text';
+				break;
+			case 2:
+				$type = 'checkbox';
+				break;
+			case 3:
+				$type = 'radio';
+				break;
+			case 4:
+				$type = 'textarea';
+				break;
+		}
+		return 	[
+					"id" 			=> $this->getId(),
+					"type" 			=> $type,
+					"x" 			=> $this->getX(),
+					"y" 			=> $this->getY(),
+					"default" 		=> $this->getDefaultValue(),
+					"required" 		=> $this->getRequired(),
+					"width" 		=> $this->getWidth(),
+					"height" 		=> $this->getHeight(),
+					"placeholder" 	=> $this->getPlaceholder(),
+					"direction" 	=> $this->getDirection(),
+					"big" 			=> $this->getIsbiglist(),
+					"options" 		=> $this->getOptions()
+				];
+	}
 	
 	/**
 	 * Give the element's type

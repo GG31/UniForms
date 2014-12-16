@@ -42,7 +42,7 @@ class TestOfAnswerClass extends UnitTestCase {
     // State for an Answer already exist
     function testGetState2(){
     	$existingAnswer = new Answer(2); //Answer of formdest_id = 2
-		$this->assertEqual($existingAnswer->getState(), FALSE);
+		$this->assertEqual($existingAnswer->getState(), TRUE);
     }
     
     function testGetRecipient(){

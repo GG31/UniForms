@@ -153,7 +153,7 @@ class Element {
  * FORMELEMENT :
  * ___________
  *
- * all 	: 	lbl, x, y, req, dflt
+ * all 	: 	lbl, x, y, req, (dflt ?)
  * 
  * 			wdth 	hght 	plchldr 	dir 	bglst 
  * txt 	:	x 				x 							
@@ -178,24 +178,9 @@ class Element {
  * scale: 	x 		x 		x
  * upld : 	mime 	
  */
-		$type = '';
-		switch($this->getTypeElement()){
-			case 1:
-				$type = 'text';
-				break;
-			case 2:
-				$type = 'checkbox';
-				break;
-			case 3:
-				$type = 'radio';
-				break;
-			case 4:
-				$type = 'textarea';
-				break;
-		}
 		return 	[
 					"id" 			=> $this->getId(),
-					"type" 			=> $type,
+					"type" 			=> $this->getTypeElement(),
 					"x" 			=> $this->getX(),
 					"y" 			=> $this->getY(),
 					"default" 		=> $this->getDefaultValue(),
@@ -205,7 +190,8 @@ class Element {
 					"placeholder" 	=> $this->getPlaceholder(),
 					"direction" 	=> $this->getDirection(),
 					"big" 			=> $this->getIsbiglist(),
-					"options" 		=> $this->getOptions()
+					"options" 		=> $this->getOptions(),
+					"label"			=> "LABEL : " // TODO !!!
 				];
 	}
 	

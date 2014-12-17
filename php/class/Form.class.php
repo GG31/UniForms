@@ -177,7 +177,7 @@ class Form {
 	 * Give the list of recipient who have the status of its answers equals to $state
 	 * @param array of User $user_ids
 	 * @param integer $state. (default: -1) state of answers
-	 * return array of User
+	 * @return array of User
 	 */
 	public function getListRecipient($user_ids = [], $state = -1){
 		$res = [];

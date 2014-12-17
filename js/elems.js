@@ -1,7 +1,5 @@
 Container = (function(){
 	function Container(obj){
-		console.log(' --- new Container');
-
 		container = $('<div></div>')
 						.attr('id', 'container-' + obj.id)
 						.css('position', 'relative')
@@ -13,6 +11,7 @@ Container = (function(){
 						.attr('for', 'elem-' + obj.id)
 						.text(obj.label);
 
+		// ! : this 'class' returns a jQuery object !
 		return container.append(label);
 	}
 
@@ -21,6 +20,7 @@ Container = (function(){
 
 Radio = (function(){
 	Radio.prototype.obj;
+	Radio.prototype.element;
 
 	function Radio(obj){
 		this.obj = obj;
@@ -40,12 +40,27 @@ Radio = (function(){
 			radio.append(label);
 		}
 
-		return radio;
+		this.element = radio;
 	}
 
 	Radio.prototype.attrs = function(){
 		// TODO
-		console.log(this);
+		return this;
+	}
+
+	Radio.prototype.get = function(){
+		return this.element;
+	}
+
+	Radio.prototype.getAnswers = function(){
+		return this.element.find(':checked').val();
+	}
+
+	Radio.prototype.setAnswers = function(answer){// answer is option id ?
+		this.element.find('input')
+						.prop('checked', false)
+					.filter('input[value=option-' + answer + ']')
+						.prop('checked', true);
 	}
 
 	return Radio;
@@ -53,6 +68,7 @@ Radio = (function(){
 
 Select = (function(){
 	Select.prototype.obj;
+	Select.prototype.element;
 
 	function Select(obj){
 		this.obj = obj;
@@ -70,11 +86,27 @@ Select = (function(){
 			select.append(option);
 		}
 
-		return div.append(select);
+		this.element = div.append(select);
 	}
 
 	Select.prototype.attrs = function(){
 		// TODO
+		return this;
+	}
+
+	Select.prototype.get = function(){
+		return this.element;
+	}
+
+	Select.prototype.getAnswers = function(){
+		return this.element.find(':selected').val();
+	}
+
+	Select.prototype.setAnswers = function(answer){// answer is option id ?
+		this.element.find('option')
+						.prop('selected', false)
+					.filter('option[value=option-' + answer + ']')
+						.prop('selected', true);
 	}
 
 	return Select;
@@ -82,6 +114,7 @@ Select = (function(){
 
 Multiple = (function(){
 	Multiple.prototype.obj;
+	Multiple.prototype.element;
 	
 	function Multiple(obj){
 		this.obj = obj;
@@ -101,11 +134,34 @@ Multiple = (function(){
 			multiple.append(label);
 		}
 
-		return multiple;
+		this.element = multiple;
 	}
 
 	Multiple.prototype.attrs = function(){
 		// TODO
+		return this;
+	}
+
+	Multiple.prototype.get = function(){
+		return this.element;
+	}
+
+	Multiple.prototype.getAnswers = function(){
+		return this.element.find(':checked').map(function(){
+												return $(this).val();
+											}).get();
+	}
+
+	Multiple.prototype.setAnswers = function(answers){// answer is option id array ?
+		this.element.find('input').each(function(){
+			id = parseInt($(this).val().split('-')[1]);
+			inAnswers = answers.indexOf(id) >= 0;
+
+			if(inAnswers)
+				$(this).prop('checked', true);
+			else
+				$(this).prop('checked', false);
+		});
 	}
 
 	return Multiple;
@@ -116,8 +172,9 @@ Element = (function(){
 	Element.prototype.obj;
 
 	function Element(obj, id){
-		console.log('new Element');
+		console.log('new Element ' + obj.id + ' (' + obj.type + ')');
 		this.obj = obj;
+				
 
 		element = '';
 		switch(parseInt(obj.type)){
@@ -137,15 +194,15 @@ Element = (function(){
 				element = $('<input/>').attr('type', 'tel');
 				break;
 			case 6:
-				element = $('<textarea></textarea>').attr('height', obj.height + 'px');
+				element = $('<textarea></textarea>').css('height', obj.height + 'px');
 				break;
 			case 7:
 				element = obj.big ? new Select(obj) : new Radio(obj);
-				// console.log(typeof element);
-				(new Radio(obj)).attrs();
+				element = element;
 				break;
 			case 8:
 				element = new Multiple(obj);
+				element = element;
 				break;
 		}
 
@@ -154,33 +211,36 @@ Element = (function(){
 
 		container = new Container(obj);
 
-		container.append(element).appendTo(id);
+		// element.get() : 
+		// 		case 1-6 : jQuery function;
+		// 		case 7-8 : Class method.
+		// :] 
+		container.append(element.get()).appendTo(id);
 	}
 
 	Element.prototype.attrs = function() {
-		switch(parseInt(this.obj.type)){
+		obj = this.obj;
+
+		switch(parseInt(obj.type)){
 			case 1:
 			case 2:
 			case 3:
 			case 4:
 			case 5:
 			case 6:
-				this.element = this.attrs1();
-			case 7:
-			case 8:
-				//this.element = this.element.attrs();
-		}
-	};
-
-	Element.prototype.attrs1 = function(){// caca TODO rename
-		obj = this.obj;
-		return this.element
+				this.element
 					.attr('id', 'elem-' + obj.id)
 					.attr('placeholder', obj.placeholder)
 					.attr('required', obj.required)
 					.css('width', obj.width + 'px')
 					;
-	}
+				break;
+			case 7:
+			case 8:
+				this.element.attrs();
+				break;
+		}
+	};
 
 	Element.prototype.answers = function(answers) {
 		get = typeof answers == 'undefined';
@@ -193,13 +253,23 @@ Element = (function(){
 			case 4:
 			case 5:
 			case 6:
-				res = get ? this.getAnswers() : this.setAnswers();
+				res = get ? this.getAnswers() : this.setAnswers(answers);
+				break;
 			case 7:
 			case 8:
-				res = get ? this.element.getAnswers() : this.element.setAnswers();
+				res = get ? this.element.getAnswers() : this.element.setAnswers(answers);
+				break;
 		}
 
 		return res;	
+	};
+
+	Element.prototype.getAnswers = function() {
+		return this.element.val();
+	};
+
+	Element.prototype.setAnswers = function(answer) {
+		this.element.val(answer);
 	};
 
 	return Element;

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mar 16 Décembre 2014 à 10:55
+-- Généré le :  Mer 17 Décembre 2014 à 15:04
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `elementoption` (
   `formelement_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`elementoption_id`),
   KEY `FK_elementoption_formelement` (`formelement_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=51 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=57 ;
 
 --
 -- Contenu de la table `elementoption`
@@ -93,9 +93,9 @@ CREATE TABLE IF NOT EXISTS `elementoption` (
 INSERT INTO `elementoption` (`elementoption_id`, `optionvalue`, `optionorder`, `optiondefault`, `formelement_id`) VALUES
 (1, 'op1', 3, 0, 4),
 (2, 'op2', 2, 1, 4),
-(48, 'secondoption', 2, 1, 45),
-(49, 'thirdoption', 3, 0, 45),
-(50, 'firstoption', 1, 1, 45);
+(54, 'secondoption', 2, 1, 56),
+(55, 'thirdoption', 3, 0, 56),
+(56, 'firstoption', 1, 1, 56);
 
 -- --------------------------------------------------------
 
@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `formdest` (
   PRIMARY KEY (`formdest_id`),
   KEY `fk_formdest_user1_idx` (`user_id`),
   KEY `fk_formdest_form1_idx` (`form_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=714 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=882 ;
 
 --
 -- Contenu de la table `formdest`
@@ -163,30 +163,30 @@ INSERT INTO `formdest` (`formdest_id`, `formdest_status`, `user_id`, `form_id`) 
 (47, 0, 3, 7),
 (88, 0, 2, 8),
 (89, 0, 3, 8),
-(690, 0, 1, 4),
-(691, 0, 1, 4),
-(692, 0, 1, 4),
-(693, 0, 1, 4),
-(694, 0, 1, 4),
-(695, 0, 1, 4),
-(696, 0, 1, 4),
-(697, 0, 1, 4),
-(698, 0, 1, 4),
-(699, 0, 1, 4),
-(700, 0, 1, 4),
-(701, 0, 1, 4),
-(702, 0, 1, 4),
-(703, 0, 1, 4),
-(704, 0, 1, 4),
-(705, 0, 1, 4),
-(706, 0, 1, 4),
-(707, 0, 1, 4),
-(708, 0, 1, 4),
-(709, 0, 1, 4),
-(710, 0, 1, 4),
-(711, 0, 1, 4),
-(712, 0, 1, 4),
-(713, 0, 1, 4);
+(858, 0, 1, 4),
+(859, 0, 1, 4),
+(860, 0, 1, 4),
+(861, 0, 1, 4),
+(862, 0, 1, 4),
+(863, 0, 1, 4),
+(864, 0, 1, 4),
+(865, 0, 1, 4),
+(866, 0, 1, 4),
+(867, 0, 1, 4),
+(868, 0, 1, 4),
+(869, 0, 1, 4),
+(870, 0, 1, 4),
+(871, 0, 1, 4),
+(872, 0, 1, 4),
+(873, 0, 1, 4),
+(874, 0, 1, 4),
+(875, 0, 1, 4),
+(876, 0, 1, 4),
+(877, 0, 1, 4),
+(878, 0, 1, 4),
+(879, 0, 1, 4),
+(880, 0, 1, 4),
+(881, 0, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -210,21 +210,22 @@ CREATE TABLE IF NOT EXISTS `formelement` (
   `isbiglist` tinyint(1) DEFAULT '0',
   `max_value` int(11) DEFAULT NULL,
   `min_value` int(11) DEFAULT NULL,
+  `label` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`formelement_id`),
   KEY `fk_formlist_form1_idx` (`form_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=46 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=57 ;
 
 --
 -- Contenu de la table `formelement`
 --
 
-INSERT INTO `formelement` (`formelement_id`, `type_element`, `form_id`, `pos_x`, `pos_y`, `default_value`, `required`, `width`, `height`, `placeholder`, `direction`, `isbiglist`, `max_value`, `min_value`) VALUES
-(1, NULL, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL),
-(2, NULL, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL),
-(3, 1, 3, 15, 14, 'edfaulti', 1, 300, 15, 'place', 1, 0, NULL, NULL),
-(4, 2, 3, 34, 455, NULL, 0, NULL, NULL, NULL, 0, 1, NULL, NULL),
-(44, 1, 4, 25, 12, 'default', 1, 123, 23, 'placeholder', 0, 0, 100, 1),
-(45, 2, 4, 234, 15, '', 0, 0, 0, '', 1, 1, 0, 0);
+INSERT INTO `formelement` (`formelement_id`, `type_element`, `form_id`, `pos_x`, `pos_y`, `default_value`, `required`, `width`, `height`, `placeholder`, `direction`, `isbiglist`, `max_value`, `min_value`, `label`) VALUES
+(1, NULL, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL),
+(2, NULL, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL),
+(3, 1, 3, 15, 14, 'edfaulti', 1, 300, 15, 'place', 1, 0, NULL, NULL, NULL),
+(4, 2, 3, 34, 455, NULL, 0, NULL, NULL, NULL, 0, 1, NULL, NULL, NULL),
+(55, 1, 4, 25, 12, 'default', 1, 123, 23, 'placeholder', 0, 0, 100, 1, 'label'),
+(56, 2, 4, 234, 15, '', 0, 0, 0, '', 1, 1, 0, 0, '');
 
 -- --------------------------------------------------------
 

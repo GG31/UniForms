@@ -7,21 +7,6 @@ if (isset ( $_GET ["ans_id"]) AND isset($_GET["user_id"])) {
 	$form = new Form($idform);
 	$ans = $form->getListRecipient ( [ ], 1 );
 	
-	/*foreach ( $ans as $key => $value ) {
-		if ($value["User"]->getId() == $_GET["user_id"]){
-			echo $value["Answer"]->getFormId();
-			echo "<br/>";
-			echo $value["User"]->getName();
-			echo "<br/>";
-			echo $value["Status"];
-			echo "<br/>";
-			foreach ( $value["Answer"]->getAnswers() as $k => $v ) {	
-				$e = new Element($v['elementId']);
-				echo $e->getLabel();
-				echo $v["value"]."<br/>";
-			}
-		}
-	}*/
 	// $outputCsv : Variable qui va contenir les données CSV
 	$outputCsv = '';
 	

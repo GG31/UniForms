@@ -98,13 +98,6 @@ class Element {
      */
 	private $minvalue = 0;
 
-	/**
-	 * label of the element
-     * @access private
-     * @var string 
-     */
-	private $label = "";
-	
 	/*
 	* Constructor
 	*/
@@ -131,7 +124,6 @@ class Element {
 			$this->isbiglist = $rElement["isbiglist"] == 1 ? TRUE : FALSE;
 			$this->maxvalue = $rElement["max_value"];
 			$this->minvalue = $rElement["min_value"];
-			$this->label = $rElement["label"];
 			
 			$this->optionsList = array();
 			$qElementOptions = mysql_query("SELECT * FROM elementoption WHERE formelement_id = ".$idFormElement." ORDER BY optionorder, optionvalue");
@@ -161,7 +153,7 @@ class Element {
  * FORMELEMENT :
  * ___________
  *
- * all 	: 	lbl, x, y, req, (dflt ?)
+ * all 	: 	lbl, x, y, req, dflt
  * 
  * 			wdth 	hght 	plchldr 	dir 	bglst 
  * txt 	:	x 				x 							
@@ -186,9 +178,24 @@ class Element {
  * scale: 	x 		x 		x
  * upld : 	mime 	
  */
+		$type = '';
+		switch($this->getTypeElement()){
+			case 1:
+				$type = 'text';
+				break;
+			case 2:
+				$type = 'checkbox';
+				break;
+			case 3:
+				$type = 'radio';
+				break;
+			case 4:
+				$type = 'textarea';
+				break;
+		}
 		return 	[
 					"id" 			=> $this->getId(),
-					"type" 			=> $this->getTypeElement(),
+					"type" 			=> $type,
 					"x" 			=> $this->getX(),
 					"y" 			=> $this->getY(),
 					"default" 		=> $this->getDefaultValue(),
@@ -198,8 +205,7 @@ class Element {
 					"placeholder" 	=> $this->getPlaceholder(),
 					"direction" 	=> $this->getDirection(),
 					"big" 			=> $this->getIsbiglist(),
-					"options" 		=> $this->getOptions(),
-					"label"			=> $this->getLabel()
+					"options" 		=> $this->getOptions()
 				];
 	}
 	
@@ -305,14 +311,6 @@ class Element {
 	 */
 	public function getMinvalue() {
 		return $this->minvalue;
-	}
-
-	/**
-	 * Returns the label of the element
-	 * @return string
-	 */
-	public function getLabel() {
-		return $this->label;
 	}
 	
 	/**
@@ -425,14 +423,6 @@ class Element {
     */
 	public function setMinvalue($minvalue){
 		$this->minvalue = $minvalue;
-	}
-	
-	/**
-    * Sets the label of the element
-    * @param string $label
-    */
-	public function setLabel($label){
-		$this->label = $label;
 	}
 	
 }

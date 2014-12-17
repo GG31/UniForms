@@ -1,5 +1,5 @@
 <?php
-if (isset ( $_GET ["ans_id"]) AND isset($_GET["user_id"])) {
+if (isset ( $_GET ["ans_id"] )) {
 	include_once ('includes.php');
 	$answer = new Answer($_GET ["ans_id"]);
 	$recipient = $answer->getRecipient();
@@ -28,16 +28,14 @@ if (isset ( $_GET ["ans_id"]) AND isset($_GET["user_id"])) {
 	// ici on parcour le resultat de $ans
 	// trim — Supprime les espaces (ou d'autres caractères ex : ";") en début et fin de chaîne 
 	foreach ( $ans as $key => $value ) {
-			if ($value["User"]->getId() == $_GET["user_id"]){
-				$outputCsv .= trim($value["Answer"]->getFormId()) . ';';
-				$outputCsv .= trim($value["User"]->getName()) . ';';
-				$outputCsv .= trim($value["Status"]) . ';';
-				foreach ( $value["Answer"]->getAnswers() as $k => $v ) {
-					$outputCsv .= trim($v["value"]) . ';';
-				}
-				$outputCsv = rtrim($outputCsv, ';');
-				$outputCsv .= "\n";
+			$outputCsv .= trim($value["Answer"]->getFormId()) . ';';
+			$outputCsv .= trim($value["User"]->getName()) . ';';
+			$outputCsv .= trim($value["Status"]) . ';';
+			foreach ( $value["Answer"]->getAnswers() as $k => $v ) {
+				$outputCsv .= trim($v["value"]) . ';';
 			}
+			$outputCsv = rtrim($outputCsv, ';');
+			$outputCsv .= "\n";
 	}
 	// Entêtes (headers) PHP qui vont bien pour la création d'un fichier Excel CSV
 	header ( "Content-disposition: attachment; filename=" . $fileName );

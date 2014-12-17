@@ -147,12 +147,16 @@ $('#inputNumberMin').change(function() {
 $('#inputNumberMax').change(function() {
    elementList[currentElement].max = $('#inputNumberMax').val();
 });
+$('#inputdefaultValue').change(function() {
+   elementList[currentElement].defaultValue = $('#inputdefaultValue').val();
+});
 
 function hideAll() {
    $('#inputValueGroup').hide();
    $('#checkboxRequiredGroup').hide();
    $('#valuesGroup').hide();
    $('#inputNumberGroup').hide();
+   $('#defaultValueGroup').hide();
 }
 
 function updatePanelDetail() {
@@ -161,21 +165,22 @@ function updatePanelDetail() {
       hasRequired();
       type = $("#"+currentElement).children('input').attr("type");
       hasSeveralValues();
-   } else if($("#"+currentElement).is("textarea")){//Ne marche pas
+   } else if($("#"+currentElement).is("textarea")){
       hasRequired();
-   }
-   else if($("#"+currentElement).is("input")) {
+   } else if($("#"+currentElement).is("input")) {
       // Si input
       if ($("#"+currentElement).attr('type') == 'text') {
          // Si Textbox
          hasRequired();
+         hasDefaultValueText();
       } else if ($("#"+currentElement).attr('type') == 'number') {
-         //Si radio button
          hasRequired();
          hasMinMax();
       } else if ($("#"+currentElement).attr('type') == 'date') {
          hasRequired();
       } else if ($("#"+currentElement).attr('type') == 'time') {
+         hasRequired();
+      } else if ($("#"+currentElement).attr('type') == 'tel') {
          hasRequired();
       }
    }else if($("#"+currentElement).is("span")) {
@@ -201,6 +206,11 @@ function hasMinMax() {
 function hasValueText() {
    $('#inputValueGroup').show();
    $('#inputValue').val(elementList[currentElement].value);
+}
+
+function hasDefaultValueText() {
+   $('#defaultValue').show();
+   $('#defaultValue').val(elementList[currentElement].defaultValue);
 }
 
 function hasSeveralValues() {

@@ -178,6 +178,7 @@
                         <div class="draggable" id="draggableDate" draggable="true"><input type="text" id="datepicker" placeholder="jj/mm/aaaa"/></div>
                         <div class="draggable" id="draggableTime" draggable="true"><input id="timepicker" type="time" placeholder="hh:mm"/></div>
                         <div class="draggable" id="draggableTextarea" draggable="true"><textarea rows="4" cols="40"></textarea></div>
+                        <div class="draggable" id="draggableTel" draggable="true"><input type="tel" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$" placeholder="06xxxxxxxx"></div>
                         
                         <div class="draggable" id="draggable1" draggable="true"><input name="input_text"
   type="text" class="form-control"></div>
@@ -191,6 +192,9 @@
                           <div id="divDetail" class="panel-body">
                             <div id="checkboxRequiredGroup">
                               <input type="Checkbox" id="checkboxRequired"> Required
+                            </div>
+                            <div id="defaultValueGroup">
+                              Default Value<input type="Textbox" id="inputdefaultValue">
                             </div>
                             <div id="inputValueGroup">
                             Value <input type="Text" id="inputValue">

@@ -81,6 +81,12 @@
   		$elem->setMinvalue(5);
   		$this->assertEqual($elem->getMinvalue(), 5);
   	}
+
+	function test_getLabel(){
+  		$elem = new Element();
+  		$elem->setLabel("Name:");
+  		$this->assertEqual($elem->getLabel(), "Name:");
+  	}
   	
   	function test_getOptions(){
   		$elem = new Element();		$options = array();
@@ -101,6 +107,7 @@
 		$e1->setX(25);
 		$e1->setY(12);
 		$e1->setDefaultValue("default");
+		$e1->setLabel("label");
 		$e1->setPlaceholder("placeholder");
 		$e1->setRequired(TRUE);
 		$e1->setWidth(123);

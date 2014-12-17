@@ -22,7 +22,7 @@ if (isset ( $_GET ["ans_id"]) AND isset($_GET["user_id"])) {
 	$fileName .= ".csv";
 	
 	// Ajouter dans la variable $outputCsv les noms des colonnes
-	$outputCsv .= "No formulaire; Destinataire; Status; Answers value";
+	$outputCsv .= "No formulaire; Destinataire; Status;";
 	$outputCsv .= "\n";
 	
 	// ici on parcour le resultat de $ans
@@ -32,8 +32,15 @@ if (isset ( $_GET ["ans_id"]) AND isset($_GET["user_id"])) {
 				$outputCsv .= trim($value["Answer"]->getFormId()) . ';';
 				$outputCsv .= trim($value["User"]->getName()) . ';';
 				$outputCsv .= trim($value["Status"]) . ';';
+				$outputCsv .= "\n";
+				$outputCsv .= "\n";
+				$outputCsv .= "Question; Response";
+				$outputCsv .= "\n";
 				foreach ( $value["Answer"]->getAnswers() as $k => $v ) {
+					$e = new Element($v['elementId']);
+					$outputCsv .= trim($e->getLabel()) . ';';
 					$outputCsv .= trim($v["value"]) . ';';
+					$outputCsv .= "\n";
 				}
 				$outputCsv = rtrim($outputCsv, ';');
 				$outputCsv .= "\n";

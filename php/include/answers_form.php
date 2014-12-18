@@ -19,12 +19,30 @@ if (isset ( $_GET ["ans_id"])) {
 		}
 	}
 	?>
+<script>
+	$(document).ready(function(){
+		<?php
+			$elems = $form->getFormElements();
+			foreach ($elems as $elem) {
+				$json = json_encode($elem->getAll());
+		?>
+			new Element(<?php echo $json ?>, '#answerSheet')
+					.answers(
+						<?php echo json_encode($answer->getAnswers($elem->getId())) ?>
+						);
+		<?php
+			}
+		?>
+
+		disableForm('#answerSheet');
+	});
+</script>
 <div class="row">
 	<div class="panel panel-primary">
 		<div class="panel-heading text-center text-capitalize">
 			<strong><?php echo $recipient->getName(); ?></strong>
 		</div>
-		<div class="panel-body"></div>
+		<div id="answerSheet" class="panel-body"></div>
 	</div>
 </div>
 <div class="row">

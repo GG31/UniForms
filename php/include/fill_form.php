@@ -10,6 +10,10 @@
 		$ans->setFormId($_POST["form_id"]);
 		$ans->setRecipient(new User($_SESSION["user_id"]));
 	}
+	
+	if ($_POST["answers"]){
+		$ans->setAnswers(json_decode($_POST["answers"],true));
+	}
 
 	if(isset($_POST["save"])){
 		$ans->save();

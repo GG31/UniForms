@@ -10,6 +10,12 @@ class Form {
 	private $id = NULL;
 	
 	/**
+     * @access private
+     * @var string 
+     */
+	private $name = NULL;
+	
+	/**
 	  * Creator of this form
      * @access private
      * @var User 
@@ -81,6 +87,7 @@ class Form {
 			$this->printable = $rForm ["form_printable"] == 1 ? TRUE : FALSE;
 			$this->anonymous = $rForm ["form_anonymous"] == 1 ? TRUE : FALSE;
 			$this->maxAnswers = $rForm ["form_maxanswers"];
+			$this->name = $rForm ["form_name"];
 			
 			// Load listRecipient
 			$this->listRecipient = array ();
@@ -111,6 +118,14 @@ class Form {
 	 */
 	public function getId() {
 		return $this->id;
+	}
+	
+	/**
+	 * Give the form's name
+	 * @return string
+	 */
+	public function getName() {
+		return $this->name;
 	}
 	
 	/**
@@ -204,6 +219,14 @@ class Form {
 	}
 	
 	/**
+    * Sets the name of the form
+    * @param string $name
+    */
+	public function setName($name){
+		$this->name = $name;
+	}
+	
+	/**
     * Sets the printable value
     * @param boolean $isPrintable
     */
@@ -261,8 +284,9 @@ class Form {
 		// Forms can be created or loaded
 		if($this->id == NULL) {			// Creates new form
 			// Inserts status, anonymous, print and maxAnswers
-			mysql_query("INSERT INTO form(user_id, form_status, form_anonymous, form_printable, form_maxanswers) VALUES ("
+			mysql_query("INSERT INTO form(user_id, form_name, form_status, form_anonymous, form_printable, form_maxanswers) VALUES ("
 									. $this->creator->getId()
+									. ",'" . $this->name . "'"
 									. ", 0, "
 									. ($this->anonymous ? 1 : 0) . ", "
 									. ($this->printable ? 1 : 0) . ", "
@@ -274,6 +298,7 @@ class Form {
 		} else {				// Updates existing form
 			// Updates status, anonymous, print and maxAnswers
 			mysql_query("UPDATE form SET form_status = 0"
+			                  .", form_name = '" . $this->name ."'" 
 									.", form_anonymous = " . ($this->anonymous ? 1 : 0)
 									.", form_printable = " . ($this->printable ? 1 : 0)
 									.", form_maxanswers = " . $this->maxAnswers

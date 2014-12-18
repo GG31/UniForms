@@ -26,6 +26,13 @@ if (! empty ( $_POST )) {
 	if (isset ( $_POST ["parammulti"] )) {
 		$multifill = $_POST ["parammulti"];
 	}
+	if (isset ( $_POST ["infoFormName"] )) {
+	   echo "hhh";
+		$formName = $_POST ["infoFormName"];
+		echo $formName;
+	   $form->setName($formName);
+	}
+	
 	$form->setPrintable ( $printable );
 	$form->setAnonymous ( $anonymous );
 	$form->setMaxAnswers ( $multifill );
@@ -75,7 +82,6 @@ function treatmentElement($key, $array) {
       $e->setRequired($array['required']);
    }
    if(array_key_exists("label", $array)) {
-      echo "fuck";
       $e->setLabel($array['label']);
    }
    if(array_key_exists("defaultValue", $array)) {

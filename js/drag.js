@@ -4,7 +4,7 @@ var elementList = {};
 var ids = 0;
 var currentElement;
 var elt;
-	
+$("#infoFormName").val("NULL");
 elt = document.getElementsByClassName("draggable");
 for (i = 0; i < elt.length; i++) {
    elt[i].addEventListener("dragstart", drag, false);
@@ -257,3 +257,10 @@ function hasSeveralValues() {
       $("#"+currentElement).children('input').eq(i).next().text(elementList[currentElement].values[i]);
    }
 }
+
+$("#formName").focusout(function() {
+   if($("#formName").text() == '') {
+      $("#formName").text("NULL");
+   }
+   $("#infoFormName").val($("#formName").text());
+});

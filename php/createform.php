@@ -162,7 +162,7 @@
 					<div class="panel panel-primary">
 					   <div class="panel-heading text-center text-capitalize">
 						   <h3 class="panel-title">
-								<strong>Formulaire</strong>
+								<strong>Formulaire : </strong> <span contentEditable="true" id="formName">Click to add form name</span><input id="infoFormName" name="infoFormName" type="hidden">
 							</h3>
 						</div>
 						<div class="panel-body">

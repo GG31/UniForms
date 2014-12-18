@@ -173,6 +173,7 @@ Element = (function(){
 
 	function Element(obj, id){
 		console.log('new Element ' + obj.id + ' (' + obj.type + ')');
+		console.log(obj);
 		this.obj = obj;
 				
 

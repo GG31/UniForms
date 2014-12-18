@@ -34,7 +34,7 @@ Radio = (function(){
 						.attr('type', 'radio')
 						.attr('name', 'elem-' + obj.id)
 						.attr('value', 'option-' + obj.options[i].elementoption_id)
-						.attr('checked', obj.options[i].default == '1' ? true : false)
+						.prop('checked', obj.options[i].default == '1' ? true : false)
 						;
 			label.append(input).append(obj.options[i].value);
 			radio.append(label);
@@ -53,13 +53,16 @@ Radio = (function(){
 	}
 
 	Radio.prototype.getAnswers = function(){
-		return this.element.find(':checked').val();
+		return {
+					elementId	: this.obj.id,
+					value		: this.element.find(':checked').val().split('-')[1]
+				};
 	}
 
 	Radio.prototype.setAnswers = function(answer){// answer is option id ?
 		this.element.find('input')
 						.prop('checked', false)
-					.filter('input[value=option-' + answer + ']')
+					.filter('input[value=option-' + answer[0] + ']')
 						.prop('checked', true);
 	}
 
@@ -80,7 +83,7 @@ Select = (function(){
 		for(i = 0; i < length; i++){
 			option = $('<option></option>')
 						.attr('value', 'option-' + obj.options[i].elementoption_id)
-						.attr('selected', obj.options[i].default == '1' ? true : false)
+						.prop('selected', obj.options[i].default == '1' ? true : false)
 						.text(obj.options[i].value)
 						;
 			select.append(option);
@@ -99,13 +102,16 @@ Select = (function(){
 	}
 
 	Select.prototype.getAnswers = function(){
-		return this.element.find(':selected').val();
+		return {
+					elementId	: this.obj.id,
+					value		: this.element.find(':selected').val().split('-')[1]
+				};
 	}
 
 	Select.prototype.setAnswers = function(answer){// answer is option id ?
 		this.element.find('option')
 						.prop('selected', false)
-					.filter('option[value=option-' + answer + ']')
+					.filter('option[value=option-' + answer[0] + ']')
 						.prop('selected', true);
 	}
 
@@ -128,7 +134,7 @@ Multiple = (function(){
 						.attr('type', 'checkbox')
 						.attr('name', 'elem-' + obj.id)
 						.attr('value', 'option-' + obj.options[i].elementoption_id)
-						.attr('checked', obj.options[i].default == '1' ? true : false)
+						.prop('checked', obj.options[i].default == '1' ? true : false)
 						;
 			label.append(box).append(obj.options[i].value);
 			multiple.append(label);
@@ -147,14 +153,18 @@ Multiple = (function(){
 	}
 
 	Multiple.prototype.getAnswers = function(){
+		id = this.obj.id;
 		return this.element.find(':checked').map(function(){
-												return $(this).val();
+												return {
+															elementId 	: id,
+															value		: $(this).val().split('-')[1]
+														}
 											}).get();
 	}
 
 	Multiple.prototype.setAnswers = function(answers){// answer is option id array ?
 		this.element.find('input').each(function(){
-			id = parseInt($(this).val().split('-')[1]);
+			id = $(this).val().split('-')[1];
 			inAnswers = answers.indexOf(id) >= 0;
 
 			if(inAnswers)
@@ -172,8 +182,6 @@ Element = (function(){
 	Element.prototype.obj;
 
 	function Element(obj, id){
-		console.log('new Element ' + obj.id + ' (' + obj.type + ')');
-		console.log(obj);
 		this.obj = obj;
 				
 
@@ -199,11 +207,9 @@ Element = (function(){
 				break;
 			case 7:
 				element = obj.big ? new Select(obj) : new Radio(obj);
-				element = element;
 				break;
 			case 8:
 				element = new Multiple(obj);
-				element = element;
 				break;
 		}
 
@@ -245,6 +251,10 @@ Element = (function(){
 
 	Element.prototype.answers = function(answers) {
 		get = typeof answers == 'undefined';
+
+		if(!get && answers.length == 0) // if we load no answers, don't set values to nothing
+			return this;
+
 		res = '';
 
 		switch(parseInt(this.obj.type)){
@@ -262,16 +272,44 @@ Element = (function(){
 				break;
 		}
 
-		return res;	
+		return get ? res : this;	
 	};
 
 	Element.prototype.getAnswers = function() {
-		return this.element.val();
+		return {
+					elementId 	: this.obj.id,
+					value		: this.element.val()
+				};
 	};
 
 	Element.prototype.setAnswers = function(answer) {
-		this.element.val(answer);
+		this.element.val(answer[0]);
 	};
 
 	return Element;
 })();
+
+function getAnswers(){
+	answers = [];
+
+	for(i = 0; i < elems.length; i++){
+		a = elems[i].answers();
+
+		if(a instanceof Array){
+			for(j = 0; j < a.length; j++){
+				answers.push(a[j]);
+			}
+		}else{
+			answers.push(a);
+		}
+	}
+
+	return answers;
+}
+
+function disableForm(id){
+	form = $(id);
+	form.find('input').prop('disabled', true);
+	form.find('textarea').prop('disabled', true);
+	form.find('select').prop('disabled', true);
+}

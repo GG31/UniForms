@@ -193,6 +193,9 @@
                             <div id="checkboxRequiredGroup">
                               <input type="Checkbox" id="checkboxRequired"> Required
                             </div>
+                            <div id="labelGroup">
+                              Label <input type="Textbox" id="inputLabelValue">
+                            </div>
                             <div id="defaultValueGroup">
                               Default Value<input type="Textbox" id="inputdefaultValue">
                             </div>

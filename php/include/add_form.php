@@ -12,7 +12,6 @@ if (! empty ( $_POST )) {
 	} else { // Already existing form
 		$form = new Form ( $_POST ['form_id'] );
 	}
-	
 	/*
 	 * Form parameters
 	 */
@@ -27,7 +26,6 @@ if (! empty ( $_POST )) {
 	if (isset ( $_POST ["parammulti"] )) {
 		$multifill = $_POST ["parammulti"];
 	}
-	
 	$form->setPrintable ( $printable );
 	$form->setAnonymous ( $anonymous );
 	$form->setMaxAnswers ( $multifill );
@@ -43,21 +41,18 @@ if (! empty ( $_POST )) {
 			$recipients [] = new User ( $id );
 		}
 	}
-	
 	$form->setRecipient ( $recipients );
-	
 	
 	/*
     * Récupère les données des éléments
     */
-   if(isset($_POST['info'])) {     
+   if(isset($_POST['info'])) { 
       $obj=json_decode($_POST['info'], true, 4);
       $arrayElements = [];
       foreach ($obj as $key => $array){
          $arrayElements[] = treatmentElement($key, $array);
       }
    }
-   
    $form->setFormElements($arrayElements);
 	/*
 	 * Actions
@@ -78,6 +73,10 @@ function treatmentElement($key, $array) {
    $e->setY($array['posY']);
    if(array_key_exists("required", $array)) {
       $e->setRequired($array['required']);
+   }
+   if(array_key_exists("label", $array)) {
+      echo "fuck";
+      $e->setLabel($array['label']);
    }
    if(array_key_exists("defaultValue", $array)) {
       $e->setDefaultValue($array['defaultValue']);

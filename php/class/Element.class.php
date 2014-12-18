@@ -324,6 +324,14 @@ class Element {
 	}
 	
 	/**
+    * Sets the label
+    * @param string $label
+    */
+	public function setLabel($label){
+		$this->label = $label;
+	}
+	
+	/**
     * Sets the element type 
     * @param integer $type
     */

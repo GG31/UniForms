@@ -62,8 +62,8 @@ function drop(ev)
       dup = elt.cloneNode(true);
       // On met un nouvel id à ce nouveau noeud
       dup.id = ids;
-      decX = datas[1]-500;
-      decY = datas[2]-100;
+      decX = 0;
+      decY = 0;
       dup.style.position = "absolute";
       dup.style.top = "" + decY + "px";
       dup.style.left = "" + decX + "px";
@@ -89,7 +89,17 @@ function drop(ev)
          }
          
       } else if($("#"+currentElement).is("input")) {
-         elementList[currentElement].type = "Input";
+         if ($("#"+currentElement).attr('type') == 'text') {
+            elementList[currentElement].type = "InputText";
+         } else if ($("#"+currentElement).attr('type') == 'number') {
+            elementList[currentElement].type = "InputNumber";
+         } else if ($("#"+currentElement).attr('type') == 'time') {
+            elementList[currentElement].type = "InputTime";
+         } else if ($("#"+currentElement).attr('type') == 'date') {
+            elementList[currentElement].type = "InputDate";
+         } else if ($("#"+currentElement).attr('type') == 'tel') {
+            elementList[currentElement].type = "InputPhone";
+         }
       } else if($("#"+currentElement).is("span")){
          elementList[currentElement].type = "Span";
       }
@@ -150,6 +160,9 @@ $('#inputNumberMax').change(function() {
 $('#inputdefaultValue').change(function() {
    elementList[currentElement].defaultValue = $('#inputdefaultValue').val();
 });
+$('#inputLabelValue').change(function() {
+   elementList[currentElement].label = $('#inputLabelValue').val();
+});
 
 function hideAll() {
    $('#inputValueGroup').hide();
@@ -157,30 +170,38 @@ function hideAll() {
    $('#valuesGroup').hide();
    $('#inputNumberGroup').hide();
    $('#defaultValueGroup').hide();
+   $('#labelGroup').hide();
 }
 
 function updatePanelDetail() {
    hideAll();
    if($("#"+currentElement).is("fieldset")){
+      hasLabel()
       hasRequired();
       type = $("#"+currentElement).children('input').attr("type");
       hasSeveralValues();
    } else if($("#"+currentElement).is("textarea")){
+      hasLabel()
       hasRequired();
    } else if($("#"+currentElement).is("input")) {
       // Si input
       if ($("#"+currentElement).attr('type') == 'text') {
          // Si Textbox
+         hasLabel()
          hasRequired();
          hasDefaultValueText();
       } else if ($("#"+currentElement).attr('type') == 'number') {
+         hasLabel()
          hasRequired();
          hasMinMax();
       } else if ($("#"+currentElement).attr('type') == 'date') {
+         hasLabel()
          hasRequired();
       } else if ($("#"+currentElement).attr('type') == 'time') {
+         hasLabel()
          hasRequired();
       } else if ($("#"+currentElement).attr('type') == 'tel') {
+         hasLabel()
          hasRequired();
       }
    }else if($("#"+currentElement).is("span")) {
@@ -209,8 +230,13 @@ function hasValueText() {
 }
 
 function hasDefaultValueText() {
-   $('#defaultValue').show();
-   $('#defaultValue').val(elementList[currentElement].defaultValue);
+   $('#defaultValueGroup').show();
+   $('#inputdefaultValue').val(elementList[currentElement].defaultValue);
+}
+
+function hasLabel() {
+   $('#labelGroup').show();
+   $('#inputLabelValue').val(elementList[currentElement].label);
 }
 
 function hasSeveralValues() {

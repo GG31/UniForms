@@ -17,7 +17,10 @@
 
 
       //TODO
-      $values     = $ans->getAnswers();
+      // $values     = $ans->getAnswers();
+      // echo "<pre>";
+      // var_dump($values);
+      // echo "</pre>";
    }
 ?>
 <html>
@@ -36,16 +39,42 @@
 <body>
    <script>
       $(document).ready(function(){
+         elems    = [];
+         
          <?php
             $elems = $form->getFormElements();
-            foreach ($elems as $key => $elem) {
+            foreach ($elems as $elem) {
                $json = json_encode($elem->getAll());
          ?>
-                  new Element(<?php echo $json ?>, '#answerSheet');
+                  elems.push(
+                     new Element(<?php echo $json ?>, '#answerSheet')
+                        .answers(
+                           <?php echo $ans ? 
+                                    json_encode(
+                                       $ans->getAnswers($elem->getId())
+                                    ) :
+                                    ['']
+                           ?>
+                        )
+                  );
+         <?php
+            }
+         ?>
+
+         $('input[type=submit]').on('click', {elems: elems}, function(event){
+            // event.preventDefault();
+            $('input[name=answers]').attr('value', JSON.stringify(getAnswers()));
+         });
+
+         <?php
+            if($state == TRUE){
+         ?>
+            disableForm('#answerSheet');
          <?php
             }
          ?>
       });
+
    </script>
 	<div class="container">
          <?php include 'include/header.php'; ?>
@@ -60,7 +89,6 @@
 				}
 			?>
          <div class="row">
-
             <div class="panel panel-primary">
                <div class="panel-heading text-center text-capitalize">
                   <h3 class="panel-title"><strong>Formulaire <?php echo $form_id ?></strong></h3>
@@ -78,6 +106,11 @@
                   name=<?php echo $new ? "form_id" : "ans_id" ?>
                   form="answerSheet"
                   value=<?php echo $new ? $form_id : $ans_id ?>
+                  >
+               <input
+                  type="hidden"
+                  name="answers"
+                  form="answerSheet"
                   >
                <input
                   type="submit"

@@ -59,7 +59,7 @@ class Answer {
 			$this->recipient = new User($rFormDest["user_id"]);
 			$sql = "SELECT formelement_id, value 
 				FROM answervalue 
-				JOIN elementanswer ON elementanswer.elementanswer_id = answervalue.elementanswer_id 
+				JOIN elementanswer ON elementanswer.elementanswer_id = answervalue.elementanswer_id
 				WHERE elementanswer.formdest_id = ".$formdest_id;
 			$q = mysql_query($sql);
 			
@@ -126,7 +126,7 @@ class Answer {
     * @param ?? $answers
     */
 	public function setAnswers($answers){
-		 $this->answers = $answers;
+		$this->answers = $answers;
 	}
 
 	/**
@@ -139,9 +139,17 @@ class Answer {
 			return $this->answers;
 		else{				// Filter on elem, return its value(s)
 			$res = [];
-			foreach ($this->answers as $id => $val) {
-				if($elem_id = $id)
-					$res[] = $val;
+			foreach ($this->answers as $val) {
+					// echo "<pre>";
+					// var_dump($elem_id);
+					// echo "</pre>";
+					// echo "<pre>";
+					// var_dump($id);
+					// echo "</pre><br><br>";
+
+				if($elem_id == $val['elementId']){
+					$res[] = $val['value'];
+				}
 			}
 			return $res;
 		}
@@ -166,15 +174,16 @@ class Answer {
 		} else {				// Updates existing ans
 			// Only delete old element answer
 			// (status is still 0, same form & dest)
-			mysql_query("DELETE FROM elementanswer WHERE form_dest = ".$this->formDest);
+			mysql_query("DELETE FROM elementanswer WHERE formdest_id = ".$this->formDest)or die('<br><strong>SQL Error (Elem, 1)</strong>:<br>'.mysql_error());;
 		}
 		
 		// Update tables elementanswer and answervalue
 		$answers = $this->getAnswers();
 		foreach($answers as $answer){
 			mysql_query("INSERT INTO elementanswer (formelement_id, formdest_id) VALUES(".$answer["elementId"].",".$this->getId().")");
-			$idElementAnswer = mysql_insert_id();	
-			mysql_query("INSERT INTO answervalue (value, elementanswer_id) VALUES(".$answer["value"].",".$idElementAnswer.")");			
+			$idElementAnswer = mysql_insert_id();
+			mysql_query("INSERT INTO answervalue (value, elementanswer_id) VALUES('".$answer["value"]."',".$idElementAnswer.")")
+			or die('<br><strong>SQL Error (Elem, 2)</strong>:<br>'.mysql_error());
 		}
 	}
 	

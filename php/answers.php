@@ -10,6 +10,7 @@
 
 <script src="../lib/jquery-2.1.1/min.js"></script>
 <script src="../lib/bootstrap-3.3.1/js/min.js"></script>
+<script src="../js/elems.js"></script>
 </head>
 <body>
 	<div class="container">

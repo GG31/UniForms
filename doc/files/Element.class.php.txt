@@ -428,11 +428,12 @@ class Element {
 }
 
 // to use this do constant("nameoftheconstant"), ex: constant("typeRadioButton") returns 3
-define("typeInput", 1);
-define("typeCheckbox", 2);
-define("typeRadioButton", 3);
-define("typeTextArea", 4);
-
-
+define("typeInputText", 1);
+define("typeInputNumber", 2);
+define("typeInputTime", 3);
+define("typeInputDate", 4);
+define("typeInputPhone", 5);
+define("typeCheckbox", 6);
+define("typeRadioButton", 7);
+define("typeTextArea", 8);
 ?>
-

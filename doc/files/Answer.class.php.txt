@@ -132,7 +132,7 @@ class Answer {
 	/**
 	 * Give the answers
 	 * @param  elem_id (optional) specify an element's id to get its value(s)
-	 * @return array of ??
+	 * @return array of answers. One answer is an element id and a value.
 	 */
 	public function getAnswers($elem_id = NULL){
 		if($elem_id == NULL) // No elem filtered, return whole answer array

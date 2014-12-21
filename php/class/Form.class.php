@@ -327,23 +327,6 @@ class Form {
 		
 		// Insert elements of the form in formelement
 		foreach ($this->formElements as $index => $element){
-		   echo "INSERT INTO formelement(form_id, type_element, label, pos_x, pos_y, default_value, required, width, height, placeholder, direction, isbiglist, max_value, min_value) 
-						VALUES ("
-									. $this->id . ","
-									. $element->getTypeElement() . ","
-									. "'" . $element->getLabel() . "',"
-									. $element->getX() . ","
-									. $element->getY() . ","
-									. "'" . $element->getDefaultValue() . "',"
-									. ($element->getRequired() ? 1 : 0) . ", "
-									. $element->getWidth() . ","
-									. $element->getHeight() . ","
-									. "'" . $element->getPlaceholder() . "',"
-									. $element->getDirection() . ","
-									. ($element->getIsbiglist() ? 1 : 0) . ","
-									. $element->getMaxvalue() . ","
-									. $element->getMinvalue() .
-						")";
 			mysql_query("INSERT INTO formelement(form_id, type_element, label, pos_x, pos_y, default_value, required, width, height, placeholder, direction, isbiglist, max_value, min_value) 
 						VALUES ("
 									. $this->id . ","

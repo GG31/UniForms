@@ -2,7 +2,7 @@ Container = (function(){
 	function Container(obj){
 		container = $('<div></div>')
 						.attr('id', 'container-' + obj.id)
-						.css('position', 'relative')
+						.css('position', 'static')
 						.css('top', obj.x + 'px')
 						.css('left', obj.y + 'px')
 						;
@@ -182,8 +182,6 @@ Element = (function(){
 	Element.prototype.obj;
 
 	function Element(obj, id){
-		obj.x = 0;
-		obj.y = 0;
 
 		element = '';
 		switch(parseInt(obj.type)){

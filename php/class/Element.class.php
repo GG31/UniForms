@@ -191,6 +191,8 @@ class Element {
 					"type" 			=> $this->getTypeElement(),
 					"x" 			=> $this->getX(),
 					"y" 			=> $this->getY(),
+					"minvalue" 			=> $this->getMinvalue(),
+					"maxvalue" 			=> $this->getMaxvalue(),
 					"default" 		=> $this->getDefaultValue(),
 					"required" 		=> $this->getRequired(),
 					"width" 		=> $this->getWidth(),

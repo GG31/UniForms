@@ -1,6 +1,7 @@
 <?php
 include_once 'includes.php';
 if (! empty ( $_POST )) {   
+   var_dump($_POST ["info"]);
 	/*
 	 * Getting a Form object
 	 */
@@ -49,7 +50,7 @@ if (! empty ( $_POST )) {
 		}
 	}
 	$form->setRecipient ( $recipients );
-	
+	echo "lol<br>";
 	/*
     * Récupère les données des éléments
     */
@@ -57,6 +58,8 @@ if (! empty ( $_POST )) {
       $obj=json_decode($_POST['info'], true, 4);
       $arrayElements = [];
       foreach ($obj as $key => $array){
+         var_dump($array);
+         echo "<br>";
          $arrayElements[] = treatmentElement($key, $array);
       }
    }
@@ -74,7 +77,18 @@ if (! empty ( $_POST )) {
 }
 
 function treatmentElement($key, $array) {
-   $e = new Element();
+   $keyPart = explode('_', $key);
+   echo "explode ".$keyPart[0]." ".$key."<br>";
+   $e = "";
+   if(strcmp($keyPart[0],"elem") == 0){
+      echo "strcmp <br>";
+      $e = new Element((int)$keyPart[1]);
+      echo "post element<br>";
+   } else {
+      echo "child<br>";
+      $e = new Element();
+   }
+   echo "type ".$array['type'];
    $e->setTypeElement(constant('type'.$array['type']));
    $e->setX($array['posX']);
    $e->setY($array['posY']);

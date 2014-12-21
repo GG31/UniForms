@@ -6,8 +6,8 @@ var elt;
 
 function init() {
    hideAll();
-
-   $("#infoFormName").val("NULL");
+   $("#formName").text(formname);
+   $("#infoFormName").val(formname);
    elt = document.getElementsByClassName("draggable");
    for (i = 0; i < elt.length; i++) {
       elt[i].addEventListener("dragstart", drag, false);

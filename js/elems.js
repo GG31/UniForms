@@ -182,37 +182,46 @@ Element = (function(){
 	Element.prototype.obj;
 
 	function Element(obj, id){
-		this.obj = obj;
-				
+		obj.x = 0;
+		obj.y = 0;
 
 		element = '';
 		switch(parseInt(obj.type)){
 			case 1:
 				element = $('<input/>').attr('type', 'text');
+				obj.type = 1;
 				break;
 			case 2:
 				element = $('<input/>').attr('type', 'number');
-				break;
-			case 3:
-				element = $('<input/>').attr('type', 'date');
+				obj.type = 2;
 				break;
 			case 4:
+				element = $('<input/>').attr('type', 'date');
+				obj.type = 3;
+				break;
+			case 3:
 				element = $('<input/>').attr('type', 'time');
+				obj.type = 4;
 				break;
 			case 5:
 				element = $('<input/>').attr('type', 'tel');
+				obj.type = 5;
 				break;
-			case 6:
+			case 8:
 				element = $('<textarea></textarea>').css('height', obj.height + 'px');
+				obj.type = 6;
 				break;
 			case 7:
 				element = obj.big ? new Select(obj) : new Radio(obj);
+				obj.type = 7;
 				break;
-			case 8:
+			case 6:
 				element = new Multiple(obj);
+				obj.type = 8;
 				break;
 		}
 
+		this.obj = obj;
 		this.element = element;
 		this.attrs();
 
@@ -228,7 +237,7 @@ Element = (function(){
 	Element.prototype.attrs = function() {
 		obj = this.obj;
 
-		switch(parseInt(obj.type)){
+		switch(obj.type){
 			case 1:
 			case 2:
 			case 3:
@@ -257,7 +266,7 @@ Element = (function(){
 
 		res = '';
 
-		switch(parseInt(this.obj.type)){
+		switch(this.obj.type){
 			case 1:
 			case 2:
 			case 3:

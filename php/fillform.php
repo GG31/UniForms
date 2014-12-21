@@ -14,13 +14,6 @@
       $form       = new Form($form_id);
       $state      = $ans->getState();
       $new        = FALSE;
-
-
-      //TODO
-      // $values     = $ans->getAnswers();
-      // echo "<pre>";
-      // var_dump($values);
-      // echo "</pre>";
    }
 ?>
 <html>
@@ -76,7 +69,7 @@
       });
 
    </script>
-	<div class="container">
+   	<div class="container">
          <?php include 'include/header.php'; ?>
   		   <?php include 'include/nav.php'; ?>
          <?php

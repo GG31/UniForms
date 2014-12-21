@@ -277,3 +277,7 @@ $("#formName").focusout(function() {
    }
    $("#infoFormName").val($("#formName").text());
 });
+
+function getTypeElement(element) {
+
+}

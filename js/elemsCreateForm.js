@@ -119,18 +119,17 @@ Element = (function(){
 		this.posX = obj.x;
 		this.posY = obj.y;
 		this.label = obj.label;
+		this.required = obj.required;
 
 		switch(parseInt(obj.type)){
 			case 1:
 				element = $('<input/>').attr('type', 'text');
 				this.type = 'InputText';
-				this.required = obj.required;
 				this.defaultValue = obj.defaultValue;
 				break;
 			case 2:
 				element = $('<input/>').attr('type', 'number');
 				this.type = 'InputNumber';
-				this.required = obj.required;
 				this.defaultValue = obj.defaultValue;
 				this.min = obj.minvalue;
 				this.max = obj.maxvalue;
@@ -138,33 +137,49 @@ Element = (function(){
 			case 3:
 				element = $('<input/>').attr('type', 'time');
 				this.type = 'InputTime';
-				this.required = obj.required;
 				this.defaultValue = obj.defaultValue;
 				break;
 			case 4:
 				element = $('<input/>').attr('type', 'date');
 				this.type = 'InputDate';
-				this.required = obj.required;
 				this.defaultValue = obj.defaultValue;
 				break;
 			case 5:
 				element = $('<input/>').attr('type', 'tel');
 				this.type = 'InputPhone';
-				this.required = obj.required;
 				this.defaultValue = obj.defaultValue;
 				break;
 		   case 6:
 		      //Checkbox
-				element = $('<input/>').css('height', obj.height + 'px');
-				this.required = obj.required;
+		      element = $("<fieldset></fieldset>");
+			   this.type = 'Checkbox';
+            this.values = {};
+            for(i=0; i<obj.options.length; i++) {
+               this.values[i] = obj.options[i]['value'];
+               var newNode = $('<input/>').attr('type', 'checkbox')
+                                          .attr('name', this.id);
+               var span = $('<span>' + this.values[i] + '</span><br>');
+               element.append(newNode);
+               element.append(span);
+            }
 				break;
 			case 7:
 			   //Radio button
-				element = obj.big ? new Select(obj) : new Radio(obj);
+			   element = $("<fieldset></fieldset>");
+			   this.type = 'RadioButton';
+            this.values = {};
+            for(i=0; i<obj.options.length; i++) {
+               this.values[i] = obj.options[i]['value'];
+               var newNode = $('<input/>').attr('type', 'radio')
+                                          .attr('name', this.id);
+               var span = $('<span>' + this.values[i] + '</span><br>');
+               element.append(newNode);
+               element.append(span);
+            }
 				break;
 			case 8:
-			   element = $('<textarea></textarea>').css('height', obj.height + 'px');
-				this.required = obj.required;
+			   this.type = 'TextArea';
+			   element = $('<textarea></textarea>');
 				break;
 				//element = new Multiple(obj);
 				//break;

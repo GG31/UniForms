@@ -22,6 +22,7 @@ function init() {
       newNode.setAttribute("name", "element_"+ids);
       newNode.setAttribute("draggable", "true");
       newNode.addEventListener("dragstart", drag, false);
+      
       newNode.appendChild(elems[i].element.get(0));
       // On l'ajoute
       document.getElementById("panneau").appendChild(newNode);
@@ -66,9 +67,9 @@ function drop(ev)
    //document.write("data split " + datas + "<br>");
    // On récupère l'élément dragger
    elt = document.getElementById(datas[0]);
-   if (datas[0]<=elt) {
+
+   if (datas[0]<=ids) {
       // DnD dans la fenetre de construction
-      elt = document.getElementById(datas[0]);
       decX = ev.clientX - datas[1];
       decY = ev.clientY - datas[2];
       elt.style.position="absolute";

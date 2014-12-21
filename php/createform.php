@@ -31,6 +31,8 @@
 
 		<script src="../lib/jquery-2.1.1/min.js"></script>
 		<script src="../lib/bootstrap-3.3.1/js/min.js"></script>
+		<script src="../js/elemsCreateForm.js"></script>
+		
 		<script>
 			$(document).ready(function(){
 				$('#anon').on('change', function() {
@@ -52,7 +54,26 @@
 			$(function () {
 	        	$('[data-toggle="tooltip"]').tooltip()
 	        });
-		</script>
+		//Récupère les éléments du formulaire si modification
+
+         elems = [];
+         <?php
+            $elems = $form->getFormElements();
+            foreach ($elems as $elem) {
+               $json = json_encode($elem->getAll());
+               
+         ?>
+                  elems.push(
+                     new Element(<?php echo $json ?>)
+                        
+                  );
+         <?php
+            }
+         ?>
+      //});
+      
+
+   </script>
 	</head>
 	<body>
 		<div class="container">
@@ -249,3 +270,4 @@
 	</body>
 </html>
 <script src="../js/drag.js"></script>
+<script>init()</script>

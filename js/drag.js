@@ -1,14 +1,35 @@
-hideAll();
 var type = "radio";
 var elementList = {};
 var ids = 0;
 var currentElement;
 var elt;
-$("#infoFormName").val("NULL");
-elt = document.getElementsByClassName("draggable");
-for (i = 0; i < elt.length; i++) {
-   elt[i].addEventListener("dragstart", drag, false);
+
+function init() {
+   hideAll();
+
+   $("#infoFormName").val("NULL");
+   elt = document.getElementsByClassName("draggable");
+   for (i = 0; i < elt.length; i++) {
+      elt[i].addEventListener("dragstart", drag, false);
+   }
+   for(i = 0; i<elems.length; i++) {
+      elementList[elems[i].id] = elems[i];
+      var newNode = document.createElement("div");
+      newNode.id = ids;
+      newNode.style.position = "absolute";
+      newNode.style.top = "" + elems[i].posY + "px";
+      newNode.style.left = "" + elems[i].posX + "px";
+      newNode.setAttribute("name", "element_"+ids);
+      newNode.setAttribute("draggable", "true");
+      newNode.addEventListener("dragstart", drag, false);
+      newNode.appendChild(elems[i].element.get(0));
+      // On l'ajoute
+      document.getElementById("panneau").appendChild(newNode);
+      ids = ids + 1;
+   }
+
 }
+
 
 function drag(ev)
 {
@@ -44,9 +65,7 @@ function drop(ev)
    datas = datas.split("/");
    //document.write("data split " + datas + "<br>");
    // On récupère l'élément dragger
-   elt= document.getElementById(datas[0]);
-   //document.write("data[0] " + datas[0] + "<br>");
-   //alert(currentElement + " " + datas[0]);
+   elt = document.getElementById(datas[0]);
    if (datas[0]<=elt) {
       // DnD dans la fenetre de construction
       elt = document.getElementById(datas[0]);
@@ -106,7 +125,6 @@ function drop(ev)
    }
    elementList[currentElement].posX = decX;
    elementList[currentElement].posY = decY;
-   //alert(elementList[currentElement].posX+" "+elementList[currentElement].posY);
    updatePanelDetail();
 }
 
@@ -115,15 +133,11 @@ function sendJson() {
 }
 
 $( "#panneau" ).click(function(e) {
-//alert( "Handler for .click() called." );
    var el= e.target||e.srcElement;
-   //alert (el.id);
-   //alert ($('#child_0').attr('type'));
    currentElement = el.id;
-   //alert($("#"+el.id).is("input"));
-   //alert ($("#"+el.id).attr('type'));
    updatePanelDetail();
 });
+
 
 $( "#checkboxRequired" ).click(function(e) {
    elementList[currentElement].required = $('#checkboxRequired').is(':checked');
@@ -243,7 +257,6 @@ function hasSeveralValues() {
    $('#valuesGroup').show();
    $("#"+currentElement).children().attr("name", currentElement);
    $("#valueItem_0").attr("id", 'valueItem_'+currentElement+'_0');
-   //alert(currentElement);
    if(!elementList[currentElement].hasOwnProperty("values")) {
       elementList[currentElement].values = {};
       elementList[currentElement].values[0] = "";

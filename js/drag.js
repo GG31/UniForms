@@ -22,14 +22,13 @@ function init() {
    
    for(i = 0; i<elems.length; i++) {
       elementList[elems[i].id] = elems[i];
-      var newNode = $("<div></div>");
+      var newNode = $('<div class="draggable" draggable="true"></div>');
       newNode.id = ids;
       newNode.css('position', "absolute");
       newNode.css('top', elems[i].posY + "px");
       newNode.css('left', elems[i].posX + "px");
       newNode.attr("name", "element_"+ids);
       newNode.attr("draggable", "true");
-      
       newNode.append(elems[i].element.get(0));
       // On l'ajoute
       $("#panneau").append(newNode);
@@ -47,34 +46,33 @@ $(".draggable").draggable({
 $('#panneau').droppable(
    {
       drop: function (e, ui) {
-         el = $('<div class="draggable" draggable="true"></div>');
-         
          posX = e.pageX-$('#panneau').offset().left;
          posY = e.pageY-$('#panneau').offset().top;
-         //el = $(ui.draggable).clone();
-         el.attr("id", ids);
-         el.css({
-            position: "absolute",
-            left: posX + "px",
-            top: posY + "px"
-         });
-         el.attr("name", "element_"+ids);
-         el.attr("draggable", "true");
-         elChild = $(elementsCode[$(ui.draggable).attr("id")]);
-         elChild.attr("id", "child_" + ids);
-         
-         var newElement = new Object();
-         newElement.id = elChild.attr("id");
-         elementList[newElement.id] = newElement;
-         currentElement = newElement.id;
-         setType(elChild);
-         el.append(elChild);
-         $('.draggable').draggable({
-            helper:"clone",
-            opacity:0.7   
-         });
-         el.appendTo($(this));
-         ids = ids + 1;
+         if ($(ui.draggable).attr("id").split('_')[0] == 'child' || $(ui.draggable).attr("id").split('_')[0] == 'elem') {
+            currentElement = $(ui.draggable).attr("id");
+         } else {
+            el = $('<div class="draggable" draggable="true"></div>');
+            el.attr("id", ids);
+            el.css({
+               position: "absolute",
+               left: posX + "px",
+               top: posY + "px"
+            });
+            el.attr("name", "element_"+ids);
+            el.attr("draggable", "true");
+            elChild = $(elementsCode[$(ui.draggable).attr("id")]);
+            elChild.attr("id", "child_" + ids);
+            
+            var newElement = new Object();
+            newElement.id = elChild.attr("id");
+            elementList[newElement.id] = newElement;
+            currentElement = newElement.id;
+            setType(elChild);
+            elChild.draggable({ cancel: null });
+            el.append(elChild);
+            el.appendTo($(this));
+            ids = ids + 1;
+         }
          elementList[currentElement].posX = posX;
          elementList[currentElement].posY = posY;
          updatePanelDetail();

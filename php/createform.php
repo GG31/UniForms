@@ -28,8 +28,9 @@
 			type="text/css" />
 		<link rel="stylesheet" href="../css/styles.css" type="text/css" />
 		<link rel="stylesheet" href="../css/drag.css" type="text/css" />
-
 		<script src="../lib/jquery-2.1.1/min.js"></script>
+		<script src="../lib/jquery-2.1.1/jquery-ui.js"></script>
+
 		<script src="../lib/bootstrap-3.3.1/js/min.js"></script>
 		<script src="../js/elemsCreateForm.js"></script>
 		
@@ -190,23 +191,20 @@
 						<div class="panel-body">
 						   <div class="panel panel-default col-sm-8">
 						      <div class="panel-body">
-                           <div id="panneau" ondrop="drop(event)" ondragover="allowDrop(event)">
+                           <div id="panneau" >
                            </div>
                         </div>
                      </div>
                      <div class="col-sm-4">
-                        <div class="draggable" id="draggableLabel" draggable="true"><span>Text</span></div>
-                        <div class="draggable" id="draggableNumber" draggable="true"><input type="number"></div>
-                        <div class="draggable" id="draggableDate" draggable="true"><input type="text" id="datepicker" placeholder="jj/mm/aaaa"/></div>
-                        <div class="draggable" id="draggableTime" draggable="true"><input id="timepicker" type="time" placeholder="hh:mm"/></div>
-                        <div class="draggable" id="draggableTextarea" draggable="true"><textarea rows="4" cols="40"></textarea></div>
-                        <div class="draggable" id="draggableTel" draggable="true"><input type="tel" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$" placeholder="06xxxxxxxx"></div>
-                        
-                        <div class="draggable" id="draggable1" draggable="true"><input name="input_text"
-  type="text" class="form-control"></div>
-                        <div class="draggable" id="draggable4" draggable="true"><fieldset><input type="radio"> <span>radio<span></fieldset></div>
-                        <div class="draggable" id="draggableCheckbox" draggable="true"><fieldset><input type="checkbox"> <span>checkbox<span></fieldset></div>
-  
+                        <div class="draggable" id="draggableLabel" draggable="true"><span>Label</span></div>
+                        <div class="draggable" id="draggableNumber" draggable="true"><span>Number</span></div>
+                        <div class="draggable" id="draggableDate" draggable="true"><span>Date</span></div>
+                        <div class="draggable" id="draggableTime" draggable="true"><span>Heure</span></div>
+                        <div class="draggable" id="draggableTextarea" draggable="true"><span>Paragraphe</span></div>
+                        <div class="draggable" id="draggableTel" draggable="true"><span>Téléphone</span></div>
+                        <div class="draggable" id="draggableText" draggable="true"><span>Input Text</span></div>
+                        <div class="draggable" id="draggableRadio" draggable="true"><span>Bouton radio</span></div>
+                        <div class="draggable" id="draggableCheckbox" draggable="true"><span>Checkbox</span></div>  
                         
                         <input id="info" name="info" type="hidden">
                      

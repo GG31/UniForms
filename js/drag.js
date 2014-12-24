@@ -3,133 +3,112 @@ var elementList = {};
 var ids = 0;
 var currentElement;
 var elt;
+var elementsCode = {
+   draggableLabel:'<span>Label</span>', 
+   draggableNumber:'<input type="number">', 
+   draggableDate:'<input type="text" placeholder="jj/mm/aaaa"/>',
+   draggableTime:'<input type="time" placeholder="hh:mm"/>',
+   draggableTextarea:'<textarea rows="4" cols="40"></textarea>',
+   draggableTel:'<input type="tel" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$" placeholder="06xxxxxxxx">',
+   draggableText:'<input type="text"/>',
+   draggableRadio:'<fieldset><input type="radio"> <span>radio<span></fieldset>',
+   draggableCheckbox:'<fieldset><input type="checkbox"> <span>checkbox<span></fieldset>'
+}; 
 
 function init() {
    hideAll();
    $("#formName").text(formname);
    $("#infoFormName").val(formname);
-   elt = document.getElementsByClassName("draggable");
-   for (i = 0; i < elt.length; i++) {
-      elt[i].addEventListener("dragstart", drag, false);
-   }
+   
    for(i = 0; i<elems.length; i++) {
       elementList[elems[i].id] = elems[i];
-      var newNode = document.createElement("div");
+      var newNode = $("<div></div>");
       newNode.id = ids;
-      newNode.style.position = "absolute";
-      newNode.style.top = "" + elems[i].posY + "px";
-      newNode.style.left = "" + elems[i].posX + "px";
-      newNode.setAttribute("name", "element_"+ids);
-      newNode.setAttribute("draggable", "true");
-      newNode.addEventListener("dragstart", drag, false);
+      newNode.css('position', "absolute");
+      newNode.css('top', elems[i].posY + "px");
+      newNode.css('left', elems[i].posX + "px");
+      newNode.attr("name", "element_"+ids);
+      newNode.attr("draggable", "true");
       
-      newNode.appendChild(elems[i].element.get(0));
+      newNode.append(elems[i].element.get(0));
       // On l'ajoute
-      document.getElementById("panneau").appendChild(newNode);
+      $("#panneau").append(newNode);
       ids = ids + 1;
    }
 
 }
 
+$(".draggable").draggable({
+    helper:"clone",
+    opacity:0.7
+});
 
-function drag(ev)
-{
-  var
-     x, y;
-  var
-     s;
-  x= ev.clientX - ev.target.offsetLeft;
-  y= ev.clientY - ev.target.offsetTop;
-  s= ev.target.id + "/" + x + "/" + y;
-  ev.dataTransfer.setData("Text", s);
-}
 
-function allowDrop(ev)
-{
-  ev.preventDefault();
-}
-
-function drop(ev)
-{
-   var datas;
-   var decX= 0;
-   var decY= 0;
-   var elt;
-   var dup;
-   var id;
-
-   // On empeche l'action par défaut du drop, ouvrir un lien
-   ev.preventDefault();
-   // On récupère l'information transmise par le drop, ici l'id de l'élément dragger
-   datas = ev.dataTransfer.getData("Text");
-   //document.write("datas " + datas + "<br>");
-   datas = datas.split("/");
-   //document.write("data split " + datas + "<br>");
-   // On récupère l'élément dragger
-   elt = document.getElementById(datas[0]);
-
-   if (datas[0]<=ids) {
-      // DnD dans la fenetre de construction
-      decX = ev.clientX - datas[1];
-      decY = ev.clientY - datas[2];
-      elt.style.position="absolute";
-      elt.style.top= "" + decY + "px";
-      elt.style.left= "" + decX + "px";
-      currentElement = elt.firstChild.id;
-   } else {
-      // Elt de la fenetre de depart
-      // On le duplique
-      dup = elt.cloneNode(true);
-      // On met un nouvel id à ce nouveau noeud
-      dup.id = ids;
-      decX = 0;
-      decY = 0;
-      dup.style.position = "absolute";
-      dup.style.top = "" + decY + "px";
-      dup.style.left = "" + decX + "px";
-      dup.setAttribute("name", "element_"+ids);
-      dup.setAttribute("draggable", "true");
-      dup.firstChild.id = "child_" + ids;
-
-      var newElement = new Object();
-      newElement.id = "child_" + ids;
-      elementList[newElement.id] = newElement;
-      currentElement = newElement.id;
-      dup.addEventListener("dragstart", drag, false);
-      // On l'ajoute
-      ev.target.appendChild(dup);
-      ids = ids + 1;
-      if($("#"+currentElement).is("textarea")){
-         elementList[currentElement].type = "TextArea";
-      }else if($("#"+currentElement).is("fieldset")){
-         if($("#"+currentElement).children('input').attr("type") == 'radio') {
-            elementList[currentElement].type = 'RadioButton';
-         } else if($("#"+currentElement).children('input').attr("type") == 'checkbox') {
-            elementList[currentElement].type = 'Checkbox';
-         }
+$('#panneau').droppable(
+   {
+      drop: function (e, ui) {
+         el = $('<div class="draggable" draggable="true"></div>');
          
-      } else if($("#"+currentElement).is("input")) {
-         if ($("#"+currentElement).attr('type') == 'text') {
-            elementList[currentElement].type = "InputText";
-         } else if ($("#"+currentElement).attr('type') == 'number') {
-            elementList[currentElement].type = "InputNumber";
-         } else if ($("#"+currentElement).attr('type') == 'time') {
-            elementList[currentElement].type = "InputTime";
-         } else if ($("#"+currentElement).attr('type') == 'date') {
-            elementList[currentElement].type = "InputDate";
-         } else if ($("#"+currentElement).attr('type') == 'tel') {
-            elementList[currentElement].type = "InputPhone";
-         }
-      } else if($("#"+currentElement).is("span")){
-         elementList[currentElement].type = "Span";
+         posX = e.pageX-$('#panneau').offset().left;
+         posY = e.pageY-$('#panneau').offset().top;
+         //el = $(ui.draggable).clone();
+         el.attr("id", ids);
+         el.css({
+            position: "absolute",
+            left: posX + "px",
+            top: posY + "px"
+         });
+         el.attr("name", "element_"+ids);
+         el.attr("draggable", "true");
+         elChild = $(elementsCode[$(ui.draggable).attr("id")]);
+         elChild.attr("id", "child_" + ids);
+         
+         var newElement = new Object();
+         newElement.id = elChild.attr("id");
+         elementList[newElement.id] = newElement;
+         currentElement = newElement.id;
+         setType(elChild);
+         el.append(elChild);
+         $('.draggable').draggable({
+            helper:"clone",
+            opacity:0.7   
+         });
+         el.appendTo($(this));
+         ids = ids + 1;
+         elementList[currentElement].posX = posX;
+         elementList[currentElement].posY = posY;
+         updatePanelDetail();
       }
    }
-   elementList[currentElement].posX = decX;
-   elementList[currentElement].posY = decY;
-   updatePanelDetail();
+);
+
+setType = function(node) {
+   if(node.is("textarea")){
+      elementList[node.attr("id")].type = "TextArea";
+   }else if(node.is("fieldset")){
+      if(node.children('input').attr("type") == 'radio') {
+         elementList[node.attr("id")].type = 'RadioButton';
+      } else if(node.children('input').attr("type") == 'checkbox') {
+         elementList[node.attr("id")].type = 'Checkbox';
+      }
+   } else if(node.is("input")) {
+      if (node.attr('type') == 'text') {
+         elementList[node.attr("id")].type = "InputText";
+      } else if (node.attr('type') == 'number') {
+         elementList[node.attr("id")].type = "InputNumber";
+      } else if (node.attr('type') == 'time') {
+         elementList[node.attr("id")].type = "InputTime";
+      } else if (node.attr('type') == 'date') {
+         elementList[node.attr("id")].type = "InputDate";
+      } else if (node.attr('type') == 'tel') {
+         elementList[node.attr("id")].type = "InputPhone";
+      }
+   } else if(node.is("span")){
+      elementList[node.attr("id")].type = "Span";
+   }
 }
 
-function sendJson() {
+sendJson = function() {
 	document.getElementById("info").value = JSON.stringify(elementList);
 }
 
@@ -160,7 +139,7 @@ $('#moreValues').click(function() {
 	elementList[currentElement].values[nb] = "";
 });
 
-function valueItemChange(nb) {
+valueItemChange = function(nb) {
    elementList[currentElement].values[nb] = $('#valueItem_'+currentElement+'_'+nb).val();
    $("#"+currentElement).children('input').eq(nb).next().text(elementList[currentElement].values[nb]);
    
@@ -179,7 +158,7 @@ $('#inputLabelValue').change(function() {
    elementList[currentElement].label = $('#inputLabelValue').val();
 });
 
-function hideAll() {
+hideAll = function() {
    $('#inputValueGroup').hide();
    $('#checkboxRequiredGroup').hide();
    $('#valuesGroup').hide();
@@ -188,7 +167,7 @@ function hideAll() {
    $('#labelGroup').hide();
 }
 
-function updatePanelDetail() {
+updatePanelDetail = function() {
    hideAll();
    if($("#"+currentElement).is("fieldset")){
       hasLabel()
@@ -225,7 +204,7 @@ function updatePanelDetail() {
    }
 }
 
-function hasRequired() {
+hasRequired = function () {
    $('#checkboxRequiredGroup').show();
    if(!elementList[currentElement].hasOwnProperty("required")) {
       elementList[currentElement].required = false;
@@ -233,28 +212,28 @@ function hasRequired() {
    $('#checkboxRequired').prop('checked', elementList[currentElement].required);
 }
 
-function hasMinMax() {
+hasMinMax = function () {
    $('#inputNumberGroup').show();
    $('#inputNumberMin').val(elementList[currentElement].min);
    $('#inputNumberMax').val(elementList[currentElement].max);
 }
 
-function hasValueText() {
+hasValueText = function () {
    $('#inputValueGroup').show();
    $('#inputValue').val(elementList[currentElement].value);
 }
 
-function hasDefaultValueText() {
+hasDefaultValueText = function () {
    $('#defaultValueGroup').show();
    $('#inputdefaultValue').val(elementList[currentElement].defaultValue);
 }
 
-function hasLabel() {
+hasLabel = function () {
    $('#labelGroup').show();
    $('#inputLabelValue').val(elementList[currentElement].label);
 }
 
-function hasSeveralValues() {
+hasSeveralValues = function () {
    $('#valuesGroup').show();
    $("#"+currentElement).children().attr("name", currentElement);
    $("#valueItem_0").attr("id", 'valueItem_'+currentElement+'_0');
@@ -278,7 +257,3 @@ $("#formName").focusout(function() {
    }
    $("#infoFormName").val($("#formName").text());
 });
-
-function getTypeElement(element) {
-
-}

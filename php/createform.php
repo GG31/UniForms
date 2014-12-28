@@ -218,8 +218,8 @@
                               Label <input type="Textbox" id="inputLabelValue">
                             </div>
                             <div id="sizeGroup">
-                              Width <input type="Number" id="inputWidthValue" step="0.1"><br>
-                              Height <input type="Number" id="inputHeightValue" step="0.1">
+                              Width <input type="Number" id="inputWidthValue" step="1"><br>
+                              Height <input type="Number" id="inputHeightValue" step="1">
                             </div>
                             <div id="defaultValueGroup">
                               Default Value<input type="Textbox" id="inputdefaultValue">

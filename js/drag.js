@@ -29,6 +29,7 @@ function init() {
       newNode.css('left', elems[i].posX + "px");
       newNode.attr("name", "element_"+ids);
       newNode.attr("draggable", "true");
+      newNode.append(constructSpan(elems[i].label));
       newNode.append(elems[i].element.get(0));
       // On l'ajoute
       $("#panneau").append(newNode);
@@ -74,10 +75,12 @@ $('#panneau').droppable(
             /*elChild.resizable({
                containment: "element_"+ids
             });*/
+            
+            el.append(constructSpan(""));
             el.append(elChild);
             el.appendTo($(this));
-            elementList[currentElement].width = $("#"+currentElement).width();
-            elementList[currentElement].height= Math.round($("#"+currentElement).height()*10)/10 ;
+            elementList[currentElement].width = Math.round($("#"+currentElement).width());
+            elementList[currentElement].height= Math.round($("#"+currentElement).height());
             ids = ids + 1;
          }
          elementList[currentElement].posX = posX;
@@ -86,6 +89,12 @@ $('#panneau').droppable(
       }
    }
 );
+
+constructSpan = function(value) {
+   span = $('<span id="label_' + currentElement + '">'+value+'</span>');
+   span.draggable({ cancel: null });
+   return span;
+}
 
 setType = function(node) {
    if(node.is("textarea")){
@@ -120,6 +129,9 @@ sendJson = function() {
 $( "#panneau" ).click(function(e) {
    var el= e.target||e.srcElement;
    currentElement = el.id;
+   if (currentElement.split('_')[0]=='label') {
+      currentElement = currentElement.split('_')[1] + "_" + currentElement.split('_')[2];
+   }
    if($('#checkboxRemove').is(':checked') && el.id != "panneau") {
       //Delete currentElement
       $('#'+currentElement).parent().remove();
@@ -170,6 +182,7 @@ $('#inputdefaultValue').change(function() {
    elementList[currentElement].defaultValue = $('#inputdefaultValue').val();
 });
 $('#inputLabelValue').change(function() {
+   $("#label_" + currentElement).text($('#inputLabelValue').val());
    elementList[currentElement].label = $('#inputLabelValue').val();
 });
 $('#inputValue').change(function() {

@@ -34,7 +34,6 @@ function init() {
       $("#panneau").append(newNode);
       ids = ids + 1;
    }
-
 }
 
 $(".draggable").draggable({
@@ -69,6 +68,9 @@ $('#panneau').droppable(
             currentElement = newElement.id;
             setType(elChild);
             elChild.draggable({ cancel: null });
+            /*elChild.resizable({
+               containment: "element_"+ids
+            });*/
             el.append(elChild);
             el.appendTo($(this));
             ids = ids + 1;
@@ -113,9 +115,24 @@ sendJson = function() {
 $( "#panneau" ).click(function(e) {
    var el= e.target||e.srcElement;
    currentElement = el.id;
-   updatePanelDetail();
+   if($('#checkboxRemove').is(':checked') && el.id != "panneau") {
+      //Delete currentElement
+      $('#'+currentElement).parent().remove();
+      delete elementList[currentElement];
+   } else {
+      updatePanelDetail();
+   }
+   
 });
 
+$('#panneau').hover(function() {
+   if($('#checkboxRemove').is(":checked"))
+   {
+      $(this).css('cursor','crosshair');
+   } else {
+      $(this).css('cursor','auto');
+   }
+});
 
 $( "#checkboxRequired" ).click(function(e) {
    elementList[currentElement].required = $('#checkboxRequired').is(':checked');

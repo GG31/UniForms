@@ -196,6 +196,7 @@
                         </div>
                      </div>
                      <div class="col-sm-4">
+                        <input id="checkboxRemove" type="checkbox" name="checkboxRemove"> <span>Remove</span>
                         <div class="draggable" id="draggableLabel" draggable="true"><span>Label</span></div>
                         <div class="draggable" id="draggableNumber" draggable="true"><span>Number</span></div>
                         <div class="draggable" id="draggableDate" draggable="true"><span>Date</span></div>

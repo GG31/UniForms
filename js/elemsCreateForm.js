@@ -11,6 +11,8 @@ Element = (function(){
 		this.posY = obj.y;
 		this.label = obj.label;
 		this.required = obj.required;
+		this.width = obj.width;
+		this.height = obj.height;
 
 		switch(parseInt(obj.type)){
 			case 1:

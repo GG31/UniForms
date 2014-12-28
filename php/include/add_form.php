@@ -84,6 +84,8 @@ function treatmentElement($key, $array) {
    $e->setTypeElement(constant('type'.$array['type']));
    $e->setX($array['posX']);
    $e->setY($array['posY']);
+   $e->setWidth($array['width']);
+   $e->setHeight($array['height']);
    if(array_key_exists("required", $array)) {
       $e->setRequired($array['required']);
    }

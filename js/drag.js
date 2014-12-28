@@ -32,6 +32,8 @@ function init() {
       newNode.append(elems[i].element.get(0));
       // On l'ajoute
       $("#panneau").append(newNode);
+      $("#"+elems[i].id).width(elems[i].width);
+      $("#"+elems[i].id).height(elems[i].height);
       ids = ids + 1;
    }
 }
@@ -68,11 +70,14 @@ $('#panneau').droppable(
             currentElement = newElement.id;
             setType(elChild);
             elChild.draggable({ cancel: null });
+             
             /*elChild.resizable({
                containment: "element_"+ids
             });*/
             el.append(elChild);
             el.appendTo($(this));
+            elementList[currentElement].width = $("#"+currentElement).width();
+            elementList[currentElement].height= Math.round($("#"+currentElement).height()*10)/10 ;
             ids = ids + 1;
          }
          elementList[currentElement].posX = posX;
@@ -138,11 +143,6 @@ $( "#checkboxRequired" ).click(function(e) {
    elementList[currentElement].required = $('#checkboxRequired').is(':checked');
 });
 
-$('#inputValue').change(function() {
-   $("#"+currentElement).text($('#inputValue').val());
-   elementList[currentElement].value = $('#inputValue').val();
-});
-
 $('#moreValues').click(function() {
    var nb = $("input[name="+currentElement+"]").length;
    var newTextBoxDiv = $('<br><div><input type="Text" class="valueItem" id="valueItem_'+currentElement+'_'+$("input[name="+currentElement+"]").length+'" onchange="valueItemChange('+nb+')"></div>');
@@ -172,6 +172,18 @@ $('#inputdefaultValue').change(function() {
 $('#inputLabelValue').change(function() {
    elementList[currentElement].label = $('#inputLabelValue').val();
 });
+$('#inputValue').change(function() {
+   $("#"+currentElement).text($('#inputValue').val());
+   elementList[currentElement].value = $('#inputValue').val();
+});
+$('#inputWidthValue').change(function() {
+   $("#"+currentElement).width($('#inputWidthValue').val());
+   elementList[currentElement].width = $('#inputWidthValue').val();
+});
+$('#inputHeightValue').change(function() {
+   $("#"+currentElement).height($('#inputHeightValue').val());
+   elementList[currentElement].height = $('#inputHeightValue').val();
+});
 
 hideAll = function() {
    $('#inputValueGroup').hide();
@@ -180,6 +192,7 @@ hideAll = function() {
    $('#inputNumberGroup').hide();
    $('#defaultValueGroup').hide();
    $('#labelGroup').hide();
+   $('#sizeGroup').hide();
 }
 
 updatePanelDetail = function() {
@@ -192,6 +205,7 @@ updatePanelDetail = function() {
    } else if($("#"+currentElement).is("textarea")){
       hasLabel()
       hasRequired();
+      hasSize();
    } else if($("#"+currentElement).is("input")) {
       // Si input
       if ($("#"+currentElement).attr('type') == 'text') {
@@ -213,6 +227,7 @@ updatePanelDetail = function() {
          hasLabel()
          hasRequired();
       }
+      hasSize();
    }else if($("#"+currentElement).is("span")) {
       // Si label
       hasValueText();
@@ -246,6 +261,12 @@ hasDefaultValueText = function () {
 hasLabel = function () {
    $('#labelGroup').show();
    $('#inputLabelValue').val(elementList[currentElement].label);
+}
+
+hasSize = function() {
+   $("#sizeGroup").show();
+   $('#inputWidthValue').val(elementList[currentElement].width);
+   $('#inputHeightValue').val(elementList[currentElement].height);
 }
 
 hasSeveralValues = function () {

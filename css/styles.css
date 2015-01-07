@@ -1,0 +1,12 @@
+#wrapAll { 
+	width: 1000px; 
+	margin: 0 auto;
+}
+		
+#preview img { 
+	max-width: 150px;
+	max-height: 150px; 
+	padding: 5px; 
+	margin: 5px; 
+	border: 1px solid #e1e1e1;
+}

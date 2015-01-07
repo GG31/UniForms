@@ -33,7 +33,34 @@
 
 		<script src="../lib/bootstrap-3.3.1/js/min.js"></script>
 		<script src="../js/elemsCreateForm.js"></script>
+		<script type="text/javascript" src="../js/jquery.form.bassm.js"></script>
+
+	<script type="text/javascript" >
+	$(document).ready(function() { 
 		
+      $('#imgUpload').on('change', function(){ 
+		    
+			$("#uploadForm").ajaxForm({
+				target: '#preview', 
+				//clearForm: true,
+				resetForm: true,
+			    beforeSubmit:function(){ 
+					$("#uploadStatus").show();
+					$("#imgUploadBtn").hide();
+				}, 
+				success:function(){ 
+					$("#uploadStatus").hide();
+					$("#imgUploadBtn").show();
+				}, 
+				error:function(){ 
+					$("#uploadStatus").hide();
+					$("#imgUploadBtn").show();
+				} }).submit();
+	
+		});
+		
+	    }); 
+	</script>
 		<script>
 			$(document).ready(function(){
 				$('#anon').on('change', function() {
@@ -93,6 +120,19 @@
 			<?php
 				}
 			?>
+			<div id="bgWrap">
+					<div id='preview'>
+					</div>
+					<form id="uploadForm" method="post" enctype="multipart/form-data" action='ajaximage.php'>
+						Sélectionner les images à télécharger : 
+						<div id='uploadStatus' style='display:none'><img src="../img/loader.gif" alt="Uploading...."/></div>
+						
+						<div id='imgUploadBtn'>
+							<input type="file" multiple="multiple" name="imgUpload[]" id="imgUpload" accept="image/*" />
+						</div>
+						<div class="info">Taille maximale de l'image : <b>500 </b>ko</div>
+					</form>
+			</div>
 			<form
 				id="formulaire"
 				class="form-inline"
@@ -208,7 +248,7 @@
                         <div class="draggable" id="draggableTel" draggable="true"><span>Téléphone</span></div>
                         <div class="draggable" id="draggableText" draggable="true"><span>Input Text</span></div>
                         <div class="draggable" id="draggableRadio" draggable="true"><span>Bouton radio</span></div>
-                        <div class="draggable" id="draggableCheckbox" draggable="true"><span>Checkbox</span></div>  
+                        <div class="draggable" id="draggableCheckbox" draggable="true"><span>Checkbox</span></div>
                         
                         <input id="info" name="info" type="hidden">
                      

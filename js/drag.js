@@ -11,8 +11,8 @@ var elementsCode = {
    draggableTextarea:'<textarea rows="4" cols="40"></textarea>',
    draggableTel:'<input type="tel" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$" placeholder="06xxxxxxxx">',
    draggableText:'<input type="text"/>',
-   draggableRadio:'<fieldset><input type="radio"> <span>radio<span></fieldset>',
-   draggableCheckbox:'<fieldset><input type="checkbox"> <span>checkbox<span></fieldset>'
+   draggableRadio:'<fieldset><input type="radio"> <span class="0"><span></fieldset>',
+   draggableCheckbox:'<fieldset><input type="checkbox"> <span class="0"><span></fieldset>'
 }; 
 
 function init() {
@@ -156,19 +156,38 @@ $( "#checkboxRequired" ).click(function(e) {
 });
 
 $('#moreValues').click(function() {
-   var nb = $("input[name="+currentElement+"]").length;
-   var newTextBoxDiv = $('<br><div><input type="Text" class="valueItem" id="valueItem_'+currentElement+'_'+$("input[name="+currentElement+"]").length+'" onchange="valueItemChange('+nb+')"></div>');
+   alert(type);
+   var nb = parseInt($("input[name="+currentElement+"]:last+span").attr("class")) + 1;
+   var id = 'valueItem_'+currentElement+'_'+nb;
+   //var nb = elementList[currentElement].values.length;
+   var newTextBoxDiv = $('<div id="div'+id+'"><input type="Text" class="valueItem" id='+id+' onchange="valueItemChange('+nb+')">'+buttonLess(nb)+'</div>');
 	$("#valuesGroup").append(newTextBoxDiv);
 	
-    var te = $('<br><input type="'+type+'" name="'+currentElement+'"> <span><span>');
+    var te = $('<div id="item'+id+'"><input type="'+type+'" name="'+currentElement+'"> <span class="'+nb+'"><span></div>');
 	$("#"+elementList[currentElement].id).append(te);
 	
-	elementList[currentElement].values[nb] = "";
+	elementList[currentElement].values["v"+nb] = "";
 });
 
+onpressLessButton = function(nb) {
+   if (parseInt(nb) == 0) {
+      $('input[name="'+currentElement+'"]+span[class="'+nb+'"]:first').remove();
+      $('input[name="'+currentElement+'"]:first').remove();
+      $('#valueItem_'+currentElement+'_'+nb).next().remove();
+      $('#valueItem_'+currentElement+'_'+nb).remove();
+   }else {
+      $("#itemvalueItem_"+currentElement+"_"+nb).remove();
+      $("#divvalueItem_"+currentElement+"_"+nb).remove();
+   }
+   delete elementList[currentElement].values["v"+nb];
+   if(Object.keys(elementList[currentElement].values).length == 0){
+      delete elementList[currentElement];
+   }
+}
+
 valueItemChange = function(nb) {
-   elementList[currentElement].values[nb] = $('#valueItem_'+currentElement+'_'+nb).val();
-   $("#"+currentElement).children('input').eq(nb).next().text(elementList[currentElement].values[nb]);
+   elementList[currentElement].values["v"+nb] = $('#valueItem_'+currentElement+'_'+nb).val();
+   $('input[name="'+currentElement+'"]+span[class="'+nb+'"]:first').text(elementList[currentElement].values["v"+nb]);
    
 }
 
@@ -210,10 +229,14 @@ hideAll = function() {
 
 updatePanelDetail = function() {
    hideAll();
+   
    if($("#"+currentElement).is("fieldset")){
       hasLabel()
       hasRequired();
       type = $("#"+currentElement).children('input').attr("type");
+      if(typeof(type)  === "undefined") {
+         type = $("#"+currentElement).children("div").children('input').attr("type");
+      }
       hasSeveralValues();
    } else if($("#"+currentElement).is("textarea")){
       hasLabel()
@@ -288,15 +311,18 @@ hasSeveralValues = function () {
    $("#valueItem_0").attr("id", 'valueItem_'+currentElement+'_0');
    if(!elementList[currentElement].hasOwnProperty("values")) {
       elementList[currentElement].values = {};
-      elementList[currentElement].values[0] = "";
+      elementList[currentElement].values["v0"] = "";
    }
    $(".valueItem").next().remove();
    $(".valueItem").remove();
    
-   for (var i = 0; i<Object.keys(elementList[currentElement].values).length; i++) {
-      var newTextBoxDiv = $('<input type="Text" class="valueItem" id="valueItem_'+currentElement+'_'+i+'" onchange="valueItemChange('+i+')" value="'+elementList[currentElement].values[i]+'"><br>');
+   for(key in elementList[currentElement].values) {
+     var val = elementList[currentElement].values[key];
+     var nb = key.substring(1);
+     //alert("key " + key + " val " + val);
+     var newTextBoxDiv = $('<div id="divvalueItem_'+currentElement+'_'+nb+'"><input type="Text" class="valueItem" id="valueItem_'+currentElement+'_'+nb+'" onchange="valueItemChange('+nb+')" value="'+val+'">'+buttonLess(nb)+'</div>');
       $("#valuesGroup").append(newTextBoxDiv);
-      $("#"+currentElement).children('input').eq(i).next().text(elementList[currentElement].values[i]);
+      $('input[class="'+currentElement+'"]+span[class="'+nb+'"]:first').text(val);
    }
 }
 
@@ -306,3 +332,7 @@ $("#formName").focusout(function() {
    }
    $("#infoFormName").val($("#formName").text());
 });
+
+buttonLess = function(nb) {
+   return '<button type="button" class="lessValues" class="btn btn-default btn-lg" onclick="onpressLessButton('+nb+')">  <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>';
+}

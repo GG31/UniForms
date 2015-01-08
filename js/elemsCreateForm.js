@@ -66,12 +66,14 @@ Element = (function(){
       this.element = $("<fieldset></fieldset>");
       this.values = {};
       for(i=0; i<obj.options.length; i++) {
-         this.values[i] = obj.options[i]['value'];
+         this.values["v"+i] = obj.options[i]['value'];
          var newNode = $('<input/>').attr('type', type)
                                     .attr('name', this.id);
-         var span = $('<span>' + this.values[i] + '</span><br>');
-         this.element.append(newNode);
-         this.element.append(span);
+         var span = $('<span class="'+i+'">' + this.values["v"+i] + '</span><br>');
+         var div = $('<div id="itemvalueItem_'+this.id+'_'+i+'"></div>');
+         div.append(newNode);
+         div.append(span);
+         this.element.append(div);
       }
    }
    

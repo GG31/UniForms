@@ -105,9 +105,9 @@ class Element {
      */
 	private $label = '';
 
-	/*
-	* Constructor
-	*/
+	/**
+	 * Constructor
+	 */
 	public function __construct($idFormElement = -1) {
 		if ($idFormElement != -1){
 			$qElement = mysql_query("SELECT * FROM formelement WHERE formelement_id = ".$idFormElement);
@@ -191,6 +191,8 @@ class Element {
 					"type" 			=> $this->getTypeElement(),
 					"x" 			=> $this->getX(),
 					"y" 			=> $this->getY(),
+					"minvalue" 			=> $this->getMinvalue(),
+					"maxvalue" 			=> $this->getMaxvalue(),
 					"default" 		=> $this->getDefaultValue(),
 					"required" 		=> $this->getRequired(),
 					"width" 		=> $this->getWidth(),
@@ -290,7 +292,7 @@ class Element {
 	public function getOptions() {
 		return $this->optionsList;
 	}
-		/**
+	/**
 	 * Returns the max value allowed
 	 * @return integer
 	 */

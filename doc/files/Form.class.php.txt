@@ -23,35 +23,35 @@ class Form {
 	private $creator;
 
 	/**
-	  * State of the form 
+	 * State of the form 
      * @access private
      * @var boolean TRUE (validated) or FALSE(not validated yet)
      */
 	private $state;
 	
 	/**
-	  * Form which can be filled by everybody 
+	 * Form which can be filled by everybody 
      * @access private
      * @var boolean TRUE (anonymous) or FALSE(not anonymous)
      */
 	private $anonymous;
 	
 	/**
-	  * Form which can be printed
+	 * Form which can be printed
      * @access private
      * @var boolean TRUE (printable) or FALSE(not printable)
      */
 	private $printable;
 	
 	/**
-	  * The number of answer accepted by a recipient.
+	 * The number of answer accepted by a recipient.
      * @access private
      * @var integer number of allowed answers
      */
 	private $maxAnswers;
 	
 	/**
-	  * List of recipient for this form, for each recipient there are the status, the Answer and the formDestId associated.
+	 * List of recipient for this form, for each recipient there are the status, the Answer and the formDestId associated.
      * @access private
      * @var array of elements 
      */
@@ -64,7 +64,8 @@ class Form {
 	 */
 	private $formElements;
 	
-	/** Constructor
+	/**
+	 * Constructor
 	 * Create a form, if already exist, find the information on the database to fill the attributes
 	 * @param integer $idForm the id's form default -1
 	 */
@@ -164,7 +165,7 @@ class Form {
 		return $recipients;
 	}
 	
-	/*
+	/**
 	 * Give printable variable
 	 * @return boolean true if printable, false if is not
 	 */
@@ -172,7 +173,7 @@ class Form {
 		return $this->printable;
 	}
 	
-	/*
+	/**
 	 * Give anonymous variable
 	 * @return boolean true if is anonymous, false if is not
 	 */
@@ -180,7 +181,7 @@ class Form {
 		return $this->anonymous;
 	}
 	
-	/*
+	/**
 	 * Give all elements of the form
 	 * @return array of elements
 	 */

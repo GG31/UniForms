@@ -37,8 +37,6 @@ $(document).ready(function(){
 		</thead>
 		<tbody>
 			<?php
-			$pos = dirname ( dirname ( dirname ( __FILE__ ) ) );
-			$pos = explode("\\",$pos);
 			foreach ( $creas as $crea ) {
 				if ($crea->getState () == 1) {
 					?>
@@ -47,7 +45,7 @@ $(document).ready(function(){
 				<td>Validé</td>
 				<td><a href="answers.php?form_id=<?php echo $crea->getId() ?>">Voir
 						résultats</a></td>
-						<td><?php  echo "<button type='button' class='btn btn-primary' data-toggle='popover' title='A copier' data-content='http://localhost/".$pos[3]."/".$pos[4]."/php/fillform.php?form_id=".$crea->getId()."'>URL</button>"  ?> </td>
+						<td><?php  echo "<button type='button' class='btn btn-primary' data-toggle='popover' title='A copier' data-content='".$_SERVER['SERVER_NAME'] . substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], "/"))."/fillform.php?form_id=".$crea->getId()."'>URL</button>"  ?> </td>
 			   <td><a href="include/deleteform.php?form_id=<?php echo $crea->getId() ?>" class="text-muted"> <span class="glyphicon glyphicon-trash" aria-hidden="true" onclick="return confirm('Voulez-vous vraiment supprimer ?');"></span> </a></td>
 			</tr>
 			<?php

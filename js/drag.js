@@ -70,7 +70,6 @@ $('#panneau').droppable(
             elementList[newElement.id] = newElement;
             currentElement = newElement.id;
             setType(elChild);
-            elChild.draggable({ cancel: null });
              
             /*elChild.resizable({
                containment: "element_"+ids
@@ -79,6 +78,7 @@ $('#panneau').droppable(
             el.append(constructSpan(""));
             el.append(elChild);
             el.appendTo($(this));
+            el.draggable({ cancel: null });
             elementList[currentElement].width = Math.round($("#"+currentElement).width());
             elementList[currentElement].height= Math.round($("#"+currentElement).height());
             ids = ids + 1;
@@ -92,7 +92,6 @@ $('#panneau').droppable(
 
 constructSpan = function(value) {
    span = $('<span id="label_' + currentElement + '">'+value+'</span>');
-   span.draggable({ cancel: null });
    return span;
 }
 

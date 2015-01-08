@@ -13,7 +13,7 @@ class Answer {
 	/**
 	 * id of the destinataire
      * @access private
-     * @var integer 
+     * @var integer
      */
 	private $formId;
 	

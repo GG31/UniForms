@@ -2,9 +2,9 @@ Container = (function(){
 	function Container(obj){
 		container = $('<div></div>')
 						.attr('id', 'container-' + obj.id)
-						.css('position', 'static')
-						.css('top', obj.x + 'px')
-						.css('left', obj.y + 'px')
+						.css('position', 'relative')
+						.css('top', obj.y + 'px')
+						.css('left', obj.x + 'px')
 						;
 
 		label = $('<label></label>')

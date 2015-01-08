@@ -4,13 +4,14 @@
  */
 class Answer {
 	/**
-	  * id of the answer
+	 * id of the answer
      * @access private
      * @var integer 
      */
 	private $formDest;
 	
 	/**
+	 * id of the destinataire
      * @access private
      * @var integer 
      */
@@ -24,7 +25,7 @@ class Answer {
 	private $recipient;
 	
 	/**
-	  * Answer's state, TRUE if sent, FALSE if not
+	 * Answer's state, TRUE if sent, FALSE if not
      * @access private
      * @var boolean
      */
@@ -105,26 +106,26 @@ class Answer {
 	}
 
 	/**
-    * Sets the formId value
-    * @param integer $formId the id of the associated form
-    */
+     * Sets the formId value
+     * @param integer $formId the id of the associated form
+     */
 	public function setFormId($formId){
 		$this->formId = $formId;
 	}
 
 	/**
-    * Sets the User who have to answer
-    * @param User $recipient the user who will answer the form formId
-    */
+     * Sets the User who have to answer
+     * @param User $recipient the user who will answer the form formId
+     */
 	public function setRecipient($recipient){
 		$this->recipient = $recipient;
 	}
 	
 	/**
 	 * Created for the test (at the moment, there's no way to fill this array...)
-    * Sets the elements of answers
-    * @param ?? $answers
-    */
+     * Sets the elements of answers
+     * @param ?? $answers
+     */
 	public function setAnswers($answers){
 		$this->answers = $answers;
 	}

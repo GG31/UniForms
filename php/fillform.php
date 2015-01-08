@@ -87,7 +87,13 @@
                   <h3 class="panel-title"><strong>Formulaire <?php echo $form_id ?></strong></h3>
                </div>
                <div class="panel-body">
-                  <form id="answerSheet" role="form" action="include/fill_form.php" method="post">
+                  <form
+                     id="answerSheet"
+                     role="form"
+                     action="include/fill_form.php"
+                     method="post"
+                     style="overflow:visible;height:493px;"
+                     >
                   </form>
                </div>
             </div>

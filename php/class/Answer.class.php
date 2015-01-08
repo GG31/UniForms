@@ -12,7 +12,7 @@ class Answer {
 	
 	/**
      * @access private
-     * @var integer 
+     * @var integer
      */
 	private $formId;
 	

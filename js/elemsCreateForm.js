@@ -59,7 +59,7 @@ Element = (function(){
 		}
 
 		this.attrs();
-		this.element.draggable({ cancel: null });
+		//this.element.draggable({ cancel: null });
 	}
    
    Element.prototype.getValues = function(obj, type) {

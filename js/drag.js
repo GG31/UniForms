@@ -22,6 +22,7 @@ function init() {
    
    for(i = 0; i<elems.length; i++) {
       elementList[elems[i].id] = elems[i];
+      currentElement = elems[i].id;
       var newNode = $('<div class="draggable" draggable="true"></div>');
       newNode.id = ids;
       newNode.css('position', "absolute");
@@ -31,6 +32,7 @@ function init() {
       newNode.attr("draggable", "true");
       newNode.append(constructSpan(elems[i].label));
       newNode.append(elems[i].element.get(0));
+      newNode.draggable({ cancel: null });
       // On l'ajoute
       $("#panneau").append(newNode);
       $("#"+elems[i].id).width(elems[i].width);
@@ -155,7 +157,6 @@ $( "#checkboxRequired" ).click(function(e) {
 });
 
 $('#moreValues').click(function() {
-   alert(type);
    var nb = parseInt($("input[name="+currentElement+"]:last+span").attr("class")) + 1;
    var id = 'valueItem_'+currentElement+'_'+nb;
    //var nb = elementList[currentElement].values.length;
@@ -318,7 +319,6 @@ hasSeveralValues = function () {
    for(key in elementList[currentElement].values) {
      var val = elementList[currentElement].values[key];
      var nb = key.substring(1);
-     //alert("key " + key + " val " + val);
      var newTextBoxDiv = $('<div id="divvalueItem_'+currentElement+'_'+nb+'"><input type="Text" class="valueItem" id="valueItem_'+currentElement+'_'+nb+'" onchange="valueItemChange('+nb+')" value="'+val+'">'+buttonLess(nb)+'</div>');
       $("#valuesGroup").append(newTextBoxDiv);
       $('input[class="'+currentElement+'"]+span[class="'+nb+'"]:first').text(val);

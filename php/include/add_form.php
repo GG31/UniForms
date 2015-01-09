@@ -73,7 +73,6 @@ if (! empty ( $_POST )) {
 
 function treatmentElement($key, $array) {
    $keyPart = explode('_', $key);
-
    $e = "";
    if(strcmp($keyPart[0],"elem") == 0){
       $e = new Element((int)$keyPart[1]);

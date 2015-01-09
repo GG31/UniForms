@@ -12,7 +12,7 @@
 			<tr>
 				<th>Destinataires</th>
 				<th>Action</th>
-				<th>Download Results</th>
+				<th><a href="include/download_all_csv.php?ans_id=<?php echo $list[1]["formDestId"]; ?>"> <span class="glyphicon glyphicon-circle-arrow-down" aria-hidden="true"></span></a> Download Results</th>
 			</tr>
 		</thead>
 		<tbody>

@@ -9,7 +9,7 @@ var elementsCode = {
    draggableDate:'<input type="text" placeholder="jj/mm/aaaa"/>',
    draggableTime:'<input type="time" placeholder="hh:mm"/>',
    draggableTextarea:'<textarea rows="4" cols="40"></textarea>',
-   draggableTel:'<input type="tel" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$" placeholder="06xxxxxxxx">',
+   draggableTel:'<input type="tel" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$" placeholder="06xxxxxxxx"/>',
    draggableText:'<input type="text"/>',
    draggableRadio:'<fieldset><input type="radio"> <span class="0"><span></fieldset>',
    draggableCheckbox:'<fieldset><input type="checkbox"> <span class="0"><span></fieldset>'
@@ -19,12 +19,12 @@ function init() {
    hideAll();
    $("#formName").text(formname);
    $("#infoFormName").val(formname);
-   
+   drag();
    for(i = 0; i<elems.length; i++) {
       elementList[elems[i].id] = elems[i];
       currentElement = elems[i].id;
       var newNode = $('<div class="draggable" draggable="true"></div>');
-      newNode.id = ids;
+      newNode.attr('id', ids);
       newNode.css('position', "absolute");
       newNode.css('top', elems[i].posY + "px");
       newNode.css('left', elems[i].posX + "px");
@@ -33,6 +33,10 @@ function init() {
       newNode.append(constructSpan(elems[i].label));
       newNode.append(elems[i].element.get(0));
       newNode.draggable({ cancel: null });
+      newNode.draggable({
+          cursor: 'grab',
+          containment: "#panneau"
+      });
       // On l'ajoute
       $("#panneau").append(newNode);
       $("#"+elems[i].id).width(elems[i].width);
@@ -41,19 +45,26 @@ function init() {
    }
 }
 
-$(".draggable").draggable({
-    helper:"clone",
-    opacity:0.7
-});
+$(".draggable").css('cursor','grab');
+//$('#panneau > div').disableSelection().css('webkit-user-select','none').draggable({cancel: null});
 
+drag = function(){
+   $(".draggable").draggable({
+       helper:"clone",
+       opacity:0.7,
+       cursor: 'grab',
+       containment: "#panneau"
+   });
+}
 
 $('#panneau').droppable(
    {
       drop: function (e, ui) {
-         posX = e.pageX-$('#panneau').offset().left;
-         posY = e.pageY-$('#panneau').offset().top;
-         if ($(ui.draggable).attr("id").split('_')[0] == 'child' || $(ui.draggable).attr("id").split('_')[0] == 'elem') {
-            currentElement = $(ui.draggable).attr("id");
+         posX = (e.pageX-$('#panneau').offset().left) < 0 ? 0 : e.pageX-$('#panneau').offset().left;
+         posY = e.pageY-$('#panneau').offset().top < 0 ? 0 : e.pageY-$('#panneau').offset().top;
+         
+         if ($(ui.draggable).attr("id").split('_')[0] == 'child' || $(ui.draggable).attr("id").split('_')[0] == 'elem' || $(ui.draggable).attr("id") < ids ) {
+            currentElement = $(ui.draggable).children().next().attr("id");
          } else {
             el = $('<div class="draggable" draggable="true"></div>');
             el.attr("id", ids);
@@ -81,6 +92,10 @@ $('#panneau').droppable(
             el.append(elChild);
             el.appendTo($(this));
             el.draggable({ cancel: null });
+            el.draggable({
+                cursor: 'grab',
+                containment: "#panneau"
+            });
             elementList[currentElement].width = Math.round($("#"+currentElement).width());
             elementList[currentElement].height= Math.round($("#"+currentElement).height());
             ids = ids + 1;

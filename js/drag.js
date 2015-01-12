@@ -9,21 +9,22 @@ var elementsCode = {
    draggableDate:'<input type="text" placeholder="jj/mm/aaaa"/>',
    draggableTime:'<input type="time" placeholder="hh:mm"/>',
    draggableTextarea:'<textarea rows="4" cols="40"></textarea>',
-   draggableTel:'<input type="tel" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$" placeholder="06xxxxxxxx">',
+   draggableTel:'<input type="tel" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$" placeholder="06xxxxxxxx"/>',
    draggableText:'<input type="text"/>',
-   draggableRadio:'<fieldset><input type="radio"> <span>radio<span></fieldset>',
-   draggableCheckbox:'<fieldset><input type="checkbox"> <span>checkbox<span></fieldset>'
+   draggableRadio:'<fieldset><input type="radio"> <span class="0"><span></fieldset>',
+   draggableCheckbox:'<fieldset><input type="checkbox"> <span class="0"><span></fieldset>'
 }; 
 
 function init() {
    hideAll();
    $("#formName").text(formname);
    $("#infoFormName").val(formname);
-   
+   drag();
    for(i = 0; i<elems.length; i++) {
       elementList[elems[i].id] = elems[i];
+      currentElement = elems[i].id;
       var newNode = $('<div class="draggable" draggable="true"></div>');
-      newNode.id = ids;
+      newNode.attr('id', ids);
       newNode.css('position', "absolute");
       newNode.css('top', elems[i].posY + "px");
       newNode.css('left', elems[i].posX + "px");
@@ -31,6 +32,11 @@ function init() {
       newNode.attr("draggable", "true");
       newNode.append(constructSpan(elems[i].label));
       newNode.append(elems[i].element.get(0));
+      newNode.draggable({ cancel: null });
+      newNode.draggable({
+          cursor: 'grab',
+          containment: "#panneau"
+      });
       // On l'ajoute
       $("#panneau").append(newNode);
       $("#"+elems[i].id).width(elems[i].width);
@@ -39,19 +45,26 @@ function init() {
    }
 }
 
-$(".draggable").draggable({
-    helper:"clone",
-    opacity:0.7
-});
+$(".draggable").css('cursor','grab');
+//$('#panneau > div').disableSelection().css('webkit-user-select','none').draggable({cancel: null});
 
+drag = function(){
+   $(".draggable").draggable({
+       helper:"clone",
+       opacity:0.7,
+       cursor: 'grab',
+       containment: "#panneau"
+   });
+}
 
 $('#panneau').droppable(
    {
       drop: function (e, ui) {
-         posX = e.pageX-$('#panneau').offset().left;
-         posY = e.pageY-$('#panneau').offset().top;
-         if ($(ui.draggable).attr("id").split('_')[0] == 'child' || $(ui.draggable).attr("id").split('_')[0] == 'elem') {
-            currentElement = $(ui.draggable).attr("id");
+         posX = (e.pageX-$('#panneau').offset().left) < 0 ? 0 : e.pageX-$('#panneau').offset().left;
+         posY = e.pageY-$('#panneau').offset().top < 0 ? 0 : e.pageY-$('#panneau').offset().top;
+         
+         if ($(ui.draggable).attr("id").split('_')[0] == 'child' || $(ui.draggable).attr("id").split('_')[0] == 'elem' || $(ui.draggable).attr("id") < ids ) {
+            currentElement = $(ui.draggable).children().next().attr("id");
          } else {
             el = $('<div class="draggable" draggable="true"></div>');
             el.attr("id", ids);
@@ -70,7 +83,6 @@ $('#panneau').droppable(
             elementList[newElement.id] = newElement;
             currentElement = newElement.id;
             setType(elChild);
-            elChild.draggable({ cancel: null });
              
             elChild.resizable({
                containment: "element_"+ids
@@ -79,6 +91,11 @@ $('#panneau').droppable(
             el.append(constructSpan(""));
             el.append(elChild);
             el.appendTo($(this));
+            el.draggable({ cancel: null });
+            el.draggable({
+                cursor: 'grab',
+                containment: "#panneau"
+            });
             elementList[currentElement].width = Math.round($("#"+currentElement).width());
             elementList[currentElement].height= Math.round($("#"+currentElement).height());
             ids = ids + 1;
@@ -92,7 +109,6 @@ $('#panneau').droppable(
 
 constructSpan = function(value) {
    span = $('<span id="label_' + currentElement + '">'+value+'</span>');
-   span.draggable({ cancel: null });
    return span;
 }
 
@@ -156,19 +172,37 @@ $( "#checkboxRequired" ).click(function(e) {
 });
 
 $('#moreValues').click(function() {
-   var nb = $("input[name="+currentElement+"]").length;
-   var newTextBoxDiv = $('<br><div><input type="Text" class="valueItem" id="valueItem_'+currentElement+'_'+$("input[name="+currentElement+"]").length+'" onchange="valueItemChange('+nb+')"></div>');
+   var nb = parseInt($("input[name="+currentElement+"]:last+span").attr("class")) + 1;
+   var id = 'valueItem_'+currentElement+'_'+nb;
+   //var nb = elementList[currentElement].values.length;
+   var newTextBoxDiv = $('<div id="div'+id+'"><input type="Text" class="valueItem" id='+id+' onchange="valueItemChange('+nb+')">'+buttonLess(nb)+'</div>');
 	$("#valuesGroup").append(newTextBoxDiv);
 	
-    var te = $('<br><input type="'+type+'" name="'+currentElement+'"> <span><span>');
+    var te = $('<div id="item'+id+'"><input type="'+type+'" name="'+currentElement+'"> <span class="'+nb+'"><span></div>');
 	$("#"+elementList[currentElement].id).append(te);
 	
-	elementList[currentElement].values[nb] = "";
+	elementList[currentElement].values["v"+nb] = "";
 });
 
+onpressLessButton = function(nb) {
+   if (parseInt(nb) == 0) {
+      $('input[name="'+currentElement+'"]+span[class="'+nb+'"]:first').remove();
+      $('input[name="'+currentElement+'"]:first').remove();
+      $('#valueItem_'+currentElement+'_'+nb).next().remove();
+      $('#valueItem_'+currentElement+'_'+nb).remove();
+   }else {
+      $("#itemvalueItem_"+currentElement+"_"+nb).remove();
+      $("#divvalueItem_"+currentElement+"_"+nb).remove();
+   }
+   delete elementList[currentElement].values["v"+nb];
+   if(Object.keys(elementList[currentElement].values).length == 0){
+      delete elementList[currentElement];
+   }
+}
+
 valueItemChange = function(nb) {
-   elementList[currentElement].values[nb] = $('#valueItem_'+currentElement+'_'+nb).val();
-   $("#"+currentElement).children('input').eq(nb).next().text(elementList[currentElement].values[nb]);
+   elementList[currentElement].values["v"+nb] = $('#valueItem_'+currentElement+'_'+nb).val();
+   $('input[name="'+currentElement+'"]+span[class="'+nb+'"]:first').text(elementList[currentElement].values["v"+nb]);
    
 }
 
@@ -210,10 +244,14 @@ hideAll = function() {
 
 updatePanelDetail = function() {
    hideAll();
+   
    if($("#"+currentElement).is("fieldset")){
       hasLabel()
       hasRequired();
       type = $("#"+currentElement).children('input').attr("type");
+      if(typeof(type)  === "undefined") {
+         type = $("#"+currentElement).children("div").children('input').attr("type");
+      }
       hasSeveralValues();
    } else if($("#"+currentElement).is("textarea")){
       hasLabel()
@@ -288,15 +326,17 @@ hasSeveralValues = function () {
    $("#valueItem_0").attr("id", 'valueItem_'+currentElement+'_0');
    if(!elementList[currentElement].hasOwnProperty("values")) {
       elementList[currentElement].values = {};
-      elementList[currentElement].values[0] = "";
+      elementList[currentElement].values["v0"] = "";
    }
    $(".valueItem").next().remove();
    $(".valueItem").remove();
    
-   for (var i = 0; i<Object.keys(elementList[currentElement].values).length; i++) {
-      var newTextBoxDiv = $('<input type="Text" class="valueItem" id="valueItem_'+currentElement+'_'+i+'" onchange="valueItemChange('+i+')" value="'+elementList[currentElement].values[i]+'"><br>');
+   for(key in elementList[currentElement].values) {
+     var val = elementList[currentElement].values[key];
+     var nb = key.substring(1);
+     var newTextBoxDiv = $('<div id="divvalueItem_'+currentElement+'_'+nb+'"><input type="Text" class="valueItem" id="valueItem_'+currentElement+'_'+nb+'" onchange="valueItemChange('+nb+')" value="'+val+'">'+buttonLess(nb)+'</div>');
       $("#valuesGroup").append(newTextBoxDiv);
-      $("#"+currentElement).children('input').eq(i).next().text(elementList[currentElement].values[i]);
+      $('input[class="'+currentElement+'"]+span[class="'+nb+'"]:first').text(val);
    }
 }
 
@@ -306,3 +346,7 @@ $("#formName").focusout(function() {
    }
    $("#infoFormName").val($("#formName").text());
 });
+
+buttonLess = function(nb) {
+   return '<button type="button" class="lessValues" class="btn btn-default btn-lg" onclick="onpressLessButton('+nb+')">  <span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>';
+}

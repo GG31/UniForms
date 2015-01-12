@@ -72,9 +72,9 @@ $('#panneau').droppable(
             setType(elChild);
             elChild.draggable({ cancel: null });
              
-            /*elChild.resizable({
+            elChild.resizable({
                containment: "element_"+ids
-            });*/
+            });
             
             el.append(constructSpan(""));
             el.append(elChild);

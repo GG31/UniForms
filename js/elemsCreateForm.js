@@ -57,7 +57,7 @@ Element = (function(){
 			   this.element = $('<textarea></textarea>');
 				break;
 		}
-
+      this.element.css('cursor','grab');
 		this.attrs();
 		//this.element.draggable({ cancel: null });
 	}

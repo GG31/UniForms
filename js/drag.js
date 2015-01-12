@@ -77,6 +77,7 @@ $('#panneau').droppable(
             el.attr("draggable", "true");
             elChild = $(elementsCode[$(ui.draggable).attr("id")]);
             elChild.attr("id", "child_" + ids);
+            elChild.css('cursor','grab');
             
             var newElement = new Object();
             newElement.id = elChild.attr("id");

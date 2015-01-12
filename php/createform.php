@@ -298,6 +298,39 @@
 						</div>
 					</div>
 				</div>
+				
+				<div class="row">
+					<div class="panel panel-primary">
+						<div class="panel-heading text-center text-capitalize">
+							<h3 class="panel-title">
+								<strong>Groupe</strong>
+							</h3>
+						</div>
+						<div class="panel-body">
+						   <div id="groupSection">
+						      <div class="row">
+							      <div class="panel panel-default col-sm-8">
+						            <div class="panel-body">
+                                 <div>
+                                 </div>
+                              </div>
+                           </div>
+                           <button type="button" class="btn btn-default btn-lg">
+                                 <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Destinataire
+                           </button>
+                           <button type="button" class="btn btn-default btn-lg" onclick="lessGroup(0)">
+                                 <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                           </button>
+                        </div>
+                     </div>
+                     <button type="button" class="btn btn-default btn-lg" onclick="moreGroup()">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                     </button>
+						</div>
+					</div>
+				</div>
+				
+				
 				<div class="row" onload="newFormModel();">
 					<div class="col-sm-offset-3 col-sm-6">
 						<input type="hidden" name="form_id" value=<?php echo $form_id ?>>
@@ -327,4 +360,5 @@
 	</body>
 </html>
 <script src="../js/drag.js"></script>
+<script src="../js/group.js"></script>
 <script>init()</script>

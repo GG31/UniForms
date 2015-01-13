@@ -20,6 +20,7 @@ function init() {
    $("#formName").text(formname);
    $("#infoFormName").val(formname);
    drag();
+   groupElementsDroppable();
    for(i = 0; i<elems.length; i++) {
       elementList[elems[i].id] = elems[i];
       currentElement = elems[i].id;
@@ -46,7 +47,6 @@ function init() {
 }
 
 $(".draggable").css('cursor','grab');
-//$('#panneau > div').disableSelection().css('webkit-user-select','none').draggable({cancel: null});
 
 drag = function(){
    $(".draggable").draggable({
@@ -54,6 +54,15 @@ drag = function(){
        opacity:0.7,
        cursor: 'grab',
        containment: "#panneau"
+   });
+}
+
+groupElementsDroppable = function() {
+   $('.groupElements').droppable({
+      drop: function (e, ui) {
+         $(this).append($('<span>'+$(ui.draggable).children().next().attr("id")+'</span>'));
+         ui.draggable.draggable('option','revert',true);
+      }
    });
 }
 
@@ -94,8 +103,8 @@ $('#panneau').droppable(
             el.appendTo($(this));
             el.draggable({ cancel: null });
             el.draggable({
-                cursor: 'grab',
-                containment: "#panneau"
+                revert: 'invalid',
+                cursor: 'grab'
             });
             elementList[currentElement].width = Math.round($("#"+currentElement).width());
             elementList[currentElement].height= Math.round($("#"+currentElement).height());

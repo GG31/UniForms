@@ -311,7 +311,7 @@
 						      <div class="row" id="group_0">
 							      <div class="panel panel-default col-sm-8">
 						            <div class="panel-body">
-                                 <div>
+                                 <div class="groupElements" style="height: 50px;">
                                  </div>
                               </div>
                            </div>

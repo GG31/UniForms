@@ -60,8 +60,21 @@ drag = function(){
 groupElementsDroppable = function() {
    $('.groupElements').droppable({
       drop: function (e, ui) {
-         $(this).append($('<span>'+$(ui.draggable).children().next().attr("id")+'</span>'));
+         var idToPutIntoGroup = $(ui.draggable).children().next().attr("id");
+         var yes = 1;
+         $(".groupElements span").each(function(){
+            if($(this).text() == idToPutIntoGroup) {
+               yes = 0;
+            }
+               
+         });
+         if (yes) {
+            $(this).append($('<span>'+$(ui.draggable).children().next().attr("id")+'</span>'));
+         }
          ui.draggable.draggable('option','revert',true);
+         setTimeout(function () {
+              ui.draggable.draggable('option','revert','invalid');
+          }, 100);
       }
    });
 }

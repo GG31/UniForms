@@ -308,7 +308,7 @@
 						</div>
 						<div class="panel-body">
 						   <div id="groupSection">
-						      <div class="row">
+						      <div class="row" id="group_0">
 							      <div class="panel panel-default col-sm-8">
 						            <div class="panel-body">
                                  <div>
@@ -318,7 +318,7 @@
                            <button type="button" class="btn btn-default btn-lg">
                                  <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Destinataire
                            </button>
-                           <button type="button" class="btn btn-default btn-lg" onclick="lessGroup(0)">
+                           <button type="button" class="btn btn-default btn-lg" onclick="lessGroup('group_0')">
                                  <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                            </button>
                         </div>

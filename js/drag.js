@@ -81,6 +81,8 @@ groupElementsDroppable = function() {
 
 $('#panneau').droppable(
    {
+      //if (ui.position.left < 0)
+      //alert($(this).height());
       drop: function (e, ui) {
          posX = (e.pageX-$('#panneau').offset().left) < 0 ? 0 : e.pageX-$('#panneau').offset().left;
          posY = e.pageY-$('#panneau').offset().top < 0 ? 0 : e.pageY-$('#panneau').offset().top;
@@ -116,8 +118,16 @@ $('#panneau').droppable(
             el.appendTo($(this));
             el.draggable({ cancel: null });
             el.draggable({
+                grid: [20, 20],
                 revert: 'invalid',
                 cursor: 'grab'
+            });
+            el.on( "drag", function( event, ui ) {
+              if($(this).offset().top - $('#panneau').offset().top >$('#panneau').height()-70){
+                  $('#panneau').animate({ 
+                    height: (($('#panneau').height()) + 10)+'px'
+                  }, 10);
+              }
             });
             elementList[currentElement].width = Math.round($("#"+currentElement).width());
             elementList[currentElement].height= Math.round($("#"+currentElement).height());

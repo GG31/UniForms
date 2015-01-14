@@ -20,7 +20,7 @@
 		<tbody>
 			<?php
 				foreach($forms as $f) {
-					$list  = $f->getListRecipient([$user->getId()]);
+					$list  = $f->getFormRecipients([$user->getId()]);
 					$count = count($list);
 
 					if($count){

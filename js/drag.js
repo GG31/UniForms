@@ -20,6 +20,7 @@ function init() {
    $("#formName").text(formname);
    $("#infoFormName").val(formname);
    drag();
+   groupElementsDroppable();
    for(i = 0; i<elems.length; i++) {
       elementList[elems[i].id] = elems[i];
       currentElement = elems[i].id;
@@ -46,7 +47,6 @@ function init() {
 }
 
 $(".draggable").css('cursor','grab');
-//$('#panneau > div').disableSelection().css('webkit-user-select','none').draggable({cancel: null});
 
 drag = function(){
    $(".draggable").draggable({
@@ -57,8 +57,32 @@ drag = function(){
    });
 }
 
+groupElementsDroppable = function() {
+   $('.groupElements').droppable({
+      drop: function (e, ui) {
+         var idToPutIntoGroup = $(ui.draggable).children().next().attr("id");
+         var yes = 1;
+         $(".groupElements span").each(function(){
+            if($(this).text() == idToPutIntoGroup) {
+               yes = 0;
+            }
+               
+         });
+         if (yes) {
+            $(this).append($('<div class="alert alert-warning alert-dismissible" role="alert" style="display: inline-block">  <button type="button" class="close btn btn-primary btn-lg" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span class="valueIdElementsOfGroup">'+$(ui.draggable).children().next().attr("id")+'</span></div>'));
+         }
+         ui.draggable.draggable('option','revert',true);
+         setTimeout(function () {
+              ui.draggable.draggable('option','revert','invalid');
+          }, 100);
+      }
+   });
+}
+
 $('#panneau').droppable(
    {
+      //if (ui.position.left < 0)
+      //alert($(this).height());
       drop: function (e, ui) {
          posX = (e.pageX-$('#panneau').offset().left) < 0 ? 0 : e.pageX-$('#panneau').offset().left;
          posY = e.pageY-$('#panneau').offset().top < 0 ? 0 : e.pageY-$('#panneau').offset().top;
@@ -77,6 +101,7 @@ $('#panneau').droppable(
             el.attr("draggable", "true");
             elChild = $(elementsCode[$(ui.draggable).attr("id")]);
             elChild.attr("id", "child_" + ids);
+            elChild.css('cursor','grab');
             
             var newElement = new Object();
             newElement.id = elChild.attr("id");
@@ -93,8 +118,16 @@ $('#panneau').droppable(
             el.appendTo($(this));
             el.draggable({ cancel: null });
             el.draggable({
-                cursor: 'grab',
-                containment: "#panneau"
+                grid: [20, 20],
+                revert: 'invalid',
+                cursor: 'grab'
+            });
+            el.on( "drag", function( event, ui ) {
+              if($(this).offset().top - $('#panneau').offset().top >$('#panneau').height()-70){
+                  $('#panneau').animate({ 
+                    height: (($('#panneau').height()) + 10)+'px'
+                  }, 10);
+              }
             });
             elementList[currentElement].width = Math.round($("#"+currentElement).width());
             elementList[currentElement].height= Math.round($("#"+currentElement).height());
@@ -140,6 +173,22 @@ setType = function(node) {
 
 sendJson = function() {
 	document.getElementById("info").value = JSON.stringify(elementList);
+	document.getElementById("infoGroups").value = JSON.stringify(getGroupsAndElements());
+}
+
+getGroupsAndElements = function() {
+   var groupList = {};
+   var nb = 0;
+   $("#groupSection .row").each(function(){
+      groupList[nb] = {};
+      var nbEl = 0;
+      $(' .valueIdElementsOfGroup', this).each(function(){
+         groupList[nb][nbEl] = $(this).text();
+         nbEl = nbEl + 1;
+      });
+      nb = nb + 1;
+   });
+   return groupList;
 }
 
 $( "#panneau" ).click(function(e) {

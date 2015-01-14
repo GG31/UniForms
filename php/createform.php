@@ -261,7 +261,7 @@
                         <div class="draggable" id="draggableCheckbox" draggable="true"><span>Checkbox</span></div>
                         
                         <input id="info" name="info" type="hidden">
-                     
+                        <input id="infoGroups" name="infoGroups" type="hidden">
                         <div class="panel panel-default">
                           <div id="divDetail" class="panel-body">
                             <div id="checkboxRequiredGroup">
@@ -315,7 +315,7 @@
                                  </div>
                               </div>
                            </div>
-                           <button type="button" class="btn btn-default btn-lg">
+                           <button type="button" class="btn btn-default btn-lg" onclick="getGroupsAndElements()">
                                  <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Destinataire
                            </button>
                            <button type="button" class="btn btn-default btn-lg" onclick="lessGroup('group_0')">

@@ -69,8 +69,7 @@ groupElementsDroppable = function() {
                
          });
          if (yes) {
-            //$(this).append($('<span>'+$(ui.draggable).children().next().attr("id")+'</span>'));
-            $(this).append($('<div class="alert alert-warning alert-dismissible" role="alert" style="display: inline-block">  <button type="button" class="close btn btn-primary btn-lg" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span>'+$(ui.draggable).children().next().attr("id")+'</span></div>'));
+            $(this).append($('<div class="alert alert-warning alert-dismissible" role="alert" style="display: inline-block">  <button type="button" class="close btn btn-primary btn-lg" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span class="valueIdElementsOfGroup">'+$(ui.draggable).children().next().attr("id")+'</span></div>'));
          }
          ui.draggable.draggable('option','revert',true);
          setTimeout(function () {
@@ -164,6 +163,22 @@ setType = function(node) {
 
 sendJson = function() {
 	document.getElementById("info").value = JSON.stringify(elementList);
+	document.getElementById("infoGroups").value = JSON.stringify(getGroupsAndElements());
+}
+
+getGroupsAndElements = function() {
+   var groupList = {};
+   var nb = 0;
+   $("#groupSection .row").each(function(){
+      groupList[nb] = {};
+      var nbEl = 0;
+      $(' .valueIdElementsOfGroup', this).each(function(){
+         groupList[nb][nbEl] = $(this).text();
+         nbEl = nbEl + 1;
+      });
+      nb = nb + 1;
+   });
+   return groupList;
 }
 
 $( "#panneau" ).click(function(e) {

@@ -69,7 +69,8 @@ groupElementsDroppable = function() {
                
          });
          if (yes) {
-            $(this).append($('<span>'+$(ui.draggable).children().next().attr("id")+'</span>'));
+            //$(this).append($('<span>'+$(ui.draggable).children().next().attr("id")+'</span>'));
+            $(this).append($('<div class="alert alert-warning alert-dismissible" role="alert" style="display: inline-block">  <button type="button" class="close btn btn-primary btn-lg" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span>'+$(ui.draggable).children().next().attr("id")+'</span></div>'));
          }
          ui.draggable.draggable('option','revert',true);
          setTimeout(function () {

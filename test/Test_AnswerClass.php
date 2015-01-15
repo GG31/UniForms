@@ -7,6 +7,7 @@
   require_once('../php/class/User.class.php');
   require_once('../php/class/Answer.class.php');
   require_once('../php/class/Element.class.php');
+  require_once('../php/class/FormGroup.class.php');
 
 class TestOfAnswerClass extends UnitTestCase {
 	

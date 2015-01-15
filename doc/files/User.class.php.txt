@@ -1,0 +1,125 @@
+<?php
+/**
+ * Represent a user, he has an id and a name.
+ */
+class User {
+	/**
+     * @access private
+     * @var integer 
+     */
+	private $id;
+	
+	/**
+     * @access private
+     * @var string 
+     */
+	private $name;
+	
+	/**
+	 * Constructor, create a user
+	 * @param integer $userId the id of the user
+	 */
+	function __construct($userId) {
+		$this->id = $userId;
+		$q = mysql_query ( "SELECT * FROM user WHERE user_id = " . $this->id );
+		$line = mysql_fetch_array ( $q );
+		$this->name = $line ["user_name"];
+	}
+	
+	/**
+	 * Give the user's id
+	 * @return integer
+	 */
+	public function getId() {
+		return $this->id;
+	}
+	
+	/**
+	 * Give the user's name
+	 * @return string
+	 */
+	public function getName() {
+		return $this->name;
+	}
+	
+	/**
+	 * Give all users
+	 * @static
+	 * @return array of User
+	 */
+	public static function all() {
+		$q = mysql_query ( "SELECT user_id FROM user" );
+		$res = [ ];
+		while ( $line = mysql_fetch_array ( $q ) ) {
+			if ($line ["user_id"] != 0) // User 0 is Anonymous
+				$res [] = new User ( $line ["user_id"] );
+		}
+		return $res;
+	}
+	
+	/**
+	 * Give the forms created by the user
+	 * @return array of Form
+	 */
+	public function getCreatedForms() {
+		$q = mysql_query ( "SELECT form_id FROM form WHERE user_id = " . $this->id );
+		$res = [ ];
+		while ( $line = mysql_fetch_array ( $q ) ) {
+			$res [] = new Form ( $line ["form_id"] );
+		}
+		return $res;
+	}
+	
+	/**
+	 * Give the forms which the user is recipient
+	 * @return array of Form
+	 */
+	public function getDestinatairesForms(){
+	   $q = mysql_query("SELECT DISTINCT form.form_id FROM form JOIN (formgroup JOIN formdest ON formgroup.formgroup_id = formdest.formgroup_id AND formdest.user_id = ".$this->id.") ON formgroup.form_id = form.form_id ");
+		$res = [];
+		while($line = mysql_fetch_array($q)){
+		   $res[] = new Form($line["form_id"]);
+		}
+		return $res;
+	}
+	
+	/**
+	 * The user is creator of the form formId
+	 * @param integer $formId id's form
+	 * @return boolean TRUE (FALSE) if user is (not) creator of form
+	 */
+	public function isCreator($formId) {
+		if ($formId == - 1)
+			return FALSE;
+		
+		$f = new Form ( $formId );
+		if ($f->getCreator ()->getId () == $this->id)
+			return TRUE;
+		else
+			return FALSE;
+	}
+	
+	/**
+	 * The user is recipient of the form formId
+	 * @param integer $formId id's form
+	 * @return boolean TRUE (FALSE) if form is (not) destinated to user
+	 */
+	public function isDestinataire($formId) {
+		$q = mysql_query("SELECT * FROM formdest JOIN formgroup ON formgroup.formgroup_id = formdest.formgroup_id WHERE form_id = ".$formId." AND user_id = ".$this->id);
+		
+		if (mysql_num_rows($q))
+			return true;
+		
+		return false;
+	}
+	
+	/**
+	 * The user is anonymous. Anonymous user is used to deal with anonymous forms
+	 * @return boolean TRUE if user is anonymous user (user_id = 0)
+	 */
+	public function isAnonymous() {
+		return $this->id == 0;
+	}
+}
+?>
+

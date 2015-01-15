@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
+<title>Scenario de test</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Scenario de test</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>http://localhost/e-formulaire/UniForms/index.php</td>
+	<td></td>
+	<td>Ouvrir l'url de l'application dans le navigateur</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=login</td>
+	<td>Ayoub</td>
+	<td>Saisir "Ayoub" dans le champs "login"</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=button.btn.btn-default</td>
+	<td>Connection</td>
+	<td>Cliquer sur "Connection"</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a[contains(text(),'Voir<br />						résultats')]</td>
+	<td>Voir résultats</td>
+	<td>Cliquer sur "Voir résultats"</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Voir</td>
+	<td>Voir</td>
+	<td>Cliquer sur "Voir"</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a[contains(text(),'Next<br />					→')]</td>
+	<td>Next →</td>
+	<td>Parcourir la liste des resultat Next-></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//a[contains(text(),'↑<br />					Back ↑')]</td>
+	<td>↑ Back ↑</td>
+	<td>Revenir à la liste de sréponses</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Créer un formulaire</td>
+	<td>Créer un formulaire</td>
+	<td>Cliquer sur "Creer un formulaire"</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=multiple</td>
+	<td>3</td>
+	<td>Saisir "3" dans le champs "	Nombre de réponses max."</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=user1</td>
+	<td></td>
+	<td>Cocher "Luis" comme destinataire</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=user3</td>
+	<td></td>
+	<td>Cocher "Genevieve" comme destinataire</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>name=send</td>
+	<td></td>
+	<td>Cliquer sur "Valider"</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Logout</td>
+	<td>Logout</td>
+	<td>Se deconnecter</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=login</td>
+	<td>luis</td>
+	<td>Se deconnecter en tant que "Luis" pour voir s'il a reçu le formulaire avec un nombre Max de "3" réponses</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=button.btn.btn-default</td>
+	<td>Connection</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Logout</td>
+	<td>Logout</td>
+	<td>Se deconnecter</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://localhost/phpmyadmin/</td>
+	<td></td>
+	<td>Ouvrir la BDD phpmyadmin pour voir si nos modification sont bien stockées</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=uniforms</td>
+	<td>uniforms</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=uniforms.form</td>
+	<td>form</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=uniforms.formdest</td>
+	<td>formdest</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://localhost/e-formulaire/UniForms/index.php</td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

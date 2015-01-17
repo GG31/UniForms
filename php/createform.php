@@ -33,7 +33,7 @@
 
 		<script src="../lib/bootstrap-3.3.1/js/min.js"></script>
 		<script src="../js/elemsCreateForm.js"></script>
-		<script type="text/javascript" src="../js/jquery.form.bassm.js"></script>
+		<!-- <script type="text/javascript" src="../js/jquery.form.bassm.js"></script>  -->
 
 	<script type="text/javascript" >
 	$(document).ready(function() { 
@@ -130,7 +130,7 @@
 			<?php
 				}
 			?>
-			<div id="bgWrap">
+			<!-- <div id="bgWrap">
 					<div id='preview'>
 					</div>
 					<form id="uploadForm" method="post" enctype="multipart/form-data" action='ajaximage.php'>
@@ -142,7 +142,7 @@
 						</div>
 						<div class="info">Taille maximale de l'image : <b>500 </b>ko</div>
 					</form>
-			</div>
+			</div>-->
 			<form
 				id="formulaire"
 				class="form-inline"

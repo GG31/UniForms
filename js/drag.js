@@ -80,17 +80,16 @@ groupElementsDroppable = function() {
 }
 
 $('#panneau').droppable(
-   {
-      //if (ui.position.left < 0)
-      //alert($(this).height());
+   {      
       drop: function (e, ui) {
          posX = (e.pageX-$('#panneau').offset().left) < 0 ? 0 : e.pageX-$('#panneau').offset().left;
          posY = e.pageY-$('#panneau').offset().top < 0 ? 0 : e.pageY-$('#panneau').offset().top;
          
          if ($(ui.draggable).attr("id").split('_')[0] == 'child' || $(ui.draggable).attr("id").split('_')[0] == 'elem' || $(ui.draggable).attr("id") < ids ) {
             currentElement = $(ui.draggable).children().next().attr("id");
-            
+            posX = checkPosition(e.pageX, $(ui.draggable));
          } else {
+            posX = (e.pageX-$('#panneau').offset().left) < 0 ? 0 : e.pageX-$('#panneau').offset().left;
             el = $('<div class="draggable" draggable="true"></div>');
             el.attr("id", ids);
             el.css({
@@ -109,10 +108,6 @@ $('#panneau').droppable(
             elementList[newElement.id] = newElement;
             currentElement = newElement.id;
             setType(elChild);
-             
-            /*elChild.resizable({
-               containment: "element_"+ids
-            });*/
             
             el.append(constructSpan(""));
             el.append(elChild);
@@ -136,15 +131,32 @@ $('#panneau').droppable(
          }
          elementList[currentElement].posX = posX;
          elementList[currentElement].posY = posY;
-         var heightPanneau = (findMoreBottomElement()) 
+         var heightPanneau = findMoreBottomElement()
          $('#panneau').animate({ 
-              height: ((findMoreBottomElement() ))+'px'
+              height: (findMoreBottomElement())+'px'
             }, 10);
          updatePanelDetail();
       }
    }
 );
 
+checkPosition = function(posX, el) {
+   var width = elementList[currentElement].width;
+   if (posX+width>$('#panneau').offset().left+$('#panneau').width() +50) {
+      el.css({
+         left: $('#panneau').width() - width + 30 +"px"
+      });
+      return $('#panneau').width() - width + 30;
+   }
+   if((posX-width/2 < $('#panneau').offset().left)){
+      el.css({
+         left: 10 + "px"
+      });
+      return 10;
+   } 
+   
+   return posX;
+}
 
 findMoreBottomElement = function() {
    var max = 0;
@@ -292,6 +304,8 @@ $('#inputValue').change(function() {
 $('#inputWidthValue').change(function() {
    $("#"+currentElement).width($('#inputWidthValue').val());
    elementList[currentElement].width = $('#inputWidthValue').val();
+   posX = checkPosition(elementList[currentElement].posX, $("#"+currentElement));
+   elementList[currentElement].posX = posX;
 });
 $('#inputHeightValue').change(function() {
    $("#"+currentElement).height($('#inputHeightValue').val());

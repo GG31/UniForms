@@ -5,7 +5,7 @@ if (isset ( $_GET ["ans_id"]) AND isset($_GET["user_id"])) {
 	$recipient = $answer->getRecipient();
 	$idform = $answer->getFormId();
 	$form = new Form($idform);
-	$ans = $form->getListRecipient ( [ ], 1 );
+	$ans = $form->getFormRecipients ( [ ], 1 );
 	
 	// $outputCsv : Variable qui va contenir les données CSV
 	$outputCsv = '';

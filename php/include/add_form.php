@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 include_once 'includes.php';
 if (! empty ( $_POST )) {
 	/*
@@ -35,29 +35,35 @@ if (! empty ( $_POST )) {
 	$form->setAnonymous ( $anonymous );
 	$form->setMaxAnswers ( $multifill );
 	
-	/*
-	 * Recipients
-	 */
-	$recipients = [ ];
-	if ($anonymous) { // Anonymous user (user_id == 0)
-		$recipients [] = new User ( 0 );
-	} else { // Listing USERs
-		foreach ( $_POST ["recipient"] as $id ) {
-			$recipients [] = new User ( $id );
-		}
-	}
-	$form->setRecipient ( $recipients );
-	/*
-    * Récupère les données des éléments
-    */
-   if(isset($_POST['info'])) { 
-      $obj=json_decode($_POST['info'], true, 4);
-      $arrayElements = [];
-      foreach ($obj as $key => $array){
-         $arrayElements[] = treatmentElement($key, $array);
-      }
-   }
-   $form->setFormElements($arrayElements);
+		// It must create the groups and set the recipients and elements for each group.
+			$formGroup = new FormGroup();
+	
+			/*
+			 * Recipients
+			 */
+			$recipients = [ ];
+			if ($anonymous) { // Anonymous user (user_id == 0)
+				$recipients [] = new User ( 0 );
+			} else { // Listing USERs
+				foreach ( $_POST ["recipient"] as $id ) {
+					$recipients [] = new User ( $id );
+				}
+			}
+			$formGroup->setRecipient ( $recipients );
+			/*
+			* Récupère les données des éléments
+			*/
+		   if(isset($_POST['info'])) { 
+			  $obj=json_decode($_POST['info'], true, 4);
+			  $arrayElements = [];
+			  foreach ($obj as $key => $array){
+				 $arrayElements[] = treatmentElement($key, $array);
+			  }
+		   }
+		   $formGroup->setFormGroupElements($arrayElements);
+		   
+		$form->setGroups(array($formGroup)); // The argument here must be an array of all groups of this form
+		
 	/*
 	 * Actions
 	 */

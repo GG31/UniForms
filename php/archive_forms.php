@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <?php
 	include_once 'include/includes.php';
 	$user = new User ( $_SESSION ["user_id"] );
@@ -38,7 +38,7 @@
 						<tbody>
 						<?php
 							foreach ( $forms as $f ) {
-								$list = $f->getListRecipient([$user->getId()], 1);
+								$list = $f->getFormRecipients([$user->getId()], TRUE);
 								if (count ( $list )) {
 						?>
 									<tr class="success">

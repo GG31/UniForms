@@ -11,14 +11,14 @@ class Answer {
 	private $formDest;
 	
 	/**
-	 * id of the destinataire
+	 * id of the form
      * @access private
      * @var integer
      */
 	private $formId;
 	
 	/**
-	  * User who fill the answer
+	 * User who fills this answer
      * @access private
      * @var User
      */
@@ -46,7 +46,7 @@ class Answer {
 		if($formdest_id == -1){
 			$this->state = FALSE;
 		}else{
-			$qFormDest = mysql_query("SELECT * FROM formdest WHERE formdest_id = ".$formdest_id);
+			$qFormDest = mysql_query("SELECT * FROM formdest JOIN formgroup ON formgroup.formgroup_id = formdest.formgroup_id WHERE formdest_id = ".$formdest_id);
 
 			if (!mysql_num_rows($qFormDest)){
 				//error

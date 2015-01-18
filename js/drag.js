@@ -6,11 +6,11 @@ var elt;
 var elementsCode = {
    draggableLabel:'<span>Label</span>', 
    draggableNumber:'<input type="number">', 
-   draggableDate:'<input type="text" placeholder="jj/mm/aaaa"/>',
-   draggableTime:'<input type="time" placeholder="hh:mm"/>',
-   draggableTextarea:'<textarea rows="4" cols="40"></textarea>',
-   draggableTel:'<input type="tel" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$" placeholder="06xxxxxxxx"/>',
-   draggableText:'<input type="text"/>',
+   draggableDate:'<input type="text" class="form-control" placeholder="jj/mm/aaaa"/>',
+   draggableTime:'<input type="time" class="form-control" placeholder="hh:mm"/>',
+   draggableTextarea:'<textarea rows="4" cols="40" class="form-control"></textarea>',
+   draggableTel:'<input type="tel" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$" class="form-control" placeholder="06xxxxxxxx"/>',
+   draggableText:'<input type="text" class="form-control" />',
    draggableRadio:'<fieldset><input type="radio"> <span class="0"><span></fieldset>',
    draggableCheckbox:'<fieldset><input type="checkbox"> <span class="0"><span></fieldset>'
 }; 
@@ -29,6 +29,9 @@ function init() {
       newNode.css('position', "absolute");
       newNode.css('top', elems[i].posY + "px");
       newNode.css('left', elems[i].posX + "px");
+      newNode.css('width', "auto");
+      newNode.css('height', "auto");
+      newNode.css('padding', "5px");
       newNode.attr("name", "element_"+ids);
       newNode.attr("draggable", "true");
       newNode.append(constructSpan(elems[i].label));
@@ -54,6 +57,17 @@ drag = function(){
        opacity:0.7,
        cursor: 'grab',
        containment: "#panneau"
+   });
+   $(".draggable").hover(function() {
+      $(this).css({
+         'font-style': 'italic',
+         background : '#FFFFCC'
+      });
+   }, function() {
+      $(this).css({
+         'font-style': 'normal',
+         background : 'white'
+      });
    });
 }
 
@@ -95,7 +109,10 @@ $('#panneau').droppable(
             el.css({
                position: "absolute",
                left: posX + "px",
-               top: posY + "px"
+               top: posY + "px",
+               width: 'auto',
+               height: 'auto',
+               padding: '5px'
             });
             el.attr("name", "element_"+ids);
             el.attr("draggable", "true");
@@ -118,10 +135,20 @@ $('#panneau').droppable(
                 revert: 'invalid',
                 cursor: 'grab'
             });
+            el.hover( function() {
+               $(this).css({
+                  'box-shadow': '0px 0px 12px #0000FF',
+                  //border : 'solid'
+               });
+            }, function() {
+               $(this).css({
+                  'box-shadow':'none',
+               });
+            });
             el.on( "drag", function( event, ui ) {
               if($(this).offset().top - $('#panneau').offset().top >$('#panneau').height()-70 && $(this).offset().top - $('#panneau').offset().top <$('#panneau').height()){
                   $('#panneau').animate({ 
-                    height: (($('#panneau').height()) + 10)+'px'
+                    height: (($('#panneau').height()) + 20)+'px'
                   }, 10);
               }
             });
@@ -324,7 +351,15 @@ hideAll = function() {
 
 updatePanelDetail = function() {
    hideAll();
-   
+   $('#panneau input, textarea, fieldset').css({
+      'box-shadow': 'none'
+   });
+   if(currentElement.split('_')[0] == 'child' || currentElement.split('_')[0] == 'elem'){
+      
+      $('#'+currentElement).css({
+         'box-shadow': '0px 0px 12px Red'
+      });
+   }
    if($("#"+currentElement).is("fieldset")){
       hasLabel()
       hasRequired();

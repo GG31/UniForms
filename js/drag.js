@@ -21,6 +21,7 @@ function init() {
    $("#infoFormName").val(formname);
    drag();
    groupElementsDroppable();
+   //alert("longueur "+elems.length);
    for(i = 0; i<elems.length; i++) {
       elementList[elems[i].id] = elems[i];
       currentElement = elems[i].id;
@@ -137,8 +138,7 @@ $('#panneau').droppable(
             });
             el.hover( function() {
                $(this).css({
-                  'box-shadow': '0px 0px 12px #0000FF',
-                  //border : 'solid'
+                  'box-shadow': '0px 0px 12px #0000FF'
                });
             }, function() {
                $(this).css({
@@ -253,15 +253,15 @@ $( "#panneau" ).click(function(e) {
    if (currentElement.split('_')[0]=='label') {
       currentElement = currentElement.split('_')[1] + "_" + currentElement.split('_')[2];
    }
-   if($('#checkboxRemove').is(':checked') && el.id != "panneau") {
-      //Delete currentElement
+      updatePanelDetail();   
+});
+
+$('html').keyup(function(e){
+   if(e.keyCode == 46 && (currentElement.split('_')[0] == 'child' || currentElement.split('_')[0] == 'elem')) {
       $('#'+currentElement).parent().remove();
       delete elementList[currentElement];
-   } else {
-      updatePanelDetail();
    }
-   
-});
+}) 
 
 $('#panneau').hover(function() {
    if($('#checkboxRemove').is(":checked"))

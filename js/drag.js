@@ -100,7 +100,7 @@ $('#panneau').droppable(
          posX = (e.pageX-$('#panneau').offset().left) < 0 ? 0 : e.pageX-$('#panneau').offset().left;
          posY = e.pageY-$('#panneau').offset().top < 0 ? 0 : e.pageY-$('#panneau').offset().top;
          
-         if ($(ui.draggable).attr("id").split('_')[0] == 'child' || $(ui.draggable).attr("id").split('_')[0] == 'elem' || $(ui.draggable).attr("id") < ids ) {
+         if ($(ui.draggable).attr("id").split('_')[0] == 'child' || $(ui.draggable).attr("id").split('_')[0] == 'elem' /*|| $(ui.draggable).attr("id") < ids */) {
             currentElement = $(ui.draggable).children().next().attr("id");
             posX = checkPosition(e.pageX, $(ui.draggable));
          } else {
@@ -115,17 +115,30 @@ $('#panneau').droppable(
                height: 'auto',
                padding: '5px'
             });
+            
+            el.resizable();
             el.attr("name", "element_"+ids);
             el.attr("draggable", "true");
             elChild = $(elementsCode[$(ui.draggable).attr("id")]);
             elChild.attr("id", "child_" + ids);
-            elChild.css('cursor','grab');
+            elChild.css({
+               cursor:'grab',
+               width: '100%',
+               height:'100%'
+            });
             
             var newElement = new Object();
             newElement.id = elChild.attr("id");
             elementList[newElement.id] = newElement;
             currentElement = newElement.id;
             setType(elChild);
+            
+            el.on('resize', function() {
+               elementList[currentElement].width = el.width();
+               elementList[currentElement].height = el.height();
+               $('#inputWidthValue').val(el.width());
+               $('#inputHeightValue').val(el.height());
+            });
             
             el.append(constructSpan(""));
             el.append(elChild);
@@ -203,27 +216,27 @@ constructSpan = function(value) {
 
 setType = function(node) {
    if(node.is("textarea")){
-      elementList[node.attr("id")].type = "TextArea";
+      elementList[currentElement].type = "TextArea";
    }else if(node.is("fieldset")){
       if(node.children('input').attr("type") == 'radio') {
-         elementList[node.attr("id")].type = 'RadioButton';
+         elementList[currentElement].type = 'RadioButton';
       } else if(node.children('input').attr("type") == 'checkbox') {
-         elementList[node.attr("id")].type = 'Checkbox';
+         elementList[currentElement].type = 'Checkbox';
       }
    } else if(node.is("input")) {
       if (node.attr('type') == 'text') {
-         elementList[node.attr("id")].type = "InputText";
+         elementList[currentElement].type = "InputText";
       } else if (node.attr('type') == 'number') {
-         elementList[node.attr("id")].type = "InputNumber";
+         elementList[currentElement].type = "InputNumber";
       } else if (node.attr('type') == 'time') {
-         elementList[node.attr("id")].type = "InputTime";
+         elementList[currentElement].type = "InputTime";
       } else if (node.attr('type') == 'date') {
-         elementList[node.attr("id")].type = "InputDate";
+         elementList[currentElement].type = "InputDate";
       } else if (node.attr('type') == 'tel') {
-         elementList[node.attr("id")].type = "InputPhone";
+         elementList[currentElement].type = "InputPhone";
       }
    } else if(node.is("span")){
-      elementList[node.attr("id")].type = "Span";
+      elementList[currentElement].type = "Span";
    }
 }
 
@@ -354,13 +367,14 @@ updatePanelDetail = function() {
    $('#panneau input, textarea, fieldset').css({
       'box-shadow': 'none'
    });
-   if(currentElement.split('_')[0] == 'child' || currentElement.split('_')[0] == 'elem'){
-      
+   var currentType = "";
+   if(currentElement != undefined && (currentElement.split('_')[0] == 'child' || currentElement.split('_')[0] == 'elem')){
       $('#'+currentElement).css({
          'box-shadow': '0px 0px 12px Red'
       });
+      currentType = elementList[currentElement].type;
    }
-   if($("#"+currentElement).is("fieldset")){
+   if(currentType == 'RadioButton' || currentType == 'Checkbox'){
       hasLabel()
       hasRequired();
       type = $("#"+currentElement).children('input').attr("type");
@@ -368,33 +382,34 @@ updatePanelDetail = function() {
          type = $("#"+currentElement).children("div").children('input').attr("type");
       }
       hasSeveralValues();
-   } else if($("#"+currentElement).is("textarea")){
+   } else if(currentType == "TextArea"){
       hasLabel()
       hasRequired();
       hasSize();
-   } else if($("#"+currentElement).is("input")) {
-      // Si input
-      if ($("#"+currentElement).attr('type') == 'text') {
-         // Si Textbox
-         hasLabel()
-         hasRequired();
-         hasDefaultValueText();
-      } else if ($("#"+currentElement).attr('type') == 'number') {
-         hasLabel()
-         hasRequired();
-         hasMinMax();
-      } else if ($("#"+currentElement).attr('type') == 'date') {
-         hasLabel()
-         hasRequired();
-      } else if ($("#"+currentElement).attr('type') == 'time') {
-         hasLabel()
-         hasRequired();
-      } else if ($("#"+currentElement).attr('type') == 'tel') {
-         hasLabel()
-         hasRequired();
-      }
+   } else if (currentType == "InputText") {
+      // Si Textbox
+      hasLabel()
+      hasRequired();
+      hasDefaultValueText();
       hasSize();
-   }else if($("#"+currentElement).is("span")) {
+   } else if (currentType == "InputNumber") {
+      hasLabel()
+      hasRequired();
+      hasMinMax();
+      hasSize();
+   } else if (currentType == "InputDate") {
+      hasLabel()
+      hasRequired();
+      hasSize();
+   } else if (currentType == "InputTime") {
+      hasLabel()
+      hasRequired();
+      hasSize();
+   } else if (currentType == "InputPhone") {
+      hasLabel()
+      hasRequired();
+      hasSize();
+   } else if(currentType == "Span") {
       // Si label
       hasValueText();
    }

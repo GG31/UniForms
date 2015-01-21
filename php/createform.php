@@ -28,6 +28,8 @@
 			type="text/css" />
 		<link rel="stylesheet" href="../css/styles.css" type="text/css" />
 		<link rel="stylesheet" href="../css/drag.css" type="text/css" />
+		<link rel="stylesheet" href="../lib/jquery-2.1.1/jquery-ui.css" type="text/css" />
+      
 		<script src="../lib/jquery-2.1.1/min.js"></script>
 		<script src="../lib/jquery-2.1.1/jquery-ui.js"></script>
 

@@ -101,14 +101,15 @@ groupElementsDroppable = function() {
 $('#panneau').droppable(
    {      
       drop: function (e, ui) {
-         posX = (e.pageX-$('#panneau').offset().left) < 0 ? 0 : e.pageX-$('#panneau').offset().left;
-         posY = e.pageY-$('#panneau').offset().top < 0 ? 0 : e.pageY-$('#panneau').offset().top;
-         
-         if ($(ui.draggable).attr("id").split('_')[0] == 'child' || $(ui.draggable).attr("id").split('_')[0] == 'elem' /*|| $(ui.draggable).attr("id") < ids */) {
-            currentElement = $(ui.draggable).children().next().attr("id");
+         posX = e.pageX;
+         posY = e.pageY;
+         //console.log(posX + " " + posY);
+         if ($(ui.draggable).attr("id").split('_')[0] == 'child' || $(ui.draggable).attr("id").split('_')[0] == 'elem' || $(ui.draggable).attr("id") < ids) {
+            currentElement = $(ui.draggable).children("span").next().attr("id");
             posX = checkPosition(e.pageX, $(ui.draggable));
          } else {
-            posX = (e.pageX-$('#panneau').offset().left) < 0 ? 0 : e.pageX-$('#panneau').offset().left;
+            posX = posX < $('#panneau').offset().left ? $('#panneau').offset().left : posX;
+            posY = posY < $('#panneau').offset().top ? $('#panneau').offset().top : posY;
             el = $('<div class="draggable" draggable="true"></div>');
             el.attr("id", ids);
             el.css({
@@ -163,6 +164,7 @@ $('#panneau').droppable(
                });
             });
             el.on( "drag", function( event, ui ) {
+               
               if($(this).offset().top - $('#panneau').offset().top >$('#panneau').height()-70 && $(this).offset().top - $('#panneau').offset().top <$('#panneau').height()){ 
                   $('#panneau').animate({ 
                     height: (($('#panneau').height()) + 1122)+'px'
@@ -171,6 +173,10 @@ $('#panneau').droppable(
             });
             elementList[currentElement].width = Math.round($("#"+currentElement).width());
             elementList[currentElement].height= Math.round($("#"+currentElement).height());
+            if (posX + elementList[currentElement].width > $('#panneau').width()) {
+               posX = $('#panneau').offset().left + $('#panneau').width() - elementList[currentElement].width - 50;
+               el.css({left: posX + "px"});
+            }
             ids = ids + 1;
          }
          elementList[currentElement].posX = posX;
@@ -185,19 +191,23 @@ $('#panneau').droppable(
 
 checkPosition = function(posX, el) {
    var width = elementList[currentElement].width;
-   if (posX+width>$('#panneau').offset().left+$('#panneau').width() +50) {
+   if (posX+width>$('#panneau').offset().left+$('#panneau').width()) {
+      //console.log("1nd if");
+      var pos = $('#panneau').offset().left + $('#panneau').width() - width - 50;
       el.css({
-         left: $('#panneau').width() - width + 30 +"px"
+         left: pos +"px"
       });
-      return $('#panneau').width() - width + 30;
+      return pos;
    }
    if((posX-width/2 < $('#panneau').offset().left)){
+      //console.log("2nd if");
+      var pos = $('#panneau').offset().left + 10;
       el.css({
-         left: 10 + "px"
+         left: pos + "px"
       });
-      return 10;
+      return pos;
    } 
-   
+   //console.log("else");
    return posX;
 }
 
@@ -209,7 +219,6 @@ findMoreBottomElement = function() {
       }
    });
    var result = parseInt(Math.floor(max/1122)) + 1
-   console.log(max + " " + result)
    return result;
 }
 constructSpan = function(value) {

@@ -234,7 +234,38 @@
 					</div>
 				</div>
 				
-				
+				<div id="navbarGroups" class="nav navbar-nav navbar-right"> 
+				   <div class="panel panel-default" style="padding:10px"> 
+				   <div class="panel panel-primary">
+						<div class="panel-heading text-center text-capitalize">
+							<h3 class="panel-title">
+								<strong>Groupe</strong>
+							</h3>
+						</div>
+						<div class="panel-body">
+						   <div id="groupSection">
+						      <div class="row" id="group_0">
+							      <div class="panel panel-default col-sm-8">
+						            <div class="panel-body">
+                                 <div class="groupElements">
+                                 </div>
+                              </div>
+                           </div>
+                           <button type="button" class="btn btn-default btn-lg" onclick="getGroupsAndElements()">
+                                 <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+                           </button>
+                           <button type="button" class="btn btn-default btn-lg" onclick="lessGroup('group_0')">
+                                 <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                           </button>
+                        </div>
+                     </div>
+                     <button type="button" class="btn btn-default btn-lg" onclick="moreGroup()">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                     </button>
+						</div>
+					</div>
+				   </div><!--panel default-->
+            </div><!--Navbar-->
 				
 				<div id="navbarElements" class="nav navbar-nav navbar-right"> 
 				   <div class="panel panel-default" style="padding:10px">     
@@ -304,36 +335,6 @@
 					</div>
 				</div><!--row-->
 				
-				<div class="row">
-					<div class="panel panel-primary">
-						<div class="panel-heading text-center text-capitalize">
-							<h3 class="panel-title">
-								<strong>Groupe</strong>
-							</h3>
-						</div>
-						<div class="panel-body">
-						   <div id="groupSection">
-						      <div class="row" id="group_0">
-							      <div class="panel panel-default col-sm-8">
-						            <div class="panel-body">
-                                 <div class="groupElements" style="height: 50px;">
-                                 </div>
-                              </div>
-                           </div>
-                           <button type="button" class="btn btn-default btn-lg" onclick="getGroupsAndElements()">
-                                 <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Destinataire
-                           </button>
-                           <button type="button" class="btn btn-default btn-lg" onclick="lessGroup('group_0')">
-                                 <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                           </button>
-                        </div>
-                     </div>
-                     <button type="button" class="btn btn-default btn-lg" onclick="moreGroup()">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                     </button>
-						</div>
-					</div>
-				</div>
 				
 				
 				<div class="row" onload="newFormModel();">

@@ -75,16 +75,20 @@ drag = function(){
 groupElementsDroppable = function() {
    $('.groupElements').droppable({
       drop: function (e, ui) {
-         var idToPutIntoGroup = $(ui.draggable).children().next().attr("id");
+         var idToPutIntoGroup = $(ui.draggable).children("span").next().attr("id");
+         var valueToPutIntoGroup = $(ui.draggable).children("span").text();
+         if(valueToPutIntoGroup == "") {
+            valueToPutIntoGroup = idToPutIntoGroup;
+         }
          var yes = 1;
-         $(".groupElements span").each(function(){
+         $(".groupElements .valueIdElementsOfGroup").each(function(){
             if($(this).text() == idToPutIntoGroup) {
                yes = 0;
             }
                
          });
          if (yes) {
-            $(this).append($('<div class="alert alert-warning alert-dismissible" role="alert" style="display: inline-block">  <button type="button" class="close btn btn-primary btn-lg" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span class="valueIdElementsOfGroup">'+$(ui.draggable).children().next().attr("id")+'</span></div>'));
+            $(this).append($('<div class="alert alert-warning alert-dismissible" role="alert" style="display: inline-block">  <button type="button" class="close btn btn-primary btn-lg" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span class="valueLabelElementsOfGroup">'+valueToPutIntoGroup+'</span><span class="valueIdElementsOfGroup">'+idToPutIntoGroup+'</span></div>'));
          }
          ui.draggable.draggable('option','revert',true);
          setTimeout(function () {
@@ -250,7 +254,7 @@ getGroupsAndElements = function() {
    $("#groupSection .row").each(function(){
       groupList[nb] = {};
       var nbEl = 0;
-      $(' .valueIdElementsOfGroup', this).each(function(){
+      $('.valueIdElementsOfGroup', this).each(function(){
          groupList[nb][nbEl] = $(this).text();
          nbEl = nbEl + 1;
       });

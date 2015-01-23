@@ -41,3 +41,21 @@
    height: 50%;
    width:300px;
 }
+
+#navbarGroups {
+   position: fixed;
+   left: 5px;
+   top:25%;
+   height: 400px;
+   width:350px;
+   overflow: auto;
+}
+
+.groupElements{
+   overflow: auto;
+   height: 100px;
+}
+
+.valueIdElementsOfGroup{
+   display: none;
+}

@@ -122,6 +122,7 @@
 	</head>
 	<body>
 		<div class="container">
+		<div id="body">
 			<?php include 'include/header.php'; ?>
 			<?php include 'include/nav.php'; ?>
 			<?php
@@ -233,7 +234,7 @@
 	                    	</div>
 						</div>
 					</div>
-				</div>
+				</div></div>
 				
 				<div id="navbarGroups" class="nav navbar-nav navbar-right"> 
 				   <div class="panel panel-default" style="padding:10px"> 
@@ -361,8 +362,8 @@
 							>
 					</div>
 				</div>
-			</form>
-	        <?php include 'include/footer.php'; ?>
+			</form>			
+	        <div id="footer"><?php include 'include/footer.php'; ?></div>
 	    </div>
 	</body>
 </html>

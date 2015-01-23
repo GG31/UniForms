@@ -1,0 +1,10 @@
+@CHARSET "ISO-8859-1";
+
+#navbarElements { 
+	display: none; 
+}
+
+input[type="submit"] { 
+	display: none; 
+} 
+ 

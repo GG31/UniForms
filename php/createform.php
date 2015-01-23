@@ -234,6 +234,55 @@
 					</div>
 				</div>
 				
+				
+				
+				<div id="navbarElements" class="nav navbar-nav navbar-right"> 
+				   <div class="panel panel-default" style="padding:10px">     
+                  <div class="draggable" id="draggableLabel" draggable="true"><span>Label</span></div>
+                  <div class="draggable" id="draggableNumber" draggable="true"><span>Number</span></div>
+                  <div class="draggable" id="draggableDate" draggable="true"><span>Date</span></div>
+                  <div class="draggable" id="draggableTime" draggable="true"><span>Heure</span></div>
+                  <div class="draggable" id="draggableTextarea" draggable="true"><span>Paragraphe</span></div>
+                  <div class="draggable" id="draggableTel" draggable="true"><span>Téléphone</span></div>
+                  <div class="draggable" id="draggableText" draggable="true"><span>Input Text</span></div>
+                  <div class="draggable" id="draggableRadio" draggable="true"><span>Bouton radio</span></div>
+                  <div class="draggable" id="draggableCheckbox" draggable="true"><span>Checkbox</span></div>
+                  <input id="info" name="info" type="hidden">
+                  <input id="infoGroups" name="infoGroups" type="hidden">
+                        
+                  <div class="panel panel-default">
+                     <div id="divDetail" class="panel-body">
+                        <div id="checkboxRequiredGroup">
+                           <input type="Checkbox" id="checkboxRequired"> Required
+                        </div>
+                        <div id="labelGroup">
+                           Label <input type="Textbox" id="inputLabelValue">
+                        </div>
+                        <div id="sizeGroup">
+                           Width <input type="Number" id="inputWidthValue" step="1"><br>
+                           Height <input type="Number" id="inputHeightValue" step="1">
+                        </div>
+                        <div id="defaultValueGroup">
+                           Default Value<input type="Textbox" id="inputdefaultValue">
+                        </div>
+                        <div id="inputValueGroup">
+                           Value <input type="Text" id="inputValue">
+                        </div>
+                        <div id="inputNumberGroup">
+                           Min <input type="number" id="inputNumberMin"><br>
+                           Max <input type="number" id="inputNumberMax">
+                        </div>
+                        <div id="valuesGroup">
+                           Values <button type="button" id="moreValues" class="btn btn-default btn-lg">
+<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+</button>
+<br><div><input type="Text" class="valueItem" id="valueItem_0" onchange="valueItemChange(0)"><button type="button" id="lessValues_0" class="btn btn-default btn-lg valueItemLess" onclick="valueItemLess(0)"><span>-</span></button></div><br>
+                        </div><!--valuesGroup-->
+                     </div><!--divDetail-->
+                  </div><!--panel default-->
+               </div><!--panel default-->
+            </div><!--Navbar-->
+				
          <div class="row">
 			   <div>
 					<!-- class="col-sm-10" -->
@@ -244,61 +293,16 @@
 							</h3>
 						</div>
 						<div class="panel-body">
-						   <div class="panel panel-default col-sm-8">
-						      <div class="panel-body">
+						   <div class="panel panel-default">
+						      <div id="contentOfPanneau" class="panel-body">
                            <div id="panneau" >
                            </div>
                         </div>
                      </div>
-                     <div class="col-sm-4">
-                        <div class="draggable" id="draggableLabel" draggable="true"><span>Label</span></div>
-                        <div class="draggable" id="draggableNumber" draggable="true"><span>Number</span></div>
-                        <div class="draggable" id="draggableDate" draggable="true"><span>Date</span></div>
-                        <div class="draggable" id="draggableTime" draggable="true"><span>Heure</span></div>
-                        <div class="draggable" id="draggableTextarea" draggable="true"><span>Paragraphe</span></div>
-                        <div class="draggable" id="draggableTel" draggable="true"><span>Téléphone</span></div>
-                        <div class="draggable" id="draggableText" draggable="true"><span>Input Text</span></div>
-                        <div class="draggable" id="draggableRadio" draggable="true"><span>Bouton radio</span></div>
-                        <div class="draggable" id="draggableCheckbox" draggable="true"><span>Checkbox</span></div>
-                        
-                        <input id="info" name="info" type="hidden">
-                        <input id="infoGroups" name="infoGroups" type="hidden">
-                        <div class="panel panel-default">
-                          <div id="divDetail" class="panel-body">
-                            <div id="checkboxRequiredGroup">
-                              <input type="Checkbox" id="checkboxRequired"> Required
-                            </div>
-                            <div id="labelGroup">
-                              Label <input type="Textbox" id="inputLabelValue">
-                            </div>
-                            <div id="sizeGroup">
-                              Width <input type="Number" id="inputWidthValue" step="1"><br>
-                              Height <input type="Number" id="inputHeightValue" step="1">
-                            </div>
-                            <div id="defaultValueGroup">
-                              Default Value<input type="Textbox" id="inputdefaultValue">
-                            </div>
-                            <div id="inputValueGroup">
-                            Value <input type="Text" id="inputValue">
-                            </div>
-                            <div id="inputNumberGroup">
-                            Min <input type="number" id="inputNumberMin"><br>
-                            Max <input type="number" id="inputNumberMax">
-                            </div>
-                            <div id="valuesGroup">
-                            Values <button type="button" id="moreValues" class="btn btn-default btn-lg">
-  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-</button>
-<br><div><input type="Text" class="valueItem" id="valueItem_0" onchange="valueItemChange(0)"><button type="button" id="lessValues_0" class="btn btn-default btn-lg valueItemLess" onclick="valueItemLess(0)"><span>-</span></button></div><br>
-                            
-                            </div>
-                            
-                          </div>
-                        </div>
-		               </div>
-						</div>
+		               </div><!--panel-body-->
+						</div><!--panel-primary-->
 					</div>
-				</div>
+				</div><!--row-->
 				
 				<div class="row">
 					<div class="panel panel-primary">

@@ -134,10 +134,10 @@ $('#panneau').droppable(
             setType(elChild);
             
             el.on('resize', function() {
-               elementList[currentElement].width = el.width();
-               elementList[currentElement].height = el.height();
-               $('#inputWidthValue').val(el.width());
-               $('#inputHeightValue').val(el.height());
+               elementList[currentElement].width = $(this).width();
+               elementList[currentElement].height = $(this).height();
+               $('#inputWidthValue').val($(this).width());
+               $('#inputHeightValue').val($(this).height());
             });
             
             el.append(constructSpan(""));
@@ -159,9 +159,9 @@ $('#panneau').droppable(
                });
             });
             el.on( "drag", function( event, ui ) {
-              if($(this).offset().top - $('#panneau').offset().top >$('#panneau').height()-70 && $(this).offset().top - $('#panneau').offset().top <$('#panneau').height()){
+              if($(this).offset().top - $('#panneau').offset().top >$('#panneau').height()-70 && $(this).offset().top - $('#panneau').offset().top <$('#panneau').height()){ 
                   $('#panneau').animate({ 
-                    height: (($('#panneau').height()) + 20)+'px'
+                    height: (($('#panneau').height()) + 1122)+'px'
                   }, 10);
               }
             });
@@ -171,9 +171,8 @@ $('#panneau').droppable(
          }
          elementList[currentElement].posX = posX;
          elementList[currentElement].posY = posY;
-         var heightPanneau = findMoreBottomElement()
          $('#panneau').animate({ 
-              height: (findMoreBottomElement())+'px'
+              height: (findMoreBottomElement() * 1122)+'px'
             }, 10);
          updatePanelDetail();
       }
@@ -205,9 +204,9 @@ findMoreBottomElement = function() {
          max = val.posY + val.height;
       }
    });
-   if(max < 493)
-      return 493;
-   return max;
+   var result = parseInt(Math.floor(max/1122)) + 1
+   console.log(max + " " + result)
+   return result;
 }
 constructSpan = function(value) {
    span = $('<span id="label_' + currentElement + '">'+value+'</span>');

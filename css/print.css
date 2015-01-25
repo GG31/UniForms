@@ -11,3 +11,15 @@ input[type="submit"] {
 #footer, #body, #navbarGroups { 
 	display: none; 
 }  
+
+#panneau {
+	margin-right: 0px;;
+}
+
+span[id^=child_] {
+}
+
+#panneau { 
+	position: relative;
+	color:black;
+}

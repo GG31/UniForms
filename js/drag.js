@@ -12,7 +12,9 @@ var elementsCode = {
    draggableTel:'<input type="tel" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$" class="form-control" placeholder="06xxxxxxxx"/>',
    draggableText:'<input type="text" class="form-control" />',
    draggableRadio:'<fieldset><input type="radio"> <span class="0"><span></fieldset>',
-   draggableCheckbox:'<fieldset><input type="checkbox"> <span class="0"><span></fieldset>'
+   draggableCheckbox:'<fieldset><input type="checkbox"> <span class="0"><span></fieldset>',
+   draggableSquare:'<div class="figure square"></div>',
+   draggableCircle:'<div class="figure circle"></div>'
 }; 
 
 function init() {
@@ -111,39 +113,39 @@ $('#panneau').droppable(
             posX = posX < $('#panneau').offset().left ? $('#panneau').offset().left : posX;
             posY = posY < $('#panneau').offset().top ? $('#panneau').offset().top : posY;
             el = $('<div class="draggable" draggable="true"></div>');
-            el.attr("id", ids);
+            el.attr({
+               id: ids,
+               name: "element_"+ids,
+               draggable:"true",
+            });
             el.css({
                position: "absolute",
                left: posX + "px",
                top: posY + "px",
                width: 'auto',
                height: 'auto',
-               padding: '5px'
+               padding: '5px',
+               'z-index': 2
             });
             
-            el.resizable();
-            el.attr("name", "element_"+ids);
-            el.attr("draggable", "true");
             elChild = $(elementsCode[$(ui.draggable).attr("id")]);
             elChild.attr("id", "child_" + ids);
+            if(elChild.hasClass("figure")) {
+               console.log("class figure");
+               el.css({
+                  cursor:'grab',
+                  width: '100px',
+                  height:'100px',
+                  'z-index': 1
+               });
+            }
             elChild.css({
                cursor:'grab',
                width: '100%',
                height:'100%'
             });
             
-            var newElement = new Object();
-            newElement.id = elChild.attr("id");
-            elementList[newElement.id] = newElement;
-            currentElement = newElement.id;
-            setType(elChild);
-            
-            el.on('resize', function() {
-               elementList[currentElement].width = $(this).width();
-               elementList[currentElement].height = $(this).height();
-               $('#inputWidthValue').val($(this).width());
-               $('#inputHeightValue').val($(this).height());
-            });
+            createElement(elChild.attr("id"))
             
             el.append(constructSpan(""));
             el.append(elChild);
@@ -154,25 +156,12 @@ $('#panneau').droppable(
                 revert: 'invalid',
                 cursor: 'grab'
             });
-            el.hover( function() {
-               $(this).css({
-                  'box-shadow': '0px 0px 12px #0000FF'
-               });
-            }, function() {
-               $(this).css({
-                  'box-shadow':'none',
-               });
-            });
-            el.on( "drag", function( event, ui ) {
-               
-              if($(this).offset().top - $('#panneau').offset().top >$('#panneau').height()-70 && $(this).offset().top - $('#panneau').offset().top <$('#panneau').height()){ 
-                  $('#panneau').animate({ 
-                    height: (($('#panneau').height()) + 1122)+'px'
-                  }, 10);
-              }
-            });
-            elementList[currentElement].width = Math.round($("#"+currentElement).width());
-            elementList[currentElement].height= Math.round($("#"+currentElement).height());
+            
+            onhover()
+            ondrag();
+            if(!elChild.is("fieldset")) {
+               resize(el);
+            }
             if (posX + elementList[currentElement].width > $('#panneau').width()) {
                posX = $('#panneau').offset().left + $('#panneau').width() - elementList[currentElement].width - 50;
                el.css({left: posX + "px"});
@@ -181,13 +170,65 @@ $('#panneau').droppable(
          }
          elementList[currentElement].posX = posX;
          elementList[currentElement].posY = posY;
-         $('#panneau').animate({ 
-              height: (findMoreBottomElement() * 1122)+'px'
-            }, 10);
+         growZone()
          updatePanelDetail();
       }
    }
 );
+
+createElement = function(id) {
+   var newElement = new Object();
+   newElement.id = id;
+   elementList[newElement.id] = newElement;
+   currentElement = newElement.id;
+   elementList[currentElement].type = getType(elChild);
+}
+
+resize = function(el) {
+   el.resizable();
+   registerWidthHeight(currentElement, el.width(), el.height())
+   el.on('resize', function() {
+      idElement = $(this).children("input, textarea, div[class*=figure]").attr("id");
+      if($('#'+idElement).hasClass('circle')) {
+         $('#'+idElement).css("border-radius", $(this).width()/2);
+      }
+      registerWidthHeight(idElement, $(this).width(), $(this).height())
+   });
+}
+growZone = function() {
+   $('#panneau').animate({ 
+      height: (findMoreBottomElement() * 1122)+'px'
+   }, 10);
+}
+
+registerWidthHeight = function(idElement, width, height) {
+   elementList[idElement].width = width;
+   elementList[idElement].height = height;
+   if (idElement == currentElement) {
+      $('#inputWidthValue').val(width);
+      $('#inputHeightValue').val(height);
+   }
+}
+onhover = function() {
+   $('#'+currentElement).parent().hover( function() {
+      $(this).css({
+         'box-shadow': '0px 0px 12px #0000FF'
+      });
+   }, function() {
+      $(this).css({
+         'box-shadow':'none',
+      });
+   });
+}
+ondrag = function() {
+   $('#'+currentElement).on("drag", function( event, ui ) {
+      if($(this).offset().top - $('#panneau').offset().top >$('#panneau').height()-70 && $(this).offset().top - $('#panneau').offset().top <$('#panneau').height()){ 
+         $('#panneau').animate({ 
+            height: (($('#panneau').height()) + 1122)+'px'
+         }, 10);
+      }
+   });
+}
 
 checkPosition = function(posX, el) {
    var width = elementList[currentElement].width;
@@ -219,37 +260,44 @@ findMoreBottomElement = function() {
       }
    });
    var result = parseInt(Math.floor(max/1122)) + 1
+   console.log(max/1122 + " " +result)
    return result;
 }
+
 constructSpan = function(value) {
    span = $('<span id="label_' + currentElement + '">'+value+'</span>');
    return span;
 }
 
-setType = function(node) {
+getType = function(node) {
    if(node.is("textarea")){
-      elementList[currentElement].type = "TextArea";
+      return "TextArea";
    }else if(node.is("fieldset")){
       if(node.children('input').attr("type") == 'radio') {
-         elementList[currentElement].type = 'RadioButton';
+         return 'RadioButton';
       } else if(node.children('input').attr("type") == 'checkbox') {
-         elementList[currentElement].type = 'Checkbox';
+         return 'Checkbox';
       }
    } else if(node.is("input")) {
       if (node.attr('type') == 'text') {
-         elementList[currentElement].type = "InputText";
+         return "InputText";
       } else if (node.attr('type') == 'number') {
-         elementList[currentElement].type = "InputNumber";
+         return "InputNumber";
       } else if (node.attr('type') == 'time') {
-         elementList[currentElement].type = "InputTime";
+         return "InputTime";
       } else if (node.attr('type') == 'date') {
-         elementList[currentElement].type = "InputDate";
+         return "InputDate";
       } else if (node.attr('type') == 'tel') {
-         elementList[currentElement].type = "InputPhone";
+         return "InputPhone";
       }
    } else if(node.is("span")){
-      elementList[currentElement].type = "Span";
+      return "Span";
+   } else if(node.is("div") && node.hasClass("square") ) {
+      return "Square";
+   } else if (node.hasClass("circle")){
+      return "Circle";
    }
+   return null;
 }
 
 sendJson = function() {
@@ -287,15 +335,6 @@ $('html').keyup(function(e){
       delete elementList[currentElement];
    }
 }) 
-
-$('#panneau').hover(function() {
-   if($('#checkboxRemove').is(":checked"))
-   {
-      $(this).css('cursor','crosshair');
-   } else {
-      $(this).css('cursor','auto');
-   }
-});
 
 $( "#checkboxRequired" ).click(function(e) {
    elementList[currentElement].required = $('#checkboxRequired').is(':checked');
@@ -376,10 +415,15 @@ hideAll = function() {
 
 updatePanelDetail = function() {
    hideAll();
-   $('#panneau input, textarea, fieldset').css({
+   $('#panneau input, textarea, fieldset, span, div').css({
       'box-shadow': 'none'
    });
+   $('#panneau div[class*=figure]').css({
+      'box-shadow': 'none',
+      border : 'solid black'
+   });
    var currentType = "";
+   console.log("current " + currentElement)
    if(currentElement != undefined && (currentElement.split('_')[0] == 'child' || currentElement.split('_')[0] == 'elem')){
       $('#'+currentElement).css({
          'box-shadow': '0px 0px 12px Red'
@@ -424,6 +468,8 @@ updatePanelDetail = function() {
    } else if(currentType == "Span") {
       // Si label
       hasValueText();
+   } else if(currentType == "Square" || currentType == "Circle") {
+      hasSize();
    }
 }
 

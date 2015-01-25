@@ -13,7 +13,8 @@ var elementsCode = {
    draggableText:'<input type="text" class="form-control" />',
    draggableRadio:'<fieldset><input type="radio"> <span class="0"><span></fieldset>',
    draggableCheckbox:'<fieldset><input type="checkbox"> <span class="0"><span></fieldset>',
-   draggableSquare:'<div class="figure square"></div>'
+   draggableSquare:'<div class="figure square"></div>',
+   draggableCircle:'<div class="figure circle"></div>'
 }; 
 
 function init() {
@@ -187,7 +188,11 @@ resize = function(el) {
    el.resizable();
    registerWidthHeight(currentElement, el.width(), el.height())
    el.on('resize', function() {
-      registerWidthHeight($(this).children("input, textarea, div[class*=figure]").attr("id"), $(this).width(), $(this).height())
+      idElement = $(this).children("input, textarea, div[class*=figure]").attr("id");
+      if($('#'+idElement).hasClass('circle')) {
+         $('#'+idElement).css("border-radius", $(this).width()/2);
+      }
+      registerWidthHeight(idElement, $(this).width(), $(this).height())
    });
 }
 growZone = function() {
@@ -287,8 +292,10 @@ getType = function(node) {
       }
    } else if(node.is("span")){
       return "Span";
-   } else if(node.is("div") && node.hasClass("square")) {
+   } else if(node.is("div") && node.hasClass("square") ) {
       return "Square";
+   } else if (node.hasClass("circle")){
+      return "Circle";
    }
    return null;
 }
@@ -461,7 +468,7 @@ updatePanelDetail = function() {
    } else if(currentType == "Span") {
       // Si label
       hasValueText();
-   } else if(currentType == "Square") {
+   } else if(currentType == "Square" || currentType == "Circle") {
       hasSize();
    }
 }

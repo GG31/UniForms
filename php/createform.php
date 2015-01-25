@@ -30,14 +30,47 @@
 		<link rel="stylesheet" href="../css/styles.css" type="text/css" />
 		<link rel="stylesheet" href="../css/drag.css" type="text/css" />
 		<link rel="stylesheet" href="../lib/jquery-2.1.1/jquery-ui.css" type="text/css" />
-      
+      	<style>
+		  .thumb {
+		    height: 75px;
+		    border: 1px solid #000;
+		    margin: 10px 5px 0 0;
+		  }
+		</style>
 		<script src="../lib/jquery-2.1.1/min.js"></script>
 		<script src="../lib/jquery-2.1.1/jquery-ui.js"></script>
 
 		<script src="../lib/bootstrap-3.3.1/js/min.js"></script>
 		<script src="../js/elemsCreateForm.js"></script>
 		<!-- <script type="text/javascript" src="../js/jquery.form.bassm.js"></script>  -->
-
+	<script>
+	  function readFilesAndDisplayPreview(files) {
+	    // Loop through the FileList and render image files as thumbnails.
+	    for (var i = 0, f; f = files[i]; i++) {
+	      // Only process image files.
+	      if (!f.type.match('image.*')) {
+	        continue;
+	      }
+	      var reader = new FileReader();
+	      //capture the file information.
+	      reader.onload = function(e) {
+	          // Render thumbnail.
+	          var span = document.createElement('span');
+	          span.innerHTML = "<img class='thumb' src='" + e.target.result + "'/>";
+	          document.getElementById('list').insertBefore(span, null);
+	        };
+	      
+	
+	      // Read in the image file as a data URL.
+	      reader.readAsDataURL(f);
+	    }
+	  }
+	  function handleFileSelect(evt) {
+	    var files = evt.target.files; // FileList object
+	    readFilesAndDisplayPreview(files);
+	  }
+	  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+	</script>
 	<script type="text/javascript" >
 	$(document).ready(function() { 
 		
@@ -282,6 +315,7 @@
                   <div class="draggable" id="draggableCheckbox" draggable="true"><span>Checkbox</span></div>
                   <div class="draggable" id="draggableSquare" draggable="true"><span>Carre</span></div>
                   <div class="draggable" id="draggableCircle" draggable="true"><span>Cercle</span></div>
+                  <div class="draggable" id="draggableimg" draggable="true"><span>Image</span></div>
                   <input id="info" name="info" type="hidden">
                   <input id="infoGroups" name="infoGroups" type="hidden">
                         

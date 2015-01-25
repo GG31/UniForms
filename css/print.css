@@ -13,13 +13,11 @@ input[type="submit"] {
 }  
 
 #panneau {
-	margin-right: 0px;;
+	margin-left: 0px;;
 }
 
-span[id^=child_] {
+[id^="child"] {
 }
 
-#panneau { 
-	position: relative;
-	color:black;
+#panneau {
 }

@@ -14,13 +14,14 @@ var elementsCode = {
    draggableRadio:'<fieldset><input type="radio"> <span class="0"><span></fieldset>',
    draggableCheckbox:'<fieldset><input type="checkbox"> <span class="0"><span></fieldset>',
    draggableSquare:'<div class="figure square"></div>',
-   draggableCircle:'<div class="figure circle"></div>'
+   draggableCircle:'<div class="figure circle"></div>',
+   draggableimg:'<input type="file" id="files" multiple /><br/><output id="list"></output>'
 }; 
 
 function init() {
    hideAll();
-   $("#formName").text(formname);
-   $("#infoFormName").val(formname);
+   var valf = $("#formName").text();
+   $("#infoFormName").val(valf);
    drag();
    groupElementsDroppable();
    //alert("longueur "+elems.length);

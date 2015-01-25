@@ -51,11 +51,18 @@
    overflow: auto;
 }
 
-.groupElements{
+.groupElements {
    overflow: auto;
    height: 100px;
 }
 
-.valueIdElementsOfGroup{
+.valueIdElementsOfGroup {
    display: none;
+}
+
+.carre {
+   width:200px;
+	height:200px;
+	background:transparent;
+	border: 2px solid black;
 }

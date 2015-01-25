@@ -20,8 +20,8 @@ var elementsCode = {
 
 function init() {
    hideAll();
-   var valf = $("#formName").text();
-   $("#infoFormName").val(valf);
+   $("#formName").text(formname);
+   $("#infoFormName").val(formname);
    drag();
    groupElementsDroppable();
    //alert("longueur "+elems.length);

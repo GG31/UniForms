@@ -14,7 +14,7 @@ Element = (function(){
 		this.width = obj.width;
 		this.height = obj.height;
 
-		switch(parseInt(obj.type)){
+		switch(parseInt(obj.type, 10)){
 			case 1:
 				this.element = $('<input/>').attr('type', 'text');
 				this.type = 'InputText';
@@ -56,8 +56,10 @@ Element = (function(){
 			   this.type = 'TextArea';
 			   this.element = $('<textarea></textarea>');
 				break;
+			default:
+				break;
 		}
-      this.element.css('cursor','grab');
+		this.element.css('cursor','grab');
 		this.attrs();
 	}
    
@@ -74,7 +76,7 @@ Element = (function(){
          div.append(span);
          this.element.append(div);
       }
-   }
+   };
    
 	Element.prototype.attrs = function() {
       this.element.attr('id', this.id);

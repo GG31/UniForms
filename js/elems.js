@@ -1,13 +1,12 @@
 Container = (function(){
 	function Container(obj){
-		container = $('<div></div>')
+		container 	= $('<div></div>')
 						.attr('id', 'container-' + obj.id)
 						.css('position', 'relative')
 						.css('top', obj.y + 'px')
-						.css('left', obj.x + 'px')
-						;
+						.css('left', obj.x + 'px');
 
-		label = $('<label></label>')
+		label 		= $('<label></label>')
 						.attr('for', 'elem-' + obj.id)
 						.text(obj.label);
 
@@ -34,8 +33,8 @@ Radio = (function(){
 						.attr('type', 'radio')
 						.attr('name', 'elem-' + obj.id)
 						.attr('value', 'option-' + obj.options[i].elementoption_id)
-						.prop('checked', obj.options[i].default == '1' ? true : false)
-						;
+						.prop('checked', obj.options[i]['default'] == '1' ? true : false);
+
 			label.append(input).append(obj.options[i].value);
 			radio.append(label);
 		}
@@ -46,11 +45,11 @@ Radio = (function(){
 	Radio.prototype.attrs = function(){
 		// TODO
 		return this;
-	}
+	};
 
 	Radio.prototype.get = function(){
 		return this.element;
-	}
+	};
 
 	Radio.prototype.getAnswers = function(){
 		return {
@@ -64,7 +63,7 @@ Radio = (function(){
 						.prop('checked', false)
 					.filter('input[value=option-' + answer[0] + ']')
 						.prop('checked', true);
-	}
+	};
 
 	return Radio;
 })();
@@ -83,9 +82,9 @@ Select = (function(){
 		for(i = 0; i < length; i++){
 			option = $('<option></option>')
 						.attr('value', 'option-' + obj.options[i].elementoption_id)
-						.prop('selected', obj.options[i].default == '1' ? true : false)
-						.text(obj.options[i].value)
-						;
+						.prop('selected', obj.options[i]['default'] == '1' ? true : false)
+						.text(obj.options[i].value);
+
 			select.append(option);
 		}
 
@@ -95,25 +94,25 @@ Select = (function(){
 	Select.prototype.attrs = function(){
 		// TODO
 		return this;
-	}
+	};
 
 	Select.prototype.get = function(){
 		return this.element;
-	}
+	};
 
 	Select.prototype.getAnswers = function(){
 		return {
 					elementId	: this.obj.id,
 					value		: this.element.find(':selected').val().split('-')[1]
 				};
-	}
+	};
 
 	Select.prototype.setAnswers = function(answer){// answer is option id ?
 		this.element.find('option')
 						.prop('selected', false)
 					.filter('option[value=option-' + answer[0] + ']')
 						.prop('selected', true);
-	}
+	};
 
 	return Select;
 })();
@@ -134,8 +133,8 @@ Multiple = (function(){
 						.attr('type', 'checkbox')
 						.attr('name', 'elem-' + obj.id)
 						.attr('value', 'option-' + obj.options[i].elementoption_id)
-						.prop('checked', obj.options[i].default == '1' ? true : false)
-						;
+						.prop('checked', obj.options[i]['default'] == '1' ? true : false);
+
 			label.append(box).append(obj.options[i].value);
 			multiple.append(label);
 		}
@@ -146,11 +145,11 @@ Multiple = (function(){
 	Multiple.prototype.attrs = function(){
 		// TODO
 		return this;
-	}
+	};
 
 	Multiple.prototype.get = function(){
 		return this.element;
-	}
+	};
 
 	Multiple.prototype.getAnswers = function(){
 		id = this.obj.id;
@@ -158,9 +157,9 @@ Multiple = (function(){
 												return {
 															elementId 	: id,
 															value		: $(this).val().split('-')[1]
-														}
+														};
 											}).get();
-	}
+	};
 
 	Multiple.prototype.setAnswers = function(answers){// answer is option id array ?
 		this.element.find('input').each(function(){
@@ -172,7 +171,7 @@ Multiple = (function(){
 			else
 				$(this).prop('checked', false);
 		});
-	}
+	};
 
 	return Multiple;
 })();
@@ -184,7 +183,7 @@ Element = (function(){
 	function Element(obj, id){
 
 		element = '';
-		switch(parseInt(obj.type)){
+		switch(parseInt(obj.type, 10)){
 			case 1:
 				element = $('<input/>').attr('type', 'text');
 				obj.type = 1;
@@ -217,6 +216,8 @@ Element = (function(){
 				element = new Multiple(obj);
 				obj.type = 8;
 				break;
+			default:
+				break;
 		}
 
 		this.obj = obj;
@@ -246,12 +247,13 @@ Element = (function(){
 					.attr('id', 'elem-' + obj.id)
 					.attr('placeholder', obj.placeholder)
 					.attr('required', obj.required)
-					.css('width', obj.width + 'px')
-					;
+					.css('width', obj.width + 'px');
 				break;
 			case 7:
 			case 8:
 				this.element.attrs();
+				break;
+			default:
 				break;
 		}
 	};
@@ -259,7 +261,7 @@ Element = (function(){
 	Element.prototype.answers = function(answers) {
 		get = typeof answers == 'undefined';
 
-		if(!get && answers.length == 0) // if we load no answers, don't set values to nothing
+		if(!get && answers.length === 0) // if we load no answers, don't set values to nothing
 			return this;
 
 		res = '';
@@ -276,6 +278,8 @@ Element = (function(){
 			case 7:
 			case 8:
 				res = get ? this.element.getAnswers() : this.element.setAnswers(answers);
+				break;
+			default:
 				break;
 		}
 

@@ -406,4 +406,5 @@
 </html>
 <script src="../js/drag.js"></script>
 <script src="../js/group.js"></script>
+<script src="../js/navbar.js"></script>
 <script>init()</script>

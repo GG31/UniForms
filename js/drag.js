@@ -6,11 +6,11 @@ var elt;
 var elementsCode = {
    draggableLabel:'<span>Label</span>', 
    draggableNumber:'<input type="number">', 
-   draggableDate:'<input type="text" placeholder="jj/mm/aaaa"/>',
-   draggableTime:'<input type="time" placeholder="hh:mm"/>',
-   draggableTextarea:'<textarea rows="4" cols="40"></textarea>',
-   draggableTel:'<input type="tel" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$" placeholder="06xxxxxxxx"/>',
-   draggableText:'<input type="text"/>',
+   draggableDate:'<input type="text" class="form-control" placeholder="jj/mm/aaaa"/>',
+   draggableTime:'<input type="time" class="form-control" placeholder="hh:mm"/>',
+   draggableTextarea:'<textarea rows="4" cols="40" class="form-control"></textarea>',
+   draggableTel:'<input type="tel" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$" class="form-control" placeholder="06xxxxxxxx"/>',
+   draggableText:'<input type="text" class="form-control" />',
    draggableRadio:'<fieldset><input type="radio"> <span class="0"><span></fieldset>',
    draggableCheckbox:'<fieldset><input type="checkbox"> <span class="0"><span></fieldset>'
 }; 
@@ -20,6 +20,7 @@ function init() {
    $("#formName").text(formname);
    $("#infoFormName").val(formname);
    drag();
+   groupElementsDroppable();
    for(i = 0; i<elems.length; i++) {
       elementList[elems[i].id] = elems[i];
       currentElement = elems[i].id;
@@ -28,6 +29,9 @@ function init() {
       newNode.css('position', "absolute");
       newNode.css('top', elems[i].posY + "px");
       newNode.css('left', elems[i].posX + "px");
+      newNode.css('width', "auto");
+      newNode.css('height', "auto");
+      newNode.css('padding', "5px");
       newNode.attr("name", "element_"+ids);
       newNode.attr("draggable", "true");
       newNode.append(constructSpan(elems[i].label));
@@ -46,7 +50,6 @@ function init() {
 }
 
 $(".draggable").css('cursor','grab');
-//$('#panneau > div').disableSelection().css('webkit-user-select','none').draggable({cancel: null});
 
 drag = function(){
    $(".draggable").draggable({
@@ -55,46 +58,99 @@ drag = function(){
        cursor: 'grab',
        containment: "#panneau"
    });
+   $(".draggable").hover(function() {
+      $(this).css({
+         'font-style': 'italic',
+         background : '#FFFFCC'
+      });
+   }, function() {
+      $(this).css({
+         'font-style': 'normal',
+         background : 'white'
+      });
+   });
+}
+
+groupElementsDroppable = function() {
+   $('.groupElements').droppable({
+      drop: function (e, ui) {
+         var idToPutIntoGroup = $(ui.draggable).children().next().attr("id");
+         var yes = 1;
+         $(".groupElements span").each(function(){
+            if($(this).text() == idToPutIntoGroup) {
+               yes = 0;
+            }
+               
+         });
+         if (yes) {
+            $(this).append($('<div class="alert alert-warning alert-dismissible" role="alert" style="display: inline-block">  <button type="button" class="close btn btn-primary btn-lg" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span class="valueIdElementsOfGroup">'+$(ui.draggable).children().next().attr("id")+'</span></div>'));
+         }
+         ui.draggable.draggable('option','revert',true);
+         setTimeout(function () {
+              ui.draggable.draggable('option','revert','invalid');
+          }, 100);
+      }
+   });
 }
 
 $('#panneau').droppable(
-   {
+   {      
       drop: function (e, ui) {
          posX = (e.pageX-$('#panneau').offset().left) < 0 ? 0 : e.pageX-$('#panneau').offset().left;
          posY = e.pageY-$('#panneau').offset().top < 0 ? 0 : e.pageY-$('#panneau').offset().top;
          
          if ($(ui.draggable).attr("id").split('_')[0] == 'child' || $(ui.draggable).attr("id").split('_')[0] == 'elem' || $(ui.draggable).attr("id") < ids ) {
             currentElement = $(ui.draggable).children().next().attr("id");
+            posX = checkPosition(e.pageX, $(ui.draggable));
          } else {
+            posX = (e.pageX-$('#panneau').offset().left) < 0 ? 0 : e.pageX-$('#panneau').offset().left;
             el = $('<div class="draggable" draggable="true"></div>');
             el.attr("id", ids);
             el.css({
                position: "absolute",
                left: posX + "px",
-               top: posY + "px"
+               top: posY + "px",
+               width: 'auto',
+               height: 'auto',
+               padding: '5px'
             });
             el.attr("name", "element_"+ids);
             el.attr("draggable", "true");
             elChild = $(elementsCode[$(ui.draggable).attr("id")]);
             elChild.attr("id", "child_" + ids);
+            elChild.css('cursor','grab');
             
             var newElement = new Object();
             newElement.id = elChild.attr("id");
             elementList[newElement.id] = newElement;
             currentElement = newElement.id;
             setType(elChild);
-             
-            elChild.resizable({
-               containment: "element_"+ids
-            });
             
             el.append(constructSpan(""));
             el.append(elChild);
             el.appendTo($(this));
             el.draggable({ cancel: null });
             el.draggable({
-                cursor: 'grab',
-                containment: "#panneau"
+                grid: [20, 20],
+                revert: 'invalid',
+                cursor: 'grab'
+            });
+            el.hover( function() {
+               $(this).css({
+                  'box-shadow': '0px 0px 12px #0000FF',
+                  //border : 'solid'
+               });
+            }, function() {
+               $(this).css({
+                  'box-shadow':'none',
+               });
+            });
+            el.on( "drag", function( event, ui ) {
+              if($(this).offset().top - $('#panneau').offset().top >$('#panneau').height()-70 && $(this).offset().top - $('#panneau').offset().top <$('#panneau').height()){
+                  $('#panneau').animate({ 
+                    height: (($('#panneau').height()) + 20)+'px'
+                  }, 10);
+              }
             });
             elementList[currentElement].width = Math.round($("#"+currentElement).width());
             elementList[currentElement].height= Math.round($("#"+currentElement).height());
@@ -102,11 +158,44 @@ $('#panneau').droppable(
          }
          elementList[currentElement].posX = posX;
          elementList[currentElement].posY = posY;
+         var heightPanneau = findMoreBottomElement()
+         $('#panneau').animate({ 
+              height: (findMoreBottomElement())+'px'
+            }, 10);
          updatePanelDetail();
       }
    }
 );
 
+checkPosition = function(posX, el) {
+   var width = elementList[currentElement].width;
+   if (posX+width>$('#panneau').offset().left+$('#panneau').width() +50) {
+      el.css({
+         left: $('#panneau').width() - width + 30 +"px"
+      });
+      return $('#panneau').width() - width + 30;
+   }
+   if((posX-width/2 < $('#panneau').offset().left)){
+      el.css({
+         left: 10 + "px"
+      });
+      return 10;
+   } 
+   
+   return posX;
+}
+
+findMoreBottomElement = function() {
+   var max = 0;
+   $.each(elementList, function(key, val) {
+      if(val.posY + val.height > max) {
+         max = val.posY + val.height;
+      }
+   });
+   if(max < 493)
+      return 493;
+   return max;
+}
 constructSpan = function(value) {
    span = $('<span id="label_' + currentElement + '">'+value+'</span>');
    return span;
@@ -140,6 +229,22 @@ setType = function(node) {
 
 sendJson = function() {
 	document.getElementById("info").value = JSON.stringify(elementList);
+	document.getElementById("infoGroups").value = JSON.stringify(getGroupsAndElements());
+}
+
+getGroupsAndElements = function() {
+   var groupList = {};
+   var nb = 0;
+   $("#groupSection .row").each(function(){
+      groupList[nb] = {};
+      var nbEl = 0;
+      $(' .valueIdElementsOfGroup', this).each(function(){
+         groupList[nb][nbEl] = $(this).text();
+         nbEl = nbEl + 1;
+      });
+      nb = nb + 1;
+   });
+   return groupList;
 }
 
 $( "#panneau" ).click(function(e) {
@@ -226,6 +331,8 @@ $('#inputValue').change(function() {
 $('#inputWidthValue').change(function() {
    $("#"+currentElement).width($('#inputWidthValue').val());
    elementList[currentElement].width = $('#inputWidthValue').val();
+   posX = checkPosition(elementList[currentElement].posX, $("#"+currentElement));
+   elementList[currentElement].posX = posX;
 });
 $('#inputHeightValue').change(function() {
    $("#"+currentElement).height($('#inputHeightValue').val());
@@ -244,7 +351,15 @@ hideAll = function() {
 
 updatePanelDetail = function() {
    hideAll();
-   
+   $('#panneau input, textarea, fieldset').css({
+      'box-shadow': 'none'
+   });
+   if(currentElement.split('_')[0] == 'child' || currentElement.split('_')[0] == 'elem'){
+      
+      $('#'+currentElement).css({
+         'box-shadow': '0px 0px 12px Red'
+      });
+   }
    if($("#"+currentElement).is("fieldset")){
       hasLabel()
       hasRequired();

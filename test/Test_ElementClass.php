@@ -7,6 +7,7 @@
   require_once('../php/class/User.class.php');
   require_once('../php/class/Form.class.php');
   require_once('../php/class/Element.class.php');
+  require_once('../php/class/FormGroup.class.php');
   
   class TestOfElementClass extends UnitTestCase {
   	
@@ -103,7 +104,7 @@
 		
 		// It is not necessary to fill the properties that are not related to the element field type.
 		$e1 = new Element();
-		$e1->setTypeElement(constant("typeInput"));
+		$e1->setTypeElement(constant("typeInputText"));
 		$e1->setX(25);
 		$e1->setY(12);
 		$e1->setDefaultValue("default");
@@ -129,9 +130,9 @@
 		array_push($options, $opt1, $opt2, $opt3); //does not matter the order here...
 		$e2->setOptions($options);
 		
-  		$form4 = new Form(4);
+  		/*$form4 = new Form(4);
 		$form4->setFormElements(array($e1, $e2)); //does not matter the order of the elements here...
-		$form4->save();
+		$form4->save();*/
 	}
   }
   

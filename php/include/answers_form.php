@@ -5,7 +5,7 @@ if (isset ( $_GET ["ans_id"])) {
 	$recipient = $answer->getRecipient();
 	$idform = $answer->getFormId();
 	$form = new Form($idform);
-	$ans = $form->getListRecipient ( [ ], 1 );
+	$ans = $form->getFormRecipients ( [ ], TRUE );
 	$prev = NULL;
 	$next = NULL;
 	

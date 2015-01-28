@@ -75,7 +75,7 @@ class User {
 	 * @return array of Form
 	 */
 	public function getDestinatairesForms(){
-	   $q = mysql_query("SELECT DISTINCT formdest.form_id FROM formdest, form WHERE formdest.form_id=form.form_id AND formdest.user_id=".$this->id." AND form_status=1");
+	   $q = mysql_query("SELECT DISTINCT form.form_id FROM form JOIN (formgroup JOIN formdest ON formgroup.formgroup_id = formdest.formgroup_id AND formdest.user_id = ".$this->id.") ON formgroup.form_id = form.form_id ");
 		$res = [];
 		while($line = mysql_fetch_array($q)){
 		   $res[] = new Form($line["form_id"]);
@@ -105,16 +105,12 @@ class User {
 	 * @return boolean TRUE (FALSE) if form is (not) destinated to user
 	 */
 	public function isDestinataire($formId) {
-		if ($formId == - 1)
-			return FALSE;
+		$q = mysql_query("SELECT * FROM formdest JOIN formgroup ON formgroup.formgroup_id = formdest.formgroup_id WHERE form_id = ".$formId." AND user_id = ".$this->id);
 		
-		$f = new Form ( $formId );
-		$d = $f->getRecipient ();
-		foreach ( $d as $dest ) {
-			if ($dest->getId () == $this->id)
-				return TRUE;
-		}
-		return FALSE;
+		if (mysql_num_rows($q))
+			return true;
+		
+		return false;
 	}
 	
 	/**

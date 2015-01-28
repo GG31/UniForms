@@ -7,6 +7,7 @@
   require_once('../php/class/User.class.php');
   require_once('../php/class/Answer.class.php');
   require_once('../php/class/Element.class.php');
+  require_once('../php/class/FormGroup.class.php');
 
   class TestOfFormClass extends UnitTestCase {
   	
@@ -62,10 +63,9 @@
       $Form = new Form(1);
       $user2 = new User(2); // Romain
       $user3 = new User(3); // Genevieve
-      $list  = $Form->getListRecipient([], 1);
-      foreach ( $list as $key => $line ){
-      	 $this->assertEqual($line["User"]->getName(), "Luis");
-      }
+      $list  = $Form->getFormRecipients([], 1);
+      $this->assertEqual($list[0]["User"]->getName(), "Romain");
+      $this->assertEqual($list[1]["User"]->getName(), "Genevieve");
     }
   
     function testConstruct2_ID() {

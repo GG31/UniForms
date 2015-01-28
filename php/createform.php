@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <?php include_once 'include/includes.php'; ?>
 <?php
 	/*
@@ -33,7 +33,7 @@
 
 		<script src="../lib/bootstrap-3.3.1/js/min.js"></script>
 		<script src="../js/elemsCreateForm.js"></script>
-		<script type="text/javascript" src="../js/jquery.form.bassm.js"></script>
+		<!-- <script type="text/javascript" src="../js/jquery.form.bassm.js"></script>  -->
 
 	<script type="text/javascript" >
 	$(document).ready(function() { 
@@ -130,7 +130,7 @@
 			<?php
 				}
 			?>
-			<div id="bgWrap">
+			<!-- <div id="bgWrap">
 					<div id='preview'>
 					</div>
 					<form id="uploadForm" method="post" enctype="multipart/form-data" action='ajaximage.php'>
@@ -142,7 +142,7 @@
 						</div>
 						<div class="info">Taille maximale de l'image : <b>500 </b>ko</div>
 					</form>
-			</div>
+			</div>-->
 			<form
 				id="formulaire"
 				class="form-inline"
@@ -261,7 +261,7 @@
                         <div class="draggable" id="draggableCheckbox" draggable="true"><span>Checkbox</span></div>
                         
                         <input id="info" name="info" type="hidden">
-                     
+                        <input id="infoGroups" name="infoGroups" type="hidden">
                         <div class="panel panel-default">
                           <div id="divDetail" class="panel-body">
                             <div id="checkboxRequiredGroup">
@@ -298,6 +298,39 @@
 						</div>
 					</div>
 				</div>
+				
+				<div class="row">
+					<div class="panel panel-primary">
+						<div class="panel-heading text-center text-capitalize">
+							<h3 class="panel-title">
+								<strong>Groupe</strong>
+							</h3>
+						</div>
+						<div class="panel-body">
+						   <div id="groupSection">
+						      <div class="row" id="group_0">
+							      <div class="panel panel-default col-sm-8">
+						            <div class="panel-body">
+                                 <div class="groupElements" style="height: 50px;">
+                                 </div>
+                              </div>
+                           </div>
+                           <button type="button" class="btn btn-default btn-lg" onclick="getGroupsAndElements()">
+                                 <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Destinataire
+                           </button>
+                           <button type="button" class="btn btn-default btn-lg" onclick="lessGroup('group_0')">
+                                 <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                           </button>
+                        </div>
+                     </div>
+                     <button type="button" class="btn btn-default btn-lg" onclick="moreGroup()">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                     </button>
+						</div>
+					</div>
+				</div>
+				
+				
 				<div class="row" onload="newFormModel();">
 					<div class="col-sm-offset-3 col-sm-6">
 						<input type="hidden" name="form_id" value=<?php echo $form_id ?>>
@@ -327,4 +360,5 @@
 	</body>
 </html>
 <script src="../js/drag.js"></script>
+<script src="../js/group.js"></script>
 <script>init()</script>

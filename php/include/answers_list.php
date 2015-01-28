@@ -2,7 +2,8 @@
 	if(isset($_GET["form_id"]) AND !isset($_GET["user_id"])){
 		$user = new User($_SESSION["user_id"]);
 		$form = new Form($_GET["form_id"]);
-		$list = $form->getListRecipient([], 1);
+		$list = $form->getFormRecipients([], TRUE);
+		//var_dump($list);
 ?>
 <div class="panel panel-primary">
 	<div class="panel-heading text-center text-capitalize"><strong>Personnes ayant soumis le formulaire <?php echo $_GET["form_id"] ?></strong></div>
@@ -12,7 +13,7 @@
 			<tr>
 				<th>Destinataires</th>
 				<th>Action</th>
-				<th><a href="include/download_all_csv.php?ans_id=<?php echo $list[1]["formDestId"]; ?>"> <span class="glyphicon glyphicon-circle-arrow-down" aria-hidden="true"></span></a> Download Results</th>
+				<th><a href="include/download_all_csv.php?ans_id=<?php //echo $list[1]["formDestId"]; ??? ?>"> <span class="glyphicon glyphicon-circle-arrow-down" aria-hidden="true"></span></a> Download Results</th>
 			</tr>
 		</thead>
 		<tbody>

@@ -7,6 +7,7 @@ require_once('../php/class/Form.class.php');
 require_once('../php/class/User.class.php');
 require_once('../php/class/Answer.class.php');
 require_once('../php/class/Element.class.php');
+require_once('../php/class/FormGroup.class.php');
 
 class TestOfUserClass extends UnitTestCase {
    private $user;
@@ -51,14 +52,14 @@ class TestOfUserClass extends UnitTestCase {
    {
      $user = new User(1);
      $user_forms = $user->getCreatedForms();
-     $this->assertEqual(count($user_forms), 5);
+     $this->assertEqual(count($user_forms), 17);
    }
 
    function testDestinatairesForms()
    {
       $user = new User(1);
       $user_forms = $user->getDestinatairesForms();
-      $this->assertEqual(count($user_forms), 1);
+      $this->assertEqual(count($user_forms), 6);
    }
 
    function testIsCreator1() {

@@ -104,15 +104,14 @@ groupElementsDroppable = function() {
 $('#panneau').droppable(
    {      
       drop: function (e, ui) {
-         posX = e.pageX;
-         posY = e.pageY;
-         //console.log(posX + " " + posY);
+         posX = e.pageX - $('#panneau').offset().left;
+         posY = e.pageY - $('#panneau').offset().top;
          if ($(ui.draggable).attr("id").split('_')[0] == 'child' || $(ui.draggable).attr("id").split('_')[0] == 'elem' || $(ui.draggable).attr("id") < ids) {
             currentElement = $(ui.draggable).children("span").next().attr("id");
-            posX = checkPosition(e.pageX, $(ui.draggable));
+            //posX = checkPosition(e.pageX, $(ui.draggable));
          } else {
-            posX = posX < $('#panneau').offset().left ? $('#panneau').offset().left : posX;
-            posY = posY < $('#panneau').offset().top ? $('#panneau').offset().top : posY;
+            posX = posX < 0 ? 0 : posX;
+            posY = posY < 0 ? 0 : posY;
             el = $('<div class="draggable" draggable="true"></div>');
             el.attr({
                id: ids,
@@ -164,7 +163,7 @@ $('#panneau').droppable(
                resize(el);
             }
             if (posX + elementList[currentElement].width > $('#panneau').width()) {
-               posX = $('#panneau').offset().left + $('#panneau').width() - elementList[currentElement].width - 50;
+               posX = $('#panneau').width() - elementList[currentElement].width - 200;
                el.css({left: posX + "px"});
             }
             ids = ids + 1;

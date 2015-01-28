@@ -19,7 +19,8 @@
 #poub {
 }
 
-#panneau {  
+#panneau {
+  position: relative;  
   width :  100%;
   height: 1122px;   
   background-color: transparent;

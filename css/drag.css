@@ -40,11 +40,7 @@
    right: 5px;
    top:25%;
    height: 50%;
-   width:20px;
-}
-
-#navbarElements *{
-   diplay:none;
+   width:300px; /*20px*/
 }
 
 #navbarGroups {
@@ -84,10 +80,7 @@
 	border-radius:100px;
 }
 
-#groupButton {
-   position: fixed;
-   left: 5px;
-   top:25%;
-   height: 400px;
-   width:30px;
+img{
+   width:200px;
+	height:200px;
 }

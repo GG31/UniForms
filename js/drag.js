@@ -15,7 +15,7 @@ var elementsCode = {
    draggableCheckbox:'<fieldset><input type="checkbox"> <span class="0"><span></fieldset>',
    draggableSquare:'<div class="figure square"></div>',
    draggableCircle:'<div class="figure circle"></div>',
-   draggableimg:'<input type="file" id="files" multiple /><br/><output id="list"></output>'
+   draggableImg:'<img src="../img/thumbnail-default.jpg"/>'
 }; 
 
 function init() {
@@ -189,7 +189,7 @@ resize = function(el) {
    el.resizable();
    registerWidthHeight(currentElement, el.width(), el.height())
    el.on('resize', function() {
-      idElement = $(this).children("input, textarea, div[class*=figure]").attr("id");
+      idElement = $(this).children("input, textarea, div[class*=figure], img").attr("id");
       if($('#'+idElement).hasClass('circle')) {
          $('#'+idElement).css("border-radius", $(this).width()/2);
       }
@@ -297,6 +297,8 @@ getType = function(node) {
       return "Square";
    } else if (node.hasClass("circle")){
       return "Circle";
+   } else if (node.is("img")){
+      return "Image";
    }
    return null;
 }
@@ -412,11 +414,12 @@ hideAll = function() {
    $('#defaultValueGroup').hide();
    $('#labelGroup').hide();
    $('#sizeGroup').hide();
+   $('#fileGroup').hide();
 }
 
 updatePanelDetail = function() {
    hideAll();
-   $('#panneau input, textarea, fieldset, span, div').css({
+   $('#panneau *').css({
       'box-shadow': 'none'
    });
    $('#panneau div[class*=figure]').css({
@@ -471,6 +474,10 @@ updatePanelDetail = function() {
       hasValueText();
    } else if(currentType == "Square" || currentType == "Circle") {
       hasSize();
+   } else if(currentType == "Image") {
+      hasLabel();
+      hasSize();
+      hasSelectFile();
    }
 }
 
@@ -507,6 +514,11 @@ hasSize = function() {
    $("#sizeGroup").show();
    $('#inputWidthValue').val(elementList[currentElement].width);
    $('#inputHeightValue').val(elementList[currentElement].height);
+}
+
+hasSelectFile = function() {
+   $("#fileGroup").show();
+   //$("#files").val(elementList[currentElement].img);
 }
 
 hasSeveralValues = function () {

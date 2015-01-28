@@ -23,18 +23,54 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>UniForms</title>
+		<link rel="stylesheet" media="print" href="../css/print.css" type="text/css" />
 		<link rel="shortcut icon" href="../res/img/favicon.png" />
 		<link rel="stylesheet" href="../lib/bootstrap-3.3.1/css/min.css"
 			type="text/css" />
 		<link rel="stylesheet" href="../css/styles.css" type="text/css" />
 		<link rel="stylesheet" href="../css/drag.css" type="text/css" />
+		<link rel="stylesheet" href="../lib/jquery-2.1.1/jquery-ui.css" type="text/css" />
+      	<style>
+		  .thumb {
+		    height: 75px;
+		    border: 1px solid #000;
+		    margin: 10px 5px 0 0;
+		  }
+		</style>
 		<script src="../lib/jquery-2.1.1/min.js"></script>
 		<script src="../lib/jquery-2.1.1/jquery-ui.js"></script>
 
 		<script src="../lib/bootstrap-3.3.1/js/min.js"></script>
 		<script src="../js/elemsCreateForm.js"></script>
 		<!-- <script type="text/javascript" src="../js/jquery.form.bassm.js"></script>  -->
-
+	<script>
+	  function readFilesAndDisplayPreview(files) {
+	    // Loop through the FileList and render image files as thumbnails.
+	    for (var i = 0, f; f = files[i]; i++) {
+	      // Only process image files.
+	      if (!f.type.match('image.*')) {
+	        continue;
+	      }
+	      var reader = new FileReader();
+	      //capture the file information.
+	      reader.onload = function(e) {
+	          // Render thumbnail.
+	          var span = document.createElement('span');
+	          span.innerHTML = "<img class='thumb' src='" + e.target.result + "'/>";
+	          document.getElementById('list').insertBefore(span, null);
+	        };
+	      
+	
+	      // Read in the image file as a data URL.
+	      reader.readAsDataURL(f);
+	    }
+	  }
+	  function handleFileSelect(evt) {
+	    var files = evt.target.files; // FileList object
+	    readFilesAndDisplayPreview(files);
+	  }
+	  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+	</script>
 	<script type="text/javascript" >
 	$(document).ready(function() { 
 		
@@ -119,6 +155,7 @@
 	</head>
 	<body>
 		<div class="container">
+		<div id="body">
 			<?php include 'include/header.php'; ?>
 			<?php include 'include/nav.php'; ?>
 			<?php
@@ -230,77 +267,11 @@
 	                    	</div>
 						</div>
 					</div>
-				</div>
+				</div></div>
 				
-         <div class="row">
-			   <div>
-					<!-- class="col-sm-10" -->
-					<div class="panel panel-primary">
-					   <div class="panel-heading text-center text-capitalize">
-						   <h3 class="panel-title">
-								<strong>Formulaire : </strong> <span contentEditable="true" id="formName">Click to add form name</span><input id="infoFormName" name="infoFormName" type="hidden">
-							</h3>
-						</div>
-						<div class="panel-body">
-						   <div class="panel panel-default col-sm-8">
-						      <div class="panel-body">
-                           <div id="panneau" >
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-sm-4">
-                        <input id="checkboxRemove" type="checkbox" name="checkboxRemove"> <span>Remove</span>
-                        <div class="draggable" id="draggableLabel" draggable="true"><span>Label</span></div>
-                        <div class="draggable" id="draggableNumber" draggable="true"><span>Number</span></div>
-                        <div class="draggable" id="draggableDate" draggable="true"><span>Date</span></div>
-                        <div class="draggable" id="draggableTime" draggable="true"><span>Heure</span></div>
-                        <div class="draggable" id="draggableTextarea" draggable="true"><span>Paragraphe</span></div>
-                        <div class="draggable" id="draggableTel" draggable="true"><span>Téléphone</span></div>
-                        <div class="draggable" id="draggableText" draggable="true"><span>Input Text</span></div>
-                        <div class="draggable" id="draggableRadio" draggable="true"><span>Bouton radio</span></div>
-                        <div class="draggable" id="draggableCheckbox" draggable="true"><span>Checkbox</span></div>
-                        
-                        <input id="info" name="info" type="hidden">
-                        <input id="infoGroups" name="infoGroups" type="hidden">
-                        <div class="panel panel-default">
-                          <div id="divDetail" class="panel-body">
-                            <div id="checkboxRequiredGroup">
-                              <input type="Checkbox" id="checkboxRequired"> Required
-                            </div>
-                            <div id="labelGroup">
-                              Label <input type="Textbox" id="inputLabelValue">
-                            </div>
-                            <div id="sizeGroup">
-                              Width <input type="Number" id="inputWidthValue" step="1"><br>
-                              Height <input type="Number" id="inputHeightValue" step="1">
-                            </div>
-                            <div id="defaultValueGroup">
-                              Default Value<input type="Textbox" id="inputdefaultValue">
-                            </div>
-                            <div id="inputValueGroup">
-                            Value <input type="Text" id="inputValue">
-                            </div>
-                            <div id="inputNumberGroup">
-                            Min <input type="number" id="inputNumberMin"><br>
-                            Max <input type="number" id="inputNumberMax">
-                            </div>
-                            <div id="valuesGroup">
-                            Values <button type="button" id="moreValues" class="btn btn-default btn-lg">
-  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-</button>
-<br><div><input type="Text" class="valueItem" id="valueItem_0" onchange="valueItemChange(0)"><button type="button" id="lessValues_0" class="btn btn-default btn-lg valueItemLess" onclick="valueItemLess(0)"><span>-</span></button></div><br>
-                            
-                            </div>
-                            
-                          </div>
-                        </div>
-		               </div>
-						</div>
-					</div>
-				</div>
-				
-				<div class="row">
-					<div class="panel panel-primary">
+				<div id="navbarGroups" class="nav navbar-nav navbar-right"> 
+				   <div class="panel panel-default" style="padding:10px"> 
+				   <div class="panel panel-primary">
 						<div class="panel-heading text-center text-capitalize">
 							<h3 class="panel-title">
 								<strong>Groupe</strong>
@@ -311,12 +282,12 @@
 						      <div class="row" id="group_0">
 							      <div class="panel panel-default col-sm-8">
 						            <div class="panel-body">
-                                 <div class="groupElements" style="height: 50px;">
+                                 <div class="groupElements">
                                  </div>
                               </div>
                            </div>
                            <button type="button" class="btn btn-default btn-lg" onclick="getGroupsAndElements()">
-                                 <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Destinataire
+                                 <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
                            </button>
                            <button type="button" class="btn btn-default btn-lg" onclick="lessGroup('group_0')">
                                  <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
@@ -328,7 +299,80 @@
                      </button>
 						</div>
 					</div>
-				</div>
+				   </div><!--panel default-->
+            </div><!--Navbar-->
+				
+				<div id="navbarElements" class="nav navbar-nav navbar-right"> 
+				   <div class="panel panel-default" style="padding:10px">     
+                  <div class="draggable" id="draggableLabel" draggable="true"><span>Label</span></div>
+                  <div class="draggable" id="draggableNumber" draggable="true"><span>Number</span></div>
+                  <div class="draggable" id="draggableDate" draggable="true"><span>Date</span></div>
+                  <div class="draggable" id="draggableTime" draggable="true"><span>Heure</span></div>
+                  <div class="draggable" id="draggableTextarea" draggable="true"><span>Paragraphe</span></div>
+                  <div class="draggable" id="draggableTel" draggable="true"><span>Téléphone</span></div>
+                  <div class="draggable" id="draggableText" draggable="true"><span>Input Text</span></div>
+                  <div class="draggable" id="draggableRadio" draggable="true"><span>Bouton radio</span></div>
+                  <div class="draggable" id="draggableCheckbox" draggable="true"><span>Checkbox</span></div>
+                  <div class="draggable" id="draggableSquare" draggable="true"><span>Carre</span></div>
+                  <div class="draggable" id="draggableCircle" draggable="true"><span>Cercle</span></div>
+                  <div class="draggable" id="draggableimg" draggable="true"><span>Image</span></div>
+                  <input id="info" name="info" type="hidden">
+                  <input id="infoGroups" name="infoGroups" type="hidden">
+                        
+                  <div class="panel panel-default">
+                     <div id="divDetail" class="panel-body">
+                        <div id="checkboxRequiredGroup">
+                           <input type="Checkbox" id="checkboxRequired"> Required
+                        </div>
+                        <div id="labelGroup">
+                           Label <input type="Textbox" id="inputLabelValue">
+                        </div>
+                        <div id="sizeGroup">
+                           Width <input type="Number" id="inputWidthValue" step="1"><br>
+                           Height <input type="Number" id="inputHeightValue" step="1">
+                        </div>
+                        <div id="defaultValueGroup">
+                           Default Value<input type="Textbox" id="inputdefaultValue">
+                        </div>
+                        <div id="inputValueGroup">
+                           Value <input type="Text" id="inputValue">
+                        </div>
+                        <div id="inputNumberGroup">
+                           Min <input type="number" id="inputNumberMin"><br>
+                           Max <input type="number" id="inputNumberMax">
+                        </div>
+                        <div id="valuesGroup">
+                           Values <button type="button" id="moreValues" class="btn btn-default btn-lg">
+<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+</button>
+<br><div><input type="Text" class="valueItem" id="valueItem_0" onchange="valueItemChange(0)"><button type="button" id="lessValues_0" class="btn btn-default btn-lg valueItemLess" onclick="valueItemLess(0)"><span>-</span></button></div><br>
+                        </div><!--valuesGroup-->
+                     </div><!--divDetail-->
+                  </div><!--panel default-->
+               </div><!--panel default-->
+            </div><!--Navbar-->
+				
+         <div class="row">
+			   <div>
+					<!-- class="col-sm-10" -->
+					<div class="panel panel-primary">
+					   <div class="panel-heading text-center text-capitalize">
+						   <h3 class="panel-title">
+								<strong>Formulaire : </strong> <span contentEditable="true" id="formName">Click to add form name</span><input id="infoFormName" name="infoFormName" type="hidden">
+							</h3>
+						</div>
+						<div class="panel-body">
+						   <div class="panel panel-default">
+						      <div id="contentOfPanneau" class="panel-body">
+                           <div id="panneau" >
+                           </div>
+                        </div>
+                     </div>
+		               </div><!--panel-body-->
+						</div><!--panel-primary-->
+					</div>
+				</div><!--row-->
+				
 				
 				
 				<div class="row" onload="newFormModel();">
@@ -354,8 +398,8 @@
 							>
 					</div>
 				</div>
-			</form>
-	        <?php include 'include/footer.php'; ?>
+			</form>			
+	        <div id="footer"><?php include 'include/footer.php'; ?></div>
 	    </div>
 	</body>
 </html>

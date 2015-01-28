@@ -59,7 +59,6 @@ Element = (function(){
 		}
       this.element.css('cursor','grab');
 		this.attrs();
-		//this.element.draggable({ cancel: null });
 	}
    
    Element.prototype.getValues = function(obj, type) {

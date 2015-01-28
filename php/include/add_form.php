@@ -56,6 +56,7 @@ if (! empty ( $_POST )) {
 		   if(isset($_POST['info'])) { 
 			  $obj=json_decode($_POST['info'], true, 4);
 			  $arrayElements = [];
+			  var_dump($obj);
 			  foreach ($obj as $key => $array){
 				 $arrayElements[] = treatmentElement($key, $array);
 			  }

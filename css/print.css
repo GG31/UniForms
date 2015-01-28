@@ -1,0 +1,23 @@
+@CHARSET "ISO-8859-1";
+
+#navbarElements { 
+	display: none; 
+}
+
+input[type="submit"] { 
+	display: none; 
+} 
+
+#footer, #body, #navbarGroups { 
+	display: none; 
+}  
+
+#panneau {
+	margin-left: 0px;;
+}
+
+[id^="child"] {
+}
+
+#panneau {
+}

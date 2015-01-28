@@ -66,12 +66,13 @@
 			</script>
 			<script>
 			$(function () {
-	        	$('[data-toggle="tooltip"]').tooltip()
+	        	$('[data-toggle="tooltip"]').tooltip();
 	        });
 		//Récupère les éléments du formulaire si modification
 
          elems = [];
          var formname = <?php echo '"'.$form->getName().'"' ?>;
+         
          <?php
             $elems = $form->getFormElements();
             foreach ($elems as $elem) {

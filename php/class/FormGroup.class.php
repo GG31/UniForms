@@ -91,10 +91,10 @@ class FormGroup{
 	 * @param integer $state. (default: -1) state of answers
 	 * @return array of User
 	 */
-	public function getFormGroupRecipients($user_ids = [], $state){
+	public function getFormGroupRecipients($user_ids = [], $state=-1){
 		$res = [];
 		foreach($this->listRecipient as $r)
-			if(($r["Status"] == $state or !isset($state)) and (!empty($user_ids) and in_array($r["User"]->getId(), $user_ids) or empty($user_ids)))
+			if(($r["Status"] == $state or $state==-1) and ((!empty($user_ids) and in_array($r["User"]->getId(), $user_ids)) or empty($user_ids)))
 				$res[] = $r;
 		return $res;
 	}
@@ -108,7 +108,7 @@ class FormGroup{
 	 * @param array of Element
 	 */
 	public function setFormGroupElements($elementsList) {
-		$this->formElements = $elementsList;
+		$this->groupElements = $elementsList;
 	}
 	
 	/**

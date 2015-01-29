@@ -43,60 +43,7 @@
 		<script src="../lib/bootstrap-3.3.1/js/min.js"></script>
 		<script src="../js/elemsCreateForm.js"></script>
 		<!-- <script type="text/javascript" src="../js/jquery.form.bassm.js"></script>  -->
-	<script>
-	  function readFilesAndDisplayPreview(files) {
-	    // Loop through the FileList and render image files as thumbnails.
-	    for (var i = 0, f; f = files[i]; i++) {
-	      // Only process image files.
-	      if (!f.type.match('image.*')) {
-	        continue;
-	      }
-	      var reader = new FileReader();
-	      //capture the file information.
-	      reader.onload = function(e) {
-	          // Render thumbnail.
-	          var span = document.createElement('span');
-	          span.innerHTML = "<img class='thumb' src='" + e.target.result + "'/>";
-	          document.getElementById('list').insertBefore(span, null);
-	        };
-	      
 	
-	      // Read in the image file as a data URL.
-	      reader.readAsDataURL(f);
-	    }
-	  }
-	  function handleFileSelect(evt) {
-	    var files = evt.target.files; // FileList object
-	    readFilesAndDisplayPreview(files);
-	  }
-	  document.getElementById('files').addEventListener('change', handleFileSelect, false);
-	</script>
-	<script type="text/javascript" >
-	$(document).ready(function() { 
-		
-      $('#imgUpload').on('change', function(){ 
-		    
-			$("#uploadForm").ajaxForm({
-				target: '#preview', 
-				//clearForm: true,
-				resetForm: true,
-			    beforeSubmit:function(){ 
-					$("#uploadStatus").show();
-					$("#imgUploadBtn").hide();
-				}, 
-				success:function(){ 
-					$("#uploadStatus").hide();
-					$("#imgUploadBtn").show();
-				}, 
-				error:function(){ 
-					$("#uploadStatus").hide();
-					$("#imgUploadBtn").show();
-				} }).submit();
-	
-		});
-		
-	    }); 
-	</script>
 		<script>
 			$(document).ready(function(){
 				$('#anon').on('change', function() {
@@ -119,12 +66,13 @@
 			</script>
 			<script>
 			$(function () {
-	        	$('[data-toggle="tooltip"]').tooltip()
+	        	$('[data-toggle="tooltip"]').tooltip();
 	        });
 		//Récupère les éléments du formulaire si modification
 
          elems = [];
          var formname = <?php echo '"'.$form->getName().'"' ?>;
+         
          <?php
             $elems = $form->getFormElements();
             foreach ($elems as $elem) {
@@ -315,7 +263,7 @@
                   <div class="draggable" id="draggableCheckbox" draggable="true"><span>Checkbox</span></div>
                   <div class="draggable" id="draggableSquare" draggable="true"><span>Carre</span></div>
                   <div class="draggable" id="draggableCircle" draggable="true"><span>Cercle</span></div>
-                  <div class="draggable" id="draggableimg" draggable="true"><span>Image</span></div>
+                  <div class="draggable" id="draggableImg" draggable="true"><span>Image</span></div>
                   <input id="info" name="info" type="hidden">
                   <input id="infoGroups" name="infoGroups" type="hidden">
                         
@@ -331,6 +279,7 @@
                            Width <input type="Number" id="inputWidthValue" step="1"><br>
                            Height <input type="Number" id="inputHeightValue" step="1">
                         </div>
+                        <div id="fileGroup"><input type="file" id="files"/><br/></div>
                         <div id="defaultValueGroup">
                            Default Value<input type="Textbox" id="inputdefaultValue">
                         </div>
@@ -405,4 +354,6 @@
 </html>
 <script src="../js/drag.js"></script>
 <script src="../js/group.js"></script>
+<script src="../js/includeFile.js"></script>
+<!--<script src="../js/navbar.js"></script> Retract nav-->
 <script>init()</script>

@@ -177,7 +177,7 @@ class Form {
 	 * @param integer $state. (default: -1) state of answers
 	 * @return array of User
 	 */
-	public function getFormRecipients($user_ids = [], $state = NULL){
+	public function getFormRecipients($user_ids = [], $state = -1){
 		$res = [];
 		foreach ($this->formGroups as $group)
 			$res = array_merge($res, $group->getFormGroupRecipients($user_ids, $state)); // Union of arrays		

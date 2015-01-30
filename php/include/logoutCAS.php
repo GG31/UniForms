@@ -6,5 +6,5 @@ session_start ();
 	phpCAS::client ( CAS_VERSION_2_0, 'login.unice.fr', 443, '' );
 session_destroy ();
 phpCAS::logout();
-header ( "Location: ../../CAS.php" );
+header ( "Location: ../../index.php" );
 ?>

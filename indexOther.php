@@ -20,21 +20,30 @@
 			<!-- No need for .row with .form-horizontal-->
 			<div class="panel-heading text-center">
 				<div class="panel-title">
-					<strong>Choix du mode d'authentification</strong>
+					<strong>Connection</strong>
 				</div>
 			</div>
 			<div class="panel-body">
-					<div class="form-group">
-						 <center><B><a href="IndexCAS.php">Utilisateurs CAS</a></B></center>
+				<div class="form-group">
+					<label for="login" class="col-sm-4 control-label">Identifiant</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="login" name="login"
+							placeholder="Identifiant">
 					</div>
-				
-					<div class="form-group">
-						<center><B><a href="IndexOther.php">Autres utilisateurs</a></B></center>
+				</div>
+				<div class="form-group">
+					<label for="password" class="col-sm-4 control-label">Mot de Passe</label>
+					<div class="col-sm-4">
+						<input type="password" class="form-control" id="password"
+							name="password" placeholder="Mot de Passe">
 					</div>
 				</div>
 			</div>
 			<div class="panel-footer">
 				<div class="form-group">
+					<div class="col-sm-offset-4 col-sm-10">
+						<button type="submit" class="btn btn-default">Connection</button>
+					</div>
 				</div>
 			</div>
 		</form>

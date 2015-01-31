@@ -40,7 +40,8 @@
 							<a href="#">Something else here</a>
 						</li>
 						<li class="divider"></li>-->
-						<li><a href="include/logout.php">Logout</a></li>
+						<!-- Logout <li><a href="include/logout.php">Logout</a></li>-->
+						<!-- Logout CAS--><li><a href="include/logoutCAS.php">Logout</a></li>
 					</ul></li>
 			</ul>
 		</div>

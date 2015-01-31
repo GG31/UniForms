@@ -11,6 +11,7 @@ input[type="submit"] {
 #footer, #body, #navbarGroups { 
 	display: none; 
 }  
+
 #panelPanneau {
    
 }
@@ -30,3 +31,12 @@ input[type="submit"] {
   margin-top: 1cm    /* Top margin on first page 10cm */
 }
 
+.ui-droppable {
+}
+
+.groupElements {
+ 	display: inline-block;
+ 	float:left;
+    margin:0 auto;
+    width:100px;
+}

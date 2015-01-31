@@ -66,13 +66,12 @@
 			</script>
 			<script>
 			$(function () {
-	        	$('[data-toggle="tooltip"]').tooltip();
+	        	$('[data-toggle="tooltip"]').tooltip()
 	        });
 		//Récupère les éléments du formulaire si modification
 
          elems = [];
          var formname = <?php echo '"'.$form->getName().'"' ?>;
-         
          <?php
             $elems = $form->getFormElements();
             foreach ($elems as $elem) {
@@ -304,7 +303,7 @@
          <div class="row">
 			   <div>
 					<!-- class="col-sm-10" -->
-					<div class="panel panel-primary">
+					<div id= "panelPanneau" class="panel panel-primary">
 					   <div class="panel-heading text-center text-capitalize">
 						   <h3 class="panel-title">
 								<strong>Formulaire : </strong> <span contentEditable="true" id="formName">Click to add form name</span><input id="infoFormName" name="infoFormName" type="hidden">

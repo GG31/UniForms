@@ -19,10 +19,14 @@
 #poub {
 }
 
+#panelPanneau {
+   width : 794px;
+}
+
 #panneau {
   position: relative;  
   width :  100%;
-  height: 1122px;   
+  height: 1080px;   
   background-color: transparent;
   background-image: 
         repeating-linear-gradient(to right, transparent 0px, transparent 39px, #ADAD9D 40px, #ADAD9D 20px),
@@ -33,7 +37,7 @@
 #contentOfPanneau{
   background-color: transparent;
   background-image: linear-gradient(0deg, black 1%, rgba(255,255,255,.5) 1%);
-  background-size: 780px 1150px;
+  background-size: 780px 1142px;
 }
 
 #navbarElements {
@@ -42,6 +46,7 @@
    top:25%;
    height: 50%;
    width:300px; /*20px*/
+   z-index: 3;
 }
 
 #navbarGroups {
@@ -51,6 +56,7 @@
    height: 400px;
    width:40px;
    overflow: auto;
+   z-index: 3;
 }
 
 .groupElements {

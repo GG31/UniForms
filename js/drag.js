@@ -263,8 +263,8 @@ findMoreBottomElement = function() {
          max = val.posY + val.height;
       }
    });
-   var result = parseInt(Math.floor(max/1122), 10) + 1; // parseInt a besoin du 'radix', la base (10)
-   console.log(max/1122 + " " +result);
+   var result = parseInt(Math.floor(max/750), 10) + 1; // parseInt a besoin du 'radix', la base (10)
+   console.log(max/750 + " " +result);
    return result;
 };
 

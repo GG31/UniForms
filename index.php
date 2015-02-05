@@ -25,11 +25,11 @@
 			</div>
 			<div class="panel-body">
 					<div class="form-group">
-						 <center><B><a href="IndexCAS.php">Utilisateurs CAS</a></B></center>
+						 <center><B><a href="IndexCas.php">Utilisateurs CAS</a></B></center>
 					</div>
 				
 					<div class="form-group">
-						<center><B><a href="IndexOther.php">Autres utilisateurs</a></B></center>
+						<center><B><a href="indexOther.php">Autres utilisateurs</a></B></center>
 					</div>
 				</div>
 			</div>

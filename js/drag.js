@@ -30,27 +30,45 @@ function init() {
       currentElement = elems[i].id;
       var newNode = $('<div class="draggable" draggable="true"></div>');
       newNode.attr('id', ids);
-      newNode.css('position', "absolute");
-      newNode.css('top', elems[i].posY + "px");
-      newNode.css('left', elems[i].posX + "px");
-      newNode.css('width', "auto");
-      newNode.css('height', "auto");
-      newNode.css('padding', "5px");
+      newNode.css({
+         position : "absolute",
+         top : elems[i].posY + "px",
+         left : elems[i].posX + "px",
+         width: 'auto',
+         height:'auto'
+      });
+      newNode.css({
+         padding : "5px"
+      });
       newNode.attr("name", "element_"+ids);
       newNode.attr("draggable", "true");
+      
+      var elChild = elems[i].element;
+      elChild.css({
+         width : '100%',
+         height : '100%'
+      })
       newNode.append(constructSpan(elems[i].label));
-      newNode.append(elems[i].element.get(0));
+      console.log(elChild);
+      newNode.append(elChild);
       newNode.draggable({ cancel: null });
       newNode.draggable({
           cursor: 'grab',
           containment: "#panneau"
       });
       // On l'ajoute
+      newNode.children('input').css({
+         cursor:'grab',
+         width: '100%',
+         height:'100%'
+      })
       $("#panneau").append(newNode);
+      resize(newNode);
       $("#"+elems[i].id).width(elems[i].width);
       $("#"+elems[i].id).height(elems[i].height);
       ids = ids + 1;
    }
+   onhover();
 }
 
 $(".draggable").css('cursor','grab');
@@ -131,7 +149,6 @@ $('#panneau').droppable(
             elChild = $(elementsCode[$(ui.draggable).attr("id")]);
             elChild.attr("id", "child_" + ids);
             if(elChild.hasClass("figure")) {
-               console.log("class figure");
                el.css({
                   cursor:'grab',
                   width: '100px',
@@ -259,12 +276,15 @@ checkPosition = function(posX, el) {
 findMoreBottomElement = function() {
    var max = 0;
    $.each(elementList, function(key, val) {
-      if(val.posY + val.height > max) {
-         max = val.posY + val.height;
+      console.log("pos " + val.posY + " " + val.height);
+      var potentialMax = parseInt(val.posY) + parseInt(val.height);
+      if(potentialMax > max) {
+         max = potentialMax;
       }
    });
-   var result = parseInt(Math.floor(max/750), 10) + 1; // parseInt a besoin du 'radix', la base (10)
-   console.log(max/750 + " " +result);
+   console.log("findMoreBottomElement " + max);
+   var result = parseInt(Math.floor(max/1100), 10) + 1; // parseInt a besoin du 'radix', la base (10)
+   console.log(max/1100 + " " +result);
    return result;
 };
 

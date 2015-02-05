@@ -80,6 +80,10 @@ Element = (function(){
    
 	Element.prototype.attrs = function() {
       this.element.attr('id', this.id);
+      this.element.css({
+         width : '100%',
+         height : '100%'
+      })
                   /*.css('position', 'absolute');
                   .css('left', this.posX + 'px');
                   .css('top', this.posY + 'px');*/

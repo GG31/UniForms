@@ -3,7 +3,7 @@ var elementList = {};
 var ids = 0;
 var currentElement;
 var elt;
-var elementsCodeSQL = ["", "draggableText", "draggableNumber", "draggableTime", "draggableDate", "draggableTel", "draggableCheckbox", "draggableRadio", "draggableTextarea"];
+var elementsCodeSQL = ["", "draggableText", "draggableNumber", "draggableTime", "draggableDate", "draggableTel", "draggableCheckbox", "draggableRadio", "draggableTextarea", "draggableLabel", "draggableSquare", "draggableCircle"];
 var elementsCode = {
    draggableLabel:'<span>Label</span>', 
    draggableNumber:'<input type="number">', 
@@ -78,7 +78,6 @@ groupElementsDroppable = function() {
 $('#panneau').droppable(
    {      
       drop: function (e, ui) {
-         console.log("on drop");
          posX = e.pageX - $('#panneau').offset().left;
          posY = e.pageY - $('#panneau').offset().top;
          if ($(ui.draggable).attr("id").split('_')[0] == 'child' || $(ui.draggable).attr("id").split('_')[0] == 'elem' || $(ui.draggable).attr("id") < ids) {
@@ -131,7 +130,7 @@ addElement = function(elementCodeId, posX, posY, idEl, idChild) {
       width: '100%',
       height:'100%'
    });
-   createElement(elChild.attr("id"));
+   createElement(idChild);
    el.append(constructSpan(""));
    el.append(elChild);
    el.appendTo($('#panneau'));
@@ -146,6 +145,8 @@ addElement = function(elementCodeId, posX, posY, idEl, idChild) {
    ondrag();
    if(!elChild.is("fieldset")) {
       resize(el);
+   } else {
+      registerWidthHeight(idChild, elChild.width(), elChild.height());
    }
    /*if (posX + elementList[currentElement].width > $('#panneau').width()) {
       posX = $('#panneau').width() - elementList[currentElement].width - 200;
@@ -155,12 +156,53 @@ addElement = function(elementCodeId, posX, posY, idEl, idChild) {
    ids = ids + 1;
 }
 
-addProp = function(id, options) {
+addProp = function(id, type, minvalue,maxvalue,defaultValue,required, width, height, placeholder, direction, big, options, label) {
+   /*console.log("plop "+JSON.stringify(options));
    for(key in options) {
-      if($.inArray(key, ["x","y","id","type"]) == -1) {
+      if($.inArray(key, ["minvalue","maxvalue","default","required", "width", "height", "placeholder", "direction", "big", "options", "label"]) != -1) {
          elementList[id][key] = options[key];
          console.log(key + " " + options[key]);
       }
+   }*/
+   
+   elementList[id].minvalue = minvalue;
+   elementList[id].maxvalue = maxvalue;
+   elementList[id].value = defaultValue;
+   elementList[id].required = required;
+   elementList[id].width = width;
+   elementList[id].height = height;
+   elementList[id].placeholder = placeholder;
+   elementList[id].direction = direction;
+   elementList[id].big = big;
+   elementList[id].values = {};
+   var i = 0;
+   if(type == 6) {
+      type = 'checkbox';
+      $('#'+id+' *').remove();
+   } else if(type == 7) {
+      type = 'radio';
+      $('#'+id+' *').remove();
+   }
+   $.each(options, function(key, val) {
+     elementList[id].values["v"+i] = val.value;
+     var newNode = $('<input/>').attr('type', type)
+                                 .attr('name', id);
+     var span = $('<span class="'+i+'">' + val.value + '</span><br>');
+     var div = $('<div id="itemvalueItem_'+id+'_'+i+'"></div>');
+     div.append(newNode);
+     div.append(span);
+     $('#'+id).append(div);
+     i = i + 1;
+   });
+   elementList[id].label = label; 
+   if (type == 9) {
+      $('#'+id).text(elementList[id].value);
+   } 
+   if(type != 'checkbox' && type != 'radio') {
+      $('#'+id).parent().css({
+         width : width,
+         height : height
+      });
    }
 }
 

@@ -41,7 +41,6 @@
 		<script src="../lib/jquery-2.1.1/jquery-ui.js"></script>
 
 		<script src="../lib/bootstrap-3.3.1/js/min.js"></script>
-		<script src="../js/elemsCreateForm.js"></script>
 		<!-- <script type="text/javascript" src="../js/jquery.form.bassm.js"></script>  -->
 	
 		<script>
@@ -345,10 +344,11 @@
             foreach ($elems as $elem) {
                $json = json_encode($elem->getAll(), true);
          ?>
-            var elems = <?php echo $json ?>;
-            var elemId = "elem_" + elems.id;
-            addElement(elems.type , elems.x, elems.y, ids, elemId);
-            addProp(elemId, elems);
+            var element = <?php echo $json ?>;
+            console.log("elem " + JSON.stringify(element));
+            var elemId = "elem_" + element.id;
+            addElement(element.type , element.x, element.y, ids, elemId);
+            addProp(elemId, element.type, element.minvalue, element.maxvalue, element.default, element.required, element.width, element.height, element.placeholder, element.direction, element.big, element.options, element.label);
          <?php
             }
          ?>

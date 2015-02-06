@@ -448,4 +448,7 @@ define("typeInputPhone", 5);
 define("typeCheckbox", 6);
 define("typeRadioButton", 7);
 define("typeTextArea", 8);
+define("typeSpan", 9);
+define("typeSquare", 10);
+define("typeCircle", 11);
 ?>

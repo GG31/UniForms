@@ -82,11 +82,14 @@ function treatmentElement($key, $array) {
    $keyPart = explode('_', $key);
    $e = "";
    if(strcmp($keyPart[0],"elem") == 0){
+      echo "if";
       $e = new Element((int)$keyPart[1]);
    } else {
+      echo "else";
       $e = new Element();
    }
-
+   echo $array['type']."<br>";
+   echo constant('type'.$array['type']);
    $e->setTypeElement(constant('type'.$array['type']));
    $e->setX($array['posX']);
    $e->setY($array['posY']);
@@ -98,8 +101,8 @@ function treatmentElement($key, $array) {
    if(array_key_exists("label", $array)) {
       $e->setLabel($array['label']);
    }
-   if(array_key_exists("defaultValue", $array)) {
-      $e->setDefaultValue($array['defaultValue']);
+   if(array_key_exists("value", $array)) {
+      $e->setDefaultValue($array['value']);
    }
    if(array_key_exists("minvalue", $array)) {
       $e->setMinvalue($array['minvalue']);

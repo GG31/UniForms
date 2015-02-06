@@ -150,6 +150,25 @@ class FormGroup{
 		
 		// Insert elements of the formgroup in formelement
 		foreach ($this->groupElements as $index => $element){
+		   echo "fuck you ".$element->getTypeElement();
+		   $l = "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y, default_value, required, width, height, placeholder, direction, isbiglist, max_value, min_value) 
+						VALUES ("
+									. $this->getId() . ","
+									. $element->getTypeElement() . ","
+									. "'" . $element->getLabel() . "',"
+									. $element->getX() . ","
+									. $element->getY() . ","
+									. "'" . $element->getDefaultValue() . "',"
+									. ($element->getRequired() ? 1 : 0) . ", "
+									. $element->getWidth() . ","
+									. $element->getHeight() . ","
+									. "'" . $element->getPlaceholder() . "',"
+									. $element->getDirection() . ","
+									. ($element->getIsbiglist() ? 1 : 0) . ","
+									. $element->getMaxvalue() . ","
+									. $element->getMinvalue() .
+						")";
+						echo $l;
 			mysql_query("INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y, default_value, required, width, height, placeholder, direction, isbiglist, max_value, min_value) 
 						VALUES ("
 									. $this->getId() . ","

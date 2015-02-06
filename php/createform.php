@@ -61,34 +61,11 @@
 						$("#dest input").prop("disabled", false);
 					}
 				});	
-			});	
+			});
+			console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');	
 
 			</script>
-			<script>
-			$(function () {
-	        	$('[data-toggle="tooltip"]').tooltip()
-	        });
-		//Récupère les éléments du formulaire si modification
-
-         elems = [];
-         var formname = <?php echo '"'.$form->getName().'"' ?>;
-         <?php
-            $elems = $form->getFormElements();
-            foreach ($elems as $elem) {
-               $json = json_encode($elem->getAll());
-               
-         ?>
-                  elems.push(
-                     new Element(<?php echo $json ?>)
-                        
-                  );
-         <?php
-            }
-         ?>
-      //});
-      
-
-   </script>
+			
    <script type="text/javascript">
    $(document).ready(function() {
 	   $(window).keydown(function(event){
@@ -263,8 +240,7 @@
                   <div class="draggable" id="draggableSquare" draggable="true"><span>Carre</span></div>
                   <div class="draggable" id="draggableCircle" draggable="true"><span>Cercle</span></div>
                   <div class="draggable" id="draggableImg" draggable="true"><span>Image</span></div>
-                  <input id="info" name="info" type="hidden">
-                  <input id="infoGroups" name="infoGroups" type="hidden">
+                  
                         
                   <div class="panel panel-default">
                      <div id="divDetail" class="panel-body">
@@ -325,6 +301,8 @@
 				
 				<div class="row" onload="newFormModel();">
 					<div class="col-sm-offset-3 col-sm-6">
+					   <input id="info" name="info" type="hidden">
+                  <input id="infoGroups" name="infoGroups" type="hidden">
 						<input type="hidden" name="form_id" value=<?php echo $form_id ?>>
 						<input
 							type="submit"
@@ -354,5 +332,26 @@
 <script src="../js/drag.js"></script>
 <script src="../js/group.js"></script>
 <script src="../js/includeFile.js"></script>
+<script>
+			$(function () {
+	        	$('[data-toggle="tooltip"]').tooltip()
+	        });
+		//Récupère les éléments du formulaire si modification
+         var formname = <?php echo '"'.$form->getName().'"' ?>;
+         init();
+         <?php
+            $elems = $form->getFormElements();
+            
+            foreach ($elems as $elem) {
+               $json = json_encode($elem->getAll(), true);
+         ?>
+            var elems = <?php echo $json ?>;
+            var elemId = "elem_" + elems.id;
+            addElement(elems.type , elems.x, elems.y, ids, elemId);
+            addProp(elemId, elems);
+         <?php
+            }
+         ?>
+      //});
+   </script>
 <!--<script src="../js/navbar.js"></script> Retract nav-->
-<script>init()</script>

@@ -3,6 +3,7 @@ var elementList = {};
 var ids = 0;
 var currentElement;
 var elt;
+var elementsCodeSQL = ["", "draggableText", "draggableNumber", "draggableTime", "draggableDate", "draggableTel", "draggableCheckbox", "draggableRadio", "draggableTextarea"];
 var elementsCode = {
    draggableLabel:'<span>Label</span>', 
    draggableNumber:'<input type="number">', 
@@ -19,58 +20,13 @@ var elementsCode = {
 }; 
 
 function init() {
+console.log('###############################################################################');
    hideAll();
    $("#formName").text(formname);
    $("#infoFormName").val(formname);
-   drag();
    groupElementsDroppable();
-   //alert("longueur "+elems.length);
-   for(i = 0; i<elems.length; i++) {
-      elementList[elems[i].id] = elems[i];
-      currentElement = elems[i].id;
-      var newNode = $('<div class="draggable" draggable="true"></div>');
-      newNode.attr('id', ids);
-      newNode.css({
-         position : "absolute",
-         top : elems[i].posY + "px",
-         left : elems[i].posX + "px",
-         width: 'auto',
-         height:'auto'
-      });
-      newNode.css({
-         padding : "5px"
-      });
-      newNode.attr("name", "element_"+ids);
-      newNode.attr("draggable", "true");
-      
-      var elChild = elems[i].element;
-      elChild.css({
-         width : '100%',
-         height : '100%'
-      })
-      newNode.append(constructSpan(elems[i].label));
-      console.log(elChild);
-      newNode.append(elChild);
-      newNode.draggable({ cancel: null });
-      newNode.draggable({
-          cursor: 'grab',
-          containment: "#panneau"
-      });
-      // On l'ajoute
-      newNode.children('input').css({
-         cursor:'grab',
-         width: '100%',
-         height:'100%'
-      })
-      $("#panneau").append(newNode);
-      resize(newNode);
-      $("#"+elems[i].id).width(elems[i].width);
-      $("#"+elems[i].id).height(elems[i].height);
-      ids = ids + 1;
-   }
-   onhover();
+   drag();
 }
-
 $(".draggable").css('cursor','grab');
 
 drag = function(){
@@ -122,76 +78,96 @@ groupElementsDroppable = function() {
 $('#panneau').droppable(
    {      
       drop: function (e, ui) {
+         console.log("on drop");
          posX = e.pageX - $('#panneau').offset().left;
          posY = e.pageY - $('#panneau').offset().top;
          if ($(ui.draggable).attr("id").split('_')[0] == 'child' || $(ui.draggable).attr("id").split('_')[0] == 'elem' || $(ui.draggable).attr("id") < ids) {
             currentElement = $(ui.draggable).children("span").next().attr("id");
+            registerPos(currentElement, posX, posY);
             //posX = checkPosition(e.pageX, $(ui.draggable));
          } else {
             posX = posX < 0 ? 0 : posX;
             posY = posY < 0 ? 0 : posY;
-            el = $('<div class="draggable" draggable="true"></div>');
-            el.attr({
-               id: ids,
-               name: "element_"+ids,
-               draggable:"true"
-            });
-            el.css({
-               position: "absolute",
-               left: posX + "px",
-               top: posY + "px",
-               width: 'auto',
-               height: 'auto',
-               padding: '5px',
-               'z-index': 2
-            });
-            
-            elChild = $(elementsCode[$(ui.draggable).attr("id")]);
-            elChild.attr("id", "child_" + ids);
-            if(elChild.hasClass("figure")) {
-               el.css({
-                  cursor:'grab',
-                  width: '100px',
-                  height:'100px',
-                  'z-index': 1
-               });
-            }
-            elChild.css({
-               cursor:'grab',
-               width: '100%',
-               height:'100%'
-            });
-            
-            createElement(elChild.attr("id"));
-            
-            el.append(constructSpan(""));
-            el.append(elChild);
-            el.appendTo($(this));
-            el.draggable({ cancel: null });
-            el.draggable({
-                grid: [20, 20],
-                revert: 'invalid',
-                cursor: 'grab'
-            });
-            
-            onhover();
-            ondrag();
-            if(!elChild.is("fieldset")) {
-               resize(el);
-            }
-            if (posX + elementList[currentElement].width > $('#panneau').width()) {
-               posX = $('#panneau').width() - elementList[currentElement].width - 200;
-               el.css({left: posX + "px"});
-            }
-            ids = ids + 1;
+            addElement($(ui.draggable).attr("id"), posX, posY, ids, "child_"+ids);
          }
-         elementList[currentElement].posX = posX;
-         elementList[currentElement].posY = posY;
          growZone();
          updatePanelDetail();
       }
    }
 );
+
+addElement = function(elementCodeId, posX, posY, idEl, idChild) {
+   if (elementsCode[elementCodeId] == undefined) {
+      elementCodeId = elementsCodeSQL[elementCodeId];
+   }
+   el = $('<div class="draggable" draggable="true"></div>');
+   el.attr({
+      id: idEl,
+      name: "element_" + idEl,
+      draggable:"true"
+   });
+   el.css({
+      position: "absolute",
+      left: posX + "px",
+      top: posY + "px",
+      width: 'auto',
+      height: 'auto',
+      padding: '5px',
+      'z-index': 2
+   });
+   
+   elChild = $(elementsCode[elementCodeId]);
+   elChild.attr("id", idChild);
+   if(elChild.hasClass("figure")) {
+      el.css({
+         cursor:'grab',
+         width: '100px',
+         height:'100px',
+         'z-index': 1
+      });
+   }
+   elChild.css({
+      cursor:'grab',
+      width: '100%',
+      height:'100%'
+   });
+   createElement(elChild.attr("id"));
+   el.append(constructSpan(""));
+   el.append(elChild);
+   el.appendTo($('#panneau'));
+   el.draggable({ cancel: null });
+   el.draggable({
+       grid: [20, 20],
+       revert: 'invalid',
+       cursor: 'grab'
+   });
+   
+   onhover();
+   ondrag();
+   if(!elChild.is("fieldset")) {
+      resize(el);
+   }
+   /*if (posX + elementList[currentElement].width > $('#panneau').width()) {
+      posX = $('#panneau').width() - elementList[currentElement].width - 200;
+      el.css({left: posX + "px"});
+   }*/
+   registerPos(idChild, posX, posY);
+   ids = ids + 1;
+}
+
+addProp = function(id, options) {
+   for(key in options) {
+      if($.inArray(key, ["x","y","id","type"]) == -1) {
+         elementList[id][key] = options[key];
+         console.log(key + " " + options[key]);
+      }
+   }
+}
+
+registerPos = function (id, posX, posY) {
+   elementList[id].posX = posX;
+   elementList[id].posY = posY;
+}
 
 createElement = function(id) {
    var newElement = new Object();
@@ -276,15 +252,15 @@ checkPosition = function(posX, el) {
 findMoreBottomElement = function() {
    var max = 0;
    $.each(elementList, function(key, val) {
-      console.log("pos " + val.posY + " " + val.height);
+      //console.log("pos " + val.posY + " " + val.height);
       var potentialMax = parseInt(val.posY) + parseInt(val.height);
       if(potentialMax > max) {
          max = potentialMax;
       }
    });
-   console.log("findMoreBottomElement " + max);
+   //console.log("findMoreBottomElement " + max);
    var result = parseInt(Math.floor(max/1100), 10) + 1; // parseInt a besoin du 'radix', la base (10)
-   console.log(max/1100 + " " +result);
+   //console.log(max/1100 + " " +result);
    return result;
 };
 
@@ -402,10 +378,10 @@ valueItemChange = function(nb) {
 };
 
 $('#inputNumberMin').change(function() {
-   elementList[currentElement].min = $('#inputNumberMin').val();
+   elementList[currentElement].minvalue = $('#inputNumberMin').val();
 });
 $('#inputNumberMax').change(function() {
-   elementList[currentElement].max = $('#inputNumberMax').val();
+   elementList[currentElement].maxvalue = $('#inputNumberMax').val();
 });
 $('#inputdefaultValue').change(function() {
    elementList[currentElement].defaultValue = $('#inputdefaultValue').val();
@@ -514,8 +490,8 @@ hasRequired = function () {
 
 hasMinMax = function () {
    $('#inputNumberGroup').show();
-   $('#inputNumberMin').val(elementList[currentElement].min);
-   $('#inputNumberMax').val(elementList[currentElement].max);
+   $('#inputNumberMin').val(elementList[currentElement].minvalue);
+   $('#inputNumberMax').val(elementList[currentElement].maxvalue);
 };
 
 hasValueText = function () {

@@ -101,11 +101,11 @@ function treatmentElement($key, $array) {
    if(array_key_exists("defaultValue", $array)) {
       $e->setDefaultValue($array['defaultValue']);
    }
-   if(array_key_exists("min", $array)) {
-      $e->setMinvalue($array['min']);
+   if(array_key_exists("minvalue", $array)) {
+      $e->setMinvalue($array['minvalue']);
    }
-   if(array_key_exists("max", $array)) {
-      $e->setMaxvalue($array['max']);
+   if(array_key_exists("maxvalue", $array)) {
+      $e->setMaxvalue($array['maxvalue']);
    }
    if(array_key_exists("values", $array)) {
       $options = array();

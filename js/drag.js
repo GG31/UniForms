@@ -19,7 +19,7 @@ var elementsCode = {
    draggableImg:'<img src="../img/thumbnail-default.jpg"/>'
 }; 
 
-function init() {
+function init(formname) {
 console.log('###############################################################################');
    hideAll();
    $("#formName").text(formname);

@@ -338,7 +338,7 @@
 	        });
 		//Récupère les éléments du formulaire si modification
          var formname = <?php echo '"'.$form->getName().'"' ?>;
-         init();
+         init(formname);
          <?php
             $elems = $form->getFormElements();
             

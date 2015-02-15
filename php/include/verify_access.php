@@ -111,7 +111,7 @@
 			if($max == 0) // b2 should be TRUE -> 0 - (-1) > 0
 				$current = -1;
 			else
-				$current = count($form->getListRecipient([$_SESSION["user_id"]]));
+			$current = count($form->getFormRecipients([$_SESSION["user_id"]]));
 			$b2 = $max - $current > 0;
 			$b2 ? TRUE : header("Location: error.php?e=5" );
 		}

@@ -14,6 +14,12 @@
       $form       = new Form($form_id);
       $state      = $ans->getState();
       $new        = FALSE;
+      if($form->getPrintable()==FALSE){
+      	echo "<link rel='stylesheet' media='print' href='../css/notprint.css' type='text/css' />";
+      }else {
+      	echo "<link rel='stylesheet' media='print' href='../css/print.css' type='text/css' />";
+      }
+      
    }
 ?>
 <html>
@@ -70,7 +76,7 @@
 
    </script>
    	<div class="container">
-         <?php include 'include/header.php'; ?>
+         <div id="header"><?php include 'include/header.php'; ?></div>
   		   <?php include 'include/nav.php'; ?>
          <?php
 
@@ -129,7 +135,7 @@
                   >
             </div>
          </div>
-   	   <?php include 'include/footer.php'; ?>
+   	  	<div id="footer"> <?php include 'include/footer.php'; ?></div>
       </div>
 </body>
 </html>

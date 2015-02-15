@@ -41,7 +41,6 @@
 		<script src="../lib/jquery-2.1.1/jquery-ui.js"></script>
 
 		<script src="../lib/bootstrap-3.3.1/js/min.js"></script>
-		<!-- <script type="text/javascript" src="../js/jquery.form.bassm.js"></script>  -->
 	
 		<script>
 			$(document).ready(function(){

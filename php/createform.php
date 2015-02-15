@@ -30,7 +30,7 @@
 		<link rel="stylesheet" href="../css/styles.css" type="text/css" />
 		<link rel="stylesheet" href="../css/drag.css" type="text/css" />
 		<link rel="stylesheet" href="../lib/jquery-2.1.1/jquery-ui.css" type="text/css" />
-      	<style>
+      <style>
 		  .thumb {
 		    height: 75px;
 		    border: 1px solid #000;
@@ -332,26 +332,26 @@
 <script src="../js/group.js"></script>
 <script src="../js/includeFile.js"></script>
 <script>
-			$(function () {
-	        	$('[data-toggle="tooltip"]').tooltip()
-	        });
-		//Récupère les éléments du formulaire si modification
-         var formname = <?php echo '"'.$form->getName().'"' ?>;
-         init(formname);
-         <?php
-            $elems = $form->getFormElements();
-            
-            foreach ($elems as $elem) {
-               $json = json_encode($elem->getAll(), true);
-         ?>
-            var element = <?php echo $json ?>;
-            console.log("elem " + JSON.stringify(element));
-            var elemId = "elem_" + element.id;
-            addElement(element.type , element.x, element.y, ids, elemId);
-            addProp(elemId, element.type, element.minvalue, element.maxvalue, element.default, element.required, element.width, element.height, element.placeholder, element.direction, element.big, element.options, element.label);
-         <?php
-            }
-         ?>
-      //});
+   $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+   });
+   //Récupère les éléments du formulaire si modification
+   var formname = <?php echo '"'.$form->getName().'"' ?>;
+   init(formname);
+<?php
+   $elems = $form->getFormElements();
+
+   foreach ($elems as $elem) {
+      $json = json_encode($elem->getAll(), true);
+?>
+      var element = <?php echo $json ?>;
+      console.log("elem " + JSON.stringify(element));
+      var elemId = "elem_" + element.id;
+      addElement(element.type , element.x, element.y, ids, elemId);
+      addProp(elemId, element.type, element.minvalue, element.maxvalue, element.default, element.required, element.width, element.height, element.placeholder, element.direction, element.big, element.options, element.label);
+<?php
+   }
+?>
+   //});
    </script>
 <!--<script src="../js/navbar.js"></script> Retract nav-->

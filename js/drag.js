@@ -195,13 +195,14 @@ addProp = function(id, type, minvalue,maxvalue,defaultValue,required, width, hei
      i = i + 1;
    });
    elementList[id].label = label; 
+   $('#label_'+id).text(label);
    if (type == 9) {
       $('#'+id).text(elementList[id].value);
    } 
    if(type != 'checkbox' && type != 'radio') {
       $('#'+id).parent().css({
-         width : width,
-         height : height
+         width : parseInt(width)+20,
+         height : parseInt(height)+20
       });
    }
 }

@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.14
+-- version 3.5.1
 -- http://www.phpmyadmin.net
 --
--- Client :  127.0.0.1
--- Généré le :  Mer 14 Janvier 2015 à 22:23
--- Version du serveur :  5.6.17
--- Version de PHP :  5.5.12
+-- Client: localhost
+-- Généré le: Lun 16 Février 2015 à 09:53
+-- Version du serveur: 5.5.24-log
+-- Version de PHP: 5.4.3
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de données :  `uniforms`
+-- Base de données: `uniforms`
 --
 
 -- --------------------------------------------------------
@@ -26,7 +26,6 @@ SET time_zone = "+00:00";
 -- Structure de la table `answervalue`
 --
 
-DROP TABLE IF EXISTS `answervalue`;
 CREATE TABLE IF NOT EXISTS `answervalue` (
   `answervalue_id` int(11) NOT NULL AUTO_INCREMENT,
   `value` varchar(255) DEFAULT NULL,
@@ -51,7 +50,6 @@ INSERT INTO `answervalue` (`answervalue_id`, `value`, `elementanswer_id`) VALUES
 -- Structure de la table `elementanswer`
 --
 
-DROP TABLE IF EXISTS `elementanswer`;
 CREATE TABLE IF NOT EXISTS `elementanswer` (
   `elementanswer_id` int(11) NOT NULL AUTO_INCREMENT,
   `formelement_id` int(11) NOT NULL,
@@ -75,7 +73,6 @@ INSERT INTO `elementanswer` (`elementanswer_id`, `formelement_id`, `formdest_id`
 -- Structure de la table `elementoption`
 --
 
-DROP TABLE IF EXISTS `elementoption`;
 CREATE TABLE IF NOT EXISTS `elementoption` (
   `elementoption_id` int(11) NOT NULL AUTO_INCREMENT,
   `optionvalue` varchar(255) NOT NULL DEFAULT '0',
@@ -103,7 +100,6 @@ INSERT INTO `elementoption` (`elementoption_id`, `optionvalue`, `optionorder`, `
 -- Structure de la table `form`
 --
 
-DROP TABLE IF EXISTS `form`;
 CREATE TABLE IF NOT EXISTS `form` (
   `form_id` int(11) NOT NULL AUTO_INCREMENT,
   `form_name` varchar(255) DEFAULT NULL,
@@ -114,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `form` (
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`form_id`),
   KEY `fk_form_user_idx` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
 --
 -- Contenu de la table `form`
@@ -139,7 +135,11 @@ INSERT INTO `form` (`form_id`, `form_name`, `form_status`, `form_anonymous`, `fo
 (17, '', 1, 0, 1, 1, 1),
 (18, '', 1, 0, 1, 1, 1),
 (19, '', 0, 0, 1, 1, 1),
-(20, '', 0, 0, 1, 1, 1);
+(20, '', 0, 0, 1, 1, 1),
+(21, '', 0, 0, 1, 1, 8),
+(22, '', 1, 0, 1, 1, 8),
+(23, '', 0, 0, 1, 5, 4),
+(24, '', 1, 0, 0, 1, 8);
 
 -- --------------------------------------------------------
 
@@ -147,7 +147,6 @@ INSERT INTO `form` (`form_id`, `form_name`, `form_status`, `form_anonymous`, `fo
 -- Structure de la table `formdest`
 --
 
-DROP TABLE IF EXISTS `formdest`;
 CREATE TABLE IF NOT EXISTS `formdest` (
   `formdest_id` int(11) NOT NULL AUTO_INCREMENT,
   `formdest_status` tinyint(1) DEFAULT '0',
@@ -156,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `formdest` (
   PRIMARY KEY (`formdest_id`),
   KEY `fk_formdest_user1_idx` (`user_id`),
   KEY `fk_formdest_form1_idx` (`formgroup_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=938 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=944 ;
 
 --
 -- Contenu de la table `formdest`
@@ -225,7 +224,11 @@ INSERT INTO `formdest` (`formdest_id`, `formdest_status`, `user_id`, `formgroup_
 (921, 0, 1, 28),
 (922, 0, 4, 28),
 (936, 0, 2, 39),
-(937, 0, 4, 39);
+(937, 0, 4, 39),
+(940, 0, 8, 42),
+(941, 0, 2, 43),
+(942, 0, 4, 43),
+(943, 0, 8, 44);
 
 -- --------------------------------------------------------
 
@@ -233,7 +236,6 @@ INSERT INTO `formdest` (`formdest_id`, `formdest_status`, `user_id`, `formgroup_
 -- Structure de la table `formelement`
 --
 
-DROP TABLE IF EXISTS `formelement`;
 CREATE TABLE IF NOT EXISTS `formelement` (
   `formelement_id` int(11) NOT NULL AUTO_INCREMENT,
   `type_element` int(11) DEFAULT NULL,
@@ -264,7 +266,8 @@ INSERT INTO `formelement` (`formelement_id`, `type_element`, `formgroup_id`, `po
 (3, 1, 3, 15, 14, 'edfaulti', 1, 300, 15, 'place', 1, 0, NULL, NULL, NULL),
 (4, 2, 3, 34, 455, NULL, 0, NULL, NULL, NULL, 0, 1, NULL, NULL, NULL),
 (55, 1, 4, 25, 12, 'default', 1, 123, 23, 'placeholder', 0, 0, 100, 1, 'label'),
-(56, 2, 4, 234, 15, '', 0, 0, 0, '', 1, 1, 0, 0, '');
+(56, 2, 4, 234, 15, '', 0, 0, 0, '', 1, 1, 0, 0, ''),
+(57, 9, 43, 46, 30, '', 0, 35, 20, '', 0, 0, 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -272,13 +275,12 @@ INSERT INTO `formelement` (`formelement_id`, `type_element`, `formgroup_id`, `po
 -- Structure de la table `formgroup`
 --
 
-DROP TABLE IF EXISTS `formgroup`;
 CREATE TABLE IF NOT EXISTS `formgroup` (
   `formgroup_id` int(11) NOT NULL AUTO_INCREMENT,
   `form_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`formgroup_id`),
   KEY `fk_form_formgroup` (`form_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=40 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=45 ;
 
 --
 -- Contenu de la table `formgroup`
@@ -306,7 +308,11 @@ INSERT INTO `formgroup` (`formgroup_id`, `form_id`) VALUES
 (26, 19),
 (27, 19),
 (28, 19),
-(39, 20);
+(39, 20),
+(43, 21),
+(41, 22),
+(42, 23),
+(44, 24);
 
 -- --------------------------------------------------------
 
@@ -314,12 +320,11 @@ INSERT INTO `formgroup` (`formgroup_id`, `form_id`) VALUES
 -- Structure de la table `user`
 --
 
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Contenu de la table `user`
@@ -330,7 +335,8 @@ INSERT INTO `user` (`user_id`, `user_name`) VALUES
 (1, 'Luis'),
 (2, 'Romain'),
 (3, 'Genevieve'),
-(4, 'Ayoub');
+(4, 'Ayoub'),
+(8, 'ba306717');
 
 --
 -- Contraintes pour les tables exportées

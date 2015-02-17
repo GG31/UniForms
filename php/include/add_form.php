@@ -35,36 +35,49 @@ if (! empty ( $_POST )) {
 	$form->setAnonymous ( $anonymous );
 	$form->setMaxAnswers ( $multifill );
 	
-		// It must create the groups and set the recipients and elements for each group.
-			$formGroup = new FormGroup();
-	
-			/*
-			 * Recipients
-			 */
-			$recipients = [ ];
-			if ($anonymous) { // Anonymous user (user_id == 0)
-				$recipients [] = new User ( 0 );
-			} else { // Listing USERs
-				foreach ( $_POST ["recipient"] as $id ) {
-					$recipients [] = new User ( $id );
-				}
-			}
-			$formGroup->setRecipient ( $recipients );
-			/*
-			* Récupère les données des éléments
-			*/
-		   if(isset($_POST['info'])) { 
-			  $obj=json_decode($_POST['info'], true, 4);
-			  $arrayElements = [];
-			  var_dump($obj);
-			  foreach ($obj as $key => $array){
-				 $arrayElements[] = treatmentElement($key, $array);
-			  }
-		   }
-		   $formGroup->setFormGroupElements($arrayElements);
-		   
-		$form->setGroups(array($formGroup)); // The argument here must be an array of all groups of this form
-		
+   // It must create the groups and set the recipients and elements for each group.
+   $formGroup = new FormGroup();
+
+   /*
+   * Recipients
+   */
+   $recipients = [ ];
+   if ($anonymous) { // Anonymous user (user_id == 0)
+      $recipients [] = new User ( 0 );
+   } else { // Listing USERs
+      foreach ( $_POST ["recipient"] as $id ) {
+         $recipients [] = new User ( $id );
+      }
+   }
+   $formGroup->setRecipient ( $recipients );
+   /*
+   * Récupère les données des éléments
+   */
+   if(isset($_POST['info'])) { 
+      $obj=json_decode($_POST['info'], true, 4);
+      $arrayElements = [];
+      foreach ($obj as $key => $array){
+         $arrayElements[$key] = treatmentElement($key, $array);
+      }
+      if(isset($_POST['infoGroups'])) {
+         $formGroups = [];
+         $obj=json_decode($_POST['infoGroups'], true, 4);
+         foreach ($obj as $key => $array){
+            $formGroup1 = new FormGroup();
+            $listEl = [];
+            foreach ($array as $nb => $idEl) {
+               $listEl[] = $arrayElements[$idEl];
+            }
+            $formGroup1->setFormGroupElements($listEl);
+            $formGroups[] = $formGroup1;
+         }
+         $form->setGroups($formGroups);
+      } else {
+         $formGroup->setFormGroupElements($arrayElements);
+         $form->setGroups(array($formGroup)); // The argument here must be an array of all groups of this form
+      }
+   }
+   
 	/*
 	 * Actions
 	 */
@@ -82,14 +95,11 @@ function treatmentElement($key, $array) {
    $keyPart = explode('_', $key);
    $e = "";
    if(strcmp($keyPart[0],"elem") == 0){
-      echo "if";
       $e = new Element((int)$keyPart[1]);
    } else {
-      echo "else";
       $e = new Element();
    }
-   echo $array['type']."<br>";
-   echo constant('type'.$array['type']);
+   
    $e->setTypeElement(constant('type'.$array['type']));
    $e->setX($array['posX']);
    $e->setY($array['posY']);

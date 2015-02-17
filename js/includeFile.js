@@ -12,6 +12,7 @@ function readFilesAndDisplayPreview(files) {
           console.log("plop "+ files[0].name);
           elementList[currentElement].width = $("#"+currentElement).width();
           elementList[currentElement].height = $("#"+currentElement).height();
+		  elementList[currentElement].base64 = e.target.result;
           updatePanelDetail();
         };
       // Read in the image file as a data URL.

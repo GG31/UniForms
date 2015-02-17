@@ -3,7 +3,7 @@ var elementList = {};
 var ids = 0;
 var currentElement;
 var elt;
-var elementsCodeSQL = ["", "draggableText", "draggableNumber", "draggableTime", "draggableDate", "draggableTel", "draggableCheckbox", "draggableRadio", "draggableTextarea", "draggableLabel", "draggableSquare", "draggableCircle"];
+var elementsCodeSQL = ["", "draggableText", "draggableNumber", "draggableTime", "draggableDate", "draggableTel", "draggableCheckbox", "draggableRadio", "draggableTextarea", "draggableLabel", "draggableSquare", "draggableCircle", "draggableImg"];
 var elementsCode = {
    draggableLabel:'<span>Label</span>', 
    draggableNumber:'<input type="number">', 
@@ -156,7 +156,7 @@ addElement = function(elementCodeId, posX, posY, idEl, idChild) {
    ids = ids + 1;
 }
 
-addProp = function(id, type, minvalue,maxvalue,defaultValue,required, width, height, placeholder, direction, big, options, label) {
+addProp = function(id, type, minvalue,maxvalue,defaultValue,required, width, height, placeholder, direction, big, options, label, img) {
    /*console.log("plop "+JSON.stringify(options));
    for(key in options) {
       if($.inArray(key, ["minvalue","maxvalue","default","required", "width", "height", "placeholder", "direction", "big", "options", "label"]) != -1) {
@@ -174,6 +174,7 @@ addProp = function(id, type, minvalue,maxvalue,defaultValue,required, width, hei
    elementList[id].placeholder = placeholder;
    elementList[id].direction = direction;
    elementList[id].big = big;
+   elementList[id].img = img;
    elementList[id].values = {};
    var i = 0;
    if(type == 6) {
@@ -197,6 +198,11 @@ addProp = function(id, type, minvalue,maxvalue,defaultValue,required, width, hei
    elementList[id].label = label; 
    if (type == 9) {
       $('#'+id).text(elementList[id].value);
+   } 
+   
+   if (type == 12) {
+      //$('#'+id).text(elementList[id].value);
+	  $('#'+id).attr("src", elementList[id].img); 
    } 
    if(type != 'checkbox' && type != 'radio') {
       $('#'+id).parent().css({
@@ -559,7 +565,7 @@ hasSize = function() {
 
 hasSelectFile = function() {
    $("#fileGroup").show();
-   //$("#files").val(elementList[currentElement].img);
+   $("#files").val(elementList[currentElement].img);
 }
 
 hasSeveralValues = function () {

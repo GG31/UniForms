@@ -35,7 +35,7 @@ if (! empty ( $_POST )) {
 	$form->setAnonymous ( $anonymous );
 	$form->setMaxAnswers ( $multifill );
 	
-		// It must create the groups and set the recipients and elements for each group.
+			// Must create the groups and set the recipients and elements for each group.
 			$formGroup = new FormGroup();
 	
 			/*
@@ -44,7 +44,7 @@ if (! empty ( $_POST )) {
 			$recipients = [ ];
 			if ($anonymous) { // Anonymous user (user_id == 0)
 				$recipients [] = new User ( 0 );
-			} else { // Listing USERs
+			} elseif (!empty($_POST ["recipient"])) { // Listing USERs
 				foreach ( $_POST ["recipient"] as $id ) {
 					$recipients [] = new User ( $id );
 				}
@@ -56,7 +56,7 @@ if (! empty ( $_POST )) {
 		   if(isset($_POST['info'])) { 
 			  $obj=json_decode($_POST['info'], true, 4);
 			  $arrayElements = [];
-			  var_dump($obj);
+			  //var_dump($obj);
 			  foreach ($obj as $key => $array){
 				 $arrayElements[] = treatmentElement($key, $array);
 			  }
@@ -82,10 +82,10 @@ function treatmentElement($key, $array) {
    $keyPart = explode('_', $key);
    $e = "";
    if(strcmp($keyPart[0],"elem") == 0){
-      echo "if";
+      //echo "if ";
       $e = new Element((int)$keyPart[1]);
    } else {
-      echo "else";
+      //echo "else";
       $e = new Element();
    }
    echo $array['type']."<br>";
@@ -119,6 +119,13 @@ function treatmentElement($key, $array) {
          $options[] = $opt;
       }
 		$e->setOptions($options);
+   }
+   if(array_key_exists("base64", $array)) {
+		/*list($type, $data) = explode(';', $array['base64']);
+		list(, $data)      = explode(',', $data);
+		$data = base64_decode($data);
+		file_put_contents('../../res/elemimg/'.$array['img'], $data);*/
+		$e->setImg($array['base64']);
    }
    return $e;
 }

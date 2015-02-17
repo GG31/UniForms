@@ -104,6 +104,13 @@ class Element {
      * @var string 
      */
 	private $label = '';
+	
+	/**
+	 * image
+     * @access private
+     * @var string 
+     */
+	private $img = '';
 
 	/**
 	 * Constructor
@@ -132,6 +139,7 @@ class Element {
 			$this->maxvalue = $rElement["max_value"];
 			$this->minvalue = $rElement["min_value"];
 			$this->label = $rElement["label"];
+			$this->img = $rElement["img"];
 			
 			$this->optionsList = array();
 			$qElementOptions = mysql_query("SELECT * FROM elementoption WHERE formelement_id = ".$idFormElement." ORDER BY optionorder, optionvalue");
@@ -201,7 +209,8 @@ class Element {
 					"direction" 	=> $this->getDirection(),
 					"big" 			=> $this->getIsbiglist(),
 					"options" 		=> $this->getOptions(),
-					"label"			=> $this->getLabel()
+					"label"			=> $this->getLabel(),
+					"img"			=> $this->getImg()
 				];
 	}
 	
@@ -315,6 +324,14 @@ class Element {
 	 */
 	public function getLabel() {
 		return $this->label;
+	}
+	
+	/**
+	 * Returns the image
+	 * @return string
+	 */
+	public function getImg() {
+		return $this->img;
 	}
 	
 	/**
@@ -437,9 +454,17 @@ class Element {
 		$this->minvalue = $minvalue;
 	}
 	
+	/**
+    * Sets the image
+    * @param string $img
+    */
+	public function setImg($img){
+		$this->img = $img;
+	}
+	
 }
 
-// to use this do constant("nameoftheconstant"), ex: constant("typeRadioButton") returns 3
+// to use this do constant("nameoftheconstant"), ex: constant("typeRadioButton") returns 7
 define("typeInputText", 1);
 define("typeInputNumber", 2);
 define("typeInputTime", 3);
@@ -451,4 +476,5 @@ define("typeTextArea", 8);
 define("typeSpan", 9);
 define("typeSquare", 10);
 define("typeCircle", 11);
+define("typeImage", 12);
 ?>

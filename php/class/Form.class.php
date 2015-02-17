@@ -55,7 +55,7 @@ class Form {
 	* @access private
 	* @var FormGroup 
 	*/
-	private $formGroups;
+	private $formGroups = array();
 	
 	/**
 	 * Constructor

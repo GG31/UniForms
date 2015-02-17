@@ -150,7 +150,7 @@ class FormGroup{
 		
 		// Insert elements of the formgroup in formelement
 		foreach ($this->groupElements as $index => $element){
-		   echo "fuck you ".$element->getTypeElement();
+		   //echo "fuck you ".$element->getTypeElement();
 		   $l = "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y, default_value, required, width, height, placeholder, direction, isbiglist, max_value, min_value) 
 						VALUES ("
 									. $this->getId() . ","
@@ -168,8 +168,8 @@ class FormGroup{
 									. $element->getMaxvalue() . ","
 									. $element->getMinvalue() .
 						")";
-						echo $l;
-			mysql_query("INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y, default_value, required, width, height, placeholder, direction, isbiglist, max_value, min_value) 
+						//echo $l;
+			mysql_query("INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y, default_value, required, width, height, placeholder, direction, isbiglist, max_value, min_value, img) 
 						VALUES ("
 									. $this->getId() . ","
 									. $element->getTypeElement() . ","
@@ -184,8 +184,9 @@ class FormGroup{
 									. $element->getDirection() . ","
 									. ($element->getIsbiglist() ? 1 : 0) . ","
 									. $element->getMaxvalue() . ","
-									. $element->getMinvalue() .
-						")"
+									. $element->getMinvalue() . ","
+									. "'" . $element->getImg() . "'"
+						. ")"
 			) or die('<br><strong>SQL Error (8)</strong>:<br>'.mysql_error());
 			
 			$formElementId = mysql_insert_id();

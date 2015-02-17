@@ -346,8 +346,9 @@
             var element = <?php echo $json ?>;
             console.log("elem " + JSON.stringify(element));
             var elemId = "elem_" + element.id;
+			//alert(element.type);
             addElement(element.type , element.x, element.y, ids, elemId);
-            addProp(elemId, element.type, element.minvalue, element.maxvalue, element.default, element.required, element.width, element.height, element.placeholder, element.direction, element.big, element.options, element.label);
+            addProp(elemId, element.type, element.minvalue, element.maxvalue, element.default, element.required, element.width, element.height, element.placeholder, element.direction, element.big, element.options, element.label, element.img);
          <?php
             }
          ?>

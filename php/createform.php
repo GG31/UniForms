@@ -351,6 +351,29 @@
 <?php
    }
 ?>
+   var i = 0;
+<?php   
+   $groups = $form->getFormGroups(); 
+   foreach ($groups as $group) {
+?>
+      if (i != 0) {
+         moreGroup();
+      }
+      i = i + 1;
+<?php
+      $elementsOnGroup = $group->getGroupElements();
+      foreach ($elementsOnGroup as $elementOnGroup) {
+?>
+         var elementId = "elem_" + <?php echo $elementOnGroup->getId(); ?>;
+         var elementLabel = <?php echo "'".$elementOnGroup->getLabel()."'"; ?>;
+         if (elementLabel == "") {
+            elementLabel = elementId;
+         }
+         appendToGroup($('#groupSection .groupElements:last'), elementId, elementLabel);
+<?php
+      }
+   }
+?>
    //});
    </script>
 <!--<script src="../js/navbar.js"></script> Retract nav-->

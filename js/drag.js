@@ -75,6 +75,10 @@ groupElementsDroppable = function() {
    });
 };
 
+appendToGroup = function(group, id, value) {
+   group.append($('<div class="alert alert-warning alert-dismissible" role="alert" style="display: inline-block">  <button type="button" class="close btn btn-primary btn-lg" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span class="valueLabelElementsOfGroup">'+value+'</span><span class="valueIdElementsOfGroup">'+id+'</span></div>'));
+}
+
 $('#panneau').droppable(
    {      
       drop: function (e, ui) {

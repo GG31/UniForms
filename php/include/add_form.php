@@ -67,10 +67,16 @@ if (! empty ( $_POST )) {
             $listEl = [];
             foreach ($array as $nb => $idEl) {
                $listEl[] = $arrayElements[$idEl];
+               unset($arrayElements[$idEl]);
             }
-            $formGroup1->setFormGroupElements($listEl);
-            $formGroups[] = $formGroup1;
+            if (count($listEl) > 0) {
+               $formGroup1->setFormGroupElements($listEl);
+               $formGroups[] = $formGroup1;
+            }
          }
+         $formGroupLeft = new FormGroup();
+         $formGroupLeft->setFormGroupElements($arrayElements);
+         $formGroups[] = $formGroupLeft;
          $form->setGroups($formGroups);
       } else {
          $formGroup->setFormGroupElements($arrayElements);

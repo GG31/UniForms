@@ -4,7 +4,9 @@
 		private $id;
 		private $limit;
 		private $elements;
-		private $usersAnswers;
+		private $users;
+		private $answers;
+		// private $usersAnswers;
 
 		public function __construct($id = NULL){
 			if ($id !== NULL){
@@ -40,52 +42,33 @@
 				}
 
 				// Users and Answers
-				$query = mysql_query("	SELECT 		user_id
+				$query = mysql_query("	SELECT 		user_id, formdest_id
 										FROM 		formdest
 										WHERE 		formgroup_id = " . $this->id);
 
 				if (!mysql_num_rows($query)){
 					die("Group::__construct() : user not found !");
 				}else{
-					$this->users = [];
-					$this->users = 
-				}
-
-				// UsersAnswers
-				$query = mysql_query("	SELECT 		formdest_id, user_id
-										FROM 		formdest
-										WHERE 		formgroup_id = " . $this->id . "
-										ORDER BY 	user_id, formdest_id");
-
-				if (!mysql_num_rows($query)){
-					die("Group::__construct() : answers not found !");
-				}else{
-					$this->usersAnswers = [];
-
-					// Answers are grouped by Users, ordered chronologically
-					$results 	= mysql_fetch_array($query);
-					$userId 	= $results["user_id"];
-					$answers 	= [];
-					$answers[] 	= new Answer($results["formdest_id"]);
+					$this->users 	= [];
+					$this->answers 	= [];
 
 					while($results = mysql_fetch_array($query)){
-						if($results["user_id"] == $userId){
-							$answers[] = new Answer($results["formdest_id"]);
+						$this->users[] = new User($results["user_id"]);
+						$this->answers[$results["user_id"]] = [];
+
+						$query2 = mysql_query("	SELECT 		answer_id
+												FROM 		answer
+												WHERE 		formdest_id = " . $results["formdest_id"] . "
+												ORDER BY 	answer_id");
+
+						if (!mysql_num_rows($query2)){
+							// Fail silently : user may not have answers yet
 						}else{
-							$this->usersAnswers[] = [
-								"user" 		=> new User($userId),
-								"answers" 	=> $answers
-							];
-							$userId 	= $results["user_id"];
-							$answers 	= [];
-							$answers[] 	= new Answer($results["formdest_id"]);
+							while($results2 = mysql_fetch_array($query2)){
+								$this->answers[$results["user_id"]][] = new Answer($results2["answer_id"]);
+							}
 						}
 					}
-
-					$this->usersAnswers[] = [
-						"user" 		=> new User($userId),
-						"answers" 	=> $answers
-					];
 				}
 			}
 		}
@@ -114,14 +97,26 @@
 			}
 		}
 
-		public function usersAnswers($usersAnswers = NULL){
+		public function users($users = NULL){
 			// Get
-			if($usersAnswers === NULL){
-				return $this->usersAnswers;
+			if($users === NULL){
+				return $this->users;
 			}
 			// Set
 			else{
-				$this->usersAnswers = $usersAnswers;
+				$this->users = $users;
+				return $this;
+			}
+		}
+
+		public function answers($answers = NULL){
+			// Get
+			if($answers === NULL){
+				return $this->answers;
+			}
+			// Set
+			else{
+				$this->answers = $answers;
 				return $this;
 			}
 		}
@@ -139,21 +134,15 @@
 			// Auto generated id
 			$this->id = mysql_insert_id();
 			
-			// Inserts recipients & create initial
-			foreach ($this->usersAnswers as $userAnswers){
+			// Insert recipients
+			foreach ($this->users as $user){
 				mysql_query("INSERT INTO formdest(
 											formgroup_id,
-											user_id,
-											formdest_status)
+											user_id)
 									VALUES("
 										. $this->id . ","						// formgroup_id
-										. $userAnswers["user"]->id() . ", "		// user_id
-										. "-1)")								// formdest_status
+										. $user->id())							// user_id
 				or die("Group::save() can't insert recipients : " . mysql_error());
-
-				// Auto generated id
-				$answerId = mysql_insert_id();
-
 			}
 			
 			// Insert elements

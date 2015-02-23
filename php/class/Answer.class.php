@@ -12,17 +12,15 @@
 
 				// State
 				$query = mysql_query("	SELECT 	*
-										FROM 			formdest
-												JOIN 	formgroup
-												ON 		formgroup.formgroup_id = formdest.formgroup_id
-										WHERE 	formdest_id = " . $this->id);
+										FROM 	answer
+										WHERE 	answer_id = " . $this->id);
 
 				if (!mysql_num_rows($query)){
 					die("Answer::__construct() : id not found !");
 				}else{
 					$results = mysql_fetch_array($query);
 
-					$this->state = $results["formdest_status"] == 1 ? TRUE : FALSE;
+					$this->state = $results["answer_status"] == 1 ? TRUE : FALSE;
 				}
 
 				// ElementsValues
@@ -30,7 +28,7 @@
 										FROM 			answervalue 
 												JOIN 	elementanswer
 												ON 		elementanswer.elementanswer_id = answervalue.elementanswer_id
-										WHERE 	elementanswer.formdest_id = " . $this->id . "
+										WHERE 	elementanswer.answer_id = " . $this->id . "
 										ORDER BY formelement_id");
 				
 				if (!mysql_num_rows($query)){

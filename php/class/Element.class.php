@@ -37,7 +37,7 @@
 										FROM 	formelement 
 										WHERE 	formelement_id = " . $this->id);
 
-				if (!mysql_num_rows($query)){
+				if(!mysql_num_rows($query)){
 					die("Element::__construct() : id not found !");
 				}else{
 					$results = mysql_fetch_array($query);

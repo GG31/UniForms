@@ -20,7 +20,7 @@ $(document).ready(function(){
 <div class="panel panel-primary">
 	<div class="panel-heading text-center text-capitalize">
 		<h3 class="panel-title">
-			<strong>Formulaires que j'ai crée</strong>
+			<strong>Formulaires que j'ai crées</strong>
 		</h3>
 	</div>
 

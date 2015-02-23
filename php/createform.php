@@ -233,7 +233,7 @@
                   <div class="draggable" id="draggableTextarea" draggable="true"><span>Paragraphe</span></div>
                   <div class="draggable" id="draggableTel" draggable="true"><span>Téléphone</span></div>
                   <div class="draggable" id="draggableText" draggable="true"><span>Input Text</span></div>
-                  <div class="draggable" id="draggableRadio" draggable="true"><span>Bouton radio</span></div>
+                  <div class="draggable" id="draggableRadio" draggable="true"><span>Boutons radio</span></div>
                   <div class="draggable" id="draggableCheckbox" draggable="true"><span>Checkbox</span></div>
                   <div class="draggable" id="draggableSquare" draggable="true"><span>Carre</span></div>
                   <div class="draggable" id="draggableCircle" draggable="true"><span>Cercle</span></div>

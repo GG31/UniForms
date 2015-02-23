@@ -18,6 +18,8 @@
 	// at this step, the user has been authenticated by the CAS server
 	// and the user's login name can be read with phpCAS::getUser().
 	$_SESSION ['CAS_id'] = phpCAS::getUser ();
+	var_dump(phpCAS::getAttributes ());
+	return;
 	header ( "Location: php/loginCAS.php" );
 	// logout if desired
 	/*if (isset($_REQUEST['logout'])) {

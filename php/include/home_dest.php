@@ -20,57 +20,14 @@
 		<tbody>
 			<?php
 				foreach($forms as $f) {
-					$list  = $f->getFormRecipients([$user->getId()]);
-					$count = count($list);
-
-					if($count){
-						$max = $f->getMaxAnswers();
-
-						if($max == 0){
 			?>
-							<tr class="">
-								<td><?php echo $f->getId() ?> </td>
-								<td>Formulaire <?php echo $f->getId() ?></td>
-								<td><a href="fillform.php?form_id=<?php echo $f->getId() ?>">Nouvelle réponse</a>
-								</td>
-							</tr>
+					<tr class="">
+						<td><?php echo $f->getId() ?> </td>
+						<td>Formulaire <?php echo $f->getId() ?></td>
+						<td><a href="list.php?form_id=<?php echo $f->getId() ?>">Voir les instances</a>
+						</td>
+					</tr>
 			<?php
-						}else{
-							$remaining = $max - $count;
-
-							if($remaining > 0){
-			?>
-								<tr class="">
-									<td><?php echo $f->getId() ?> </td>
-									<td>Formulaire <?php echo $f->getId() ?></td>
-									<td><a href="fillform.php?form_id=<?php echo $f->getId() ?>">Nouvelle réponse</a>
-										<span class="badge alert-success">
-										<?php echo $remaining ?> restante<?php echo $remaining > 1 ? "s" : "" ?></span>
-									</td>
-								</tr>
-			<?php
-							} else {
-			?>
-								<tr class="">
-									<td><?php echo $f->getId() ?></td>
-									<td>Formulaire <?php echo $f->getId() ?></td>
-									<td></td>
-								</tr>
-			<?php
-							}
-						}
-						foreach ($list as $key => $line) {
-							if($line["Status"] == FALSE){
-			?>
-								<tr class="info">
-									<td>"</td>
-									<td>Réponse : <?php echo $key ?></td>
-									<td><a href="fillform.php?ans_id=<?php echo $line["formDestId"] ?>">Modifier</a></td>
-								</tr>
-			<?php
-							}
-						}
-					}
 				}
 			?>
 		</tbody>

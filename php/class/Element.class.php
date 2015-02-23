@@ -1,15 +1,38 @@
 <?php
-/**
- * Represents an element of a form
- */
-class Element {
+	
+	// Constants
+	define("ELEMENT_TEXT"		, 1);
+	define("ELEMENT_NUMBER"		, 2);
+	define("ELEMENT_TIME"		, 3);
+	define("ELEMENT_DATE"		, 4);
+	define("ELEMENT_PHONE"		, 5);
+	define("ELEMENT_MULTIPLE"	, 6);
+	define("ELEMENT_UNIQUE"		, 7);
+	define("ELEMENT_AREA"		, 8);
+	
+	Class Element {
+		private $id;
+		private $type;
+		private $label;
+		private $x;
+		private $y;
+		private $height;
+		private $width;
+		private $default;
+		private $placeholder;
+		private $min;
+		private $max;
+		private $required;
+		private $big;
+		private $direction;
+		private $options;
 
-	/**
-     * @access private
-     * @var integer 
-     */
-	private $id;
+		public function __construct($id = NULL){
+			if ($id !== NULL){
+				// Id
+				$this->id = $id;
 
+<<<<<<< HEAD
 	/**
 	 * type of the element. Use the constants typeCheckbox, typeInput, typeTextArea, typeRadioButton... they are all defined below this class
      * @access private
@@ -151,18 +174,55 @@ class Element {
 					"default" => $rElementOptions ["optiondefault"] 
 				);
 				array_push ( $this->optionsList, $option );
+=======
+				// Every attr except for options
+				$query = mysql_query("	SELECT *
+										FROM 	formelement 
+										WHERE 	formelement_id = " . $this->id);
+
+				if(!mysql_num_rows($query)){
+					die("Element::__construct() : id not found !");
+				}else{
+					$results = mysql_fetch_array($query);
+					
+					$this->type 		= $results["type_element"];
+					$this->label 		= $results["label"];
+					$this->x 			= $results["pos_x"];
+					$this->y 			= $results["pos_y"];
+					$this->height 		= $results["height"];
+					$this->width 		= $results["width"];
+					$this->default 		= $results["default_value"];
+					$this->placeholder 	= $results["placeholder"];
+					$this->max 			= $results["max_value"];
+					$this->min 			= $results["min_value"];
+					$this->required 	= $results["required"] 	== 1 ? TRUE : FALSE;
+					$this->big 			= $results["isbiglist"] == 1 ? TRUE : FALSE;
+					$this->direction 	= $results["direction"] == 1 ? TRUE : FALSE;
+				}
+				
+				// Options
+				$query = mysql_query("	SELECT 		*
+										FROM 		elementoption
+										WHERE 		formelement_id = " . $this->id . "
+										ORDER BY 	optionorder, optionvalue");
+				
+				if (!mysql_num_rows($query)){
+					// Fail silently : elements may not have options
+				}else{
+					$this->options = [];
+					while($results = mysql_fetch_array($query)){
+						$this->options[] = [
+							"order" 	=> $results["optionorder"],
+							"value" 	=> $results["optionvalue"],
+							"default" 	=> $results["optiondefault"] 
+						];
+					}
+				}
+>>>>>>> L4Classes
 			}
 		}
-	}
-	
-	/**
-	 * Give the element's id
-	 * @return integer
-	 */
-	public function getId() {
-		return $this->id;
-	}
 
+<<<<<<< HEAD
 	//TODO doc, switch type
 	public function getAll(){
 /**
@@ -211,113 +271,41 @@ class Element {
 					"options" 		=> $this->getOptions(),
 					"label"			=> $this->getLabel(),
 					"img"			=> $this->getImg()
+=======
+		public function attr(){
+			$num = func_num_args();
+
+			// Get
+			if($num === 0){
+				return 	[
+					"type" 				=> $this->type,
+					"label"				=> $this->label,
+					"x" 				=> $this->x,
+					"y" 				=> $this->y,
+					"width" 			=> $this->width,
+					"height" 			=> $this->height,
+					"default" 			=> $this->default,
+					"placeholder" 		=> $this->placeholder,
+					"min"	 			=> $this->min,
+					"max"	 			=> $this->max,
+					"required" 			=> $this->required,
+					"big" 				=> $this->big,
+					"direction" 		=> $this->direction,
+					"options" 			=> $this->options
+>>>>>>> L4Classes
 				];
-	}
-	
-	/**
-	 * Give the element's type
-	 * @return integer
-	 */
-	public function getTypeElement() {
-		return $this->typeElement;
-	}
-	
-	/**
-	 * Give the x position
-	 * @return integer
-	 */
-	public function getX() {
-		return $this->x;
-	}
-	
-	/**
-	 * Give the y position
-	 * @return integer
-	 */
-	public function getY() {
-		return $this->y;
-	}
-	
-	/**
-	 * Give the default value
-	 * @return string
-	 */
-	public function getDefaultValue() {
-		return $this->defaultValue;
-	}
-	
-	/**
-	 * Returns true if form is anonymous
-	 * @return boolean
-	 */
-	public function getRequired() {
-		return $this->required;
-	}
-	
-	/**
-	 * Give the width
-	 * @return integer
-	 */
-	public function getWidth() {
-		return $this->width;
-	}
-	
-	/**
-	 * Give the height
-	 * @return integer
-	 */
-	public function getHeight() {
-		return $this->height;
-	}
-	
-	/**
-	 * Give the placeholder
-	 * @return string
-	 */
-	public function getPlaceholder() {
-		return $this->placeholder;
-	}
-	
-	/**
-	 * Give the direction that options are shown (1 - vertical or  0 - horizontal)
-	 * @return integer
-	 */
-	public function getDirection() {
-		return $this->direction;
-	}
-	
-	/**
-	 * Returns true if the list of options is big
-	 * @return boolean
-	 */
-	public function getIsbiglist() {
-		return $this->isbiglist;
-	}
-	
-	/**
-	 * Returns the options of the element.
-	 * @return array of array. for each option there is an array with four values: "elementoption_id" "value" "order" "default". (see constructor...)
-	 */
-	public function getOptions() {
-		return $this->optionsList;
-	}
-	/**
-	 * Returns the max value allowed
-	 * @return integer
-	 */
-	 
-	public function getMaxvalue() {
-		return $this->maxvalue;
-	}
+			}
+			// Set
+			else{
+				// Merge inputs
+				$args = func_get_args();
+				$attr = $args[0];
 
-	/**
-	 * Returns the min value allowed
-	 * @return integer
-	 */
-	public function getMinvalue() {
-		return $this->minvalue;
-	}
+				for ($i=1; $i < $num; $i++) { 
+					$attr = array_merge($attr, $args[$i]);
+				}
 
+<<<<<<< HEAD
 	/**
 	 * Returns the label
 	 * @return string
@@ -365,94 +353,83 @@ class Element {
 	public function setX($x){
 		$this->x = $x;
 	}
+=======
+				if(isset($attr["type"]))			$this->type			= $attr["type"];
+				if(isset($attr["label"]))			$this->label 		= $attr["label"];
+				if(isset($attr["x"]))				$this->x 			= $attr["x"];
+				if(isset($attr["y"]))				$this->y 			= $attr["y"];
+				if(isset($attr["height"]))			$this->height 		= $attr["height"];
+				if(isset($attr["width"]))			$this->width 		= $attr["width"];
+				if(isset($attr["default"]))			$this->default 		= $attr["default"];
+				if(isset($attr["placeholder"]))		$this->placeholder 	= $attr["placeholder"];
+				if(isset($attr["min"]))				$this->min 			= $attr["min"];
+				if(isset($attr["max"]))				$this->max 			= $attr["max"];
+				if(isset($attr["required"]))		$this->required		= $attr["required"];
+				if(isset($attr["big"]))				$this->big 			= $attr["big"];
+				if(isset($attr["direction"]))		$this->direction 	= $attr["direction"];
+				if(isset($attr["options"]))			$this->options 		= $attr["options"];
+>>>>>>> L4Classes
 
-	/**
-    * Sets the y position 
-    * @param integer $y
-    */
-	public function setY($y){
-		$this->y = $y;
+				return $this;
+			}
+		}
+
+		public function save($groupId){
+			// Create element
+			mysql_query("INSERT INTO formelement(
+										formgroup_id,
+										type_element,
+										label,
+										pos_x,
+										pos_y,
+										height,
+										width,
+										default_value,
+										placeholder,
+										min_value,
+										max_value,
+										required,
+										isbiglist,
+										direction)
+								VALUES ("
+									. 		$groupId 					. ","	// formgroup_id
+									. 		$this->type 				. ","	// type_this
+									. "'" . $this->label 				. "',"	// label
+									. 		$this->x 					. ","	// pos_x
+									. 		$this->y 					. ","	// pos_y
+									. 		$this->height				. ","	// height
+									. 		$this->width 				. ","	// width
+									. "'" . $this->default 				. "',"	// default_value
+									. "'" . $this->placeholder			. "',"	// placeholder
+									. 		$this->min 					. ","	// min_value
+									. 		$this->max 					. ","	// max_value
+									. 	   ($this->required ? 1 : 0) 	. ","	// required
+									. 	   ($this->big 		? 1 : 0) 	. ","	// isbiglist
+									.	   ($this->direction? 1 : 0)	. ")")	// direction
+			or die("Element::save() can't save element : " . mysql_error());
+			
+			// Auto generated id
+			$this->id = mysql_insert_id();
+			
+			// Insert options
+			if (is_array($this->options)){
+				foreach ($this->options as $option){
+					mysql_query("INSERT INTO elementoption(
+												formelement_id,
+												optionorder,
+												optionvalue,
+												optiondefault)
+										VALUES ("
+											. 		$this->id 						. ","	// formelement_id
+											. 		$option["order"] 				. ","	// optionorder
+											. "'" . $option["value"] 				. "',"	// optionvalue
+											. 	   ($option["default"] ? 1 : 0) 	. ")")	// optiondefault
+					or die("Element::save() can't save option : " . mysql_error());
+				}
+			}
+		}
 	}
-	
-	/**
-    * Sets the default value
-    * @param string $value
-    */
-	public function setDefaultValue($value){
-		$this->defaultValue = $value;
-	}
-	
-	/**
-    * Sets if the element is required
-    * @param boolean $required
-    */
-	public function setRequired($required){
-		$this->required = $required;
-	}
-	
-	/**
-    * Sets the width
-    * @param integer $width
-    */
-	public function setWidth($width){
-		$this->width = $width;
-	}
-	
-	/**
-    * Sets the height
-    * @param integer $height
-    */
-	public function setHeight($height){
-		$this->height = $height;
-	}
-	
-	/**
-    * Sets the placeholder
-    * @param string $placeholder
-    */
-	public function setPlaceholder($placeholder){
-		$this->placeholder = $placeholder;
-	}
-	
-	/**
-    * Sets the direction
-    * @param integer $direction
-    */
-	public function setDirection($direction){
-		$this->direction = $direction;
-	}
-	
-	/**
-    * Sets if the list big
-    * @param boolean $bigList
-    */
-	public function setIsbiglist($bigList){
-		$this->isbiglist = $bigList;
-	}
-	
-	/**
-    * Sets the element's options
-    * @param array of array $options. for each option must exist an array with: "value" "order" "default". 
-    */
-	public function setOptions($options){
-		$this->optionsList = $options;
-	}
-	
-	/**
-    * Sets the max value allowed
-    * @param integer $maxvalue
-    */
-	public function setMaxvalue($maxvalue){
-		$this->maxvalue = $maxvalue;
-	}
-	
-	/**
-    * Sets the min value allowed
-    * @param integer $minvalue
-    */
-	public function setMinvalue($minvalue){
-		$this->minvalue = $minvalue;
-	}
+<<<<<<< HEAD
 	
 	/**
     * Sets the image
@@ -477,4 +454,39 @@ define("typeSpan", 9);
 define("typeSquare", 10);
 define("typeCircle", 11);
 define("typeImage", 12);
+=======
+
+>>>>>>> L4Classes
+?>
+
+<?php
+	/**
+	 * ELEMENT :
+	 * ___________
+	 *
+	 * all 	: 	lbl, x, y, req, dflt
+	 * 
+	 * 			wdth 	hght 	plchldr 	dir 	bglst 
+	 * txt 	:	x 				x 							
+	 * num 	:	x 				x 							
+	 * tel 	:	x 				x 							
+	 * url 	:	x 				x 							
+	 * date	:	x 				x 							
+	 * heure:	x 				x 							
+	 * $	: 	x 		x 		x 							
+	 * radio:								x 		x
+	 * scale:								hrztl	 		
+	 * chckb:								x 		 		
+	 * upld : 												 	
+	 *
+	 *
+	 * ELEMENTOPTION :
+	 * _____________
+	 *
+	 * 			val 	order 	default
+	 * radio: 	x 		x 		x
+	 * chckb: 	x 		x 		x
+	 * scale: 	x 		x 		x
+	 * upld : 	mime 	
+	 */
 ?>

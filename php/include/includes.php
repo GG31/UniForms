@@ -1,4 +1,5 @@
 <?php
+ini_set('display_errors', 1);
 error_reporting ( E_ALL );
 function require_once_UniForms($path) {
 	require_once dirname ( dirname ( dirname ( __FILE__ ) ) ) . '/php/' . $path . '.php';

@@ -1,27 +1,15 @@
 <?php
-/**
- * Represents a form that has an id, a creator, a state, two booleans properties to define if it is anonymous and printable and an array of groups of elements and recipients.
- */
-class Form {
-	/**
-     * @access private
-     * @var integer 
-     */
-	private $id = NULL;
 	
-	/**
-     * @access private
-     * @var string 
-     */
-	private $name = NULL;
-	
-	/**
-	  * Creator of this form
-     * @access private
-     * @var User 
-     */
-	private $creator;
+	Class Form {
+		private $id;
+		private $creator;
+		private $name;
+		private $state;
+		private $groups;
+		private $print;
+		private $anon;
 
+<<<<<<< HEAD
 	/**
 	 * State of the form 
      * @access private
@@ -67,29 +55,60 @@ class Form {
 			$this->state = FALSE;
 		else {
 			$this->id = $idForm;
+=======
+		public function __construct($id = NULL){
+			if($id !== NULL){
+				// Id
+				$this->id = $id;
 
-			$qForm = mysql_query ( "SELECT * FROM form WHERE form_id = " . $idForm );
-			if (! mysql_num_rows ( $qForm )) {
-				// Error...
-				exit ();
-			}
-			
-			$rForm = mysql_fetch_array ( $qForm );
-			
-			$this->creator = new User ( $rForm ["user_id"] );
-			$this->state = $rForm ["form_status"] == 1 ? TRUE : FALSE;
-			$this->printable = $rForm ["form_printable"] == 1 ? TRUE : FALSE;
-			$this->anonymous = $rForm ["form_anonymous"] == 1 ? TRUE : FALSE;
-			$this->maxAnswers = $rForm ["form_maxanswers"];
-			$this->name = $rForm ["form_name"];
-			
-			// Load Groups
-			$this->formGroups = array();
-			$qFormGroup = mysql_query("SELECT * FROM formgroup WHERE form_id = ".$this->id);
-			while ($rFormGroup = mysql_fetch_array($qFormGroup)){
-				array_push ($this->formGroups, new FormGroup($rFormGroup["formgroup_id"]));
+				// Name, Status, Print, Anon
+				$query = mysql_query ("	SELECT 	*
+										FROM 	form
+										WHERE 	form_id = " . $this->id);
+
+				if (!mysql_num_rows($query)){
+					die("Form::__construct() : id not found !");
+				}else{
+					$results = mysql_fetch_array($query);
+
+					$this->creator 		= new User($results["user_id"]);
+					$this->name 		= $results["form_name"];
+					$this->state 		= $results["form_status"] 		== 1 ? TRUE : FALSE;
+					$this->print 	 	= $results["form_printable"] 	== 1 ? TRUE : FALSE;
+					$this->anon 	 	= $results["form_anonymous"] 	== 1 ? TRUE : FALSE;
+				}
+				
+				// Groups
+				$query = mysql_query("	SELECT 		*
+										FROM 		formgroup
+										WHERE 		form_id = " . $this->id. "
+										ORDER BY 	formgroup_id");
+
+				if (!mysql_num_rows($query)){
+					die("Form::__construct() : groups not found !");
+				}else{
+					$this->groups = [];
+>>>>>>> L4Classes
+
+					while ($results = mysql_fetch_array($query)){
+						$this->groups[] = new Group($results["formgroup_id"]);
+					}
+				}
 			}
 		}
+
+		public function creator($creator = NULL){
+			// Get
+			if($creator === NULL){
+				return $this->creator;
+			}
+			// Set
+			else{
+				$this->creator = $creator;
+				return $this;
+			}
+		}
+<<<<<<< HEAD
 	}
 	
 	/**
@@ -187,110 +206,136 @@ class Form {
 			$res = array_merge($res, $group->getFormGroupRecipients($user_ids, $state)); // Union of arrays		
 		return $res;
 	}
+=======
+>>>>>>> L4Classes
 
-   /**
-    * Sets the creator of the form
-    * @param User $user
-    */
-	public function setCreator($user){
-		$this->creator = $user;
-	}
-	
-	/**
-    * Sets the name of the form
-    * @param string $name
-    */
-	public function setName($name){
-		$this->name = $name;
-	}
-	
-	/**
-    * Sets the printable value
-    * @param boolean $isPrintable
-    */
-	public function setPrintable($isPrintable) {
-		$this->printable = $isPrintable;
-	}
-	
-	/**
-    * Sets the anonymous value
-    * @param boolean $isAnonymous
-    */
-	public function setAnonymous($isAnonymous) {
-		$this->anonymous = $isAnonymous;
-	}
-	
-	/**
-	 * Set the maxAnswers value, number maximum of answers by a recipient
-	 * @param integer $maxAnswers
-	 */
-	public function setMaxAnswers($maxAnswers) {
-		$this->maxAnswers = $maxAnswers;
-	}
-	
-	/**
-	 * Save the form on the database
-	 */
-	public function save() {
-		// Forms can be created or loaded
-		if($this->id == NULL) {			// Creates new form
-			// Inserts status, anonymous, print and maxAnswers
-			mysql_query("INSERT INTO form(user_id, form_name, form_status, form_anonymous, form_printable, form_maxanswers) VALUES ("
-									. $this->creator->getId()
-									. ",'" . $this->name . "'"
-									. ", 0, "
-									. ($this->anonymous ? 1 : 0) . ", "
-									. ($this->printable ? 1 : 0) . ", "
-									. $this->maxAnswers 
-									. ") "
-			) or die('<br><strong>SQL Error (1)</strong>:<br>'.mysql_error());
-			$this->id = mysql_insert_id();
-
-		} else {				// Updates existing form
-			// Updates status, anonymous, print and maxAnswers
-			mysql_query("UPDATE form SET form_status = 0"
-			                  .", form_name = '" . $this->name ."'" 
-									.", form_anonymous = " . ($this->anonymous ? 1 : 0)
-									.", form_printable = " . ($this->printable ? 1 : 0)
-									.", form_maxanswers = " . $this->maxAnswers
-									." WHERE form_id = "   . $this->id
-			) or die('<br><strong>SQL Error (2)</strong>:<br>'.mysql_error());
-			
-			// Cleans form groups list in db. It automatically cleans formelements and formdest.
-			mysql_query("DELETE FROM formgroup WHERE form_id = ".$this->id
-			) or die('<br><strong>SQL Error (5)</strong>:<br>'.mysql_error());
+		public function name($name = NULL){
+			// Get
+			if($name === NULL){
+				return $this->name;
+			}
+			// Set
+			else{
+				$this->name = $name;
+				return $this;
+			}
 		}
+
+		public function state($state = NULL){
+			// Get
+			if($state === NULL){
+				return $this->state;
+			}
+			// Set
+			else{
+				$this->state = $state;
+				return $this;
+			}
+		}
+<<<<<<< HEAD
 		
 		//For each group: insert group, insert elements, insert recipients.
 		foreach($this->formGroups as $indexGroup => $formGroup) {
 			$formGroup->save($this->id);
+=======
+
+		public function groups($groups = NULL){
+			// Get
+			if($groups === NULL){
+				return $this->groups;
+			}
+			// Set
+			else{
+				$this->groups = $groups;
+				return $this;
+			}
+>>>>>>> L4Classes
+		}
+
+		public function printable($print = NULL){
+			// Get
+			if($print === NULL){
+				return $this->print;
+			}
+			// Set
+			else{
+				$this->print = $print;
+				return $this;
+			}
+		}
+
+		public function anon($anon = NULL){
+			// Get
+			if($anon === NULL){
+				return $this->anon;
+			}
+			// Set
+			else{
+				$this->anon = $anon;
+				return $this;
+			}
+		}
+
+		public function save() {
+			// Create form
+			if($this->id === NULL){
+				mysql_query("INSERT INTO form(
+											user_id,
+											form_name,
+											form_status,
+											form_printable,
+											form_anonymous)
+									VALUES ("
+										. $this->creator->id() . ","		// user_id
+										. "'" . $this->name . "',"			// form_name
+										. "0,"								// form_status
+										. ($this->print ? 1 : 0) . ", "		// form_printable
+										. ($this->anon 	? 1 : 0) . ")")			// form_anonymous
+				or die("Form::save() can't create form : " . mysql_error());
+
+				// Auto generated id
+				$this->id = mysql_insert_id();
+			}
+			// Update form
+			else{
+				// Reset form
+				mysql_query("	UPDATE 	form
+								SET 	form_status 		= 		0,
+				                  		form_name 			= '" . 	 $this->name . "',
+										form_anonymous 		= "  . 	($this->anon 	? 1 : 0) . "
+										form_printable 		= "  . 	($this->print 	? 1 : 0) . "
+								WHERE 	form_id 			= "  . 	 $this->id)
+				or die("Form::save() can't update form : " . mysql_error());
+				
+				// Delete groups
+				foreach($this->$groups as $group){
+					$group->delete();
+				}
+			}
+
+			// Create groups
+			foreach($this->groups as $group){
+				$group->save($this->id);
+			}
+		}
+
+		public function send(){
+			$this->save();
+			$this->state = TRUE;
+
+			// Update status
+			mysql_query("	UPDATE 	form
+							SET 	form_status = 1
+							WHERE 	form_id 	= " . $this->id)
+			or die("Form::send() can't update status : " . mysql_error());
+		}
+
+		public function delete(){
+			// Delete form (DELETE CASCADE)
+			mysql_query("	DELETE FROM form
+							WHERE 		form_id = " . $this->id)
+			or die("Form::delete() can't delete form : " . mysql_error());
 		}
 	}
 
-	/**
-	 * save() and update status to TRUE
-	 */
-	public function send() {
-		$this->save ();
-		$this->state = TRUE;
-		// Update status
-		mysql_query ( "UPDATE form SET form_status = 1 WHERE form_id = " . $this->id ) or die ( '<br><strong>SQL Error (7)</strong>:<br>' . mysql_error () );
-	}
-	
-	/**
-	 * Delete one form and all registers related to it in other tables (formdest, formelement, elementanswer, answervalue) 
-	 */
-	public function deleteForm(){
-		// Delete the form. All related to this form is deleted on cascade according to the definition of the foreign keys
-		mysql_query("DELETE FROM form WHERE form_id = ".$this->getId());
-	}
-	
-	/**
-    * Add a group to the form
-    * @param array FormGroup $listGroup
-    */
-	public function setGroups($listGroup){
-		$this->formGroups = $listGroup;
-	}
-}
 ?>

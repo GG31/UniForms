@@ -227,13 +227,13 @@
 				<div id="navbarElements" class="nav navbar-nav navbar-right"> 
 				   <div class="panel panel-default" style="padding:10px">     
                   <div class="draggable" id="draggableLabel" draggable="true"><span>Label</span></div>
-                  <div class="draggable" id="draggableNumber" draggable="true"><span>Number</span></div>
+                  <div class="draggable" id="draggableNumber" draggable="true"><span>Nombre</span></div>
                   <div class="draggable" id="draggableDate" draggable="true"><span>Date</span></div>
                   <div class="draggable" id="draggableTime" draggable="true"><span>Heure</span></div>
                   <div class="draggable" id="draggableTextarea" draggable="true"><span>Paragraphe</span></div>
                   <div class="draggable" id="draggableTel" draggable="true"><span>Téléphone</span></div>
                   <div class="draggable" id="draggableText" draggable="true"><span>Input Text</span></div>
-                  <div class="draggable" id="draggableRadio" draggable="true"><span>Bouton radio</span></div>
+                  <div class="draggable" id="draggableRadio" draggable="true"><span>Boutons radio</span></div>
                   <div class="draggable" id="draggableCheckbox" draggable="true"><span>Checkbox</span></div>
                   <div class="draggable" id="draggableSquare" draggable="true"><span>Carre</span></div>
                   <div class="draggable" id="draggableCircle" draggable="true"><span>Cercle</span></div>
@@ -344,11 +344,33 @@
       $json = json_encode($elem->getAll(), true);
 ?>
       var element = <?php echo $json ?>;
-      console.log("elem " + JSON.stringify(element));
       var elemId = "elem_" + element.id;
       addElement(element.type , element.x, element.y, ids, elemId);
       addProp(elemId, element.type, element.minvalue, element.maxvalue, element.default, element.required, element.width, element.height, element.placeholder, element.direction, element.big, element.options, element.label, element.img);
 <?php
+   }
+?>
+   var i = 0;
+<?php   
+   $groups = $form->getFormGroups(); 
+   foreach ($groups as $group) {
+?>
+      if (i != 0) {
+         moreGroup();
+      }
+      i = i + 1;
+<?php
+      $elementsOnGroup = $group->getGroupElements();
+      foreach ($elementsOnGroup as $elementOnGroup) {
+?>
+         var elementId = "elem_" + <?php echo $elementOnGroup->getId(); ?>;
+         var elementLabel = <?php echo "'".$elementOnGroup->getLabel()."'"; ?>;
+         if (elementLabel == "") {
+            elementLabel = elementId;
+         }
+         appendToGroup($('#groupSection .groupElements:last'), elementId, elementLabel);
+<?php
+      }
    }
 ?>
    //});

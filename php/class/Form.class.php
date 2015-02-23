@@ -160,6 +160,10 @@ class Form {
 		return $this->anonymous;
 	}
 	
+	public function getFormGroups() {
+		return $this->formGroups;
+	}
+	
 	/**
 	 * Give all elements of the form
 	 * @return array of elements
@@ -258,7 +262,7 @@ class Form {
 		}
 		
 		//For each group: insert group, insert elements, insert recipients.
-		foreach($this->formGroups as $indexGroup => $formGroup){
+		foreach($this->formGroups as $indexGroup => $formGroup) {
 			$formGroup->save($this->id);
 		}
 	}

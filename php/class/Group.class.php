@@ -128,7 +128,7 @@
 										group_limit)
 								VALUES(" . 
 										$formId . "," .			// form_id
-										$this->limit . ",")		// group_limit
+										$this->limit . ")")		// group_limit
 			or die("Group::save() can't create group : " . mysql_error());
 
 			// Auto generated id
@@ -140,8 +140,8 @@
 											formgroup_id,
 											user_id)
 									VALUES("
-										. $this->id . ","						// formgroup_id
-										. $user->id())							// user_id
+										. $this->id . ","				// formgroup_id
+										. $user->id() . ")")			// user_id
 				or die("Group::save() can't insert recipients : " . mysql_error());
 			}
 			

@@ -54,7 +54,7 @@
 					$this->min 			= $results["min_value"];
 					$this->required 	= $results["required"] 	== 1 ? TRUE : FALSE;
 					$this->big 			= $results["isbiglist"] == 1 ? TRUE : FALSE;
-					$this->direction 	= $results["direction"];
+					$this->direction 	= $results["direction"] == 1 ? TRUE : FALSE;
 				}
 				
 				// Options
@@ -118,8 +118,8 @@
 				if(isset($attr["width"]))			$this->width 		= $attr["width"];
 				if(isset($attr["default"]))			$this->default 		= $attr["default"];
 				if(isset($attr["placeholder"]))		$this->placeholder 	= $attr["placeholder"];
-				if(isset($attr["min"]))				$this->min 			= $attr["minvalue"];
-				if(isset($attr["max"]))				$this->max 			= $attr["maxvalue"];
+				if(isset($attr["min"]))				$this->min 			= $attr["min"];
+				if(isset($attr["max"]))				$this->max 			= $attr["max"];
 				if(isset($attr["required"]))		$this->required		= $attr["required"];
 				if(isset($attr["big"]))				$this->big 			= $attr["big"];
 				if(isset($attr["direction"]))		$this->direction 	= $attr["direction"];
@@ -156,11 +156,11 @@
 									. 		$this->width 				. ","	// width
 									. "'" . $this->default 				. "',"	// default_value
 									. "'" . $this->placeholder			. "',"	// placeholder
-									. 		$this->min 					. ")"	// min_value
+									. 		$this->min 					. ","	// min_value
 									. 		$this->max 					. ","	// max_value
 									. 	   ($this->required ? 1 : 0) 	. ","	// required
 									. 	   ($this->big 		? 1 : 0) 	. ","	// isbiglist
-									. 		$this->direction 			. ",")	// direction
+									.	   ($this->direction? 1 : 0)	. ")")	// direction
 			or die("Element::save() can't save element : " . mysql_error());
 			
 			// Auto generated id

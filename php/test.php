@@ -10,7 +10,7 @@
 	require_once_UF ( "include/connect" );
 	require_once_UF ( "class/User.class" );
 	require_once_UF ( "class/Form.class" );
-	require_once_UF ( "class/FormGroup.class" );
+	require_once_UF ( "class/Group.class" );
 	require_once_UF ( "class/Answer.class" );
 	require_once_UF ( "class/Element.class" );
 
@@ -54,6 +54,8 @@
 		"placeholder"	=> "Enter name here",
 		"width"			=> 100,
 		"height"		=> 9,
+		"min"			=> 0,
+		"max"			=> 0,
 		"y" 			=> 0
 	];
 	$elem0->attr($attributes, ["x" => 0 ]);
@@ -76,21 +78,19 @@
 
 	// Set attributes ...
 	$group0->limit(0);
-	$group0->setRecipients([$user1, $user2, $user3]);
-	$group0->setFormGroupElements([$elem0, $elem1, $elem2]);
+	$group0->users([$user1, $user2, $user3]);
+	$group0->elements([$elem0, $elem1, $elem2]);
 
-	$group1->setNumber(1);
-	$group1->setMaxAnswers(0);
-	$group1->setRecipients([$user2, $user2, $user3]);
-	$group1->setFormGroupElements([$elem3, $elem4, $elem5]);
+	$group1->limit(0);
+	$group1->users([$user2, $user2, $user3]);
+	$group1->elements([$elem3, $elem4, $elem5]);
 
-	$group2->setNumber(2);
-	$group2->setMaxAnswers(0);
-	$group2->setRecipients([$user3, $user2, $user3]);
-	$group2->setFormGroupElements([$elem6, $elem7]);
+	$group2->limit(0);
+	$group2->users([$user3, $user2, $user3]);
+	$group2->elements([$elem6, $elem7]);
 
 	// Set groups to form
-	$form->setGroups([$group0, $group1, $group2]);
+	$form->groups([$group0, $group1, $group2]);
 
 	// OK let's send
 	$form->send();
@@ -99,7 +99,7 @@
 	// Answer //
 	/////////////
 
-	echo '<a href="list.php?formId=' . $form->getId() . '">Answer !</a>';
+	echo '<a href="list.php?formId=' . $form->id() . '">Answer !</a>';
 
 	function require_once_UF($path) {
 		require_once dirname ( __FILE__ ) . '/' . $path . '.php';

@@ -128,14 +128,14 @@
 											user_id,
 											form_name,
 											form_status,
-											form_anonymous,
-											form_printable)
+											form_printable,
+											form_anonymous)
 									VALUES ("
 										. $this->creator->id() . ","		// user_id
 										. "'" . $this->name . "',"			// form_name
 										. "0,"								// form_status
-										. ($this->print ? 1 : 0) . ") "		// form_printable
-										. ($this->anon 	? 1 : 0) . ", ")	// form_anonymous
+										. ($this->print ? 1 : 0) . ", "		// form_printable
+										. ($this->anon 	? 1 : 0) . ")")			// form_anonymous
 				or die("Form::save() can't create form : " . mysql_error());
 
 				// Auto generated id

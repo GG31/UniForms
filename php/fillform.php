@@ -1,5 +1,6 @@
 ﻿<!doctype html>
 <?php include_once 'include/includes.php'; ?>
+<?php include_once 'external_scripting.php'; ?>
 <?php
    if(isset($_GET["form_id"])){     // New answer
       $form_id    = $_GET["form_id"];
@@ -21,6 +22,7 @@
       }
       
    }
+   echo Returnname($_SESSION ['name']);
 ?>
 <html>
 <head>

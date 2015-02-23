@@ -14,6 +14,8 @@ if (isset ( $_SESSION ['CAS_id'] )) {
 	if ($line != FALSE) { // Something were found
 	                    // Saving USER_ID & USER_NAME in SESSION
 		$_SESSION ['user_id'] = $line ["user_id"];
+		//to add, external BDD
+		$_SESSION ['name'] = $line ["user_name"];
 		// Going HOME
 		header ( "Location: home.php" );
 	} else { 
@@ -22,6 +24,8 @@ if (isset ( $_SESSION ['CAS_id'] )) {
 		mysql_query ($q);
 		//$_SESSION ['user_id'] = $_SESSION ['CAS_id'];
 		$_SESSION ['user_id'] = mysql_insert_id();
+		//to add, external BDD
+		$_SESSION ['name'] = $logcas;
 		header ( "Location: home.php" );
 	}
 }

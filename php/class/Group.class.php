@@ -34,7 +34,7 @@
 				if (!mysql_num_rows($query)){
 					die("Group::__construct() : elements not found !");
 				}else{
-					$this->elements = array ();
+					$this->elements = [];
 
 					while($results = mysql_fetch_array($query)){
 						$this->elements = new Element($results["formelement_id"]);

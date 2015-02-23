@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
   require_once('simpletest/autorun.php');
   require_once('../php/include/connect.php');
@@ -156,5 +156,10 @@
 		$this->assertEqual($form->getFormRecipients()[1]["User"], $u2);
 		$this->assertEqual($form->getFormRecipients()[2]["User"], $u3);
 	}	
+	
+	function testExport() {
+    	$Form = new Form(1);
+    	echo $Form->exportSQL();
+    }
   }
 ?>

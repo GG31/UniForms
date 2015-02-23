@@ -65,7 +65,8 @@ groupElementsDroppable = function() {
                
          });
          if (yes) {
-            $(this).append($('<div class="alert alert-warning alert-dismissible" role="alert" style="display: inline-block">  <button type="button" class="close btn btn-primary btn-lg" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span class="valueLabelElementsOfGroup">'+valueToPutIntoGroup+'</span><span class="valueIdElementsOfGroup">'+idToPutIntoGroup+'</span></div>'));
+            appendToGroup($(this), idToPutIntoGroup, valueToPutIntoGroup);
+            //$(this).append($('<div class="alert alert-warning alert-dismissible" role="alert" style="display: inline-block">  <button type="button" class="close btn btn-primary btn-lg" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span class="valueLabelElementsOfGroup">'+valueToPutIntoGroup+'</span><span class="valueIdElementsOfGroup">'+idToPutIntoGroup+'</span></div>'));
          }
          ui.draggable.draggable('option','revert',true);
          setTimeout(function () {
@@ -76,7 +77,7 @@ groupElementsDroppable = function() {
 };
 
 appendToGroup = function(group, id, value) {
-   group.append($('<div class="alert alert-warning alert-dismissible" role="alert" style="display: inline-block">  <button type="button" class="close btn btn-primary btn-lg" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span class="valueLabelElementsOfGroup">'+value+'</span><span class="valueIdElementsOfGroup">'+id+'</span></div>'));
+   group.append($('<div class="alert alert-warning alert-dismissible" role="alert" style="display: inline-block" id="alert_'+id+'">  <button type="button" class="close btn btn-primary btn-lg" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span class="valueLabelElementsOfGroup">'+value+'</span><span class="valueIdElementsOfGroup">'+id+'</span></div>'));
 }
 
 $('#panneau').droppable(
@@ -147,15 +148,11 @@ addElement = function(elementCodeId, posX, posY, idEl, idChild) {
    
    onhover();
    ondrag();
-   if(!elChild.is("fieldset")) {
+   if(!elChild.is("fieldset") && !elChild.is("span")) {
       resize(el);
    } else {
       registerWidthHeight(idChild, elChild.width(), elChild.height());
    }
-   /*if (posX + elementList[currentElement].width > $('#panneau').width()) {
-      posX = $('#panneau').width() - elementList[currentElement].width - 200;
-      el.css({left: posX + "px"});
-   }*/
    registerPos(idChild, posX, posY);
    ids = ids + 1;
 }
@@ -388,6 +385,7 @@ $('html').keyup(function(e){
    if(e.keyCode == 46 && (currentElement.split('_')[0] == 'child' || currentElement.split('_')[0] == 'elem')) {
       $('#'+currentElement).parent().remove();
       delete elementList[currentElement];
+      $('#alert_'+currentElement).remove();
    }
 });
 

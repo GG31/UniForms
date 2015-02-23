@@ -9,53 +9,6 @@
 		private $print;
 		private $anon;
 
-<<<<<<< HEAD
-	/**
-	 * State of the form 
-     * @access private
-     * @var boolean TRUE (validated) or FALSE(not validated yet)
-     */
-	private $state;
-	
-	/**
-	 * Form which can be filled by everybody 
-     * @access private
-     * @var boolean TRUE (anonymous) or FALSE(not anonymous)
-     */
-	private $anonymous;
-	
-	/**
-	 * Form which can be printed
-     * @access private
-     * @var boolean TRUE (printable) or FALSE(not printable)
-     */
-	private $printable;
-	
-	/**
-	 * The number of answer accepted by a recipient.
-     * @access private
-     * @var integer number of allowed answers
-     */
-	private $maxAnswers;
-	
-	/*
-	* A form group is a group of form elements and the recipients that can answer these elements.
-	* @access private
-	* @var FormGroup 
-	*/
-	private $formGroups = array();
-	
-	/**
-	 * Constructor
-	 * Create a form, if already exist, find the information on the database to fill the attributes
-	 * @param integer $idForm the id's form default -1
-	 */
-	public function __construct($idForm = -1) {
-		if ($idForm == - 1)
-			$this->state = FALSE;
-		else {
-			$this->id = $idForm;
-=======
 		public function __construct($id = NULL){
 			if($id !== NULL){
 				// Id
@@ -88,7 +41,6 @@
 					die("Form::__construct() : groups not found !");
 				}else{
 					$this->groups = [];
->>>>>>> L4Classes
 
 					while ($results = mysql_fetch_array($query)){
 						$this->groups[] = new Group($results["formgroup_id"]);
@@ -108,106 +60,6 @@
 				return $this;
 			}
 		}
-<<<<<<< HEAD
-	}
-	
-	/**
-	 * Give the form's id
-	 * @return integer
-	 */
-	public function getId() {
-		return $this->id;
-	}
-	
-	/**
-	 * Give the form's name
-	 * @return string
-	 */
-	public function getName() {
-		return $this->name;
-	}
-	
-	/**
-	 * Give the form's state
-	 * @return boolean TRUE (validated) or FALSE(not validated yet)
-	 */
-	public function getState() {
-		return $this->state;
-	}
-	
-	/**
-	 * Give the form's creator
-	 * @return User
-	 */
-	public function getCreator() {
-		return $this->creator;
-	}
-	
-	/**
-	 * Give the form's maxAnswers, the maximum of fill possibilities by one recipient
-	 * @return integer
-	 */
-	public function getMaxAnswers() {
-		return $this->maxAnswers;
-	}
-	
-	/**
-	 * Give all recipients of the form
-	 * @return array of User
-	 */
-	/*public function getRecipient() {
-		$recipients = array ();
-		foreach ( $this->listRecipient as $user )
-			if (! in_array ( $user ["User"], $recipients ))
-				array_push ( $recipients, $user ["User"] );
-		return $recipients;
-	}*/
-	
-	/**
-	 * Give printable variable
-	 * @return boolean true if printable, false if is not
-	 */
-	public function getPrintable() {
-		return $this->printable;
-	}
-	
-	/**
-	 * Give anonymous variable
-	 * @return boolean true if is anonymous, false if is not
-	 */
-	public function getAnonymous() {
-		return $this->anonymous;
-	}
-	
-	public function getFormGroups() {
-		return $this->formGroups;
-	}
-	
-	/**
-	 * Give all elements of the form
-	 * @return array of elements
-	 */
-	public function getFormElements() {
-		$res = [];
-		foreach ($this->formGroups as $group)
-			$res = array_merge($res, $group->getGroupElements()); // Union of arrays		
-		return $res;
-	}
-	
-	/**
-	 * Give the list of recipient who have the status of its answers equals to $state
-	 * @param array of integer $user_ids
-	 * @param integer $state. (default: -1) state of answers
-	 * @return array of User
-	 */
-	public function getFormRecipients($user_ids = [], $state = -1){
-		$res = [];
-		foreach ($this->formGroups as $group)
-			$res = array_merge($res, $group->getFormGroupRecipients($user_ids, $state)); // Union of arrays		
-		return $res;
-	}
-=======
->>>>>>> L4Classes
 
 		public function name($name = NULL){
 			// Get
@@ -232,12 +84,6 @@
 				return $this;
 			}
 		}
-<<<<<<< HEAD
-		
-		//For each group: insert group, insert elements, insert recipients.
-		foreach($this->formGroups as $indexGroup => $formGroup) {
-			$formGroup->save($this->id);
-=======
 
 		public function groups($groups = NULL){
 			// Get
@@ -249,7 +95,6 @@
 				$this->groups = $groups;
 				return $this;
 			}
->>>>>>> L4Classes
 		}
 
 		public function printable($print = NULL){

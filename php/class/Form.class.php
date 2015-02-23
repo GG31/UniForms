@@ -288,5 +288,58 @@ class Form {
 	public function setGroups($listGroup){
 		$this->formGroups = $listGroup;
 	}
+	
+	/**
+    * Returns a SQL script. This script generates a database and tables containing information related to all validated answers of this form.
+	* If the form is not validated returns 0.
+	* @return string
+    */	
+	public function exportSQL(){
+		if($this->state == FALSE or $this->id == NULL)
+			return 0;
+		
+		$DBName = 'form'.$this->getName();
+		$sql = 'SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";<br>
+				SET time_zone = "+00:00";<br>
+				CREATE DATABASE IF NOT EXISTS `'.$DBName.'` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;<br>
+				USE `'.$DBName.'`;<br><br>';
+				
+		$sql .=	"DROP TABLE IF EXISTS `formdest`;<br>
+				CREATE TABLE IF NOT EXISTS `formdest` (<br>
+				  `formdest_id` int(11) NOT NULL AUTO_INCREMENT,<br>
+				  `user_id` int(11) NOT NULL,<br>
+				  `formgroup_id` int(11) NOT NULL,<br>
+				  PRIMARY KEY (`formdest_id`),<br>
+				    KEY `fk_formdest_user1_idx` (`user_id`),<br>
+					KEY `fk_formdest_form1_idx` (`formgroup_id`)<br>
+				) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=944; <br>
+				<br>
+				DROP TABLE IF EXISTS `formgroup`;<br>
+				CREATE TABLE IF NOT EXISTS `formgroup` (<br>
+				  `formgroup_id` int(11) NOT NULL AUTO_INCREMENT,<br>
+				  `form_id` int(11) NOT NULL DEFAULT '0',<br>
+				  PRIMARY KEY (`formgroup_id`),<br>
+				  KEY `fk_form_formgroup` (`form_id`)<br>
+				) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=64 ;<br>
+				<br>
+				CREATE TABLE IF NOT EXISTS `elementanswer` (<br>
+				  `elementanswer_id` int(11) NOT NULL AUTO_INCREMENT,<br>
+				  `formelement_id` int(11) NOT NULL,<br>
+				  `formdest_id` int(11) NOT NULL,<br>
+				  PRIMARY KEY (`elementanswer_id`),<br>
+				  KEY `fk_formanswers_formlist1_idx` (`formelement_id`),<br>
+				  KEY `fk_formanswers_formdest1_idx` (`formdest_id`)<br>
+				) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;<br>
+				";
+	
+		foreach ($this->formGroups as $group){
+			$listReceivers = $group->getFormGroupRecipients([], 1);
+			foreach ($listReceivers as $receiver){
+				$sql .=	"INSERT INTO `formdest` VALUES(".$receiver["formDestId"].",".$receiver["User"]->getId().",".$group->getId().");<br>";
+			}
+		}
+		
+		return $sql;
+	}
 }
 ?>

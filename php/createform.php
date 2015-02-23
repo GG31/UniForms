@@ -227,7 +227,7 @@
 				<div id="navbarElements" class="nav navbar-nav navbar-right"> 
 				   <div class="panel panel-default" style="padding:10px">     
                   <div class="draggable" id="draggableLabel" draggable="true"><span>Label</span></div>
-                  <div class="draggable" id="draggableNumber" draggable="true"><span>Number</span></div>
+                  <div class="draggable" id="draggableNumber" draggable="true"><span>Nombre</span></div>
                   <div class="draggable" id="draggableDate" draggable="true"><span>Date</span></div>
                   <div class="draggable" id="draggableTime" draggable="true"><span>Heure</span></div>
                   <div class="draggable" id="draggableTextarea" draggable="true"><span>Paragraphe</span></div>

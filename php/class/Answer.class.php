@@ -2,6 +2,7 @@
 
 	Class Answer {
 		private $id;
+		private $prev;
 		private $state;
 		private $elementsValues;
 
@@ -10,7 +11,7 @@
 				// Id
 				$this->id = $id;
 
-				// State
+				// Prev, State
 				$query = mysql_query("	SELECT 	*
 										FROM 	answer
 										WHERE 	answer_id = " . $this->id);
@@ -20,12 +21,13 @@
 				}else{
 					$results = mysql_fetch_array($query);
 
-					$this->state = $results["answer_status"] == 1 ? TRUE : FALSE;
+					$this->prev 	= $results["answer_prev_id"] 	== 1 ? TRUE : FALSE;
+					$this->state 	= $results["answer_status"] 	== 1 ? TRUE : FALSE;
 				}
 
 				// ElementsValues
-				$query = mysql_query("	SELECT formelement_id, value 
-										FROM 			answervalue 
+				$query = mysql_query("	SELECT formelement_id, value
+										FROM 			answervalue
 												JOIN 	elementanswer
 												ON 		elementanswer.elementanswer_id = answervalue.elementanswer_id
 										WHERE 	elementanswer.answer_id = " . $this->id . "

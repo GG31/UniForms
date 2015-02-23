@@ -12,7 +12,7 @@ require_once_UniForms ( "class/User.class" );
 require_once_UniForms ( "class/Form.class" );
 require_once_UniForms ( "class/Answer.class" );
 require_once_UniForms ( "class/Element.class" );
-require_once_UniForms ( "class/FormGroup.class" );
+require_once_UniForms ( "class/Group.class" );
 
 require_once_UniForms ( "include/verify_access" );
 ?>

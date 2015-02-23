@@ -6,6 +6,7 @@
 		private $name;
 		private $state;
 		private $groups;
+		private $tree;
 		private $print;
 		private $anon;
 

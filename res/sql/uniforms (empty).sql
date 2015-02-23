@@ -97,6 +97,7 @@ CREATE TABLE IF NOT EXISTS `answer` (
   `answer_id` int(11) NOT NULL AUTO_INCREMENT,
   `answer_status` tinyint(1) DEFAULT '0',
   `formdest_id` int(11) NOT NULL,
+  `answer_prev_id` int(11) NOT NULL,
   PRIMARY KEY (`answer_id`),
   KEY `fk_answer_formdest_idx` (`formdest_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=938 ;

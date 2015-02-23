@@ -27,7 +27,7 @@
 
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown" role="button"><?php $user = new user($_SESSION["user_id"]); echo $user->getName();?> <span
+					data-toggle="dropdown" role="button"><?php $user = new user($_SESSION["user_id"]); echo $user->name();?> <span
 						class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 						<!--<li>

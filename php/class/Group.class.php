@@ -6,7 +6,6 @@
 		private $elements;
 		private $users;
 		private $answers;
-		// private $usersAnswers;
 
 		public function __construct($id = NULL){
 			if ($id !== NULL){

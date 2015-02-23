@@ -56,7 +56,8 @@
 		"height"		=> 9,
 		"min"			=> 0,
 		"max"			=> 0,
-		"y" 			=> 0
+		"y" 			=> 0,
+		"img" 			=> '0'
 	];
 	$elem0->attr($attributes, ["x" => 0 ]);
 	$elem1->attr($attributes, ["x" => 10]);
@@ -82,11 +83,11 @@
 	$group0->elements([$elem0, $elem1, $elem2]);
 
 	$group1->limit(0);
-	$group1->users([$user2, $user2, $user3]);
+	$group1->users([$user2, $user3, $user4]);
 	$group1->elements([$elem3, $elem4, $elem5]);
 
 	$group2->limit(0);
-	$group2->users([$user3, $user2, $user3]);
+	$group2->users([$user1, $user2, $user3]);
 	$group2->elements([$elem6, $elem7]);
 
 	// Set groups to form

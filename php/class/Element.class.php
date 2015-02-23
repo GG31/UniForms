@@ -9,6 +9,10 @@
 	define("ELEMENT_MULTIPLE"	, 6);
 	define("ELEMENT_UNIQUE"		, 7);
 	define("ELEMENT_AREA"		, 8);
+	define("ELEMENT_SPAN"		, 9);
+	define("ELEMENT_SQUARE"		, 10);
+	define("ELEMENT_CIRCLE"		, 11);
+	define("ELEMENT_IMG"		, 12);
 	
 	Class Element {
 		private $id;
@@ -26,6 +30,7 @@
 		private $big;
 		private $direction;
 		private $options;
+		private $img;
 
 		public function __construct($id = NULL){
 			if ($id !== NULL){
@@ -55,6 +60,7 @@
 					$this->required 	= $results["required"] 	== 1 ? TRUE : FALSE;
 					$this->big 			= $results["isbiglist"] == 1 ? TRUE : FALSE;
 					$this->direction 	= $results["direction"] == 1 ? TRUE : FALSE;
+					$this->img 			= $results["img"];
 				}
 				
 				// Options
@@ -97,7 +103,8 @@
 					"required" 			=> $this->required,
 					"big" 				=> $this->big,
 					"direction" 		=> $this->direction,
-					"options" 			=> $this->options
+					"options" 			=> $this->options,
+					"img" 				=> $this->img
 				];
 			}
 			// Set
@@ -124,6 +131,7 @@
 				if(isset($attr["big"]))				$this->big 			= $attr["big"];
 				if(isset($attr["direction"]))		$this->direction 	= $attr["direction"];
 				if(isset($attr["options"]))			$this->options 		= $attr["options"];
+				if(isset($attr["img"]))				$this->img 			= $attr["img"];
 
 				return $this;
 			}
@@ -145,7 +153,8 @@
 										max_value,
 										required,
 										isbiglist,
-										direction)
+										direction,
+										img)
 								VALUES ("
 									. 		$groupId 					. ","	// formgroup_id
 									. 		$this->type 				. ","	// type_this
@@ -160,7 +169,8 @@
 									. 		$this->max 					. ","	// max_value
 									. 	   ($this->required ? 1 : 0) 	. ","	// required
 									. 	   ($this->big 		? 1 : 0) 	. ","	// isbiglist
-									.	   ($this->direction? 1 : 0)	. ")")	// direction
+									.	   ($this->direction? 1 : 0)	. ","	// direction
+									.		$this->img 					. ")")	// img
 			or die("Element::save() can't save element : " . mysql_error());
 			
 			// Auto generated id

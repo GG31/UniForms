@@ -11,43 +11,7 @@
 	$form = new Form($formId);
 
 	// l($form);
-	$groups = $form->groups();
-
-	foreach($groups as $groupNum => $group){
-		$answers = $group->answers();
-
-		echo "groupNum ";
-		echo $groupNum;
-		echo "<br>";
-		echo "groupLim ";
-		$limit = $group->limit();
-		echo $limit;
-		echo "<br>--------------------<br>";
-
-		foreach($answers as $uId => $answers){
-			echo "userId ";
-			echo $uId;
-			echo "<br>";
-			echo "count ";
-			$count = count($answers);
-			echo $count;
-			echo "<br>";
-			if($limit == 0){
-				echo "Infiny!<br>";
-			}else{
-				echo "Remaining : " . ($limit - $count) . "<br>";
-			}
-			echo "<br>";
-			l($answers);
-			echo "<br>";
-			if($uId == $userId){
-				echo "C'est moi !";
-				echo "<br>";
-			}
-		}
-	}
-
-
+	$form->algo();
 
 	function l($obj){
 		if(is_array($obj)){

@@ -141,6 +141,7 @@ CREATE TABLE IF NOT EXISTS `formelement` (
   `max_value` int(11) DEFAULT NULL,
   `min_value` int(11) DEFAULT NULL,
   `label` varchar(255) DEFAULT NULL,
+  `img` mediumtext,
   PRIMARY KEY (`formelement_id`),
   KEY `fk_formlist_form1_idx` (`formgroup_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=58 ;

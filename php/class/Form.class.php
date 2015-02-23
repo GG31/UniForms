@@ -6,7 +6,6 @@
 		private $name;
 		private $state;
 		private $groups;
-		private $tree;
 		private $print;
 		private $anon;
 
@@ -47,6 +46,18 @@
 						$this->groups[] = new Group($results["formgroup_id"]);
 					}
 				}
+			}
+		}
+
+		public function id($id = NULL){
+			// Get
+			if($id === NULL){
+				return $this->id;
+			}
+			// Set
+			else{
+				$this->id = $id;
+				return $this;
 			}
 		}
 
@@ -119,6 +130,23 @@
 			else{
 				$this->anon = $anon;
 				return $this;
+			}
+		}
+
+		public function algo(){
+			foreach ($this->groups as $groupNum => $group) {
+				echo "NUM<br>";
+				echo $groupNum;
+				echo "<br>";
+
+				$users = $group->answers();
+
+				foreach ($users as $userID => $answers) {
+					
+					echo "USR<br>";
+					echo $userID;
+					echo "<br>";
+				}
 			}
 		}
 

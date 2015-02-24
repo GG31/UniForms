@@ -273,6 +273,27 @@
 			
 			return $sql;
 		}
+		
+		public function getAnswerableFormGroups(){
+			$return = [];
+			$paths = [];
+			$paths[] = array(0);
+			foreach ($this->groups as $group) {
+				if (in_array($_SESSION["user_id"]), $group->users())
+					foreach ($paths as $onepath)
+						$return[] = array("groupId" => $group->id(), "path" => $onepath);
+				$atLeastOneValidated = FALSE;
+				foreach ($group->answers as $answer)
+					if (answer->state() == TRUE){
+						$atLeastOneValidated = TRUE;	
+						foreach ($paths as $indexpath => $onepath)
+							$paths[$indexpath] = array_push($onepath, answer->id());
+					}
+				if (!atLeastOneValidated)
+					break;
+			}
+			return $return;
+		}
 	}
 
 ?>

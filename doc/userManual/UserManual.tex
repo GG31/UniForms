@@ -1,0 +1,141 @@
+\documentclass[a4paper,11pt,final]{report}
+\usepackage[utf8]{inputenc} % Prendre en compte les caractères accentués
+\usepackage[francais]{babel} % Prendre en compte les particularités de la typographie française.
+\usepackage{geometry}         % marges
+\usepackage{graphicx}         % images
+\usepackage{setspace}
+\usepackage[french]{varioref}
+\usepackage{titlesec}  %titlespacing
+\usepackage{caption}
+
+\titlespacing{\chapter}{0pt}{*-5}{*5}
+\titlespacing{\section}{0pt}{*2}{*2}
+\titleformat{\chapter}[hang]{\bf\huge}{\thechapter}{2pc}{}
+%\titleformat{\chapter}[hang]{\bf\huge}{\thechapter}{14pt}{\LARGE}
+\renewcommand{\baselinestretch}{1.2}
+\setlength{\parskip}{1.5ex plus .4ex minus .4ex}
+\setlength{\parindent}{15pt} 
+%\setlength{\topmargin}{-35pt}
+%\setlength{\textheight}{600pt}
+
+
+\title{\textbf{Manuel d'utilisation}\\E-Formulaire}
+\author{}
+\date{}
+\begin{document}
+
+\maketitle
+\setcounter{page}{2}
+\tableofcontents 
+%Se mettre au niveau d'un non informaticien
+%Expliquer les enchainements de fenêtre, erreurs
+%FAQ
+\chapter{Généralités}
+\section{But de l'application}
+Uniforms a pour but de fournir une plateforme de gestion de formulaires. C'est-à-dire, proposer des fonctionnalités de création et de soumission de formulaires ainsi que la possibilité de répondre à ces derniers et de consulter les réponses par le créateur du formulaire.
+
+\section{Public visé}
+Ce manuel est destiné aux personnes désirant créer un formulaire, le soumettre à une ou plusieurs personnes et consulter les réponses faites par les destinataires, mais aussi aux personnes répondant aux formulaires envoyés.
+
+\section{Installation}
+
+\section{Support technique}
+
+\chapter{Fenêtre principale}
+\section{Authentification}
+La première page affichée est celle de l'authentification, que l'on peut voir figure~\ref{authentificationChoix}, elle en propose deux types : CAS (pour les utilisateurs disposants d'un identificant CAS commençant par les initiales du nom et prénom puis du numéro étudiant) ou autres utilisateurs.\\
+%\includegraphics[width=.7\paperwidth]{images/authentification.png}\label{fig:ArgSimple}
+\noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=150mm]{images/authentification.png}}
+\captionof{figure}{Page de choix d'authentification}\label{authentificationChoix}
+\end{minipage}
+
+Pour accéder à la page d'authentification, il suffit de cliquer sur ``Utilisateurs CAS'' ou ``Autres utilisateurs''
+\subsection{Utilisateur CAS}
+Une fois choisi l'authentification CAS, la page figure~\ref{authentificationCAS} s'affiche.\\
+Dans le champs ``Identification'', mettre votre identifiant (ex : dj209832, pour Jean Dupont ayant pour numéro étudiant 209832).\\
+Entrer le mot de passe puis cliquer sur ``SE CONNECTER''. Si l'authentification échoue, une alerte ``Mauvais identifiant / mot de passe'' apparaitra pour vous en informer. Si elle réussit, la page d'accueil, figure~\ref{pageAccueil}, s'affichera. 
+
+\noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=150mm]{images/authCAS.png}}
+\captionof{figure}{Authentification CAS}\label{authentificationCAS}
+\end{minipage}
+\subsection{Autres utilisateurs}
+
+\section{Page d'accueil}
+Après authentification, la page figure~\ref{pageAccueil} s'affiche. On peut noter trois zones principales, une barre d'option, une zone de formulaires créés, une zone de formulaires à répondre.\\
+\noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=190mm]{images/pageAccueil.png}}
+\captionof{figure}{Page d'accueil}\label{pageAccueil}
+\end{minipage}
+
+\subsection{La barre d'options}
+La barre d'options figure~\ref{barreOptions} propose divers boutons : ``Uniforms'', ``Créer un formulaire'', ``Mes Archives'' et ``Ayoub''. Les actions au clique de ces boutons sont les suivantes :
+\begin{description}
+	\item Uniform : Retour à la page d'accueil
+	\item Créer un formulaire : Redirection vers la page de création d'un nouveau formulaire
+	\item Mes archives : Redirection vers les formulaires archivés
+	\item Ayoub : Identifiant de la personne dont la session est ouverte, au clique l'option ``Logout'' s'affiche pour la déconnection.
+\end{description}
+
+\noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=140mm]{images/barreOptionsAccueil.png}}
+\captionof{figure}{Barre d'options}\label{barreOptions}
+\end{minipage}
+
+\subsection{Zone de formulaires créés}
+La zone de formulaires créés liste l'ensemble des formulaires créés par l'utilisateur courant, les validés et non validés, figure~\ref{zoneFormCree}.\\
+Un formulaire validé ou non peut être supprimé en cliquant sur la corbeille de la colonne ``Supprimer'' correspondante.
+
+\noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=140mm]{images/zoneFormulairesCreesAccueil.png}}
+\captionof{figure}{Liste des formulaires créés}\label{zoneFormCree}
+\end{minipage}
+
+\subsubsection{Les formulaires validés}
+Les formulaires validés ne peuvent plus être modifié, ils ont été envoyés aux destinataires. Les seules actions possibles sur ces formulaires sont ``Voir résultats'' qui montre les réponses du formulaire qui ont déjà été faites par les destinataires et ``Supprimer''. On peut également obtenir l'url en cliquant sur le bouton ``URL'' de ce formulaire afin de l'envoyer par mail à un destinataire.
+
+\noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=40mm]{images/urlForm.png}}
+\captionof{figure}{URL d'un formulaire validé}\label{urlForm}
+\end{minipage}
+
+\subsubsection{Les formulaires non validés}
+Les formulaires non validés n'ont pas encore été envoyés aux destinataires, ils peuvent donc être modifiés en cliquant sur le lien ``Modifier'' de la ligne du formulaire souhaité. Cette action mènera à la page ...???
+
+\subsection{Zone de formulaires reçus}
+Dans cette zone figure~\ref{zoneFormRecu} est listé l'ensemble des formulaires dont l'utilisateur courant est destinataire, c'est-à-dire ceux pour lesquels il doit répondre.\\
+La liste des réponses en cours sont en bleus. Certains formulaires autorisent plusieurs réponses, c'est pourquoi on verra les lignes ``Réponse\string:0'', ``Réponse\string:1'', ``Réponse\string:2'' figure~\ref{zoneFormRecu} lorsque celles-ci sont initiés mais non validées.\\
+Lorsque toutes les réponses autorisées ne sont pas initiées et/ou envoyées, le nombre restant est indiqué en vert, par exemple le formulaire 6 figure~\ref{zoneFormRecu} autorise 2 réponses en plus de celle initiée ``Réponse\string:0'' de la ligne juste en dessous.\\
+Une fois toutes les réponses envoyés, seule la ligne du formulaire est présente, par exemple le formulaire 5 de la figure figure~\ref{zoneFormRecu}.\\
+
+Les liens ``Modifier'' permettent la modification d'une réponse déjà commencée. Le lien ``Nouvelle réponse'' permet de commencer une réponse à un formulaire.
+
+\noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=150mm]{images/zoneDestinataire.png}}
+\captionof{figure}{Zone de formualaires reçus}\label{zoneFormRecu}
+\end{minipage}
+
+\chapter{Création}
+\section{Créer un formulaire}
+\section{Modifier un formulaire}
+\section{Consulter les réponses d'un formulaire}
+
+\chapter{Répondre}
+\section{Les formulaires dont je suis destinataires}
+\section{Répondre à un formulaire}
+\section{Modifier ma réponse}
+
+
+\chapter{FAQ}
+\section{Où sont les formulaires auxquels je peux répondre ?}
+\section{Puis-je modifier la réponse d'un formulaire validée ?}
+
+\end{document}

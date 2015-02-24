@@ -318,7 +318,7 @@
 			
 			return $sql;
 		}
-		
+		/*
 		public function getAnswerableFormGroups($userId){
 			$return = [];
 			$paths = [];
@@ -328,17 +328,22 @@
 					foreach ($paths as $onepath)
 						$return[] = array("groupId" => $group->id(), "path" => $onepath);
 				$atLeastOneValidated = FALSE;
-				foreach ($group->answers as $answer)
-					if ($answer->state() == TRUE){
-						$atLeastOneValidated = TRUE;	
-						foreach ($paths as $indexpath => $onepath)
-							$paths[$indexpath] = array_push($onepath, $answer->id());
-					}
+				foreach ($group->answers() as $answerArray){
+					foreach ($answerArray as $answer)
+						if ($answer->state() == TRUE){
+							$atLeastOneValidated = TRUE;	
+							foreach ($paths as $indexpath => $onepath){
+								array_push($onepath, $answer->id());
+								$paths[$indexpath] = $onepath;
+							}
+						}
+				}
 				if (!$atLeastOneValidated)
 					break;
 			}
 			return $return;
 		}
+		*/
 
 	}
 

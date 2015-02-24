@@ -162,10 +162,10 @@
     	echo $Form->exportSQL();
     }*/
 	
-	function testGetAnswer() {
+	/*function testGetAnswer() {
     	$Form = new Form(1);
     	$result = $Form->getAnswerableFormGroups(1);
 		var_dump($result);
-    }
+    }*/
   }
 ?>

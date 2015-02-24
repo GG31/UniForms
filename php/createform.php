@@ -197,6 +197,7 @@
                    			  <span id="listdest"></span>
 	                    	</div>
 						</div>
+						
 						<!-- ======================CE QU'A ETE AVANT===================== -->
 						<!-- <div id="dest" class="panel-body" style="<?php //echo $destStyle ?>">
 							<div class="form-group"> -->
@@ -226,6 +227,7 @@
 	                    	<!-- </div>
 						 </div>-->
 						<!-- =========================================== -->
+						
 					</div>
 				</div></div>
 				

@@ -133,17 +133,19 @@
 			}
 		}
 
-		public function algo($userId){
+		public function tree($userId){
 			$ret = [];
 
 			// Find groups in which the user belongs
 			$whichGroups = $this->whichGroups($userId);
 			$whichLength = count($whichGroups);
-			echo print_r($whichGroups) . "<br>";
 
 			// For each group, find validated answers in previous groups
 			for($i = 0; $i < $whichLength; $i++){
 				$g = $whichGroups[$i];
+				// echo "GROUPNUM :<br>";
+				// echo $g;
+				// echo "<br>";
 				$group = $this->groups[$g];
 
 				$ret[$i] = [];
@@ -155,6 +157,10 @@
 				}else{
 					$prevGroup = $this->groups[$g - 1];
 					$valid = $prevGroup->validAnswers(); // Valid set
+					// echo "VALIDSET :<br>";
+					// echo "<pre>";
+					// print_r($valid);
+					// echo "</pre>";
 
 					// For each answers in the valid set, find if user answered
 					foreach($valid as $validAnswers){

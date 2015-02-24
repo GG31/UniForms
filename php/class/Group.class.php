@@ -128,7 +128,7 @@
 
 				foreach($answers as $answer){
 					if($answer->state()){
-						$ret[$userId][] = $answer->id();
+						$ret[$userId][] = $answer;
 					}
 				}
 			}

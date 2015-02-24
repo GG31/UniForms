@@ -78,6 +78,18 @@
 			}
 		}
 
+		public function prev($prev = NULL){
+			// Get
+			if($prev === NULL){
+				return $this->prev;
+			}
+			// Set
+			else{
+				$this->prev = $prev;
+				return $this;
+			}
+		}
+
 		public function elementsValues($elementsValues = NULL){
 			// Get
 			if($elementsValues === NULL){

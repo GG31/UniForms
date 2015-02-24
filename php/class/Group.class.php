@@ -123,10 +123,13 @@
 		public function validAnswers(){
 			$ret = [];
 
-			foreach ($this->answers as $userId => $answers) {
-				foreach ($answers as $answer) {
-					if($answer->state())
-						$ret[] = $answer->id();
+			foreach($this->answers as $userId => $answers){
+				$ret[$userId] = [];
+
+				foreach($answers as $answer){
+					if($answer->state()){
+						$ret[$userId][] = $answer->id();
+					}
 				}
 			}
 

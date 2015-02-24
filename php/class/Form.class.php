@@ -134,30 +134,69 @@
 		}
 
 		public function algo($userId){
-			$prevs = [];
+			$ret = [];
 
-			foreach ($this->groups as $group) {
-				$users = $group->answers();
-				$prevs = $group->validAnswers();
+			// Find groups in which the user belongs
+			$whichGroups = $this->whichGroups($userId);
+			$whichLength = count($whichGroups);
+			echo print_r($whichGroups) . "<br>";
 
-				foreach ($users as $uId => $answers) {
+			// For each group, find validated answers in previous groups
+			for($i = 0; $i < $whichLength; $i++){
+				$g = $whichGroups[$i];
+				$group = $this->groups[$g];
 
-					if($uId == $userId){
-						foreach ($answers as $answer) {
+				$ret[$i] = [];
+				$answers = $group->answers()[$userId];
 
+				// If first group, consider every user's answers
+				if($g == 0){
+					$ret[$i][0] = $answers;
+				}else{
+					$prevGroup = $this->groups[$g - 1];
+					$valid = $prevGroup->validAnswers(); // Valid set
+
+					// For each answers in the valid set, find if user answered
+					foreach($valid as $validAnswers){
+						foreach($validAnswers as $validAnswer){
+							$ret[$i][$validAnswer->id()] = [];
+
+							foreach($answers as $key => $answer){
+								if($answer->prev() == $validAnswer->id()){
+									$ret[$i][$validAnswer->id()][] = $answer;
+									unset($answers[$key]);
+								}
+							}
 						}
+					}
+				}
+
+				// Now $ret[$i] contains : ["prevAnsId" => [$ans0, $ans1, ...], ...]
+				// Find out if limit is reached
+				$lim = $group->limit();
+				foreach($ret[$i] as $prevAnsId => $ans){
+					if($lim > 0){
+						$left = $lim - count($ans);
+						$ret[$i][$prevAnsId]["left"] = $left;
+					}else{
+						$ret[$i][$prevAnsId]["left"] = -1;
 					}
 				}
 			}
 
-			// POUR tout les groupes auxquels j'appartient
-			// 		SI personne dans le groupe d'avant n'a validé
-			// 		ALORS RETURN FALSE !
-			// 		
-			// 		POUR toutes mes réponse
-			// 			SI mon prev a validé
-			// 			SI 		j'ai pas répondu
-			// 			ALORS 	j'ai  le 
+			return $ret;
+		}
+
+		public function whichGroups($userId){
+			$ret = [];
+
+			foreach($this->groups as $groupNum => $group){
+				if(array_key_exists($userId, $group->answers())){
+					$ret[] = $groupNum;
+				}
+			}
+
+			return $ret;
 		}
 
 		public function save() {
@@ -272,27 +311,6 @@
 			}
 			
 			return $sql;
-		}
-		
-		public function getAnswerableFormGroups(){
-			$return = [];
-			$paths = [];
-			$paths[] = array(0);
-			foreach ($this->groups as $group) {
-				if (in_array($_SESSION["user_id"]), $group->users())
-					foreach ($paths as $onepath)
-						$return[] = array("groupId" => $group->id(), "path" => $onepath);
-				$atLeastOneValidated = FALSE;
-				foreach ($group->answers as $answer)
-					if (answer->state() == TRUE){
-						$atLeastOneValidated = TRUE;	
-						foreach ($paths as $indexpath => $onepath)
-							$paths[$indexpath] = array_push($onepath, answer->id());
-					}
-				if (!atLeastOneValidated)
-					break;
-			}
-			return $return;
 		}
 	}
 

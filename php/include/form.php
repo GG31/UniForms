@@ -11,7 +11,7 @@
 	$form = new Form($formId);
 
 	// l($form);
-	$form->algo();
+	$form->algo($userId);
 
 	function l($obj){
 		if(is_array($obj)){

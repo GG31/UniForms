@@ -133,21 +133,76 @@
 			}
 		}
 
-		public function algo(){
-			foreach ($this->groups as $groupNum => $group) {
-				echo "NUM<br>";
-				echo $groupNum;
-				echo "<br>";
+		public function tree($userId){
+			$ret = [];
 
-				$users = $group->answers();
+			// Find groups in which the user belongs
+			$whichGroups = $this->whichGroups($userId);
+			$whichLength = count($whichGroups);
 
-				foreach ($users as $userID => $answers) {
-					
-					echo "USR<br>";
-					echo $userID;
-					echo "<br>";
+			// For each group, find validated answers in previous groups
+			for($i = 0; $i < $whichLength; $i++){
+				$g = $whichGroups[$i];
+				// echo "GROUPNUM :<br>";
+				// echo $g;
+				// echo "<br>";
+				$group = $this->groups[$g];
+
+				$ret[$i] = [];
+				$answers = $group->answers()[$userId];
+
+				// If first group, consider every user's answers
+				if($g == 0){
+					$ret[$i][0] = $answers;
+				}else{
+					$prevGroup = $this->groups[$g - 1];
+					$valid = $prevGroup->validAnswers(); // Valid set
+					// echo "VALIDSET :<br>";
+					// echo "<pre>";
+					// print_r($valid);
+					// echo "</pre>";
+
+					// For each answers in the valid set, find if user answered
+					foreach($valid as $validAnswers){
+						foreach($validAnswers as $validAnswer){
+							$ret[$i][$validAnswer->id()] = [];
+
+							foreach($answers as $key => $answer){
+								if($answer->prev() == $validAnswer->id()){
+									$ret[$i][$validAnswer->id()][] = $answer;
+									unset($answers[$key]);
+								}
+							}
+						}
+					}
+				}
+
+				// Now $ret[$i] contains : ["prevAnsId" => [$ans0, $ans1, ...], ...]
+				// Find out if limit is reached
+				$lim = $group->limit();
+				foreach($ret[$i] as $prevAnsId => $ans){
+					if($lim > 0){
+						$left = $lim - count($ans);
+						$ret[$i][$prevAnsId]["left"] = $left;
+					}else{
+						$ret[$i][$prevAnsId]["left"] = -1;
+					}
 				}
 			}
+
+			return $ret;
+		}
+
+		public function whichGroups($userId){
+			$ret = [];
+
+			foreach($this->groups as $groupNum => $group){
+				if(array_key_exists($userId, $group->answers())){
+					$ret[] = $groupNum;
+				}
+			}
+
+			return $ret;
 		}
 
 		public function save() {
@@ -284,6 +339,7 @@
 			}
 			return $return;
 		}
+
 	}
 
 ?>

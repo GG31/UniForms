@@ -132,6 +132,22 @@
 			}
 		}
 
+		public function validAnswers(){
+			$ret = [];
+
+			foreach($this->answers as $userId => $answers){
+				$ret[$userId] = [];
+
+				foreach($answers as $answer){
+					if($answer->state()){
+						$ret[$userId][] = $answer;
+					}
+				}
+			}
+
+			return $ret;
+		}
+
 		public function save($formId){
 			// Insert group
 			mysql_query("INSERT INTO formgroup(

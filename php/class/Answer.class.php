@@ -21,7 +21,7 @@
 				}else{
 					$results = mysql_fetch_array($query);
 
-					$this->prev 	= $results["answer_prev_id"] 	== 1 ? TRUE : FALSE;
+					$this->prev 	= $results["answer_prev_id"];
 					$this->state 	= $results["answer_status"] 	== 1 ? TRUE : FALSE;
 				}
 
@@ -34,7 +34,9 @@
 										ORDER BY formelement_id");
 				
 				if (!mysql_num_rows($query)){
-					die("Answer::__construct() : values not found !");
+					// TODO uncomment
+					// or make it silent, dunno
+					// die("Answer::__construct() : values not found !");
 				}else{
 					$this->elementsValues = [];
 
@@ -66,6 +68,18 @@
 			}
 		}
 
+		public function id($id = NULL){
+			// Get
+			if($id === NULL){
+				return $this->id;
+			}
+			// Set
+			else{
+				$this->id = $id;
+				return $this;
+			}
+		}
+
 		public function state($state = NULL){
 			// Get
 			if($state === NULL){
@@ -74,6 +88,18 @@
 			// Set
 			else{
 				$this->state = $state;
+				return $this;
+			}
+		}
+
+		public function prev($prev = NULL){
+			// Get
+			if($prev === NULL){
+				return $this->prev;
+			}
+			// Set
+			else{
+				$this->prev = $prev;
 				return $this;
 			}
 		}

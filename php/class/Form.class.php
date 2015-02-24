@@ -264,22 +264,22 @@
 			return $sql;
 		}
 		
-		public function getAnswerableFormGroups(){
+		public function getAnswerableFormGroups($userId){
 			$return = [];
 			$paths = [];
 			$paths[] = array(0);
 			foreach ($this->groups as $group) {
-				if (in_array($_SESSION["user_id"]), $group->users())
+				if (in_array(new User($userId), $group->users()))
 					foreach ($paths as $onepath)
 						$return[] = array("groupId" => $group->id(), "path" => $onepath);
 				$atLeastOneValidated = FALSE;
 				foreach ($group->answers as $answer)
-					if (answer->state() == TRUE){
+					if ($answer->state() == TRUE){
 						$atLeastOneValidated = TRUE;	
 						foreach ($paths as $indexpath => $onepath)
-							$paths[$indexpath] = array_push($onepath, answer->id());
+							$paths[$indexpath] = array_push($onepath, $answer->id());
 					}
-				if (!atLeastOneValidated)
+				if (!$atLeastOneValidated)
 					break;
 			}
 			return $return;

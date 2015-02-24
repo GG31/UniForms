@@ -7,11 +7,11 @@
   require_once('../php/class/User.class.php');
   require_once('../php/class/Answer.class.php');
   require_once('../php/class/Element.class.php');
-  require_once('../php/class/FormGroup.class.php');
+  require_once('../php/class/Group.class.php');
 
   class TestOfFormClass extends UnitTestCase {
   	
-  	function setUp(){
+  	/*function setUp(){
   		$Form = new Form(1);
   	}
   	
@@ -160,6 +160,12 @@
 	function testExport() {
     	$Form = new Form(1);
     	echo $Form->exportSQL();
+    }*/
+	
+	function testGetAnswer() {
+    	$Form = new Form(1);
+    	$result = $Form->getAnswerableFormGroups(1);
+		var_dump($result);
     }
   }
 ?>

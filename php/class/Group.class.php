@@ -71,7 +71,19 @@
 				}
 			}
 		}
-
+		
+		public function id($id = NULL){
+			// Get
+			if($id === NULL){
+				return $this->id;
+			}
+			// Set
+			else{
+				$this->id = $id;
+				return $this;
+			}
+		}
+		
 		public function limit($limit = NULL){
 			// Get
 			if($limit === NULL){

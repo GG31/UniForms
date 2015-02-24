@@ -36,7 +36,7 @@
 					$this->elements = [];
 
 					while($results = mysql_fetch_array($query)){
-						$this->elements = new Element($results["formelement_id"]);
+						$this->elements[] = new Element($results["formelement_id"]);
 					}
 				}
 

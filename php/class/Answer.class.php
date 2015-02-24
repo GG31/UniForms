@@ -47,7 +47,7 @@
 					$values[] 	= $results["value"];
 
 					while($results = mysql_fetch_array($query)){
-						if($results["formdest_id"] == $elementId){
+						if($results["formelement_id"] == $elementId){
 							$values[] = $results["value"];
 						}else{
 							$this->elementsValues[] = [

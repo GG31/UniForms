@@ -35,7 +35,7 @@
 Uniforms a pour but de fournir une plateforme de gestion de formulaires. C'est-à-dire, proposer des fonctionnalités de création et de soumission de formulaires ainsi que la possibilité de répondre à ces derniers et de consulter les réponses par le créateur du formulaire.
 
 \section{Public visé}
-Ce manuel est destiné aux personnes désirant créer un formulaire, le soumettre à une ou plusieurs personnes et consulter les réponses faites par les destinataires, mais aussi aux personnes répondant aux formulaires envoyés.
+Ce manuel est destiné aux personnes désirant créer un formulaire, le soumettre à une ou plusieurs personnes et consulter les réponses faites par les destinataires, mais aussi aux personnes répondant aux formulaires envoyés par l'intermédiaire de la plateforme uniforms.
 
 \section{Installation}
 
@@ -124,9 +124,10 @@ Les liens ``Modifier'' permettent la modification d'une réponse déjà commenc�
 \end{minipage}
 
 \chapter{Création}
-\section{Créer un formulaire}
+\section{Créer un formulaire}\label{CreerFormulaire}
 Pour créer un formulaire, la première étape est de cliquer sur le bouton ``Créer un formulaire'' de la barre d'options, voir figure~\ref{barreOptions}. Ensuite la page de création, figure~\ref{pageCreation}, s'affiche.\\
-On peut distinguer plusieurs zones. On retrouve tout d'abord la barre d'option vu section~\ref{sec:barreOption}, puis une zone de ``Paramètre'', une zone de ``Destinataires'', une zone avec une page quadriée puis sur les cotés, une zone de ``Groupe'' à gauche et une zone d'éléments à droite.
+On peut distinguer plusieurs zones. On retrouve tout d'abord la barre d'option vu section~\ref{sec:barreOption}, puis une zone de ``Paramètre'', une zone de ``Destinataires'', une zone avec une page quadriée puis sur les cotés, une zone de ``Groupe'' à gauche et une zone d'éléments à droite.\\
+Tout en bas de cette page, deux boutons ``Enregistrer'' et ``Valider'', permettant respectivement d'enregistrer un formulaire (afin de pouvoir le modifier par la suite) et de valider un formulaire, ce dernier sera alors envoyé aux destinataires, aucune modification ne sera permise.
 
 \noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
 \makebox[\linewidth]{%        to center the image
@@ -193,18 +194,45 @@ Pour supprimer un élément, il suffit de sélectionner l'élément, il doit app
 La page quadriée est la zone du formulaire, les éléments y sont placés. La hauteur et la largeur de cette zone est celle d'une page A4, la délimitation entre deux pages différente est marquée par trait noir horizontal.\\
 Lors de l'ajout d'élément, si un élément est placé bas dans la page, la zone s'aggrandit automatiquement de la hauteur d'une page A4. 
 
-
 \section{Modifier un formulaire}
+Pour modifier un formulaire, il faut tout d'abord cliquer sur ``Modifier'' du formulaire que l'on souhaite modifier sur la page d'accueil, ce qui ouvrira la page de création de formulaire vue section~\ref{CreerFormulaire}. Cette page est remplie par les éléments, destinataires et paramètres enregistrés précédemment. Vous pouvez alors modifier ce que vous souhaitez, le ré-enregistrer ou le valider.
+
+
 \section{Consulter les réponses d'un formulaire}
 
 \chapter{Répondre}
-\section{Les formulaires dont je suis destinataires}
 \section{Répondre à un formulaire}
+
 \section{Modifier ma réponse}
 
 
 \chapter{FAQ}
 \section{Où sont les formulaires auxquels je peux répondre ?}
 \section{Puis-je modifier la réponse d'un formulaire validée ?}
+
+\chapter{Annexe}
+\section{Description des éléments}
+\subsection{Label}
+Si vous souhaitez placer du texte dans le formulaire, mettez un label, puis remplissez la valeur ``Value'' des paramètres par le texte désiré.
+\subsection{Nombre}
+Si vous souhaitez mettre un champs d'entrée que le destinataire devra remplir par un nombre, mettez un champs nombre. Vous pouvez paramétrer le nombre minimum et maximum que les destinataires seront autorisés à remplir.
+\subsection{Date}
+Pour un champs de date.
+\subsection{Heure}
+Pour un champs de heure.
+\subsection{Paragraphe}
+Si vous souhaitez proposer aux destinataires un champs plus large pour écrire un paragraphe.
+\subsection{Input Text}
+Si vous souhaitez proposer aux destinataires un champs de texte court.
+\subsection{Boutons radios}
+Si vous souhaitez proposer aux destinataires plusieurs choix mais qu'il ne puisse en selectionner qu'un, mettez des boutons radios. Après son placement sur la page quadrillée, un bouton ``+'' apparaitra dans la zone de paramétrage des éléments. Cliquez sur ``+'' pour pouvoir ajouter des valeurs. Cliquez sur ``-'' pour en éliminer.
+\subsection{Checkbox}
+Les checkbox fonctionne comme les boutons radios sauf que les destinataires pourront sélectionner plusieurs réponses au lieu d'une unique.
+\subsection{Carré}
+Si vous souhaitez placer un carré redimensionnable par la suite en rectangle de n'importe quelle taille.
+\subsection{Cercle}
+Si vous souhaitez placer un cercle redimensionnable par la suite en ovale de n'importe quelle taille.
+\subsection{Image}
+Si vous souhaitez insérer une image dans le formulaire, drag'n'droppez ``Image'' puis cliquez sur ``Browse'', sélectionnez enfin l'image voulu. Elle s'affichera dans le formulaire.
 
 \end{document}

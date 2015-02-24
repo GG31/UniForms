@@ -72,13 +72,13 @@ Après authentification, la page figure~\ref{pageAccueil} s'affiche. On peut not
 \captionof{figure}{Page d'accueil}\label{pageAccueil}
 \end{minipage}
 
-\subsection{La barre d'options}
+\subsection{La barre d'options}\label{sec:barreOption}
 La barre d'options figure~\ref{barreOptions} propose divers boutons : ``Uniforms'', ``Créer un formulaire'', ``Mes Archives'' et ``Ayoub''. Les actions au clique de ces boutons sont les suivantes :
 \begin{description}
-	\item Uniform : Retour à la page d'accueil
-	\item Créer un formulaire : Redirection vers la page de création d'un nouveau formulaire
-	\item Mes archives : Redirection vers les formulaires archivés
-	\item Ayoub : Identifiant de la personne dont la session est ouverte, au clique l'option ``Logout'' s'affiche pour la déconnection.
+	\item [Uniform] : Retour à la page d'accueil
+	\item [Créer un formulaire] : Redirection vers la page de création d'un nouveau formulaire
+	\item [Mes archives] : Redirection vers les formulaires archivés
+	\item [Ayoub] : Identifiant de la personne dont la session est ouverte, au clique l'option ``Logout'' s'affiche pour la déconnection.
 \end{description}
 
 \noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
@@ -125,6 +125,75 @@ Les liens ``Modifier'' permettent la modification d'une réponse déjà commenc�
 
 \chapter{Création}
 \section{Créer un formulaire}
+Pour créer un formulaire, la première étape est de cliquer sur le bouton ``Créer un formulaire'' de la barre d'options, voir figure~\ref{barreOptions}. Ensuite la page de création, figure~\ref{pageCreation}, s'affiche.\\
+On peut distinguer plusieurs zones. On retrouve tout d'abord la barre d'option vu section~\ref{sec:barreOption}, puis une zone de ``Paramètre'', une zone de ``Destinataires'', une zone avec une page quadriée puis sur les cotés, une zone de ``Groupe'' à gauche et une zone d'éléments à droite.
+
+\noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=150mm]{images/pageCreation.png}}
+\captionof{figure}{Page de création de formulaire}\label{pageCreation}
+\end{minipage}
+
+\subsection{Zone de ``Paramètres''}
+Trois champs sont paramètrables, figure~\ref{parametreCreation} :
+\begin{description}
+	\item [Imprimable] : à cocher si vous souhaitez imprimer le formulaire
+	\item [Anonyme] : à cocher si vous ne souhaitez pas définir de destinataire en particulier. Ce formulaire sera donc en accès libre à toutes les personnes disposants de son lien url.
+	\item [Nombre de réponses max] : Vous pouvez définir le nombre de réponse possible pour le formulaire. Si vous mettez ``3'', chaque destinataire pourra répondre trois fois à ce même formulaire. Si vous souhaitez que le nombre de réponses soit infini, mettez ``0''.
+\end{description}
+
+\noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=150mm]{images/parametresCreation.png}}
+\captionof{figure}{Paramètres de création de formulaire}\label{parametreCreation}
+\end{minipage}
+
+\subsection{Zone de ``Destinataires''}
+Pour l'instant je la fais pas, ça risque fortement de changer.
+
+\subsection{Zone de ``Groupe''}
+Ici, je sais pas si au final, ça fonctionnera, dans le doute...
+
+\subsection{Éléments}
+Onze éléments sont disponibles, figure~\ref{elements}, pour les utiliser il suffit de les drag'n'dropper avec la souris sur la page quadriée. Vous trouverez en annexe, le descriptif de chaque élément.
+
+\noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=60mm]{images/elements.png}}
+\captionof{figure}{Éléments disponibles pour la création}\label{elements}
+\end{minipage}
+
+%\begin{description}
+%	\item [Label] : Pour ajouter du texte, le texte doit être rempli par la zone ``Value'' qui s'affichera dès le drop du label.
+%	\item [Nombre] : Champs d'entrée d'un nombre, il peut être paramétré par une valeur minimale et une valeur maximale.
+%	\item [Date] : Champs d'entrée d'une date
+%	\item [Heure] : Champs d'entrée d'une heure
+%	\item [Paragraphe] : Champs de paragraphe
+%	\item [Téléphone] : Champs d'entrée d'un numéro de téléphone
+%	\item [Input Text] : Champs d'entrée de texte
+%	\item [Boutons radios] : 
+%	\item [Checkbox] :
+%	\item [Carre] :
+%	\item [Cercle] :
+%	\item [Image] :
+%\end{description}
+\subsubsection{Ajouter un élément}
+Pour ajouter un élément, le placer par drag'n'drop\footnote{Drag'n'drop : maintenir appuyer sur l'élément et déplacer la souris jusqu'à la zone choisie, relacher la pression} sur la zone quadriée.\\ 
+L'élément est ensuite paramétrable par une série de champs s'affichant en dessous de la liste des éléments personnels à chaque type d'élément.
+Si un élément est placé à l'extérieur de la zone autorisé, il reviendra à sa place d'origine.
+
+\subsubsection{Modifier un élément}
+Pour modifier un élément, cliquer sur celui-ci, il s'encadre alors en rouge et les champs de paramétrage s'affiche à droite. Modifier les valeurs souhaitées. La taille hauteur et largeur peuvent également être modifiées par la souris. Par survol de la souris, une flèche apparait en bas à droite de l'élément (s'il est possible de le redimensionner), elle permet le redimensionnement de l'élément.\\
+Vous pouvez également déplacer l'élément par un simple drag'n'drop à l'intérieur de la zone quadriée.
+
+\subsubsection{Supprimer un élément}
+Pour supprimer un élément, il suffit de sélectionner l'élément, il doit apparaitre encadré en rouge, puis de presser la touche ``Del'' ou ``Suppr''.
+
+\subsection{Page quadriée}
+La page quadriée est la zone du formulaire, les éléments y sont placés. La hauteur et la largeur de cette zone est celle d'une page A4, la délimitation entre deux pages différente est marquée par trait noir horizontal.\\
+Lors de l'ajout d'élément, si un élément est placé bas dans la page, la zone s'aggrandit automatiquement de la hauteur d'une page A4. 
+
+
 \section{Modifier un formulaire}
 \section{Consulter les réponses d'un formulaire}
 

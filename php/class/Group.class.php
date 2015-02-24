@@ -120,6 +120,19 @@
 			}
 		}
 
+		public function validAnswers(){
+			$ret = [];
+
+			foreach ($this->answers as $userId => $answers) {
+				foreach ($answers as $answer) {
+					if($answer->state())
+						$ret[] = $answer->id();
+				}
+			}
+
+			return $ret;
+		}
+
 		public function save($formId){
 			// Insert group
 			mysql_query("INSERT INTO formgroup(

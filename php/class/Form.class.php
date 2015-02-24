@@ -133,21 +133,31 @@
 			}
 		}
 
-		public function algo(){
-			foreach ($this->groups as $groupNum => $group) {
-				echo "NUM<br>";
-				echo $groupNum;
-				echo "<br>";
+		public function algo($userId){
+			$prevs = [];
 
+			foreach ($this->groups as $group) {
 				$users = $group->answers();
+				$prevs = $group->validAnswers();
 
-				foreach ($users as $userID => $answers) {
-					
-					echo "USR<br>";
-					echo $userID;
-					echo "<br>";
+				foreach ($users as $uId => $answers) {
+
+					if($uId == $userId){
+						foreach ($answers as $answer) {
+
+						}
+					}
 				}
 			}
+
+			// POUR tout les groupes auxquels j'appartient
+			// 		SI personne dans le groupe d'avant n'a validé
+			// 		ALORS RETURN FALSE !
+			// 		
+			// 		POUR toutes mes réponse
+			// 			SI mon prev a validé
+			// 			SI 		j'ai pas répondu
+			// 			ALORS 	j'ai  le 
 		}
 
 		public function save() {

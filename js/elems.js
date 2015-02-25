@@ -76,7 +76,7 @@ Select = (function(){
 		this.obj = obj;
 
 		div = $('<div></div>');
-		select = $('<select></select>');
+		select = $('<select></select>');// TODO name ?
 
 		length = obj.options.length;
 		for(i = 0; i < length; i++){
@@ -182,6 +182,7 @@ Multiple = (function(){
 Element = (function(){
 	Element.prototype.element;
 	Element.prototype.obj;
+	Element.prototype.disabled;
 
 	function Element(obj, id){
 
@@ -225,16 +226,22 @@ Element = (function(){
 
 		this.obj = obj;
 		this.element = element;
+		this.disabled = false;
 		this.attrs();
 
 		container = new Container(obj);
 
 		// element.get() : 
-		// 		case 1-6 : jQuery function;
-		// 		case 7-8 : Class method.
+		// 		case obj.type = 1-6 : jQuery function;
+		// 		case obj.type = 7-8 : Class method.
 		// :] 
 		container.append(element.get()).appendTo(id);
 	}
+
+	Element.prototype.disable = function(){
+		this.disabled = true;
+		this.element.prop('disabled', true);
+	};
 
 	Element.prototype.attrs = function() {
 		obj = this.obj;
@@ -259,6 +266,10 @@ Element = (function(){
 			default:
 				break;
 		}
+	};
+
+	Element.prototype.get = function() {
+		return this.element;
 	};
 
 	Element.prototype.answers = function(answers) {
@@ -307,14 +318,9 @@ function getAnswers(elems){
 	answers = [];
 
 	for(i = 0; i < elems.length; i++){
-		a = elems[i].answers();
-
-		if(a instanceof Array){
-			for(j = 0; j < a.length; j++){
-				answers.push(a[j]);
-			}
-		}else{
-			answers.push(a);
+		elem = elems[i];
+		if(elem.disabled == false){
+			answers.push(elem.answers());
 		}
 	}
 

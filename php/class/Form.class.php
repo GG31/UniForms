@@ -212,7 +212,7 @@
 		}
 
 		public function chain($ansId){
-			if($ansId !== 0){
+			if($ansId != 0){
 				$ret = [];
 
 				$ans = new Answer($ansId);
@@ -220,8 +220,8 @@
 				$prev = $ans->prev();
 
 				while($prev != 0){
-					$ret[] = $ans->userId();
 					$ans = new Answer($prev);
+					$ret[] = $ans->userId();
 					$prev = $ans->prev();
 				}
 			}

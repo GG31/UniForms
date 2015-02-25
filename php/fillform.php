@@ -14,21 +14,23 @@
       $state      = FALSE;
       $new        = TRUE;
    }
+   
    if(isset($_GET["ans_id"])){      // Load answer
       $ans_id     = $_GET["ans_id"];
 
       $ans        = new Answer($ans_id);
-      $form_id    = $ans->getFormId();
+      $prev_id    = $ans->prev();
+      $form_id    = $ans->formId();
 
       $form       = new Form($form_id);
       $state      = $ans->state();
       $new        = FALSE;
+   }
 
-      if($form->printable()==FALSE){
-      	echo "<link rel='stylesheet' media='print' href='../css/notprint.css' type='text/css' />";
-      }else {
-      	echo "<link rel='stylesheet' media='print' href='../css/print.css' type='text/css' />";
-      }
+   if($form->printable()==FALSE){
+   	echo "<link rel='stylesheet' media='print' href='../css/notprint.css' type='text/css' />";
+   }else {
+   	echo "<link rel='stylesheet' media='print' href='../css/print.css' type='text/css' />";
    }
 ?>
 <html>
@@ -39,6 +41,13 @@
    <link rel="stylesheet" href="../lib/bootstrap-3.3.1/css/min.css"
       type="text/css" />
    <link rel="stylesheet" href="../css/styles.css" type="text/css" />
+   <?php
+   if($form->printable()==FALSE){
+      echo "<link rel='stylesheet' media='print' href='../css/notprint.css' type='text/css' />";
+   }else {
+      echo "<link rel='stylesheet' media='print' href='../css/print.css' type='text/css' />";
+   }
+?>
 
    <script src="../lib/jquery-2.1.1/min.js"></script>
    <script src="../lib/bootstrap-3.3.1/js/min.js"></script>
@@ -52,22 +61,47 @@
          <?php
             $groups = $form->groups();
 
-            foreach ($groups as $group) {
+            $prevs = [];
+            $prev = $prev_id;
+
+            if($new === FALSE){
+               $prevs[] = $ans;
+            }
+
+            while($prev != 0){
+               $ans     = new Answer($prev);
+               $prevs[] = $ans;
+               $prev    = $ans->prev();
+            }
+
+            $prevs = array_reverse($prevs);
+
+            foreach ($groups as $groupNum => $group) {
                $elems = $group->elements();
 
                foreach ($elems as $elem) {
                   $json = json_encode($elem->attr());
          ?>
-                  elems.push(
-                     new Element(<?php echo $json ?>, '#answerSheet')
+                  e = new Element(<?php echo $json ?>, '#answerSheet')
                         .answers(
-                           <?php echo $new ? "['']" :
+                           <?php echo isset($prevs[$groupNum]) ?
                                     json_encode(
-                                       $ans->getAnswers($elem->getId())
-                                    )
+                                       $prevs[$groupNum]->values($elem->id())
+                                    ) :
+                                    "[]";
                            ?>
-                        )
-                  );
+                        );
+                  <?php
+                     $in = $new ?
+                              $group->in($formdest_id) :
+                              $group->in(NULL, $ans_id);
+
+                     echo !$in ?
+                              "e.disable();" :
+                              "";
+                  ?>
+
+                  elems.push(e);
          <?php
                }
             }
@@ -89,14 +123,14 @@
 
    </script>
    	<div class="container">
-         <div id="header"><?php include 'include/header.php'; ?></div>
+         <?php include 'include/header.php'; ?>
   		   <?php include 'include/nav.php'; ?>
          <?php
 
             if($state == TRUE){
          ?>
                <div class="alert alert-warning text-center" role="alert">
-			Ce formulaire a déjà été renvoyé !</div>
+			Ce formulaire a déjà été validé !</div>
          <?php
 				}
 			?>
@@ -160,7 +194,7 @@
                   >
             </div>
          </div>
-   	  	<div id="footer"> <?php include 'include/footer.php'; ?></div>
+   	  	<?php include 'include/footer.php'; ?>
       </div>
 </body>
 </html>

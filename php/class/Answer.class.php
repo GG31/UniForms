@@ -116,6 +116,19 @@
 			}
 		}
 
+		public function values($elemId){
+			$ret = [];
+			// var_dump($this->elementsValues);
+			foreach($this->elementsValues as $elementValues){
+				if($elementValues["elementId"] == $elemId){
+					$ret = $elementValues["values"];
+					break;
+				}
+			}
+
+			return $ret;
+		}
+
 		public function userId(){
 			$ret = "";
 
@@ -134,9 +147,26 @@
 			return $ret;
 		}
 
-		public function getFormId(){
-			// TODO
-			return FALSE;
+		public function formId(){
+			$ret = "";
+
+			$query = mysql_query("	SELECT form_id
+									FROM 			formgroup
+											JOIN 	(
+														formdest
+												JOIN 	answer
+												ON 		formdest.formdest_id = answer.formdest_id
+											)
+											ON 		formdest.formgroup_id = formgroup.formgroup_id
+									WHERE 	answer.answer_id = " . $this->id);
+			
+			if (!mysql_num_rows($query)){
+				die("Answer::formId() : form not found !");
+			}else{
+				$ret = mysql_fetch_array($query)["form_id"];
+			}
+
+			return $ret;
 		}
 
 		public function save($formdestId){
@@ -171,7 +201,7 @@
 												answer_id)
 										VALUES (" .
 											$elementValues["elementId"] . "," .	// formelement_id
-											$this->id . ")")					// formdest_id
+											$this->id . ")")					// answer_id
 				or die("Answer::save() can't create elementanswer : " . mysql_error());
 
 				$elementAnswerId = mysql_insert_id();
@@ -188,21 +218,21 @@
 			}
 		}
 
-		public function send() {
-			$this->save();
+		public function send($formdestId) {
+			$this->save($formdestId);
 			$this->state = TRUE;
 
 			// Update status
-			mysql_query("	UPDATE formdest
-							SET formdest_status = 1
-							WHERE formdest_id = " . $this->id)
+			mysql_query("	UPDATE 	answer
+							SET 	answer_status = 1
+							WHERE 	answer_id = " . $this->id)
 			or die("Answer::send() can't update status : " . mysql_error());
 		}
 		
 		public function delete(){
 			// Delete answer (DELETE CASCADE)
-			mysql_query("	DELETE FROM formdest
-							WHERE 		formdest_id = ".$this->id)
+			mysql_query("	DELETE FROM answer
+							WHERE 		answer_id = ".$this->id)
 			or die("Answer::delete() can't delete answer : " . mysql_error());
 		}
 	}

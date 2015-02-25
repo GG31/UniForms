@@ -7,8 +7,8 @@
 	$formId = $_GET["form"];
 	$form = new Form($formId);
 	$groups = $form->groups();
-	$num = count($groups) - 1;
-	$users = $groups[$num]->users();
+	$last = count($groups) - 1;
+	$users = $groups[$last]->users();
 ?>
 
 <!doctype html>
@@ -36,24 +36,22 @@
 					</div>
 <?php
 	foreach ($users as $user) {
-		$tree = $form->tree($user->id(), TRUE, [$num]);
+		$tree = $form->tree($user->id(), TRUE, [$last])[$last];
 
-		foreach($tree as $groupNum => $group){
-			foreach($group as $prev => $answers){
-				unset($answers["left"]);
+		foreach($tree as $prev => $answers){
+			unset($answers["left"]);
 
-				// Don't display table if left == 0 and there is no answers to validate
-				if(count($answers) != 0){
+			// Don't display table if left == 0 and there is no answers to validate
+			if(count($answers) != 0){
 ?>
 					<table class="table table-hover">
 						<thead>
 							<tr class="success">
-								<!-- <th>Group <?php echo $groupNum ?></th> -->
 								<th>
 								<?php
 									$chain = $form->chain($prev);
 									unset($chain[0]);
-									foreach($chain as $key => $userId){
+									foreach($chain as $userId){
 										$name = (new User($userId))->name();
 										echo $name . " -> ";
 									}
@@ -64,18 +62,19 @@
 						</thead>
 						<tbody>
 <?php
-					foreach($answers as $key => $answer){
+				foreach($answers as $key => $answer){
+					$ansId = $answer->id();
+					$link = "formresult.php?ans_id=$ansId";
 ?>
 							<tr class="info">
-								<td><a href="#">Réponse #<?php echo $key ?></a></td>
+								<td><a href="<?php echo $link ?>">Réponse #<?php echo $key ?></a></td>
 							</tr>
 <?php
-					}
+				}
 ?>
 						</tbody>
 					</table>
 <?php
-				}
 			}
 		}
 	}

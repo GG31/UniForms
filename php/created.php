@@ -46,12 +46,19 @@
 						<tbody>
 <?php
 		foreach($created as $form){
+			$formId = $form->id();
 			$name = $form->name();
 			$status = $form->state();
+
+			if($status == TRUE){
+				$link = "results.php?form=$formId";
+			}else{
+				$link = "createform.php?form_id=$formId";
+			}
 ?>
 							<tr class="info">
 								<!-- TODO if valid then href= ... else href=... -->
-								<td><a href="#"><?php echo $name ?></a></td>
+								<td><a href="<?php echo $link ?>"><?php echo $name ?></a></td>
 								<td><?php echo $status ? "Envoyé" : "Pas envoyé" ?></td>
 							</tr>
 <?php

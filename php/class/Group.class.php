@@ -169,6 +169,42 @@
 			return $ret;
 		}
 
+		public function in($formdestId = NULL, $ansId = NULL){
+			$ret = FALSE;
+
+			if($formdestId !== NULL){
+				$query = mysql_query("	SELECT 	formgroup_id
+										FROM 	formdest
+										WHERE 	formdest_id = " . $formdestId);
+
+				if (!mysql_num_rows($query)){
+					die("Group::in() (1) : formgroup_id not found !");
+				}else{
+					$results = mysql_fetch_array($query);
+
+					$ret = $this->id == $results["formgroup_id"];
+				}
+			}
+
+			if($ansId !== NULL){
+				$query = mysql_query("	SELECT 	formgroup_id
+										FROM 			formdest
+												JOIN 	answer
+												ON 		answer.formdest_id = formdest.formdest_id
+										WHERE 	answer_id = " . $ansId);
+
+				if (!mysql_num_rows($query)){
+					die("Group::in() (2) : formgroup_id not found !");
+				}else{
+					$results = mysql_fetch_array($query);
+
+					$ret = $this->id == $results["formgroup_id"];
+				}
+			}
+
+			return $ret;
+		}
+
 		public function save($formId){
 			// Insert group
 			mysql_query("INSERT INTO formgroup(

@@ -72,13 +72,13 @@
 						<tbody>
 <?php
 				foreach($answers as $key => $answer){
-					if($key !== "left"){
+					$ansId = $answer->id();
+					$link = "fillform.php?ans_id=$ansId";
 ?>
 							<tr class="info">
-								<td><a href="#">Réponse #<?php echo $key ?></a></td>
+								<td><a href="<?php echo $link ?>">Réponse #<?php echo $key ?></a></td>
 							</tr>
 <?php
-					}
 				}
 ?>
 						</tbody>

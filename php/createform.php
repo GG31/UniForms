@@ -194,7 +194,33 @@
 							  <button type="button" class="btn btn-default btn-sm" onclick="copiedest()">
                        			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                    			  </button>
-                   			  <span id="listdest"></span>
+                   			  <span id="listdest">
+                   			  <?php 
+                   			  	 $exist_dest = $form->getFormRecipients();
+                   			 	 if (!empty($exist_dest)){
+                   			 	 	foreach ($exist_dest as $d){
+                   			  ?>
+                   			  <div class="input-group">
+									<span class="input-group-addon">
+										<input
+											id="user<?php echo $d['User']->getId(); ?>"
+											type="checkbox"
+											name="recipient[]"
+											value=<?php echo $d['User']->getId(); ?>
+											<?php //echo $user->isDestinataire($form_id) ? "CHECKED" : "" ?>
+											checked>
+									</span>
+									<label
+										class="form-control"
+										for="user<?php echo $d['User']->getId(); ?>">
+										<?php echo $d['User']->getName(); ?>
+									</label>
+								</div>
+								<?php 
+									}
+								}
+								?>
+                   			  </span>
 	                    	</div>
 						</div>
 						

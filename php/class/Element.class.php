@@ -14,6 +14,9 @@
 	define("ELEMENT_CIRCLE"		, 11);
 	define("ELEMENT_IMG"		, 12);
 	
+	define("DIR_HORIZONTAL"		, 0);
+	define("DIR_VERTICAL"		, 1);
+	
 	Class Element {
 		private $id;
 		private $type;
@@ -22,12 +25,12 @@
 		private $y;
 		private $height;
 		private $width;
-		private $default;
+		private $defaultValue;
 		private $placeholder;
 		private $min;
 		private $max;
 		private $required;
-		private $big;
+		private $bigList;
 		private $direction;
 		private $options;
 		private $img;
@@ -53,12 +56,12 @@
 					$this->y 			= $results["pos_y"];
 					$this->height 		= $results["height"];
 					$this->width 		= $results["width"];
-					$this->default 		= $results["default_value"];
+					$this->defaultValue	= $results["default_value"];
 					$this->placeholder 	= $results["placeholder"];
 					$this->max 			= $results["max_value"];
 					$this->min 			= $results["min_value"];
 					$this->required 	= $results["required"] 	== 1 ? TRUE : FALSE;
-					$this->big 			= $results["isbiglist"] == 1 ? TRUE : FALSE;
+					$this->bigList		= $results["isbiglist"] == 1 ? TRUE : FALSE;
 					$this->direction 	= $results["direction"] == 1 ? TRUE : FALSE;
 					$this->img 			= $results["img"];
 				}
@@ -175,6 +178,150 @@
 			}
 		}
 		
+		public function x($x = NULL){
+			// Get
+			if($x === NULL){
+				return $this->x;
+			}
+			// Set
+			else{
+				$this->x = $x;
+				return $this;
+			}
+		}
+		
+		public function y($y = NULL){
+			// Get
+			if($y === NULL){
+				return $this->y;
+			}
+			// Set
+			else{
+				$this->y = $y;
+				return $this;
+			}
+		}
+		
+		public function min($min = NULL){
+			// Get
+			if($min === NULL){
+				return $this->min;
+			}
+			// Set
+			else{
+				$this->min = $min;
+				return $this;
+			}
+		}
+		
+		public function max($max = NULL){
+			// Get
+			if($max === NULL){
+				return $this->max;
+			}
+			// Set
+			else{
+				$this->max = $max;
+				return $this;
+			}
+		}
+		
+		public function width($width = NULL){
+			// Get
+			if($width === NULL){
+				return $this->width;
+			}
+			// Set
+			else{
+				$this->width = $width;
+				return $this;
+			}
+		}
+		
+		public function height($height = NULL){
+			// Get
+			if($height === NULL){
+				return $this->height;
+			}
+			// Set
+			else{
+				$this->height = $height;
+				return $this;
+			}
+		}
+		
+		public function defaultValue($defaultValue = NULL){
+			// Get
+			if($defaultValue === NULL){
+				return $this->defaultValue;
+			}
+			// Set
+			else{
+				$this->defaultValue = $defaultValue;
+				return $this;
+			}
+		}
+		
+		public function placeholder($placeholder = NULL){
+			// Get
+			if($placeholder === NULL){
+				return $this->placeholder;
+			}
+			// Set
+			else{
+				$this->placeholder = $placeholder;
+				return $this;
+			}
+		}
+		
+		public function required($required = NULL){
+			// Get
+			if($required === NULL){
+				return $this->required;
+			}
+			// Set
+			else{
+				$this->required = $required;
+				return $this;
+			}
+		}
+		
+		public function img($img = NULL){
+			// Get
+			if($img === NULL){
+				return $this->img;
+			}
+			// Set
+			else{
+				$this->img = $img;
+				return $this;
+			}
+		}
+		
+		public function bigList($bigList = NULL){
+			// Get
+			if($bigList === NULL){
+				return $this->bigList;
+			}
+			// Set
+			else{
+				$this->bigList = $bigList;
+				return $this;
+			}
+		}
+		
+		public function direction($direction = NULL){
+			// Get
+			if($direction === NULL){
+				return $this->direction;
+			}
+			// Set
+			else{
+				$this->direction = $direction;
+				return $this;
+			}
+		}
+		
 		public function save($groupId){
 			// Create element
 			mysql_query("INSERT INTO formelement(
@@ -201,14 +348,14 @@
 									. 		$this->y 					. ","	// pos_y
 									. 		$this->height				. ","	// height
 									. 		$this->width 				. ","	// width
-									. "'" . $this->default 				. "',"	// default_value
+									. "'" . $this->defaultValue			. "',"	// default_value
 									. "'" . $this->placeholder			. "',"	// placeholder
 									. 		$this->min 					. ","	// min_value
 									. 		$this->max 					. ","	// max_value
 									. 	   ($this->required ? 1 : 0) 	. ","	// required
-									. 	   ($this->big 		? 1 : 0) 	. ","	// isbiglist
+									. 	   ($this->bigList	? 1 : 0) 	. ","	// isbiglist
 									.	   ($this->direction? 1 : 0)	. ","	// direction
-									.		$this->img 					. ")")	// img
+									. "'" .	$this->img 					. "')")	// img
 			or die("Element::save() can't save element : " . mysql_error());
 			
 			// Auto generated id

@@ -5,19 +5,25 @@
    include_once 'include/includes.php';
    include_once 'external_scripting.php';
 
-   if(isset($_GET["form_id"])){     // New answer
+   if(isset($_GET["form_id"]) && isset($_GET["formdest_id"]) && isset($_GET["prev_id"])){     // New answer
       $form_id    = $_GET["form_id"];
+      $formdest_id= $_GET["formdest_id"];
+      $prev_id    = $_GET["prev_id"];
+
       $form       = new Form($form_id);
       $state      = FALSE;
       $new        = TRUE;
    }
    if(isset($_GET["ans_id"])){      // Load answer
       $ans_id     = $_GET["ans_id"];
+
       $ans        = new Answer($ans_id);
       $form_id    = $ans->getFormId();
+
       $form       = new Form($form_id);
       $state      = $ans->state();
       $new        = FALSE;
+
       if($form->printable()==FALSE){
       	echo "<link rel='stylesheet' media='print' href='../css/notprint.css' type='text/css' />";
       }else {
@@ -48,9 +54,6 @@
 
             foreach ($groups as $group) {
                $elems = $group->elements();
-               echo "<span>";
-               echo "GROUP";
-               echo "</span>";
 
                foreach ($elems as $elem) {
                   $json = json_encode($elem->attr());
@@ -71,8 +74,8 @@
          ?>
 
          $('input[type=submit]').on('click', {elems: elems}, function(event){
+            $('input[name=answers]').attr('value', JSON.stringify(getAnswers(elems)));
             // event.preventDefault();
-            $('input[name=answers]').attr('value', JSON.stringify(getAnswers()));
          });
 
          <?php
@@ -100,7 +103,7 @@
          <div class="row">
             <div class="panel panel-primary">
                <div class="panel-heading text-center text-capitalize">
-                  <h3 class="panel-title"><strong>Formulaire <?php echo $form_id ?></strong></h3>
+                  <h3 class="panel-title"><strong><?php echo $form->name() ?></strong></h3>
                </div>
                <div class="panel-body">
                   <form
@@ -121,6 +124,18 @@
                   name=<?php echo $new ? "form_id" : "ans_id" ?>
                   form="answerSheet"
                   value=<?php echo $new ? $form_id : $ans_id ?>
+                  ><!-- TODO formid useful ?-->
+               <input
+                  type="hidden"
+                  name="formdest_id"
+                  form="answerSheet"
+                  value=<?php echo $new ? $formdest_id : "" ?>
+                  >
+               <input
+                  type="hidden"
+                  name="prev_id"
+                  form="answerSheet"
+                  value=<?php echo $new ? $prev_id : "" ?>
                   >
                <input
                   type="hidden"

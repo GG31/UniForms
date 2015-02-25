@@ -54,7 +54,7 @@ Radio = (function(){
 	Radio.prototype.getAnswers = function(){
 		return {
 					elementId	: this.obj.id,
-					value		: this.element.find(':checked').val().split('-')[1]
+					values		: [ this.element.find(':checked').val().split('-')[1] ]
 				};
 	}
 
@@ -103,7 +103,7 @@ Select = (function(){
 	Select.prototype.getAnswers = function(){
 		return {
 					elementId	: this.obj.id,
-					value		: this.element.find(':selected').val().split('-')[1]
+					values		: [ this.element.find(':selected').val().split('-')[1] ]
 				};
 	};
 
@@ -153,12 +153,15 @@ Multiple = (function(){
 
 	Multiple.prototype.getAnswers = function(){
 		id = this.obj.id;
-		return this.element.find(':checked').map(function(){
-												return {
-															elementId 	: id,
-															value		: $(this).val().split('-')[1]
-														};
-											}).get();
+
+
+
+		return {
+			elementId 	: id,
+			values		: this.element.find(':checked').map(function(){
+																return $(this).val().split('-')[1];
+															}).get()
+		};
 	};
 
 	Multiple.prototype.setAnswers = function(answers){// answer is option id array ?
@@ -283,13 +286,13 @@ Element = (function(){
 				break;
 		}
 
-		return get ? res : this;	
+		return get ? res : this;
 	};
 
 	Element.prototype.getAnswers = function() {
 		return {
 					elementId 	: this.obj.id,
-					value		: this.element.val()
+					values		: [ this.element.val() ]
 				};
 	};
 
@@ -300,7 +303,7 @@ Element = (function(){
 	return Element;
 })();
 
-function getAnswers(){
+function getAnswers(elems){
 	answers = [];
 
 	for(i = 0; i < elems.length; i++){

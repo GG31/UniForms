@@ -139,17 +139,17 @@
 			return FALSE;
 		}
 
-		public function save($userId){
+		public function save($formdestId){
 			// Create answer
 			if($this->id === NULL){
-				mysql_query("INSERT INTO formdest(
-											formdest_status,
-											user_id,
-											formgroup_id)
+				mysql_query("INSERT INTO answer(
+											answer_status,
+											formdest_id,
+											answer_prev_id)
 									VALUES (
-											0," .				// formdest_status
-											$userId . "," .		// user_id
-											$this->id .			// formgroup_id
+											0," .				// answer_status
+											$formdestId . "," .	// formdest_id
+											$this->prev .		// answer_prev_id
 											")")
 				or die("Answer::save() can't create answer : " . mysql_error());
 
@@ -160,7 +160,7 @@
 			else{
 				// Delete values
 				mysql_query("	DELETE FROM elementanswer
-								WHERE 		formdest_id = " . $this->id)
+								WHERE 		answer_id = " . $this->id)
 				or die("Answer::save() can't update answer : " . mysql_error());
 			}
 			
@@ -168,14 +168,15 @@
 			foreach($this->elementsValues as $elementValues){
 				mysql_query("	INSERT INTO elementanswer(
 												formelement_id,
-												formdest_id)
+												answer_id)
 										VALUES (" .
 											$elementValues["elementId"] . "," .	// formelement_id
 											$this->id . ")")					// formdest_id
 				or die("Answer::save() can't create elementanswer : " . mysql_error());
 
 				$elementAnswerId = mysql_insert_id();
-				foreach($elementValues["values"] as $value){
+				$arr = $elementValues["values"];
+				foreach($arr as $value){
 					mysql_query("	INSERT INTO answervalue(
 													value,
 													elementanswer_id)

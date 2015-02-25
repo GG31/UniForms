@@ -36,9 +36,14 @@
 					</div>
 <?php
 	foreach($tree as $groupNum => $group){
+		$formdestId = $form->formdestId($userId, $groupNum);
+
 		foreach($group as $prev => $answers){
 			$left = $answers["left"];
 			unset($answers["left"]);
+
+			// TODO prev
+			$link = "fillform.php?form_id=$formId&formdest_id=$formdestId&prev_id=$prev";
 
 			// Don't display table if left == 0 and there is no answers to validate
 			if(!($left == 0 && count($answers) == 0)){
@@ -50,8 +55,8 @@
 								<th>
 								<?php
 									$chain = $form->chain($prev);
-									foreach($chain as $key => $userId){
-										$name = (new User($userId))->name();
+									foreach($chain as $key => $uId){
+										$name = (new User($uId))->name();
 										$sep = "";
 										switch ($key) {
 											case 0:
@@ -70,7 +75,7 @@
 								<?php
 									if($left === -1){
 								?>
-									<th><a href="fillform.php?form_id=<?php echo $formId ?>">Nouvelle réponse</a></th>
+									<th><a href="<?php echo $link ?>">Nouvelle réponse</a></th>
 								<?php
 									}else{
 										if($left === 0){
@@ -79,7 +84,7 @@
 								<?php
 										}else{
 								?>
-									<th><a href="fillform.php?form_id=<?php echo $formId ?>">Nouvelle réponse</a> (<?php echo $left ?> restante(s))</th>
+									<th><a href="<?php echo $link ?>">Nouvelle réponse</a> (<?php echo $left ?> restante(s))</th>
 								<?php
 										}
 									}
@@ -90,10 +95,11 @@
 <?php
 				foreach($answers as $key => $answer){
 					$ansId = $answer->id();
+					$link = "fillform.php?ans_id=$ansId";
 ?>
 							<tr class="info">
 								<td></td>
-								<td><a href="fillform.php?ans_id=<?php echo $ansId ?>">Réponse #<?php echo $key ?></a></td>
+								<td><a href="<?php echo $link ?>">Réponse #<?php echo $key ?></a></td>
 							</tr>
 <?php
 				}

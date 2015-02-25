@@ -90,6 +90,7 @@
 			// Get
 			if($num === 0){
 				return 	[
+					"id" 				=> $this->id,
 					"type" 				=> $this->type,
 					"label"				=> $this->label,
 					"x" 				=> $this->x,
@@ -117,6 +118,7 @@
 					$attr = array_merge($attr, $args[$i]);
 				}
 
+				if(isset($attr["id"]))				$this->id			= $attr["id"];
 				if(isset($attr["type"]))			$this->type			= $attr["type"];
 				if(isset($attr["label"]))			$this->label 		= $attr["label"];
 				if(isset($attr["x"]))				$this->x 			= $attr["x"];

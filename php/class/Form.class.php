@@ -145,12 +145,12 @@
 				$g = $whichGroups[$i];
 				$group = $this->groups[$g];
 
-				$ret[$i] = [];
+				$ret[$g] = [];
 				$answers = $group->answers()[$userId];
 
 				// If first group, consider every user's answers
 				if($g == 0){
-					$ret[$i][0] = $answers;
+					$ret[$g][0] = $answers;
 				}else{
 					$prevGroup = $this->groups[$g - 1];
 					$valid = $prevGroup->validAnswers(); // Valid set
@@ -158,11 +158,11 @@
 					// For each answers in the valid set, find if user answered
 					foreach($valid as $validAnswers){
 						foreach($validAnswers as $validAnswer){
-							$ret[$i][$validAnswer->id()] = [];
+							$ret[$g][$validAnswer->id()] = [];
 
 							foreach($answers as $key => $answer){
 								if($answer->prev() == $validAnswer->id()){
-									$ret[$i][$validAnswer->id()][] = $answer;
+									$ret[$g][$validAnswer->id()][] = $answer;
 									unset($answers[$key]);
 								}
 							}
@@ -170,21 +170,21 @@
 					}
 				}
 
-				// Now $ret[$i] contains : ["prevAnsId" => [$ans0, $ans1, ...], ...]
+				// Now $ret[$g] contains : ["prevAnsId" => [$ans0, $ans1, ...], ...]
 				// Find out if limit is reached
 				$lim = $group->limit();
-				foreach($ret[$i] as $prevAnsId => $answers){
+				foreach($ret[$g] as $prevAnsId => $answers){
 					if($lim > 0){
 						$left = $lim - count($answers);
-						$ret[$i][$prevAnsId]["left"] = $left;
+						$ret[$g][$prevAnsId]["left"] = $left;
 					}else{
-						$ret[$i][$prevAnsId]["left"] = -1;
+						$ret[$g][$prevAnsId]["left"] = -1;
 					}
 
 					// Filter answers with $state
 					foreach ($answers as $key => $answer) {
 						if($answer->state() != $state){
-							unset($ret[$i][$prevAnsId][$key]);
+							unset($ret[$g][$prevAnsId][$key]);
 						}
 					}
 				}
@@ -203,6 +203,12 @@
 			}
 
 			return $ret;
+		}
+
+		public function formdestId($userId, $groupNum){
+			$group = $this->groups[$groupNum];
+
+			return $group->formdestId($userId);
 		}
 
 		public function chain($ansId){

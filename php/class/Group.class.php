@@ -136,6 +136,27 @@
 			return $ret;
 		}
 
+		public function formdestId($userId){
+			$ret = "";
+
+			$query = mysql_query("	SELECT 	formdest_id
+									FROM 			formgroup
+											JOIN 	formdest
+											ON 		formgroup.formgroup_id = formdest.formgroup_id
+									WHERE 	user_id = " . $userId . "
+									AND 	formgroup.formgroup_id = " . $this->id);
+
+			if (!mysql_num_rows($query)){
+				die("Group::formdestId() : formdest_id not found !");
+			}else{
+				$results = mysql_fetch_array($query);
+
+				$ret = $results["formdest_id"];
+			}
+
+			return $ret;
+		}
+
 		public function save($formId){
 			// Insert group
 			mysql_query("INSERT INTO formgroup(

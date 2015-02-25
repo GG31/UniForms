@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <?php include_once 'include/includes.php'; ?>
 <html>
 <head>
@@ -15,6 +15,12 @@
 	<div class="container">
 			<?php include 'include/header.php'; ?>
 			<?php include 'include/nav.php'; ?>
+			<div class="row">
+				<?php include 'include/home_created.php'; ?>
+			</div>
+			<div class="row">
+				<?php include 'include/home_dest.php'; ?>
+			</div>
 			<?php include 'include/footer.php'; ?>
 		</div>
 </body>

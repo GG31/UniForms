@@ -1,7 +1,10 @@
 ﻿<!doctype html>
-<?php include_once 'include/includes.php'; ?>
-<?php include_once 'external_scripting.php'; ?>
 <?php
+   ini_set('display_errors', 1);
+   error_reporting ( E_ALL );
+   include_once 'include/includes.php';
+   include_once 'external_scripting.php';
+
    if(isset($_GET["form_id"])){     // New answer
       $form_id    = $_GET["form_id"];
       $form       = new Form($form_id);
@@ -13,16 +16,14 @@
       $ans        = new Answer($ans_id);
       $form_id    = $ans->getFormId();
       $form       = new Form($form_id);
-      $state      = $ans->getState();
+      $state      = $ans->state();
       $new        = FALSE;
-      if($form->getPrintable()==FALSE){
+      if($form->printable()==FALSE){
       	echo "<link rel='stylesheet' media='print' href='../css/notprint.css' type='text/css' />";
       }else {
       	echo "<link rel='stylesheet' media='print' href='../css/print.css' type='text/css' />";
       }
-      
    }
-   echo Returnname($_SESSION ['name']);
 ?>
 <html>
 <head>
@@ -43,22 +44,29 @@
          elems    = [];
          
          <?php
-            $elems = $form->getFormElements();
-            foreach ($elems as $elem) {
-               $json = json_encode($elem->getAll());
+            $groups = $form->groups();
+
+            foreach ($groups as $group) {
+               $elems = $group->elements();
+               echo "<span>";
+               echo "GROUP";
+               echo "</span>";
+
+               foreach ($elems as $elem) {
+                  $json = json_encode($elem->attr());
          ?>
                   elems.push(
                      new Element(<?php echo $json ?>, '#answerSheet')
                         .answers(
-                           <?php echo $ans ? 
+                           <?php echo $new ? "['']" :
                                     json_encode(
                                        $ans->getAnswers($elem->getId())
-                                    ) :
-                                    ['']
+                                    )
                            ?>
                         )
                   );
          <?php
+               }
             }
          ?>
 

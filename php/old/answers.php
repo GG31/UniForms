@@ -19,7 +19,7 @@
 			<div class="row">
 				<?php include 'include/answers_list.php'; ?>
 			</div>
-		<!-- 2 rows -->
+			<!-- 2 rows -->
 				<?php include 'include/answers_form.php'; ?>
 			<!--/2 rows -->
 			<?php include 'include/footer.php'; ?>

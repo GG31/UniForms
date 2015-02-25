@@ -14,7 +14,7 @@
 				// Id
 				$this->id = $id;
 
-				// Name, Status, Print, Anon
+				// Creator, Name, Status, Print, Anon
 				$query = mysql_query ("	SELECT 	*
 										FROM 	form
 										WHERE 	form_id = " . $this->id);
@@ -133,19 +133,16 @@
 			}
 		}
 
-		public function tree($userId){
+		public function tree($userId, $state = FALSE, $groups = NULL){
 			$ret = [];
 
 			// Find groups in which the user belongs
-			$whichGroups = $this->whichGroups($userId);
+			$whichGroups = $groups ? $groups : $this->whichGroups($userId);
 			$whichLength = count($whichGroups);
 
 			// For each group, find validated answers in previous groups
 			for($i = 0; $i < $whichLength; $i++){
 				$g = $whichGroups[$i];
-				// echo "GROUPNUM :<br>";
-				// echo $g;
-				// echo "<br>";
 				$group = $this->groups[$g];
 
 				$ret[$i] = [];
@@ -157,10 +154,6 @@
 				}else{
 					$prevGroup = $this->groups[$g - 1];
 					$valid = $prevGroup->validAnswers(); // Valid set
-					// echo "VALIDSET :<br>";
-					// echo "<pre>";
-					// print_r($valid);
-					// echo "</pre>";
 
 					// For each answers in the valid set, find if user answered
 					foreach($valid as $validAnswers){
@@ -180,12 +173,19 @@
 				// Now $ret[$i] contains : ["prevAnsId" => [$ans0, $ans1, ...], ...]
 				// Find out if limit is reached
 				$lim = $group->limit();
-				foreach($ret[$i] as $prevAnsId => $ans){
+				foreach($ret[$i] as $prevAnsId => $answers){
 					if($lim > 0){
-						$left = $lim - count($ans);
+						$left = $lim - count($answers);
 						$ret[$i][$prevAnsId]["left"] = $left;
 					}else{
 						$ret[$i][$prevAnsId]["left"] = -1;
+					}
+
+					// Filter answers with $state
+					foreach ($answers as $key => $answer) {
+						if($answer->state() != $state){
+							unset($ret[$i][$prevAnsId][$key]);
+						}
 					}
 				}
 			}
@@ -203,6 +203,36 @@
 			}
 
 			return $ret;
+		}
+
+		public function chain($ansId){
+			if($ansId !== 0){
+				$ret = [];
+
+				$ans = new Answer($ansId);
+				$ret[] = $ans->userId();
+				$prev = $ans->prev();
+
+				while($prev != 0){
+					$ret[] = $ans->userId();
+					$ans = new Answer($prev);
+					$prev = $ans->prev();
+				}
+			}
+
+			$ret[] = $this->creator->id();
+
+			return array_reverse($ret);
+		}
+
+		public function done(){
+			// TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!
+			return false;
+		}
+
+		public function getListRecipient($WTF){
+			// TODO
+			return FALSE;
 		}
 
 		public function save() {

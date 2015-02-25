@@ -47,7 +47,7 @@
 					$values[] 	= $results["value"];
 
 					while($results = mysql_fetch_array($query)){
-						if($results["formdest_id"] == $elementId){
+						if($results["formelement_id"] == $elementId){
 							$values[] = $results["value"];
 						}else{
 							$this->elementsValues[] = [
@@ -114,6 +114,29 @@
 				$this->elementsValues = $elementsValues;
 				return $this;
 			}
+		}
+
+		public function userId(){
+			$ret = "";
+
+			$query = mysql_query("	SELECT user_id
+									FROM 			answer
+											JOIN 	formdest
+											ON 		answer.formdest_id = formdest.formdest_id
+									WHERE 	answer.answer_id = " . $this->id);
+			
+			if (!mysql_num_rows($query)){
+				die("Answer::userId() : user not found !");
+			}else{
+				$ret = mysql_fetch_array($query)["user_id"];
+			}
+
+			return $ret;
+		}
+
+		public function getFormId(){
+			// TODO
+			return FALSE;
 		}
 
 		public function save($userId){

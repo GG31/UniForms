@@ -8,14 +8,18 @@
 			</div>
 
 			<ul class="nav navbar-nav">
-				<li><a href="createform.php">Créer un formulaire</a></li>
+				<li><a href="createform.php">Nouveau Formulaire</a></li>
 				<!--<li>
 					<a href="#">Link</a>
 				</li>-->
 			</ul>
 
 			<ul class="nav navbar-nav">
-				<li><a href="archive_forms.php">Mes Archives</a></li>
+				<li><a href="created.php">Mes Formulaires</a></li>
+			</ul>
+
+			<ul class="nav navbar-nav">
+				<li><a href="recipient.php">Boîte de Réception</a></li>
 			</ul>
 
 			<!--<form class="navbar-form navbar-left" role="search">

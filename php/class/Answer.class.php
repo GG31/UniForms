@@ -188,21 +188,21 @@
 			}
 		}
 
-		public function send() {
-			$this->save();
+		public function send($formdestId) {
+			$this->save($formdestId);
 			$this->state = TRUE;
 
 			// Update status
-			mysql_query("	UPDATE formdest
-							SET formdest_status = 1
-							WHERE formdest_id = " . $this->id)
+			mysql_query("	UPDATE answer
+							SET answer_status = 1
+							WHERE answer_id = " . $this->id)
 			or die("Answer::send() can't update status : " . mysql_error());
 		}
 		
 		public function delete(){
 			// Delete answer (DELETE CASCADE)
-			mysql_query("	DELETE FROM formdest
-							WHERE 		formdest_id = ".$this->id)
+			mysql_query("	DELETE FROM answer
+							WHERE 		answer_id = ".$this->id)
 			or die("Answer::delete() can't delete answer : " . mysql_error());
 		}
 	}

@@ -23,16 +23,16 @@
 		private $label;
 		private $x;
 		private $y;
-		private $height;
-		private $width;
+		private $height = NULL;
+		private $width = NULL;
 		private $defaultValue;
 		private $placeholder;
-		private $min;
-		private $max;
-		private $required;
-		private $bigList;
-		private $direction;
-		private $options;
+		private $min = NULL;
+		private $max = NULL;
+		private $required = 0;
+		private $bigList = 0;
+		private $direction = 0;
+		private $options = [];
 		private $img;
 
 		public function __construct($id = NULL){
@@ -100,12 +100,12 @@
 					"y" 				=> $this->y,
 					"width" 			=> $this->width,
 					"height" 			=> $this->height,
-					"default" 			=> $this->default,
+					"default" 			=> $this->defaultValue,
 					"placeholder" 		=> $this->placeholder,
 					"min"	 			=> $this->min,
 					"max"	 			=> $this->max,
 					"required" 			=> $this->required,
-					"big" 				=> $this->big,
+					"big" 				=> $this->bigList,
 					"direction" 		=> $this->direction,
 					"options" 			=> $this->options,
 					"img" 				=> $this->img
@@ -128,12 +128,12 @@
 				if(isset($attr["y"]))				$this->y 			= $attr["y"];
 				if(isset($attr["height"]))			$this->height 		= $attr["height"];
 				if(isset($attr["width"]))			$this->width 		= $attr["width"];
-				if(isset($attr["default"]))			$this->default 		= $attr["default"];
+				if(isset($attr["defaultValue"]))	$this->defaultValue = $attr["defaultValue"];
 				if(isset($attr["placeholder"]))		$this->placeholder 	= $attr["placeholder"];
 				if(isset($attr["min"]))				$this->min 			= $attr["min"];
 				if(isset($attr["max"]))				$this->max 			= $attr["max"];
 				if(isset($attr["required"]))		$this->required		= $attr["required"];
-				if(isset($attr["big"]))				$this->big 			= $attr["big"];
+				if(isset($attr["bigList"]))			$this->bigList 		= $attr["bigList"];
 				if(isset($attr["direction"]))		$this->direction 	= $attr["direction"];
 				if(isset($attr["options"]))			$this->options 		= $attr["options"];
 				if(isset($attr["img"]))				$this->img 			= $attr["img"];
@@ -322,6 +322,18 @@
 			}
 		}
 		
+		public function options($options = NULL){
+			// Get
+			if($options === NULL){
+				return $this->options;
+			}
+			// Set
+			else{
+				$this->options = $options;
+				return $this;
+			}
+		}
+		
 		public function save($groupId){
 			// Create element
 			mysql_query("INSERT INTO formelement(
@@ -341,21 +353,21 @@
 										direction,
 										img)
 								VALUES ("
-									. 		$groupId 					. ","	// formgroup_id
-									. 		$this->type 				. ","	// type_this
-									. "'" . $this->label 				. "',"	// label
-									. 		$this->x 					. ","	// pos_x
-									. 		$this->y 					. ","	// pos_y
-									. 		$this->height				. ","	// height
-									. 		$this->width 				. ","	// width
-									. "'" . $this->defaultValue			. "',"	// default_value
-									. "'" . $this->placeholder			. "',"	// placeholder
-									. 		$this->min 					. ","	// min_value
-									. 		$this->max 					. ","	// max_value
-									. 	   ($this->required ? 1 : 0) 	. ","	// required
-									. 	   ($this->bigList	? 1 : 0) 	. ","	// isbiglist
-									.	   ($this->direction? 1 : 0)	. ","	// direction
-									. "'" .	$this->img 					. "')")	// img
+									. 		$groupId 					. ",	
+									"  . 	$this->type 				. ",	
+									'" . 	$this->label 				. "',	
+									"  . 	$this->x 					. ",	
+									"  . 	$this->y 					. ",	
+									0" . 	$this->height				. ",	
+									0" . 	$this->width 				. ",	
+									'" . 	$this->defaultValue			. "',	
+									'" . 	$this->placeholder			. "',	
+									0" . 	$this->min 					. ",	
+									0" . 	$this->max 					. ",	
+									"  .	($this->required ? 1 : 0) 	. ",	
+									"  .  	($this->bigList	? 1 : 0) 	. ",	
+									"  .	($this->direction? 1 : 0)	. ",	
+									'" . 	$this->img 					. "')")	
 			or die("Element::save() can't save element : " . mysql_error());
 			
 			// Auto generated id

@@ -10,27 +10,6 @@ require_once('../php/class/Element.class.php');
 require_once('../php/class/Group.class.php');
   
 class TestOfElementClass extends UnitTestCase {
-/*
-  	function testSaveAndConstruct(){
-
-		$e2 = new Element();
-		$e2->setTypeElement(constant("typeCheckbox"));
-		$e2->setX(234);
-		$e2->setY(15);
-		$e2->setRequired(FALSE);
-		$e2->setDirection(1);
-		$e2->setIsbiglist(TRUE);
-		$options = array();
-		$opt1 = array("value" => "secondoption", "order" => 2, "default" => true);
-		$opt2 = array("value" => "thirdoption", "order" => 3, "default" => false);
-		$opt3 = array("value" => "firstoption", "order" => 1, "default" => true);
-		array_push($options, $opt1, $opt2, $opt3); //does not matter the order here...
-		$e2->setOptions($options);
-		
-  		/*$form4 = new Form(4);
-		$form4->setFormElements(array($e1, $e2)); //does not matter the order of the elements here...
-		$form4->save();*/
-	/*}*/
 	
 	function testConstruct(){
 		// Inserts one user, one form and one form group, to be possible to insert an element into the database
@@ -44,12 +23,16 @@ class TestOfElementClass extends UnitTestCase {
 		// Inserts into formelement
 		mysql_query("INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y, height, width, default_value, placeholder, min_value, max_value,
 												required, isbiglist, direction, img)
-							VALUES (".$idFormGroup.", ".constant("ELEMENT_TEXT").", 'label', 10, 20, 15, 80, 'default', 'placeholder', 
+							VALUES (".$idFormGroup.", ".constant("ELEMENT_MULTIPLE").", 'label', 10, 20, 15, 80, 'default', 'placeholder', 
 										1, 10, 1, 0, ".constant("DIR_HORIZONTAL").", 'stringimg')");
 		$idElement = mysql_insert_id();
 		
+		// Insert element options
+		mysql_query("INSERT INTO elementoption(formelement_id, optionorder, optionvalue, optiondefault) VALUES (".$idElement.", 1, 'option 1', 0)");
+		mysql_query("INSERT INTO elementoption(formelement_id, optionorder, optionvalue, optiondefault) VALUES (".$idElement.", 2, 'option 2', 0)");
+		
 		$Element = new Element($idElement);
-		$this->assertEqual($Element->Type(), constant("ELEMENT_TEXT"));
+		$this->assertEqual($Element->Type(), constant("ELEMENT_MULTIPLE"));
 		$this->assertEqual($Element->label(), "label");
 		$this->assertEqual($Element->x(), 10);
 		$this->assertEqual($Element->y(), 20);
@@ -63,6 +46,7 @@ class TestOfElementClass extends UnitTestCase {
 		$this->assertFalse($Element->bigList());
 		$this->assertEqual($Element->direction(), constant("DIR_HORIZONTAL"));
 		$this->assertEqual($Element->img(), "stringimg");
+		$this->assertEqual($Element->options(), [["order" => 1, "value" => "option 1" , "default" => 0], ["order" => 2, "value" => "option 2" , "default" => 0]]);
 		
 		// Delete test data (if we delete user the others are deleted by cascade)
 		mysql_query("DELETE FROM USER WHERE user_id = ".$idUser);
@@ -86,15 +70,50 @@ class TestOfElementClass extends UnitTestCase {
 		$newInputNumber->label("number field");
 		$newInputNumber->placeholder("placeholder");
 		$newInputNumber->required(TRUE);
-		$newInputNumber->width(123);
-		$newInputNumber->height(23);
+		$newInputNumber->width(200);
+		$newInputNumber->height(20);
 		$newInputNumber->max(30);
 		$newInputNumber->min(0);
 		
-		// Save element
-		$newInputNumber->save($idFormGroup);
+		// Creates new element and sets its properties, it's not necessary to fill properties which aren't related to element type.
+		$newCheckbox = new Element();
+		$newCheckbox->type(constant("ELEMENT_MULTIPLE"));
+		$newCheckbox->x(40);
+		$newCheckbox->y(60);
+		$newCheckbox->label("select multiple");
+		$newCheckbox->direction(constant("DIR_VERTICAL"));
+		$newCheckbox->bigList(TRUE);
+		$arrayOpt = [["order" => 1, "value" => "first" , "default" => 0], ["order" => 2, "value" => "second" , "default" => 0]];
+  		$newCheckbox->options($arrayOpt);
 		
-		// Delete test data (if we delete user the others are deleted by cascade)
+		// Save elements
+		$newInputNumber->save($idFormGroup);
+		$newCheckbox->save($idFormGroup);
+		
+		// Verifies if they were saved correctly
+		$InputNumber = new Element($newInputNumber->id());
+		$this->assertEqual($InputNumber->Type(), constant("ELEMENT_NUMBER"));
+		$this->assertEqual($InputNumber->label(), "number field");
+		$this->assertEqual($InputNumber->x(), 50);
+		$this->assertEqual($InputNumber->y(), 30);
+		$this->assertEqual($InputNumber->height(), 20);
+		$this->assertEqual($InputNumber->width(), 200);
+		$this->assertEqual($InputNumber->defaultValue(), "50");
+		$this->assertEqual($InputNumber->placeholder(), "placeholder");
+		$this->assertEqual($InputNumber->min(), 0);
+		$this->assertEqual($InputNumber->max(), 30);
+		$this->assertTrue($InputNumber->required());
+		
+		$Checkbox = new Element($newCheckbox->id());
+		$this->assertEqual($Checkbox->Type(), constant("ELEMENT_MULTIPLE"));
+		$this->assertEqual($Checkbox->label(), "select multiple");
+		$this->assertEqual($Checkbox->x(), 40);
+		$this->assertEqual($Checkbox->y(), 60);
+		$this->assertTrue($Checkbox->bigList());
+		$this->assertEqual($Checkbox->direction(), constant("DIR_VERTICAL"));
+		$this->assertEqual($Checkbox->options(), $arrayOpt);
+		
+		// Delete test data (if we delete the user the related data is deleted by cascade)
 		mysql_query("DELETE FROM USER WHERE user_id = ".$idUser);
 	}
 	
@@ -182,6 +201,13 @@ class TestOfElementClass extends UnitTestCase {
   		$elem = new Element();
   		$elem->img("stringwithencodedimage");
   		$this->assertEqual($elem->img(), "stringwithencodedimage");
+  	}
+	
+	function testOptions(){
+  		$elem = new Element();
+		$arrayOpt = [["order" => 1, "value" => "option 1" , "default" => 0], ["order" => 2, "value" => "option 2" , "default" => 1]];
+  		$elem->options($arrayOpt);
+  		$this->assertEqual($elem->options(), $arrayOpt);
   	}
 }
 ?>

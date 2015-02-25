@@ -57,9 +57,23 @@
 			}
 ?>
 							<tr class="info">
-								<!-- TODO if valid then href= ... else href=... -->
 								<td><a href="<?php echo $link ?>"><?php echo $name ?></a></td>
-								<td><?php echo $status ? "Envoyé" : "Pas envoyé" ?></td>
+								<?php
+									if($status == TRUE){
+								?>
+								<td>Validé</td>
+								<?php
+									}else{
+								?>
+								<td>A valider
+									<a href="include/deleteform.php?form_id=<?php echo $formId ?>" class="text-muted">
+										<span class="glyphicon glyphicon-trash" aria-hidden="true" onclick="return confirm('Voulez-vous vraiment supprimer ?');">
+										</span>
+									</a>
+								</td>
+								<?php
+									}
+								?>
 							</tr>
 <?php
 		}

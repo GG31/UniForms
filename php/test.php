@@ -28,7 +28,7 @@
 	$form = new Form();
 
 	// Set attributes ...
-	$form->creator 		($user1);
+	$form->creator 		($user2);
 	$form->name 		("Cool form");
 	$form->printable 	(FALSE);
 	$form->anon 		(FALSE);
@@ -94,13 +94,14 @@
 	$form->groups([$group0, $group1, $group2]);
 
 	// OK let's send
-	$form->send();
+	$form->save();
+	// $form->send();
 
 	/////////////
 	// Answer //
 	/////////////
 
-	echo '<a href="list.php?formId=' . $form->id() . '">Answer !</a>';
+	// echo '<a href="list.php?formId=' . $form->id() . '">Answer !</a>';
 
 	function require_once_UF($path) {
 		require_once dirname ( __FILE__ ) . '/' . $path . '.php';

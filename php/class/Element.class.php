@@ -138,7 +138,43 @@
 				return $this;
 			}
 		}
-
+		
+		public function id($id = NULL){
+			// Get
+			if($id === NULL){
+				return $this->id;
+			}
+			// Set
+			else{
+				$this->id = $id;
+				return $this;
+			}
+		}
+		
+		public function type($type = NULL){
+			// Get
+			if($type === NULL){
+				return $this->type;
+			}
+			// Set
+			else{
+				$this->type = $type;
+				return $this;
+			}
+		}
+		
+		public function label($label = NULL){
+			// Get
+			if($label === NULL){
+				return $this->label;
+			}
+			// Set
+			else{
+				$this->label = $label;
+				return $this;
+			}
+		}
+		
 		public function save($groupId){
 			// Create element
 			mysql_query("INSERT INTO formelement(

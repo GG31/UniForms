@@ -303,57 +303,216 @@
 		}
 		
 		/**
-	    * Returns a SQL script. This script generates a database and tables containing information related to all validated answers of this form.
-		* If the form is not validated returns 0.
-		* @return string
+	    * Creates a file with a SQL script. This script generates a database and tables containing information related to all validated answers of this form.
+		* If the form is not validated returns 0, else returns 1.
+		* @return int
 	    */	
 		public function exportSQL(){
 			if($this->state == FALSE or $this->id == NULL)
 				return 0;
 			
-			$DBName = 'form'.$this->getName();
-			$sql = 'SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";<br>
-					SET time_zone = "+00:00";<br>
-					CREATE DATABASE IF NOT EXISTS `'.$DBName.'` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;<br>
-					USE `'.$DBName.'`;<br><br>';
+			// Get current autoincrement values
+			$AIanswer = mysql_fetch_array(mysql_query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'answer';"));
+			$AIanswervalue = mysql_fetch_array(mysql_query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'answervalue';"));
+			$AIelementanswer = mysql_fetch_array(mysql_query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'elementanswer';"));
+			$AIelementoption = mysql_fetch_array(mysql_query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'elementoption';"));
+			$AIform = mysql_fetch_array(mysql_query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'form';"));
+			$AIformdest = mysql_fetch_array(mysql_query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'formdest';"));
+			$AIformelement = mysql_fetch_array(mysql_query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'formelement';"));
+			$AIformgroup = mysql_fetch_array(mysql_query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'formgroup';"));
+			$AIuser = mysql_fetch_array(mysql_query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'user';"));
+
+			//$DBName = 'form'.$this->name();
+			$DBName = 'ExportedDB';
+			
+			// Disable constraints and drop, create and select database
+			$sql = 'SET FOREIGN_KEY_CHECKS=0;
+					DROP DATABASE IF EXISTS `'.$DBName.'`;
+					CREATE DATABASE IF NOT EXISTS `'.$DBName.'`;
+					USE `'.$DBName.'`;';
+			
+			// Create all tables
+			$sql .=	"DROP TABLE IF EXISTS `answer`;
+					CREATE TABLE IF NOT EXISTS `answer` (
+					  `answer_id` int(11) NOT NULL AUTO_INCREMENT,
+					  `formdest_id` int(11) NOT NULL,
+					  `answer_prev_id` int(11) NOT NULL,
+					  PRIMARY KEY (`answer_id`),
+					  KEY `fk_answer_formdest_idx` (`formdest_id`),
+					  CONSTRAINT `fk_answer_formdest_idx` FOREIGN KEY (`formdest_id`) REFERENCES `formdest` (`formdest_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+					) ENGINE=InnoDB AUTO_INCREMENT=".$AIanswer["AUTO_INCREMENT"]." DEFAULT CHARSET=utf8;
+
+					DROP TABLE IF EXISTS `answervalue`;
+					CREATE TABLE IF NOT EXISTS `answervalue` (
+					  `answervalue_id` int(11) NOT NULL AUTO_INCREMENT,
+					  `value` varchar(255) DEFAULT NULL,
+					  `elementanswer_id` int(11) NOT NULL,
+					  PRIMARY KEY (`answervalue_id`),
+					  KEY `fk_answervalue_elementanswer1_idx` (`elementanswer_id`),
+					  CONSTRAINT `fk_answervalue_elementanswer` FOREIGN KEY (`elementanswer_id`) REFERENCES `elementanswer` (`elementanswer_id`) ON DELETE CASCADE
+					) ENGINE=InnoDB AUTO_INCREMENT=".$AIanswervalue["AUTO_INCREMENT"]." DEFAULT CHARSET=utf8;
+
+					DROP TABLE IF EXISTS `elementanswer`;
+					CREATE TABLE IF NOT EXISTS `elementanswer` (
+					  `elementanswer_id` int(11) NOT NULL AUTO_INCREMENT,
+					  `formelement_id` int(11) NOT NULL,
+					  `answer_id` int(11) NOT NULL,
+					  PRIMARY KEY (`elementanswer_id`),
+					  KEY `fk_formanswers_formlist1_idx` (`formelement_id`),
+					  KEY `fk_formanswers_answer1_idx` (`answer_id`),
+					  CONSTRAINT `fk_formanswers_answer1_idx` FOREIGN KEY (`answer_id`) REFERENCES `answer` (`answer_id`) ON DELETE CASCADE,
+					  CONSTRAINT `fk_formanswers_formlist1_idx` FOREIGN KEY (`formelement_id`) REFERENCES `formelement` (`formelement_id`) ON DELETE CASCADE
+					) ENGINE=InnoDB AUTO_INCREMENT=".$AIelementanswer["AUTO_INCREMENT"]." DEFAULT CHARSET=utf8;
+
+					DROP TABLE IF EXISTS `elementoption`;
+					CREATE TABLE IF NOT EXISTS `elementoption` (
+					  `elementoption_id` int(11) NOT NULL AUTO_INCREMENT,
+					  `optionvalue` varchar(255) NOT NULL DEFAULT '0',
+					  `formelement_id` int(11) DEFAULT NULL,
+					  PRIMARY KEY (`elementoption_id`),
+					  KEY `FK_elementoption_formelement` (`formelement_id`),
+					  CONSTRAINT `FK_elementoption_formelement` FOREIGN KEY (`formelement_id`) REFERENCES `formelement` (`formelement_id`) ON DELETE CASCADE
+					) ENGINE=InnoDB AUTO_INCREMENT=".$AIelementoption["AUTO_INCREMENT"]." DEFAULT CHARSET=utf8;
+
+					DROP TABLE IF EXISTS `form`;
+					CREATE TABLE IF NOT EXISTS `form` (
+					  `form_id` int(11) NOT NULL AUTO_INCREMENT,
+					  `form_name` varchar(255) DEFAULT NULL,
+					  `user_id` int(11) NOT NULL,
+					  PRIMARY KEY (`form_id`),
+					  KEY `fk_form_user_idx` (`user_id`),
+					  CONSTRAINT `fk_form_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+					) ENGINE=InnoDB AUTO_INCREMENT=".$AIform["AUTO_INCREMENT"]." DEFAULT CHARSET=utf8;
+
+					DROP TABLE IF EXISTS `formdest`;
+					CREATE TABLE IF NOT EXISTS `formdest` (
+					  `formdest_id` int(11) NOT NULL AUTO_INCREMENT,
+					  `user_id` int(11) NOT NULL,
+					  `formgroup_id` int(11) NOT NULL,
+					  PRIMARY KEY (`formdest_id`),
+					  KEY `fk_formdest_user1_idx` (`user_id`),
+					  KEY `fk_formdest_form1_idx` (`formgroup_id`),
+					  CONSTRAINT `fk_formdest_form1` FOREIGN KEY (`formgroup_id`) REFERENCES `formgroup` (`formgroup_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+					  CONSTRAINT `fk_formdest_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+					) ENGINE=InnoDB AUTO_INCREMENT=".$AIformdest["AUTO_INCREMENT"]." DEFAULT CHARSET=utf8;
+
+					DROP TABLE IF EXISTS `formelement`;
+					CREATE TABLE IF NOT EXISTS `formelement` (
+					  `formelement_id` int(11) NOT NULL AUTO_INCREMENT,
+					  `type_element` int(11) DEFAULT NULL,
+					  `formgroup_id` int(11) NOT NULL,
+					  `label` varchar(255) DEFAULT NULL,
+					  PRIMARY KEY (`formelement_id`),
+					  KEY `fk_formlist_form1_idx` (`formgroup_id`),
+					  CONSTRAINT `fk_formgroup_formelement` FOREIGN KEY (`formgroup_id`) REFERENCES `formgroup` (`formgroup_id`) ON DELETE CASCADE
+					) ENGINE=InnoDB AUTO_INCREMENT=".$AIformelement["AUTO_INCREMENT"]." DEFAULT CHARSET=utf8;
+
+					DROP TABLE IF EXISTS `formgroup`;
+					CREATE TABLE IF NOT EXISTS `formgroup` (
+					  `formgroup_id` int(11) NOT NULL AUTO_INCREMENT,
+					  `form_id` int(11) NOT NULL DEFAULT '0',
+					  PRIMARY KEY (`formgroup_id`),
+					  KEY `fk_form_formgroup` (`form_id`),
+					  CONSTRAINT `fk_form_formgroup` FOREIGN KEY (`form_id`) REFERENCES `form` (`form_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+					) ENGINE=InnoDB AUTO_INCREMENT=".$AIformgroup["AUTO_INCREMENT"]." DEFAULT CHARSET=latin1;
+
+					DROP TABLE IF EXISTS `user`;
+					CREATE TABLE IF NOT EXISTS `user` (
+					  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+					  `user_name` varchar(255) DEFAULT NULL,
+					  PRIMARY KEY (`user_id`)
+					) ENGINE=InnoDB AUTO_INCREMENT=".$AIuser["AUTO_INCREMENT"]." DEFAULT CHARSET=utf8;";
+			
+			// Insert form into table form
+			$sql .=	"INSERT INTO `form` VALUES (".$this->id.", '".$this->name."', ".$this->creator->id().");\r\n";
+			
+			// Insert creator into table user
+			$sql .=	"INSERT INTO `user` VALUES (".$this->creator->id().", '".$this->creator->name()."');\r\n";
+			
+			// Insert recipients into table user
+			$querydests = mysql_query("SELECT DISTINCT user.user_id, user_name FROM user JOIN (formdest JOIN formgroup 
+										ON formdest.formgroup_id = formgroup.formgroup_id AND form_id = ".$this->id.") ON formdest.user_id = user.user_id");
+			while ($dests = mysql_fetch_array($querydests))
+				$sql .=	"INSERT INTO `user` VALUES(".$dests["user_id"].",'".$dests["user_name"]."');\r\n";
+							
+			// Insert groups into table formgroup
+			foreach ($this->groups as $group){
+				$sql .=	"INSERT INTO `formgroup` VALUES(".$group->id().",".$this->id.");\r\n";
+				
+				// Insert elements into table formelement
+				$elements = $group->elements();
+				foreach ($elements as $element){
+					$sql .=	"INSERT INTO `formelement` VALUES(".$element->id().",".$element->type().",".$group->id().",'".$element->label()."');\r\n";
 					
-			$sql .=	"DROP TABLE IF EXISTS `formdest`;<br>
-					CREATE TABLE IF NOT EXISTS `formdest` (<br>
-					  `formdest_id` int(11) NOT NULL AUTO_INCREMENT,<br>
-					  `user_id` int(11) NOT NULL,<br>
-					  `formgroup_id` int(11) NOT NULL,<br>
-					  PRIMARY KEY (`formdest_id`),<br>
-					    KEY `fk_formdest_user1_idx` (`user_id`),<br>
-						KEY `fk_formdest_form1_idx` (`formgroup_id`)<br>
-					) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=944; <br>
-					<br>
-					DROP TABLE IF EXISTS `formgroup`;<br>
-					CREATE TABLE IF NOT EXISTS `formgroup` (<br>
-					  `formgroup_id` int(11) NOT NULL AUTO_INCREMENT,<br>
-					  `form_id` int(11) NOT NULL DEFAULT '0',<br>
-					  PRIMARY KEY (`formgroup_id`),<br>
-					  KEY `fk_form_formgroup` (`form_id`)<br>
-					) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=64 ;<br>
-					<br>
-					CREATE TABLE IF NOT EXISTS `elementanswer` (<br>
-					  `elementanswer_id` int(11) NOT NULL AUTO_INCREMENT,<br>
-					  `formelement_id` int(11) NOT NULL,<br>
-					  `formdest_id` int(11) NOT NULL,<br>
-					  PRIMARY KEY (`elementanswer_id`),<br>
-					  KEY `fk_formanswers_formlist1_idx` (`formelement_id`),<br>
-					  KEY `fk_formanswers_formdest1_idx` (`formdest_id`)<br>
-					) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;<br>
-					";
-		
-			foreach ($this->formGroups as $group){
-				$listReceivers = $group->getFormGroupRecipients([], 1);
-				foreach ($listReceivers as $receiver){
-					$sql .=	"INSERT INTO `formdest` VALUES(".$receiver["formDestId"].",".$receiver["User"]->getId().",".$group->getId().");<br>";
+					// Insert element options into table elementoption
+					$queryelemoption = mysql_query("SELECT * FROM elementoption WHERE formelement_id = ".$element->id());
+					while ($options = mysql_fetch_array($queryelemoption))
+						$sql .=	"INSERT INTO `elementoption` VALUES(".$options["elementoption_id"].",'".$options["optionvalue"]."',".$element->id().");\r\n";
+				}
+				
+				// Insert users into table formdest
+				$queryformdest = mysql_query("SELECT * FROM formdest WHERE formgroup_id = ".$group->id());
+				while ($users = mysql_fetch_array($queryformdest)){
+					$sql .=	"INSERT INTO `formdest` VALUES(".$users["formdest_id"].",".$users["user_id"].",".$group->id().");\r\n";
+					
+					// Insert validated answers into table answer
+					$queryanswer = mysql_query("SELECT * FROM answer WHERE answer_status = 1 AND formdest_id = ".$users["formdest_id"]);
+					while ($answers = mysql_fetch_array($queryanswer)){
+						$sql .=	"INSERT INTO `answer` VALUES(".$answers["answer_id"].",".$users["formdest_id"].",".$answers["answer_prev_id"].");\r\n";
+						
+						// Insert into table elementanswer 
+						$queryelemanswer = mysql_query("SELECT * FROM elementanswer WHERE answer_id = ".$answers["answer_id"]);
+						while ($elemanswers = mysql_fetch_array($queryelemanswer)){
+							$sql .=	"INSERT INTO `elementanswer` VALUES(".$elemanswers["elementanswer_id"].",".$elemanswers["formelement_id"].",".$elemanswers["answer_id"].");\r\n";
+						
+							// Insert answer values into table answervalue 
+							$queryansvalue = mysql_query("SELECT * FROM answervalue WHERE elementanswer_id = ".$elemanswers["elementanswer_id"]);
+							while ($ansvalues = mysql_fetch_array($queryansvalue))
+								$sql .=	"INSERT INTO `answervalue` VALUES(".$ansvalues["answervalue_id"].",'".$ansvalues["value"]."',".$ansvalues["elementanswer_id"].");\r\n";
+						}
+					}
 				}
 			}
 			
+			// Enable constraints
+			$sql .=	"SET FOREIGN_KEY_CHECKS=1;";
+
+			$fileName = "../res/sql/exportSQL.sql";
+			//$fileName .= "ExportedForm-".date('Y-m-d_H:i:s').".sql";
+			
+			$file = fopen($fileName, "c");
+			fwrite($file, $sql);
+			fclose($file);
+		
 			return $sql;
 		}
+		/*
+		public function getAnswerableFormGroups($userId){
+			$return = [];
+			$paths = [];
+			$paths[] = array(0);
+			foreach ($this->groups as $group) {
+				if (in_array(new User($userId), $group->users()))
+					foreach ($paths as $onepath)
+						$return[] = array("groupId" => $group->id(), "path" => $onepath);
+				$atLeastOneValidated = FALSE;
+				foreach ($group->answers() as $answerArray){
+					foreach ($answerArray as $answer)
+						if ($answer->state() == TRUE){
+							$atLeastOneValidated = TRUE;	
+							foreach ($paths as $indexpath => $onepath){
+								array_push($onepath, $answer->id());
+								$paths[$indexpath] = $onepath;
+							}
+						}
+				}
+				if (!$atLeastOneValidated)
+					break;
+			}
+			return $return;
+		}
+		*/
+
 	}
 
 ?>

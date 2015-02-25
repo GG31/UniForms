@@ -7,11 +7,11 @@
   require_once('../php/class/User.class.php');
   require_once('../php/class/Answer.class.php');
   require_once('../php/class/Element.class.php');
-  require_once('../php/class/FormGroup.class.php');
+  require_once('../php/class/Group.class.php');
 
   class TestOfFormClass extends UnitTestCase {
   	
-  	function setUp(){
+  	/*function setUp(){
   		$Form = new Form(1);
   	}
   	
@@ -156,10 +156,18 @@
 		$this->assertEqual($form->getFormRecipients()[1]["User"], $u2);
 		$this->assertEqual($form->getFormRecipients()[2]["User"], $u3);
 	}	
-	
+	*/
 	function testExport() {
-    	$Form = new Form(1);
-    	echo $Form->exportSQL();
+    	$Form = new Form(21);
+		$Form->exportSQL();
+    	echo "<a href='../res/sql/exportSQL.sql'>Download sql file</a>";
+		//echo "<a href='../php/include/exportSQL.php?form_id=21'>Download sql file</a>";
     }
+	
+	/*function testGetAnswer() {
+    	$Form = new Form(1);
+    	$result = $Form->getAnswerableFormGroups(1);
+		var_dump($result);
+    }*/
   }
 ?>

@@ -3,7 +3,6 @@
    ini_set('display_errors', 1);
    error_reporting ( E_ALL );
    include_once 'include/includes.php';
-   include_once 'external_scripting.php';
 
    if(isset($_GET["form_id"]) && isset($_GET["formdest_id"]) && isset($_GET["prev_id"])){     // New answer
       $form_id    = $_GET["form_id"];
@@ -25,12 +24,6 @@
       $form       = new Form($form_id);
       $state      = $ans->state();
       $new        = FALSE;
-   }
-
-   if($form->printable()==FALSE){
-   	echo "<link rel='stylesheet' media='print' href='../css/notprint.css' type='text/css' />";
-   }else {
-   	echo "<link rel='stylesheet' media='print' href='../css/print.css' type='text/css' />";
    }
 ?>
 <html>

@@ -88,6 +88,8 @@ class TestOfAnswerClass extends UnitTestCase {
 		$this->assertEqual($Answer->state(), 1);
 		$this->assertEqual($Answer->elementsValues(), $arrayValues);
 		$this->assertEqual($Answer->userId(), $idReceiver);
+		$this->assertEqual($Answer->values($idElement1), ["1", "2"]);
+		$this->assertEqual($Answer->values($idElement2), ["myanswer"]);
 		
 		// Delete test data (if we delete user the others are deleted by cascade)
 		mysql_query("DELETE FROM USER WHERE user_id = ".$idCreator);

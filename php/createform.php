@@ -74,6 +74,20 @@
 	   });
 	 });
    </script>
+   
+   <script type="text/javascript">
+  	 	copiedest = function() {
+			//alert($('#display').val());
+			if($('#display').val()) {
+				newdest = $('<div class="input-group"><span class="input-group-addon"><input id="user'+$("#destinataires option[value=\'"+$("#display").val()+"\']").attr("userid")+'" type="checkbox" checked name="recipient[]" value="'+$("#destinataires option[value=\'"+$("#display").val()+"\']").attr("userid")+'"></span><label class="form-control" for="user'+$("#destinataires option[value=\'"+$("#display").val()+"\']").attr('userid')+'">'+$("#display").val()+'</label></div>');
+				$('#listdest').append(newdest);
+				//console.log($("#destinataires option[value=\'"+$('#display').val()+"\']").attr('userid'));
+			}
+		}
+  	 	deldest = function(destuser) {
+  	  	 	$("#" + destuser).remove();
+  	  	}
+   </script>
 	</head>
 	<body>
 		<div class="container">
@@ -163,31 +177,83 @@
 						</div>
 						<div id="dest" class="panel-body" style="<?php echo $destStyle ?>">
 							<div class="form-group">
-	                        <?php
-								$users = User::all ();
-								foreach ( $users as $user ) {
-							?>
-								<div class="input-group">
+							  <input list="destinataires" id="display" name="destinataire">
+							  <datalist id="destinataires">
+		                        <?php
+									$users = User::all ();
+									foreach ( $users as $user ) {
+								?>
+											<option
+												value=<?php echo '"'.$user->getName().'"' ?>
+												userid=<?php echo '"'.$user->getId().'"' ?>
+											/>
+		                        <?php
+									}
+								?>
+							  </datalist>
+							  <button type="button" class="btn btn-default btn-sm" onclick="copiedest()">
+                       			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                   			  </button>
+                   			  <span id="listdest">
+                   			  <?php 
+                   			  	 $exist_dest = $form->getFormRecipients();
+                   			 	 if (!empty($exist_dest)){
+                   			 	 	foreach ($exist_dest as $d){
+                   			  ?>
+                   			  <div class="input-group">
 									<span class="input-group-addon">
 										<input
-											id="user<?php echo $user->getId() ?>"
+											id="user<?php echo $d['User']->getId(); ?>"
 											type="checkbox"
 											name="recipient[]"
-											value=<?php echo $user->getId() ?>
-	<?php echo $user->isDestinataire($form_id) ? "CHECKED" : "" ?>
-											>
+											value=<?php echo $d['User']->getId(); ?>
+											<?php //echo $user->isDestinataire($form_id) ? "CHECKED" : "" ?>
+											checked>
 									</span>
 									<label
 										class="form-control"
-										for="user<?php echo $user->getId() ?>">
-										<?php echo $user->getName() ?>
+										for="user<?php echo $d['User']->getId(); ?>">
+										<?php echo $d['User']->getName(); ?>
 									</label>
 								</div>
-	                        <?php
+								<?php 
+									}
 								}
-							?>
+								?>
+                   			  </span>
 	                    	</div>
 						</div>
+						
+						<!-- ======================CE QU'A ETE AVANT===================== -->
+						<!-- <div id="dest" class="panel-body" style="<?php //echo $destStyle ?>">
+							<div class="form-group"> -->
+	                        <?php
+								//$users = User::all ();
+								//foreach ( $users as $user ) {
+							?>
+								<!-- <div class="input-group">
+									<span class="input-group-addon">
+										<input
+											id="user<?php //echo $user->getId() ?>"
+											type="checkbox"
+											name="recipient[]"
+											value=<?php //echo $user->getId() ?>
+									<?php //echo $user->isDestinataire($form_id) ? "CHECKED" : "" ?>
+											> -->
+									</span>
+									<!--  <label
+										class="form-control"
+										for="user<?php //echo $user->getId() ?>">
+										<?php //echo $user->getName() ?>
+									</label>
+								</div>-->
+	                        <?php
+								//}
+							?>
+	                    	<!-- </div>
+						 </div>-->
+						<!-- =========================================== -->
+						
 					</div>
 				</div></div>
 				

@@ -22,7 +22,7 @@
       }
       
    }
-   echo Returnname($_SESSION ['name']);
+   //echo Returnname($_SESSION ['name']);
 ?>
 <html>
 <head>

@@ -86,6 +86,21 @@
 			// TODO
 			return FALSE;
 		}
+
+		public static function all() {
+			$res = [];
+
+			$query = mysql_query ("	SELECT user_id
+								FROM user" )
+			or die("User::all() : users not found !");
+			
+			while ( $results = mysql_fetch_array ( $query ) ) {
+				if ($results ["user_id"] != 0) // User 0 is Anonymous
+					$res [] = new User ( $results ["user_id"] );
+			}
+			
+			return $res;
+		}
 	}
 
 ?>

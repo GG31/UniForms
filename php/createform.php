@@ -5,18 +5,28 @@
 		$_GET["form_id"] =>
 			$_POST["form_id"] == $_GET["form_id"] (already existing form)
 		XXXXXXXXXXXXXXXX =>
-			$_POST["form_id"] == -1 (new form)
+			$_POST["form_id"] == NULL (new form)
 	 */
-	$form_id 	= isset($_GET["form_id"]) ? $_GET["form_id"] : -1;
+	$form_id 	= isset($_GET["form_id"]) ? $_GET["form_id"] : NULL;
 	$form 		= new Form($form_id);
 
 	$checkedAnon  	= FALSE;
 	$checkedPrint 	= TRUE;
-	$maxAnswers 	= 1;
+	// $maxAnswers 	= 1; // TODO ?
+	$groupsUsers = [];
+
 	if(isset($_GET["form_id"])){
-		$checkedAnon 	= $form->getAnonymous();
-		$checkedPrint 	= $form->getPrintable();
-		$maxAnswers   	= $form->getMaxAnswers();
+		$checkedAnon 	= $form->anon();
+		$checkedPrint 	= $form->printable();
+		// $maxAnswers   	= $form->getMaxAnswers(); // TODO ?
+
+		foreach ($form->groups() as $num => $group) {
+			$groups[$num] = [];
+			foreach ($group->users() as $user) {
+				$groupsUsers[$num]["id"] = $user->id();
+				$groupsUsers[$num]["name"] = $user->name();
+			}
+		}
 	}
 ?>
 <html>
@@ -30,20 +40,22 @@
 		<link rel="stylesheet" href="../css/styles.css" type="text/css" />
 		<link rel="stylesheet" href="../css/drag.css" type="text/css" />
 		<link rel="stylesheet" href="../lib/jquery-2.1.1/jquery-ui.css" type="text/css" />
-      <style>
-		  .thumb {
-		    height: 75px;
-		    border: 1px solid #000;
-		    margin: 10px 5px 0 0;
-		  }
+		<style>
+			.thumb {
+				height: 75px;
+				border: 1px solid #000;
+				margin: 10px 5px 0 0;
+			}
 		</style>
 		<script src="../lib/jquery-2.1.1/min.js"></script>
 		<script src="../lib/jquery-2.1.1/jquery-ui.js"></script>
-
 		<script src="../lib/bootstrap-3.3.1/js/min.js"></script>
 	
 		<script>
 			$(document).ready(function(){
+				/////////////////////////////////////////////
+				// Toggle recipient when toogling anon 	//
+				/////////////////////////////////////////////
 				$('#anon').on('change', function() {
 					if($(this).is(':checked')){
 						$( "#dest" ).hide("slow", function(){
@@ -58,22 +70,95 @@
 						});
 						$("#dest input").prop("disabled", false);
 					}
-				});	
-			});
-			console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');	
+				});
 
-			</script>
-			
-   <script type="text/javascript">
-   $(document).ready(function() {
-	   $(window).keydown(function(event){
-	     if(event.keyCode == 13) {
-	       event.preventDefault();
-	       return false;
-	     }
-	   });
-	 });
-   </script>
+				//////////////////////////////////////////
+				// Prevent validating form on ENTER //
+				//////////////////////////////////////////
+				$(window).keydown(function(event){
+					if(event.keyCode == 13) {
+						event.preventDefault();
+						return false;
+					}
+				});
+
+				/////////////////////////////////////////////
+				// Recipient by groups (for the modal) //
+				/////////////////////////////////////////////
+				groupsUsers = <?php echo json_encode($groupsUsers) ?>;
+				console.log(groupsUsers);
+
+				GROUPSUSERS = {
+					'group_0': [
+							{'id': 1, 'name' : 'Romain'},
+							{'id': 2, 'name' : 'Ayoub'}
+						]
+				};
+
+				copiedest = function() {
+					if($('#display').val()) { // TODO more verifs
+						id 		= $("#destinataires option[value=\'"+$("#display").val()+"\']").attr("userid");
+						name 	= $("#display").val();
+
+						displayGroupUser(id, name);
+					}
+				};
+
+				removedestCB = function(){
+					if(!$(this).prop('checked')){
+						$(this).parent().siblings().remove();
+						$(this).parent().remove();
+					}
+				};
+
+				refreshGroupsUsers = function(group){
+					$('#listdest input[id^=user]').each(function(index, element){
+						GROUPSUSERS[group] = $(this).attr('id');
+					});
+					console.log(GROUPSUSERS);
+				};
+
+				displayGroupUser = function(id, name){
+					group = $('<div class="input-group"></div>');
+					addon = $('<span class="input-group-addon"></span>');
+					checkbox = function(id){
+						return $('<input />')
+									.attr('id', 'user' + id)
+									.attr('type', 'checkbox')
+									.attr('name', 'recipient[]')
+									.attr('value', 'user' + id)
+									.prop('checked', true);
+					};
+					label = function(id, name){
+						return $('<label></label>')
+									.attr('class', 'form-control')
+									.text(name);
+					};
+
+					$('#listdest').append(group.append(addon.append(checkbox(id))).append(label(id, name)));
+					$('#user' + id).on('click', removedestCB);
+
+					// refreshGroupsUsers(0);
+				};
+
+				displayGroupUsers = function(group){
+					users = GROUPSUSERS[group];
+
+					$('#listdest').empty();
+					users.forEach(function(val){
+						displayGroupUser(val['id'], val['name']);
+					});
+				};
+
+				$('#myModal').on('show.bs.modal', function (event) {
+					// Button that triggered the modal
+					button 	= $(event.relatedTarget);
+					id 		= button.parent().attr('id');
+
+					displayGroupUsers(id);
+				})
+			});
+		</script>
 	</head>
 	<body>
 		<div class="container">
@@ -81,7 +166,7 @@
 			<?php include 'include/header.php'; ?>
 			<?php include 'include/nav.php'; ?>
 			<?php
-				if($form->getState() == TRUE){
+				if($form->state() == TRUE){
 			?>
 					<div class="alert alert-warning text-center" role="alert">
 						Ce formulaire a déjà été validé !
@@ -89,19 +174,6 @@
 			<?php
 				}
 			?>
-			<!-- <div id="bgWrap">
-					<div id='preview'>
-					</div>
-					<form id="uploadForm" method="post" enctype="multipart/form-data" action='ajaximage.php'>
-						Sélectionner les images à télécharger : 
-						<div id='uploadStatus' style='display:none'><img src="../img/loader.gif" alt="Uploading...."/></div>
-						
-						<div id='imgUploadBtn'>
-							<input type="file" multiple="multiple" name="imgUpload[]" id="imgUpload" accept="image/*" />
-						</div>
-						<div class="info">Taille maximale de l'image : <b>500 </b>ko</div>
-					</form>
-			</div>-->
 			<form
 				id="formulaire"
 				class="form-inline"
@@ -123,7 +195,9 @@
 									value="print"
 									name="param[]"
 									<?php echo $checkedPrint ? "CHECKED" : "" ?>
-									>
+									data-toggle="tooltip" 
+								    data-placement="top" 
+									title="Si le formulaire est imprimable alors les éléments seront arrangés de telle manière à ce qu’ils puissent être sur une page A4 physique.">
 								<label for="print">Imprimable</label>
 								<input
 									id="anon"
@@ -131,8 +205,11 @@
 									value="anon"
 									name="param[]"
 									<?php echo $checkedAnon ? "CHECKED" : "" ?>
-									>
+									data-toggle="tooltip" 
+								    data-placement="top" 
+									title="Si le formulaire est anonyme, il ne sera pas nécessaire de se connecter pour répondre et les personnes pouvant répondre à ce formulaire sont ceux disposant du lien.">
 								<label for="anon">Anonyme</label>
+								<!-- TODO ?
 								<input 
 								   id = "multiple"
 								   type="number" 
@@ -145,6 +222,7 @@
 								   data-placement="top" 
 								   title="Entrez le nombre de fois que le formulaire pourra être rempli par le(s) destinataire(s), 0 pour infini">
 								<label for="multiple">Nombre de réponses max.</label>
+								-->
 							</div>
 						</div>
 					</div>
@@ -162,63 +240,87 @@
 							</h3>
 						</div>
 						<div id="dest" class="panel-body" style="<?php echo $destStyle ?>">
-							<div class="form-group">
-	                        <?php
-								$users = User::all ();
-								foreach ( $users as $user ) {
-							?>
-								<div class="input-group">
-									<span class="input-group-addon">
-										<input
-											id="user<?php echo $user->getId() ?>"
-											type="checkbox"
-											name="recipient[]"
-											value=<?php echo $user->getId() ?>
-	<?php echo $user->isDestinataire($form_id) ? "CHECKED" : "" ?>
-											>
-									</span>
-									<label
-										class="form-control"
-										for="user<?php echo $user->getId() ?>">
-										<?php echo $user->getName() ?>
-									</label>
-								</div>
-	                        <?php
-								}
-							?>
-	                    	</div>
+							<!-- TODO handle $destClass & $destStyle -->
 						</div>
 					</div>
 				</div></div>
+
+				<!-- Button trigger modal -->
+				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+					Launch demo modal
+				</button>
+
+				<!-- Modal -->
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title" id="myModalLabel">Ajouter des Destinataires</h4>
+							</div>
+							<!-- Modal body -->
+							<div class="modal-body">
+								<!-- Search input -->
+								<input list="destinataires" id="display" name="destinataire">
+
+								<!-- Autocompletion datalist -->
+								<datalist id="destinataires">
+									<?php
+										$users = User::all ();
+										foreach ( $users as $user ) {
+									?>
+									<option
+										value=<?php echo '"'.$user->name().'"' ?>
+										userid=<?php echo '"'.$user->id().'"' ?> />
+									<?php
+										}
+									?>
+								</datalist>
+								<!-- Add recipient button -->
+								<button type="button" class="btn btn-default btn-sm" onclick="copiedest()">
+									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+								</button>
+
+								<!-- Recipient list -->
+								<span id="listdest"></span>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+								<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+							</div>
+						</div>
+					</div>
+				</div>
 				
 				<div id="navbarGroups" class="nav navbar-nav navbar-right"> 
 				   <div class="panel panel-default" style="padding:10px"> 
 				   <div class="panel panel-primary">
 						<div class="panel-heading text-center text-capitalize">
 							<h3 class="panel-title">
-								<strong>Groupe</strong>
+								<strong>Groupes</strong>
 							</h3>
 						</div>
 						<div class="panel-body">
-						   <div id="groupSection">
-						      <div class="row" id="group_0">
-							      <div class="panel panel-default col-sm-8">
-						            <div class="panel-body">
-                                 <div class="groupElements">
-                                 </div>
-                              </div>
-                           </div>
-                           <button type="button" class="btn btn-default btn-lg" onclick="getGroupsAndElements()">
-                                 <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
-                           </button>
-                           <button type="button" class="btn btn-default btn-lg" onclick="lessGroup('group_0')">
-                                 <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                           </button>
-                        </div>
-                     </div>
-                     <button type="button" class="btn btn-default btn-lg" onclick="moreGroup()">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                     </button>
+							<div id="groupSection">
+								<div class="row" id="group_0">
+									<div class="panel panel-default col-sm-8">
+										<div class="panel-body">
+											<div class="groupElements"></div>
+										</div>
+									</div>
+									<button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal"><!-- TODO on moregroup -->
+										<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+									</button>
+									<button type="button" class="btn btn-default btn-lg" onclick="lessGroup('group_0')">
+										<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+									</button>
+								</div>
+							</div>
+							<button type="button" class="btn btn-default btn-lg" onclick="moreGroup()">
+								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+							</button>
 						</div>
 					</div>
 				   </div><!--panel default-->
@@ -301,7 +403,7 @@
 					<div class="col-sm-offset-3 col-sm-6">
 					   <input id="info" name="info" type="hidden">
                   <input id="infoGroups" name="infoGroups" type="hidden">
-						<input type="hidden" name="form_id" value=<?php echo $form_id ?>>
+						<input type="hidden" name="form_id" value="<?php echo $form_id ?>">
 						<input
 							type="submit"
 							class="btn btn-default btn-lg btn-block"
@@ -309,7 +411,7 @@
 							name="save"
 							form="formulaire"
 							onclick="sendJson()"
-							<?php echo $form->getState() ? "DISABLED" : "" ?>
+							<?php echo $form->state() ? "DISABLED" : "" ?>
 							>
 						<input
 							type="submit"
@@ -318,60 +420,115 @@
 							name="send"
 							form="formulaire"
 							onclick="sendJson()"
-							<?php echo $form->getState() ? "DISABLED" : "" ?>
+							<?php echo $form->state() ? "DISABLED" : "" ?>
 							>
 					</div>
 				</div>
 			</form>			
-	        <div id="footer"><?php include 'include/footer.php'; ?></div>
+	        <?php include 'include/footer.php'; ?>
 	    </div>
+		<script src="../js/drag.js"></script>
+		<script src="../js/group.js"></script>
+		<script src="../js/includeFile.js"></script>
+		<script type="text/javascript">
+			(function(){
+				$('[data-toggle="tooltip"]').tooltip()
+
+				// TODO si modif only !
+				formname = "<?php echo $form->name() ?>";
+				init(formname);
+
+				<?php
+					$groups = $form->groups();
+					$first = FALSE;
+
+					if(count($groups)){
+						foreach ($groups as $group) {
+							$elems = $group->elements();
+				?>
+							<?php echo !$first ? "moreGroup();" : "" ?>
+				<?php
+							$first = TRUE;
+							foreach ($elems as $elem) {
+								$obj = $elem->attr();
+								$obj = json_encode($obj, true);
+				?>
+								element = <?php echo $obj ?>;
+								addElement(element.type,
+									element.x,
+									element.y,
+									ids,	// TODO ????????????????????
+									"elem_" + element.id
+								);
+								addProp("elem_" + element.id,
+									element.type,
+									element.min,
+									element.max,
+									element.default,
+									element.required,
+									element.width,
+									element.height,
+									element.placeholder,
+									element.direction,
+									element.big,
+									element.options,
+									element.label,
+									element.img
+								);
+								appendToGroup($('#groupSection .groupElements:last'),
+									"elem_" + element.id,
+									element.label === "" ? "elem_" + element.id : element.label);
+				<?php
+							}
+						}
+					}
+				?>
+			})();
+		</script>
 	</body>
 </html>
-<script src="../js/drag.js"></script>
-<script src="../js/group.js"></script>
-<script src="../js/includeFile.js"></script>
 <script>
-   $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-   });
-   //Récupère les éléments du formulaire si modification
-   var formname = <?php echo '"'.$form->getName().'"' ?>;
-   init(formname);
+   // $(function () {
+   //    $('[data-toggle="tooltip"]').tooltip()
+   // });
+   // //Récupère les éléments du formulaire si modification
+   // var formname = <?php //echo '"'.$form->name().'"' ?>;
+   // init(formname);
 <?php
-   $elems = $form->getFormElements();
+   // $elems = $form->getFormElements();
 
-   foreach ($elems as $elem) {
-      $json = json_encode($elem->getAll(), true);
+   // foreach ($elems as $elem) {
+   //    $json = json_encode($elem->getAll(), true);
 ?>
-      var element = <?php echo $json ?>;
-      var elemId = "elem_" + element.id;
-      addElement(element.type , element.x, element.y, ids, elemId);
-      addProp(elemId, element.type, element.minvalue, element.maxvalue, element.default, element.required, element.width, element.height, element.placeholder, element.direction, element.big, element.options, element.label, element.img);
+      // var element = <?php //echo $json ?>;
+      // var elemId = "elem_" + element.id;
+      // addElement(element.type , element.x, element.y, ids, elemId);
+      // addProp(elemId, element.type, element.minvalue, element.maxvalue, element.default, element.required, element.width, element.height, element.placeholder, element.direction, element.big, element.options, element.label, element.img);
 <?php
-   }
+   // }
 ?>
-   var i = 0;
+   // var i = 0;
 <?php   
-   $groups = $form->getFormGroups(); 
-   foreach ($groups as $group) {
+   // $groups = $form->getFormGroups(); 
+   // foreach ($groups as $group) {
 ?>
-      if (i != 0) {
-         moreGroup();
-      }
-      i = i + 1;
+      // if (i != 0) {
+      //    moreGroup();
+      // }
+      // i = i + 1;
 <?php
-      $elementsOnGroup = $group->getGroupElements();
-      foreach ($elementsOnGroup as $elementOnGroup) {
+      // $elementsOnGroup = $group->getGroupElements();
+      // foreach ($elementsOnGroup as $elementOnGroup) {
 ?>
-         var elementId = "elem_" + <?php echo $elementOnGroup->getId(); ?>;
-         var elementLabel = <?php echo "'".$elementOnGroup->getLabel()."'"; ?>;
-         if (elementLabel == "") {
-            elementLabel = elementId;
-         }
-         appendToGroup($('#groupSection .groupElements:last'), elementId, elementLabel);
+         // var elementId = "elem_" + <?php //echo $elementOnGroup->getId(); ?>;
+         // var elementLabel = <?php //echo "'".$elementOnGroup->getLabel()."'"; ?>;
+         // if (elementLabel == "") {
+         //    elementLabel = elementId;
+         // }
+         // appendToGroup($('#groupSection .groupElements:last'), elementId, elementLabel);
 <?php
-      }
-   }
+   //    }
+   // }
 ?>
    //});
    </script>

@@ -74,9 +74,8 @@ if (! empty ( $_POST )) {
                $formGroups[] = $formGroup1;
             }
          }
-         $formGroupLeft = new FormGroup();
-         $formGroupLeft->setFormGroupElements($arrayElements);
-         $formGroups[] = $formGroupLeft;
+         $formGroup->setFormGroupElements($arrayElements);
+         $formGroups[] = $formGroup;
          $form->setGroups($formGroups);
       } else {
          $formGroup->setFormGroupElements($arrayElements);

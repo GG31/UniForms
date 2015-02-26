@@ -158,8 +158,7 @@
 									<?php echo $checkedPrint ? "CHECKED" : "" ?>
 									data-toggle="tooltip" 
 								    data-placement="top" 
-									title="
-									Si le formulaire est imprimable alors les éléments seront arrangés de telle manière à ce qu’ils puissent être sur une page A4 physique.">
+									title="Si le formulaire est imprimable alors les éléments seront arrangés de telle manière à ce qu’ils puissent être sur une page A4 physique.">
 								<label for="print">Imprimable</label>
 								<input
 									id="anon"

@@ -8,63 +8,64 @@
 		private $answers;
 
 		public function __construct($id = NULL){
+			global $database;
 			if ($id !== NULL){
 				// Id
 				$this->id = $id;
 
 				// Limit
-				$query = mysql_query("	SELECT 	group_limit
+				$query = mysqli_query($database, "	SELECT 	group_limit
 										FROM 	formgroup
 										WHERE 	formgroup_id = " . $this->id);
 
-				if (!mysql_num_rows($query)){
+				if (!mysqli_num_rows($query)){
 					die("Group::__construct() : id not found !");
 				}else{
-					$results = mysql_fetch_array($query);
+					$results = mysqli_fetch_array($query);
 
 					$this->limit = $results["group_limit"];
 				}
 
 				// Elements
-				$query = mysql_query("	SELECT 	*
+				$query = mysqli_query($database, "	SELECT 	*
 										FROM 	formelement
 										WHERE 	formgroup_id = " . $this->id);
 
-				if (!mysql_num_rows($query)){
+				if (!mysqli_num_rows($query)){
 					$this->elements = [];
 				}else{
 					$this->elements = [];
 
-					while($results = mysql_fetch_array($query)){
+					while($results = mysqli_fetch_array($query)){
 						$this->elements[] = new Element($results["formelement_id"]);
 					}
 				}
 
 				// Users and Answers
-				$query = mysql_query("	SELECT 		user_id, formdest_id
+				$query = mysqli_query($database, "	SELECT 		user_id, formdest_id
 										FROM 		formdest
 										WHERE 		formgroup_id = " . $this->id);
 
-				if (!mysql_num_rows($query)){
+				if (!mysqli_num_rows($query)){
 					$this->users 	= [];
 					$this->answers 	= [];
 				}else{
 					$this->users 	= [];
 					$this->answers 	= [];
 
-					while($results = mysql_fetch_array($query)){
+					while($results = mysqli_fetch_array($query)){
 						$this->users[] = new User($results["user_id"]);
 						$this->answers[$results["user_id"]] = [];
 
-						$query2 = mysql_query("	SELECT 		answer_id
+						$query2 = mysqli_query($database, "	SELECT 		answer_id
 												FROM 		answer
 												WHERE 		formdest_id = " . $results["formdest_id"] . "
 												ORDER BY 	answer_id");
 
-						if (!mysql_num_rows($query2)){
+						if (!mysqli_num_rows($query2)){
 							// Fail silently : user may not have answers yet
 						}else{
-							while($results2 = mysql_fetch_array($query2)){
+							while($results2 = mysqli_fetch_array($query2)){
 								$this->answers[$results["user_id"]][] = new Answer($results2["answer_id"]);
 							}
 						}
@@ -150,19 +151,20 @@
 		}
 
 		public function formdestId($userId){
+			global $database;
 			$ret = "";
 
-			$query = mysql_query("	SELECT 	formdest_id
+			$query = mysqli_query($database, "	SELECT 	formdest_id
 									FROM 			formgroup
 											JOIN 	formdest
 											ON 		formgroup.formgroup_id = formdest.formgroup_id
 									WHERE 	user_id = " . $userId . "
 									AND 	formgroup.formgroup_id = " . $this->id);
 
-			if (!mysql_num_rows($query)){
+			if (!mysqli_num_rows($query)){
 				die("Group::formdestId() : formdest_id not found !");
 			}else{
-				$results = mysql_fetch_array($query);
+				$results = mysqli_fetch_array($query);
 
 				$ret = $results["formdest_id"];
 			}
@@ -171,33 +173,34 @@
 		}
 
 		public function in($formdestId = NULL, $ansId = NULL){
+			global $database;
 			$ret = FALSE;
 
 			if($formdestId !== NULL){
-				$query = mysql_query("	SELECT 	formgroup_id
+				$query = mysqli_query($database, "	SELECT 	formgroup_id
 										FROM 	formdest
 										WHERE 	formdest_id = " . $formdestId);
 
-				if (!mysql_num_rows($query)){
+				if (!mysqli_num_rows($query)){
 					die("Group::in() (1) : formgroup_id not found !");
 				}else{
-					$results = mysql_fetch_array($query);
+					$results = mysqli_fetch_array($query);
 
 					$ret = $this->id == $results["formgroup_id"];
 				}
 			}
 
 			if($ansId !== NULL){
-				$query = mysql_query("	SELECT 	formgroup_id
+				$query = mysqli_query($database, "	SELECT 	formgroup_id
 										FROM 			formdest
 												JOIN 	answer
 												ON 		answer.formdest_id = formdest.formdest_id
 										WHERE 	answer_id = " . $ansId);
 
-				if (!mysql_num_rows($query)){
+				if (!mysqli_num_rows($query)){
 					die("Group::in() (2) : formgroup_id not found !");
 				}else{
-					$results = mysql_fetch_array($query);
+					$results = mysqli_fetch_array($query);
 
 					$ret = $this->id == $results["formgroup_id"];
 				}
@@ -207,8 +210,9 @@
 		}
 
 		public function save($formId){
+			global $database;
 			// Insert group
-			mysql_query("INSERT INTO formgroup(
+			mysqli_query($database, "INSERT INTO formgroup(
 										form_id,
 										group_limit)
 								VALUES(" . 
@@ -217,11 +221,11 @@
 			or die("Group::save() can't create group : " . mysql_error());
 
 			// Auto generated id
-			$this->id = mysql_insert_id();
+			$this->id = mysqli_insert_id($database);
 			
 			// Insert recipients
 			foreach ($this->users as $user){
-				mysql_query("INSERT INTO formdest(
+				mysqli_query($database, "INSERT INTO formdest(
 											formgroup_id,
 											user_id)
 									VALUES("
@@ -237,8 +241,9 @@
 		}
 
 		public function delete(){
+			global $database;
 			// DELETE CASCADE : formelements and formdest
-			mysql_query("	DELETE FROM formgroup
+			mysqli_query($database, "	DELETE FROM formgroup
 							WHERE 		formgroup_id = " . $this->id)
 			or die("Group::delete() can't delete group : " . mysql_error());
 		}

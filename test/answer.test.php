@@ -80,7 +80,7 @@ class TestOfAnswerClass extends UnitTestCase {
 		$arrayValues = [["elementId" => $idElement1, "values" => ["1", "2"]], ["elementId" => $idElement2, "values" => ["myanswer"]]];
 		$Answer->elementsValues($arrayValues);
 		
-		// Save and sets status to 1
+		// Send: save and sets status to 1
 		$Answer->send($idFormDest);
 		
 		// Test if it was saved correctly in database
@@ -88,6 +88,8 @@ class TestOfAnswerClass extends UnitTestCase {
 		$this->assertEqual($Answer->state(), 1);
 		$this->assertEqual($Answer->elementsValues(), $arrayValues);
 		$this->assertEqual($Answer->userId(), $idReceiver);
+		$this->assertEqual($Answer->values($idElement1), ["1", "2"]);
+		$this->assertEqual($Answer->values($idElement2), ["myanswer"]);
 		
 		// Delete test data (if we delete user the others are deleted by cascade)
 		mysql_query("DELETE FROM USER WHERE user_id = ".$idCreator);

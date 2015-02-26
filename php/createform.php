@@ -156,7 +156,10 @@
 									value="print"
 									name="param[]"
 									<?php echo $checkedPrint ? "CHECKED" : "" ?>
-									>
+									data-toggle="tooltip" 
+								    data-placement="top" 
+									title="
+									Si le formulaire est imprimable alors les éléments seront arrangés de telle manière à ce qu’ils puissent être sur une page A4 physique.">
 								<label for="print">Imprimable</label>
 								<input
 									id="anon"
@@ -164,7 +167,9 @@
 									value="anon"
 									name="param[]"
 									<?php echo $checkedAnon ? "CHECKED" : "" ?>
-									>
+									data-toggle="tooltip" 
+								    data-placement="top" 
+									title="Si le formulaire est anonyme, il ne sera pas nécessaire de se connecter pour répondre et les personnes pouvant répondre à ce formulaire sont ceux disposant du lien.">
 								<label for="anon">Anonyme</label>
 								<input 
 								   id = "multiple"

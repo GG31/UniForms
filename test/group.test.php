@@ -11,8 +11,9 @@ require_once('../php/class/Group.class.php');
   
 class TestOfGroupClass extends UnitTestCase {
   	
+	// Test constructor and get functions
 	function testConstruct(){
-		// Inserts data (creator, recipients, form, formgroup, formdest, elements and answer) to test construct and get functions
+		// Inserts data (creator, recipients, form, formgroup, formdest, elements and answers) to test construct and get functions
 		mysql_query("INSERT INTO user(user_name) VALUES('Creator')"); 
 		$idCreator = mysql_insert_id(); 
 		mysql_query("INSERT INTO user(user_name) VALUES('Receiver1')"); 
@@ -35,16 +36,19 @@ class TestOfGroupClass extends UnitTestCase {
 		$idAnswer1 = mysql_insert_id();
 		mysql_query("INSERT INTO answer(answer_status, formdest_id, answer_prev_id) VALUES (1, " . $idFormDest2 . ", 0)");
 		$idAnswer2 = mysql_insert_id();
-		mysql_query("INSERT INTO answer(answer_status, formdest_id, answer_prev_id) VALUES (0, " . $idFormDest2 . ", 0)");
+		mysql_query("INSERT INTO answer(answer_status, formdest_id, answer_prev_id) VALUES (1, " . $idFormDest2 . ", 0)");
 		$idAnswer3 = mysql_insert_id();
 		
-		// Test constructor and get functions
+		// Assertions
 		$Group = New Group($idFormGroup);
 		$this->assertEqual($Group->id(), $idFormGroup);
 		$this->assertEqual($Group->limit(), 2);
 		$this->assertEqual($Group->elements(), [new Element($idElement1), new Element($idElement2)]);
 		$this->assertEqual($Group->users(), [new User($idReceiver1), new User($idReceiver2)]);
 		$this->assertEqual($Group->answers(), [$idReceiver1 => [new Answer($idAnswer1)], $idReceiver2 => [new Answer($idAnswer2), new Answer($idAnswer3)]]);
+		$this->assertEqual($Group->validAnswers(), [$idReceiver1 => [], $idReceiver2 => [new Answer($idAnswer2), new Answer($idAnswer3)]]);
+		$this->assertEqual($Group->formdestId($idReceiver1), $idFormDest1);
+		$this->assertEqual($Group->formdestId($idReceiver2), $idFormDest2);
 		
 		// Delete test data (if we delete users the others are deleted by cascade)
 		mysql_query("DELETE FROM USER WHERE user_id = ".$idCreator);

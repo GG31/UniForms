@@ -80,7 +80,7 @@ class TestOfAnswerClass extends UnitTestCase {
 		$arrayValues = [["elementId" => $idElement1, "values" => ["1", "2"]], ["elementId" => $idElement2, "values" => ["myanswer"]]];
 		$Answer->elementsValues($arrayValues);
 		
-		// Save and sets status to 1
+		// Send: save and sets status to 1
 		$Answer->send($idFormDest);
 		
 		// Test if it was saved correctly in database

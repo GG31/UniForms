@@ -31,7 +31,7 @@
 										WHERE 	formgroup_id = " . $this->id);
 
 				if (!mysql_num_rows($query)){
-					die("Group::__construct() : elements not found !");
+					$this->elements = [];
 				}else{
 					$this->elements = [];
 
@@ -46,7 +46,8 @@
 										WHERE 		formgroup_id = " . $this->id);
 
 				if (!mysql_num_rows($query)){
-					die("Group::__construct() : user not found !");
+					$this->users 	= [];
+					$this->answers 	= [];
 				}else{
 					$this->users 	= [];
 					$this->answers 	= [];

@@ -87,19 +87,77 @@
 				/////////////////////////////////////////////
 				groupsUsers = <?php echo json_encode($groupsUsers) ?>;
 				console.log(groupsUsers);
-			});
-		</script>
-		<script type="text/javascript">
-			copiedest = function() {
-				if($('#display').val()) {
-					newdest = $('<div class="input-group"><span class="input-group-addon"><input id="user'+$("#destinataires option[value=\'"+$("#display").val()+"\']").attr("userid")+'" type="checkbox" checked name="recipient[]" value="'+$("#destinataires option[value=\'"+$("#display").val()+"\']").attr("userid")+'"></span><label class="form-control" for="user'+$("#destinataires option[value=\'"+$("#display").val()+"\']").attr('userid')+'">'+$("#display").val()+'</label></div>');
-					$('#listdest').append(newdest);
-				}
-			}
 
-			deldest = function(destuser) {
-				$("#" + destuser).remove();
-			}
+				GROUPSUSERS = {
+					'group_0': [
+							{'id': 1, 'name' : 'Romain'},
+							{'id': 2, 'name' : 'Ayoub'}
+						]
+				};
+
+				copiedest = function() {
+					if($('#display').val()) { // TODO more verifs
+						id 		= $("#destinataires option[value=\'"+$("#display").val()+"\']").attr("userid");
+						name 	= $("#display").val();
+
+						displayGroupUser(id, name);
+					}
+				};
+
+				removedestCB = function(){
+					if(!$(this).prop('checked')){
+						$(this).parent().siblings().remove();
+						$(this).parent().remove();
+					}
+				};
+
+				refreshGroupsUsers = function(group){
+					$('#listdest input[id^=user]').each(function(index, element){
+						GROUPSUSERS[group] = $(this).attr('id');
+					});
+					console.log(GROUPSUSERS);
+				};
+
+				displayGroupUser = function(id, name){
+					group = $('<div class="input-group"></div>');
+					addon = $('<span class="input-group-addon"></span>');
+					checkbox = function(id){
+						return $('<input />')
+									.attr('id', 'user' + id)
+									.attr('type', 'checkbox')
+									.attr('name', 'recipient[]')
+									.attr('value', 'user' + id)
+									.prop('checked', true);
+					};
+					label = function(id, name){
+						return $('<label></label>')
+									.attr('class', 'form-control')
+									.text(name);
+					};
+
+					$('#listdest').append(group.append(addon.append(checkbox(id))).append(label(id, name)));
+					$('#user' + id).on('click', removedestCB);
+
+					// refreshGroupsUsers(0);
+				};
+
+				displayGroupUsers = function(group){
+					users = GROUPSUSERS[group];
+
+					$('#listdest').empty();
+					users.forEach(function(val){
+						displayGroupUser(val['id'], val['name']);
+					});
+				};
+
+				$('#myModal').on('show.bs.modal', function (event) {
+					// Button that triggered the modal
+					button 	= $(event.relatedTarget);
+					id 		= button.parent().attr('id');
+
+					displayGroupUsers(id);
+				})
+			});
 		</script>
 	</head>
 	<body>
@@ -137,7 +195,9 @@
 									value="print"
 									name="param[]"
 									<?php echo $checkedPrint ? "CHECKED" : "" ?>
-									>
+									data-toggle="tooltip" 
+								    data-placement="top" 
+									title="Si le formulaire est imprimable alors les éléments seront arrangés de telle manière à ce qu’ils puissent être sur une page A4 physique.">
 								<label for="print">Imprimable</label>
 								<input
 									id="anon"
@@ -145,7 +205,9 @@
 									value="anon"
 									name="param[]"
 									<?php echo $checkedAnon ? "CHECKED" : "" ?>
-									>
+									data-toggle="tooltip" 
+								    data-placement="top" 
+									title="Si le formulaire est anonyme, il ne sera pas nécessaire de se connecter pour répondre et les personnes pouvant répondre à ce formulaire sont ceux disposant du lien.">
 								<label for="anon">Anonyme</label>
 								<!-- TODO ?
 								<input 
@@ -178,57 +240,8 @@
 							</h3>
 						</div>
 						<div id="dest" class="panel-body" style="<?php echo $destStyle ?>">
-							<div class="form-group">
-							  <input list="destinataires" id="display" name="destinataire">
-							  <datalist id="destinataires">
-		                        <?php
-									$users = User::all ();
-									foreach ( $users as $user ) {
-								?>
-											<option
-												value=<?php echo '"'.$user->name().'"' ?>
-												userid=<?php echo '"'.$user->id().'"' ?>
-											/>
-		                        <?php
-									}
-								?>
-							  </datalist>
-							  <button type="button" class="btn btn-default btn-sm" onclick="copiedest()">
-                       			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                   			  </button>
-	                    	</div>
+							<!-- TODO handle $destClass & $destStyle -->
 						</div>
-						
-						<!-- ======================CE QU'A ETE AVANT===================== -->
-						<!-- <div id="dest" class="panel-body" style="<?php //echo $destStyle ?>">
-							<div class="form-group"> -->
-	                        <?php
-								//$users = User::all ();
-								//foreach ( $users as $user ) {
-							?>
-								<!-- <div class="input-group">
-									<span class="input-group-addon">
-										<input
-											id="user<?php //echo $user->getId() ?>"
-											type="checkbox"
-											name="recipient[]"
-											value=<?php //echo $user->getId() ?>
-									<?php //echo $user->isDestinataire($form_id) ? "CHECKED" : "" ?>
-											>
-									</span> -->
-									<!--  <label
-										class="form-control"
-										for="user<?php //echo $user->getId() ?>">
-										<?php //echo $user->getName() ?>
-									</label>
-								</div>-->
-	                        <?php
-								//}
-							?>
-	                    	<!-- </div>
-						 </div>-->
-						<!-- =========================================== -->
-						
 					</div>
 				</div></div>
 
@@ -251,6 +264,7 @@
 							<div class="modal-body">
 								<!-- Search input -->
 								<input list="destinataires" id="display" name="destinataire">
+
 								<!-- Autocompletion datalist -->
 								<datalist id="destinataires">
 									<?php
@@ -264,53 +278,13 @@
 										}
 									?>
 								</datalist>
+								<!-- Add recipient button -->
 								<button type="button" class="btn btn-default btn-sm" onclick="copiedest()">
 									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 								</button>
 
 								<!-- Recipient list -->
-								<span id="listdest2">
-								<script>
-									displayGroupUsers = function(id, name){
-										group = $('<div class="input-group"></div>');
-										addon = $('<span class="input-group-addon"></span>');
-										checkbox = function(id){
-											return $('<input />')
-														.attr('id', 'user' + id)
-														.attr('type', 'checkbox')
-														.attr('name', 'recipient[]')
-														.attr('value', 'user' + id)
-														.prop('checked', true);
-										};
-										label = function(id, name){
-											return $('<label></label>')
-														.attr('for', 'user' + id)
-														.attr('class', 'form-control')
-														.text(name);
-										};
-
-										$('#listdest2').append(group.append(addon.append(checkbox(id))).append(label(id, name)));
-									}
-
-									displayGroupUsers('12', 'Romain');
-								</script>
-									<!--<div class="input-group">
-										<span class="input-group-addon">
-											<input
-												id="user<?php //echo $d['User']->getId(); ?>"
-												type="checkbox"
-												name="recipient[]"
-												value=<?php //echo $d['User']->getId(); ?>
-												<?php //echo $user->isDestinataire($form_id) ? "CHECKED" : "" ?>
-												checked>
-										</span>
-										<label
-											class="form-control"
-											for="user<?php //echo $d['User']->getId(); ?>">
-											<?php //echo $d['User']->getName(); ?>
-										</label>
-									</div>-->
-								</span>
+								<span id="listdest"></span>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
@@ -325,29 +299,28 @@
 				   <div class="panel panel-primary">
 						<div class="panel-heading text-center text-capitalize">
 							<h3 class="panel-title">
-								<strong>Groupe</strong>
+								<strong>Groupes</strong>
 							</h3>
 						</div>
 						<div class="panel-body">
-						   <div id="groupSection">
-						      <div class="row" id="group_0">
-							      <div class="panel panel-default col-sm-8">
-						            <div class="panel-body">
-                                 <div class="groupElements">
-                                 </div>
-                              </div>
-                           </div>
-                           <button type="button" class="btn btn-default btn-lg" onclick="getGroupsAndElements()">
-                                 <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
-                           </button>
-                           <button type="button" class="btn btn-default btn-lg" onclick="lessGroup('group_0')">
-                                 <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                           </button>
-                        </div>
-                     </div>
-                     <button type="button" class="btn btn-default btn-lg" onclick="moreGroup()">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                     </button>
+							<div id="groupSection">
+								<div class="row" id="group_0">
+									<div class="panel panel-default col-sm-8">
+										<div class="panel-body">
+											<div class="groupElements"></div>
+										</div>
+									</div>
+									<button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal"><!-- TODO on moregroup -->
+										<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+									</button>
+									<button type="button" class="btn btn-default btn-lg" onclick="lessGroup('group_0')">
+										<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+									</button>
+								</div>
+							</div>
+							<button type="button" class="btn btn-default btn-lg" onclick="moreGroup()">
+								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+							</button>
 						</div>
 					</div>
 				   </div><!--panel default-->

@@ -20,12 +20,14 @@ class TestOfFormClass extends UnitTestCase {
 		mysql_query("INSERT INTO form(user_id, form_name, form_status, form_printable, form_anonymous) VALUES (".$idCreator.",'Name',1,1,0)"); 
 		$idForm = mysql_insert_id();
 		// Insert groups		
-		mysql_query("INSERT INTO formgroup(form_id, group_limit) VALUES(".$idForm.", 2)"); $idFormGroup1 = mysql_insert_id();
+		mysql_query("INSERT INTO formgroup(form_id, group_limit) VALUES(".$idForm.", 3)"); $idFormGroup1 = mysql_insert_id();
 		mysql_query("INSERT INTO formgroup(form_id, group_limit) VALUES(".$idForm.", 1)"); $idFormGroup2 = mysql_insert_id();
+		mysql_query("INSERT INTO formgroup(form_id, group_limit) VALUES(".$idForm.", 2)"); $idFormGroup3 = mysql_insert_id();
 		// Insert recipients
 		mysql_query("INSERT INTO formdest(user_id, formgroup_id) VALUES(".$idReceiver1.", ".$idFormGroup1.")"); $idFormDest1 = mysql_insert_id();
 		mysql_query("INSERT INTO formdest(user_id, formgroup_id) VALUES(".$idReceiver2.", ".$idFormGroup1.")"); $idFormDest2 = mysql_insert_id();
 		mysql_query("INSERT INTO formdest(user_id, formgroup_id) VALUES(".$idReceiver2.", ".$idFormGroup2.")"); $idFormDest3 = mysql_insert_id();
+		mysql_query("INSERT INTO formdest(user_id, formgroup_id) VALUES(".$idReceiver1.", ".$idFormGroup3.")"); $idFormDest4 = mysql_insert_id();
 		// Insert elements
 		mysql_query("INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup1.", ".constant("ELEMENT_MULTIPLE").", 'label', 10, 20)");
 		$idElement1 = mysql_insert_id();
@@ -33,11 +35,14 @@ class TestOfFormClass extends UnitTestCase {
 		$idElement2 = mysql_insert_id();
 		mysql_query("INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup2.", ".constant("ELEMENT_TEXT").", 'label', 10, 20)");
 		$idElement3 = mysql_insert_id();
+		mysql_query("INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup3.", ".constant("ELEMENT_DATE").", 'label', 10, 20)");
+		$idElement4 = mysql_insert_id();
 		// Insert answers
 		mysql_query("INSERT INTO answer(answer_status, formdest_id, answer_prev_id) VALUES (0,".$idFormDest1.",0)"); $idAnswer1 = mysql_insert_id();
 		mysql_query("INSERT INTO answer(answer_status, formdest_id, answer_prev_id) VALUES (1,".$idFormDest1.",0)"); $idAnswer2 = mysql_insert_id();
 		mysql_query("INSERT INTO answer(answer_status, formdest_id, answer_prev_id) VALUES (0,".$idFormDest3.",".$idAnswer1.")");$idAnswer3 = mysql_insert_id();
-		
+		mysql_query("INSERT INTO answer(answer_status, formdest_id, answer_prev_id) VALUES (0,".$idFormDest4.",".$idAnswer3.")");$idAnswer4 = mysql_insert_id();
+
 		// Assertions
 		$Form = New Form($idForm);
 		$this->assertEqual($Form->id(), $idForm);
@@ -46,12 +51,17 @@ class TestOfFormClass extends UnitTestCase {
 		$this->assertEqual($Form->state(), 1);	
 		$this->assertEqual($Form->printable(), 1);	
 		$this->assertEqual($Form->anon(), 0);
-		$this->assertEqual($Form->groups(), [new Group($idFormGroup1), new Group($idFormGroup2)]);
-		
-		// tree 
-		// whichgroups
-		// formdest
-		// chain
+		$this->assertEqual($Form->groups(), [new Group($idFormGroup1), new Group($idFormGroup2), new Group($idFormGroup3)]);
+		$this->assertEqual($Form->formdestId($idReceiver1, 0), $idFormDest1);
+		$this->assertEqual($Form->formdestId($idReceiver2, 0), $idFormDest2);
+		$this->assertEqual($Form->formdestId($idReceiver2, 1), $idFormDest3);
+		$this->assertEqual($Form->formdestId($idReceiver1, 2), $idFormDest4);
+		$this->assertEqual($Form->whichGroups($idReceiver1), [0, 2]);
+		$this->assertEqual($Form->whichGroups($idReceiver2), [0, 1]);
+		$this->assertEqual($Form->chain($idAnswer4), [$idCreator, $idReceiver1, $idReceiver2, $idReceiver1]);
+		$this->assertEqual($Form->chain($idAnswer2), [$idCreator, $idReceiver1]);
+
+		// remains to do the test of the tree function
 		
 		// Delete test data (if we delete users the others are deleted by cascade)
 		mysql_query("DELETE FROM USER WHERE user_id = ".$idCreator);

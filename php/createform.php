@@ -88,6 +88,25 @@
   	  	 	$("#" + destuser).remove();
   	  	}
    </script>
+   <script>
+    $(document).ready(function () {
+
+      $('input[id^="user"]').click(function () {
+
+        if ($(this).prop('checked')) {
+           // do what you need here     
+           alert("Checked");
+        }
+        else {
+           // do what you need here         
+           //alert("Unchecked");
+           $(this).parent().siblings().remove();
+           $(this).parent().remove();
+        }
+      });
+
+  });
+</script>
 	</head>
 	<body>
 		<div class="container">

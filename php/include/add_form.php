@@ -1,14 +1,18 @@
 ﻿<?php
 include_once 'includes.php';
 if (! empty ( $_POST )) {
+
+   echo "<pre>";
+   var_dump($_POST);
+   echo "</pre>";
 	/*
 	 * Getting a Form object
 	 */
-	if ($_POST ["form_id"] == - 1) { // New form
+	if ($_POST ["form_id"] == -1) { // New form
 		$form = new Form ();
 		
 		// Creator is current user
-		$form->setCreator ( new User ( $_SESSION ["user_id"] ) );
+		$form->creator ( new User ( $_SESSION ["user_id"] ) );
 	} else { // Already existing form
 		$form = new Form ( $_POST ['form_id'] );
 	}
@@ -17,26 +21,41 @@ if (! empty ( $_POST )) {
 	 */
 	$printable = FALSE;
 	$anonymous = FALSE;
-	$multifill = 1;
+	// $multifill = 1; // TODO
 	
 	if (isset ( $_POST ["param"] )) { // A checkbox is checked
+      echo "PARAM<br><pre>";
+      var_dump($_POST["param"]);
+      echo "</pre>";
 		$printable = in_array ( "print", $_POST ["param"] ) ? TRUE : FALSE;
 		$anonymous = in_array ( "anon", $_POST ["param"] ) ? TRUE : FALSE;
 	} // Else : no param checked -> FALSE
-	if (isset ( $_POST ["parammulti"] )) {
-		$multifill = $_POST ["parammulti"];
-	}
-	if (isset ( $_POST ["infoFormName"] )) {
-		$formName = $_POST ["infoFormName"];
-	   $form->setName($formName);
+	// if (isset ( $_POST ["parammulti"] )) { // TODO
+	// 	$multifill = $_POST ["parammulti"];
+	// }
+   if (isset ( $_POST ["infoFormName"] )) {
+      echo "INFOFORMNAME:<br><pre>";
+      var_dump($_POST["infoFormName"]);
+      echo "</pre>";
+      $formName = $_POST ["infoFormName"];
+      $form->name($formName);
+   }
+	if (isset ( $_POST ["usersGroups"] )) {
+      echo "USERSGROUPS:<br><pre>";
+      var_dump($_POST["usersGroups"]);
+      echo "</pre>";
+		$usersGroups = json_decode($_POST ["usersGroups"], true);
+      echo "USERSGROUPS (decoded) :<br><pre>";
+      var_dump($usersGroups);
+      echo "</pre>";
 	}
 	
-	$form->setPrintable ( $printable );
-	$form->setAnonymous ( $anonymous );
-	$form->setMaxAnswers ( $multifill );
+	$form->printable ( $printable );
+	$form->anon ( $anonymous );
+	// $form->setMaxAnswers ( $multifill ); // TODO
 	
    // It must create the groups and set the recipients and elements for each group.
-   $formGroup = new FormGroup();
+   $group = new Group();
 
    /*
    * Recipients
@@ -49,37 +68,69 @@ if (! empty ( $_POST )) {
          $recipients [] = new User ( $id );
       }
    }
-   $formGroup->setRecipient ( $recipients );
+   $group->users($recipients);
    /*
    * Récupère les données des éléments
    */
-   if(isset($_POST['info'])) { 
+   if(isset($_POST['info'])) {
+      echo "INFO:<br><pre>";
+      var_dump($_POST["info"]);
+      echo "</pre>";
+
+
       $obj=json_decode($_POST['info'], true, 4);
       $arrayElements = [];
+
+
       foreach ($obj as $key => $array){
          $arrayElements[$key] = treatmentElement($key, $array);
       }
+
+
       if(isset($_POST['infoGroups'])) {
+         echo "INFOGROUPS:<br><pre>";
+         var_dump($_POST["infoGroups"]);
+         echo "</pre>";
+
+
+
          $formGroups = [];
          $obj=json_decode($_POST['infoGroups'], true, 4);
+
          foreach ($obj as $key => $array){
-            $formGroup1 = new FormGroup();
+            $group1 = new Group();
             $listEl = [];
+            $users = [];
+
+            foreach ($usersGroups["group_" . $key] as $user) {
+               $users[] = new User($user["id"]);
+            }
+
+
             foreach ($array as $nb => $idEl) {
                $listEl[] = $arrayElements[$idEl];
                unset($arrayElements[$idEl]);
             }
+
+
             if (count($listEl) > 0) {
-               $formGroup1->setFormGroupElements($listEl);
-               $formGroups[] = $formGroup1;
+               $group1->users($users);
+               $group1->limit($_POST["group_" . $key . "_multiple"]);
+               $group1->elements($listEl);
+               $formGroups[] = $group1;
             }
          }
-         $formGroup->setFormGroupElements($arrayElements);
-         $formGroups[] = $formGroup;
-         $form->setGroups($formGroups);
+
+         // $group->elements($arrayElements); // NOTE useless
+         // $formGroups[] = $group;
+         $form->groups($formGroups);
+
+
       } else {
-         $formGroup->setFormGroupElements($arrayElements);
-         $form->setGroups(array($formGroup)); // The argument here must be an array of all groups of this form
+
+
+         $group->elements($arrayElements);
+         $form->groups(array($group)); // The argument here must be an array of all groups of this form
       }
    }
    
@@ -92,38 +143,42 @@ if (! empty ( $_POST )) {
 	if (isset ( $_POST ['send'] )) {
 		$form->send ();
 	}
-
+   // return;
 	header ( "Location: ../home.php" );
 }
 
 function treatmentElement($key, $array) {
    $keyPart = explode('_', $key);
    $e = "";
+
    if(strcmp($keyPart[0],"elem") == 0){
       $e = new Element((int)$keyPart[1]);
    } else {
       $e = new Element();
    }
-   
-   $e->setTypeElement(constant('type'.$array['type']));
-   $e->setX($array['posX']);
-   $e->setY($array['posY']);
-   $e->setWidth($array['width']);
-   $e->setHeight($array['height']);
+
+   $attrs = [
+      "type"   => constant('type'.$array['type']),
+      "x"      => $array['posX'],
+      "y"      => $array['posY'],
+      "width"  => $array['width'],
+      "height" => $array['height']
+   ];
+
    if(array_key_exists("required", $array)) {
-      $e->setRequired($array['required']);
+      $attrs['required'] = $array['required'];
    }
    if(array_key_exists("label", $array)) {
-      $e->setLabel($array['label']);
+      $attrs['label'] = $array['label'];
    }
    if(array_key_exists("value", $array)) {
-      $e->setDefaultValue($array['value']);
+      $attrs['value'] = $array['value'];
    }
    if(array_key_exists("minvalue", $array)) {
-      $e->setMinvalue($array['minvalue']);
+      $attrs['min'] = $array['minvalue'];
    }
    if(array_key_exists("maxvalue", $array)) {
-      $e->setMaxvalue($array['maxvalue']);
+      $attrs['max'] = $array['maxvalue'];
    }
    if(array_key_exists("values", $array)) {
       $options = array();
@@ -133,15 +188,17 @@ function treatmentElement($key, $array) {
          $order = $order + 1;
          $options[] = $opt;
       }
-		$e->setOptions($options);
+      $attrs["options"] = $options;
    }
    if(array_key_exists("base64", $array)) {
 		/*list($type, $data) = explode(';', $array['base64']);
 		list(, $data)      = explode(',', $data);
 		$data = base64_decode($data);
 		file_put_contents('../../res/elemimg/'.$array['img'], $data);*/
-		$e->setImg($array['base64']);
+      $attrs["img"] = $array['base64'];
    }
+
+   $e->attr($attrs);
    return $e;
 }
 ?>

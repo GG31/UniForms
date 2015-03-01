@@ -5,23 +5,27 @@
 		$_GET["form_id"] =>
 			$_POST["form_id"] == $_GET["form_id"] (already existing form)
 		XXXXXXXXXXXXXXXX =>
-			$_POST["form_id"] == NULL (new form)
+			$_POST["form_id"] == -1 (new form)
 	 */
-	$form_id 	= isset($_GET["form_id"]) ? $_GET["form_id"] : NULL;
-	$form 		= new Form($form_id);
+	$form_id 	= isset($_GET["form_id"]) ? $_GET["form_id"] : -1;
+	$form 		= new Form($form_id == -1 ? NULL : $form_id);
 
 	$checkedAnon  	= FALSE;
 	$checkedPrint 	= TRUE;
 	// $maxAnswers 	= 1; // TODO ?
 	$groupsUsers = [];
+	$groupsLimit = [];
 
 	if(isset($_GET["form_id"])){
 		$checkedAnon 	= $form->anon();
 		$checkedPrint 	= $form->printable();
 		// $maxAnswers   	= $form->getMaxAnswers(); // TODO ?
 
+		// Users by group, limit by group
 		foreach ($form->groups() as $num => $group) {
-			$groups[$num] = [];
+			$groupsUsers[$num] = [];
+			$groupsLimit[$num] = $group->limit();
+
 			foreach ($group->users() as $user) {
 				$groupsUsers[$num]["id"] = $user->id();
 				$groupsUsers[$num]["name"] = $user->name();
@@ -85,21 +89,25 @@
 				/////////////////////////////////////////////
 				// Recipient by groups (for the modal) //
 				/////////////////////////////////////////////
-				groupsUsers = <?php echo json_encode($groupsUsers) ?>;
-				console.log(groupsUsers);
+				groupsUsers = <?php echo json_encode($groupsUsers) ?>;// TODO
+				// console.log(groupsUsers);
 
 				GROUPSUSERS = {
-					'group_0': [
-							{'id': 1, 'name' : 'Romain'},
-							{'id': 2, 'name' : 'Ayoub'}
-						]
+					// 'group_0': [
+					// 		{'id': 1, 'name' : 'Romain'},
+					// 		{'id': 2, 'name' : 'Ayoub'}
+					// 	],
+					// 'group_1': [
+					// 		{'id': 1, 'name' : 'Romain'},
+					// 		{'id': 2, 'name' : 'Ayoub'}
+					// 	]
 				};
 
 				copiedest = function() {
 					if($('#display').val()) { // TODO more verifs
 						id 		= $("#destinataires option[value=\'"+$("#display").val()+"\']").attr("userid");
 						name 	= $("#display").val();
-
+						$("#display").val('');
 						displayGroupUser(id, name);
 					}
 				};
@@ -111,11 +119,21 @@
 					}
 				};
 
-				refreshGroupsUsers = function(group){
+				refreshGroupUsers = function(group){
+					GROUPSUSERS[group] = [];
+
 					$('#listdest input[id^=user]').each(function(index, element){
-						GROUPSUSERS[group] = $(this).attr('id');
+						GROUPSUSERS[group][index] = {
+							'id'	: $(this).attr('id').substr(4),
+							'name'	: $(this).parent().parent().children('label').text()
+						};
 					});
-					console.log(GROUPSUSERS);
+
+					// Safe !
+					$('#listdest').empty();
+
+					// Attach to POST
+					$('#usersGroups').val(JSON.stringify(GROUPSUSERS));
 				};
 
 				displayGroupUser = function(id, name){
@@ -138,10 +156,12 @@
 					$('#listdest').append(group.append(addon.append(checkbox(id))).append(label(id, name)));
 					$('#user' + id).on('click', removedestCB);
 
-					// refreshGroupsUsers(0);
 				};
 
 				displayGroupUsers = function(group){
+					if(typeof GROUPSUSERS[group] == 'undefined'){
+						GROUPSUSERS[group] = [];
+					}
 					users = GROUPSUSERS[group];
 
 					$('#listdest').empty();
@@ -155,7 +175,12 @@
 					button 	= $(event.relatedTarget);
 					id 		= button.parent().attr('id');
 
+					$('#modalOK').attr('data-group', id);
 					displayGroupUsers(id);
+				});
+
+				$('#modalOK').on('click', function(){
+					refreshGroupUsers($(this).attr('data-group'));
 				})
 			});
 		</script>
@@ -209,20 +234,6 @@
 								    data-placement="top" 
 									title="Si le formulaire est anonyme, il ne sera pas nécessaire de se connecter pour répondre et les personnes pouvant répondre à ce formulaire sont ceux disposant du lien.">
 								<label for="anon">Anonyme</label>
-								<!-- TODO ?
-								<input 
-								   id = "multiple"
-								   type="number" 
-								   name="parammulti"
-								   value=<?php echo $maxAnswers ?>
-								   min="0"
-								   class="form-control bfh-number"
-								   style="width: 50pt;"
-								   data-toggle="tooltip" 
-								   data-placement="top" 
-								   title="Entrez le nombre de fois que le formulaire pourra être rempli par le(s) destinataire(s), 0 pour infini">
-								<label for="multiple">Nombre de réponses max.</label>
-								-->
 							</div>
 						</div>
 					</div>
@@ -243,13 +254,7 @@
 							<!-- TODO handle $destClass & $destStyle -->
 						</div>
 					</div>
-				</div></div>
-
-				<!-- Button trigger modal -->
-				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-					Launch demo modal
-				</button>
-
+				</div>
 				<!-- Modal -->
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					<div class="modal-dialog">
@@ -288,7 +293,7 @@
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-								<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+								<button id="modalOK" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
 							</div>
 						</div>
 					</div>
@@ -310,15 +315,28 @@
 											<div class="groupElements"></div>
 										</div>
 									</div>
-									<button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal"><!-- TODO on moregroup -->
+									<button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal">
 										<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
 									</button>
 									<button type="button" class="btn btn-default btn-lg" onclick="lessGroup('group_0')">
 										<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
 									</button>
+									<!-- TODO set multiple value on load !! -->
+									<input 
+										id = "group_0_multiple"
+										type="number"
+										name="group_0_multiple"
+										value="0"
+										min="0"
+										class="form-control bfh-number"
+										style="width: 40pt;"
+										data-toggle="tooltip"
+										data-placement="top"
+										title="Entrez le nombre de fois que le formulaire pourra être rempli par le(s) destinataire(s), 0 pour infini">
+									<!--<label for="multiple">Nombre de réponses max.</label>-->
 								</div>
 							</div>
-							<button type="button" class="btn btn-default btn-lg" onclick="moreGroup()">
+							<button type="button" class="btn btn-default btn-lg" onclick="moreGroup(0)">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 							</button>
 						</div>
@@ -382,7 +400,7 @@
 					<div id= "panelPanneau" class="panel panel-primary">
 					   <div class="panel-heading text-center text-capitalize">
 						   <h3 class="panel-title">
-								<strong>Formulaire : </strong> <span contentEditable="true" id="formName">Click to add form name</span><input id="infoFormName" name="infoFormName" type="hidden">
+								<strong>Formulaire : </strong> <span contentEditable="true" id="formName">Click to add form name</span><input id="infoFormName" name="infoFormName" type="hidden" />
 							</h3>
 						</div>
 						<div class="panel-body">
@@ -401,8 +419,9 @@
 				
 				<div class="row" onload="newFormModel();">
 					<div class="col-sm-offset-3 col-sm-6">
-					   <input id="info" name="info" type="hidden">
-                  <input id="infoGroups" name="infoGroups" type="hidden">
+						<input id="info" name="info" type="hidden">
+						<input id="infoGroups" name="infoGroups" type="hidden">
+						<input id="usersGroups" name="usersGroups" type="hidden">
 						<input type="hidden" name="form_id" value="<?php echo $form_id ?>">
 						<input
 							type="submit"
@@ -443,10 +462,10 @@
 					$first = FALSE;
 
 					if(count($groups)){
-						foreach ($groups as $group) {
+						foreach ($groups as $num => $group) {
 							$elems = $group->elements();
 				?>
-							<?php echo !$first ? "moreGroup();" : "" ?>
+							<?php echo !$first ? "moreGroup(" . $groupsLimit[$num] .");" : "" ?>
 				<?php
 							$first = TRUE;
 							foreach ($elems as $elem) {

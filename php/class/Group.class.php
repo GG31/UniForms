@@ -207,7 +207,6 @@
 		}
 
 		public function save($formId){
-			// Insert group
 			mysql_query("INSERT INTO formgroup(
 										form_id,
 										group_limit)

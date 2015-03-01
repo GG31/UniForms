@@ -1,18 +1,18 @@
 <?php
 	
 	// Constants
-	define("ELEMENT_TEXT"		, 1);
-	define("ELEMENT_NUMBER"		, 2);
-	define("ELEMENT_TIME"		, 3);
-	define("ELEMENT_DATE"		, 4);
-	define("ELEMENT_PHONE"		, 5);
-	define("ELEMENT_MULTIPLE"	, 6);
-	define("ELEMENT_UNIQUE"		, 7);
-	define("ELEMENT_AREA"		, 8);
-	define("ELEMENT_SPAN"		, 9);
-	define("ELEMENT_SQUARE"		, 10);
-	define("ELEMENT_CIRCLE"		, 11);
-	define("ELEMENT_IMG"		, 12);
+	define("typeInputText"		, 1);
+	define("typeInputNumber"	, 2);
+	define("typeInputTime"		, 3);
+	define("typeInputDate"		, 4);
+	define("typeInputPhone"		, 5);
+	define("typeCheckbox"		, 6);
+	define("typeRadioButton"	, 7);
+	define("typeTextArea"		, 8);
+	define("typeSpan"			, 9);
+	define("typeSquare"			, 10);
+	define("typeCircle"			, 11);
+	define("typeImage"			, 12);
 	
 	define("DIR_HORIZONTAL"		, 0);
 	define("DIR_VERTICAL"		, 1);

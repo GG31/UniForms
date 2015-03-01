@@ -7,7 +7,7 @@ var elementsCodeSQL = ["", "draggableText", "draggableNumber", "draggableTime", 
 var elementsCode = {
    draggableLabel:'<span>Label</span>', 
    draggableNumber:'<input type="number">', 
-   draggableDate:'<input type="text" class="form-control" placeholder="jj/mm/aaaa"/>',
+   draggableDate:'<input type="date" class="form-control" placeholder="jj/mm/aaaa"/>',
    draggableTime:'<input type="time" class="form-control" placeholder="hh:mm"/>',
    draggableTextarea:'<textarea rows="4" cols="40" class="form-control"></textarea>',
    draggableTel:'<input type="tel" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$" class="form-control" placeholder="06xxxxxxxx"/>',

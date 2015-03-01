@@ -107,7 +107,7 @@ Les formulaires validés ne peuvent plus être modifié, ils ont été envoyés 
 \end{minipage}
 
 \subsubsection{Les formulaires non validés}
-Les formulaires non validés n'ont pas encore été envoyés aux destinataires, ils peuvent donc être modifiés en cliquant sur le lien ``Modifier'' de la ligne du formulaire souhaité. Cette action mènera à la page ...???
+Les formulaires non validés n'ont pas encore été envoyés aux destinataires, ils peuvent donc être modifiés en cliquant sur le lien ``Modifier'' de la ligne du formulaire souhaité. Cette action mènera à la page de création figure~\ref{pageCreation} pré-rempli par les éléments enregistrés.
 
 \subsection{Zone de formulaires reçus}
 Dans cette zone figure~\ref{zoneFormRecu} est listé l'ensemble des formulaires dont l'utilisateur courant est destinataire, c'est-à-dire ceux pour lesquels il doit répondre.\\
@@ -150,7 +150,22 @@ Trois champs sont paramètrables, figure~\ref{parametreCreation} :
 \end{minipage}
 
 \subsection{Zone de ``Destinataires''}
-Pour l'instant je la fais pas, ça risque fortement de changer.
+La zone de destinataires propose un champs d'entrée et un bouton ``+'' figure~\ref{destinataires}.
+
+\noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=150mm]{images/destinataires.png}}
+\captionof{figure}{Zone de destinataires}\label{destinataires}
+\end{minipage}
+
+Pour sélectionner un destinataire, commencez à écrire son numéro étudiant dans le champs d'entrée, une liste déroulante apparaitra avec toutes les possibilités. Sélectionnez ensuite le numéro souhaité et cliquez sur ``+'', le destinataire s'affichera alors à coté avec une checkbox figure~\ref{destinatairesCheckbox}. Si vous souhaitez éliminer un destinataire, décochez la checkbox.
+
+\noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=150mm]{images/destinatairesCheckbox.png}}
+\captionof{figure}{Zone de destinataires}\label{destinatairesCheckbox}
+\end{minipage}
+
 
 \subsection{Zone de ``Groupe''}
 Ici, je sais pas si au final, ça fonctionnera, dans le doute...
@@ -199,16 +214,46 @@ Pour modifier un formulaire, il faut tout d'abord cliquer sur ``Modifier'' du fo
 
 
 \section{Consulter les réponses d'un formulaire}
+En cliquant sur le lien ``Voir résultats'' du formulaire souhaité de la page d'accueil figure~\ref{zoneFormCree}, cela vous mènera à la page de consultation des réponses figure~\ref{consultResult}.
+
+\noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=150mm]{images/consultResult.png}}
+\captionof{figure}{Page de consultation des réponses}\label{consultResult}
+\end{minipage}
+
+Ici, vous avez la possibilité de consulter les réponses sous deux formes, directement sous la forme du formulaire rempli en cliquant sur ``Voir'' de la colonne ``Action'', cela vous mène à la page figure~\ref{consultResultForm}. Ou bien, en téléchargeant le fichier CSV en cliquant sur l'icone de la colonne ``Download Results''.\\
+Sur la page figure~\ref{consultResultForm}, vous avez la possibilité de passer de résultats en résultats grâce aux boutons ``Previous'' et ``Next'', le bouton ``Back'' vous ramène à la page figure~\ref{consultResult}.
+
+\noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=150mm]{images/consultResultForm.png}}
+\captionof{figure}{Formulaire rempli par un destinataire}\label{consultResultForm}
+\end{minipage}
 
 \chapter{Répondre}
 \section{Répondre à un formulaire}
+Pour répondre à un formulaire, il suffit de cliquer sur ``Nouvelle réponse'' figure~\ref{zoneFormRecu}. La page de réponse à un formulaire s'ouvre, la zone de réponse figure~\ref{repondre} s'affiche au centre.
 
-\section{Modifier ma réponse}
+\noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=150mm]{images/repondre.png}}
+\captionof{figure}{Zone de réponse}\label{repondre}
+\end{minipage}
+
+Après avoir rempli les champs, vous avez deux possibilités, enregistrer la réponse pour la modifier plus tard ou la valider, dans ce cas elle ne sera plus modifiable.
+
+\section{Modifier votre réponse}
+Afin de modifer votre réponse, cliquer sur le lien ``Modifier'' du formulaire souhaité de la zone de formulaire reçus figure~\ref{zoneFormRecu} situé dans la page d'accueil figure~\ref{pageAccueil}.\\
+La page de réponse figure~\ref{repondre} s'affichera pré-remplie avec vos réponses enregistrées. Modifiez ce que vous souhaitez et vous pouvez ensuite soit enregistrer soit valider votre réponse.
+
 
 
 \chapter{FAQ}
-\section{Où sont les formulaires auxquels je peux répondre ?}
-\section{Puis-je modifier la réponse d'un formulaire validée ?}
+\section{Mon écran n'affiche pas correctement la page}
+Changez la résolution, zoomez ou dezoomez grâce à la combinaison Ctrl + roulette de la souris.
+\section{Puis-je mettre des destinataires dont je connais l'email ?}
+Non, il est nécessaire que tous les destinataires aient un compte CAS. Si vous souhaitez envoyer un formulaire à un membre exterieur, vous pouvez créer un formulaire anonyme et le lui soumettre en lui envoyer l'url du formulaire.
 
 \chapter{Annexe}
 \section{Description des éléments}

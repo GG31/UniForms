@@ -13,35 +13,36 @@ class TestOfFormClass extends UnitTestCase {
 	
 	// Test constructor and get functions
 	function testConstruct(){
+		global $database;
 		// Insert data (creator, recipients, form, groups, formdest, elements and answers) to test construct and get functions
-		mysql_query("INSERT INTO user(user_name) VALUES('Creator')"); $idCreator = mysql_insert_id(); 
-		mysql_query("INSERT INTO user(user_name) VALUES('Receiver1')"); $idReceiver1 = mysql_insert_id(); 
-		mysql_query("INSERT INTO user(user_name) VALUES('Receiver2')"); $idReceiver2 = mysql_insert_id(); 
-		mysql_query("INSERT INTO form(user_id, form_name, form_status, form_printable, form_anonymous) VALUES (".$idCreator.",'Name',1,1,0)"); 
-		$idForm = mysql_insert_id();
+		mysqli_query($database, "INSERT INTO user(user_name) VALUES('Creator')"); $idCreator = mysqli_insert_id($database); 
+		mysqli_query($database, "INSERT INTO user(user_name) VALUES('Receiver1')"); $idReceiver1 = mysqli_insert_id($database); 
+		mysqli_query($database, "INSERT INTO user(user_name) VALUES('Receiver2')"); $idReceiver2 = mysqli_insert_id($database); 
+		mysqli_query($database, "INSERT INTO form(user_id, form_name, form_status, form_printable, form_anonymous) VALUES (".$idCreator.",'Name',1,1,0)"); 
+		$idForm = mysqli_insert_id($database);
 		// Insert groups		
-		mysql_query("INSERT INTO formgroup(form_id, group_limit) VALUES(".$idForm.", 3)"); $idFormGroup1 = mysql_insert_id();
-		mysql_query("INSERT INTO formgroup(form_id, group_limit) VALUES(".$idForm.", 1)"); $idFormGroup2 = mysql_insert_id();
-		mysql_query("INSERT INTO formgroup(form_id, group_limit) VALUES(".$idForm.", 2)"); $idFormGroup3 = mysql_insert_id();
+		mysqli_query($database, "INSERT INTO formgroup(form_id, group_limit) VALUES(".$idForm.", 3)"); $idFormGroup1 = mysqli_insert_id($database);
+		mysqli_query($database, "INSERT INTO formgroup(form_id, group_limit) VALUES(".$idForm.", 1)"); $idFormGroup2 = mysqli_insert_id($database);
+		mysqli_query($database, "INSERT INTO formgroup(form_id, group_limit) VALUES(".$idForm.", 2)"); $idFormGroup3 = mysqli_insert_id($database);
 		// Insert recipients
-		mysql_query("INSERT INTO formdest(user_id, formgroup_id) VALUES(".$idReceiver1.", ".$idFormGroup1.")"); $idFormDest1 = mysql_insert_id();
-		mysql_query("INSERT INTO formdest(user_id, formgroup_id) VALUES(".$idReceiver2.", ".$idFormGroup1.")"); $idFormDest2 = mysql_insert_id();
-		mysql_query("INSERT INTO formdest(user_id, formgroup_id) VALUES(".$idReceiver2.", ".$idFormGroup2.")"); $idFormDest3 = mysql_insert_id();
-		mysql_query("INSERT INTO formdest(user_id, formgroup_id) VALUES(".$idReceiver1.", ".$idFormGroup3.")"); $idFormDest4 = mysql_insert_id();
+		mysqli_query($database, "INSERT INTO formdest(user_id, formgroup_id) VALUES(".$idReceiver1.", ".$idFormGroup1.")"); $idFormDest1 = mysqli_insert_id($database);
+		mysqli_query($database, "INSERT INTO formdest(user_id, formgroup_id) VALUES(".$idReceiver2.", ".$idFormGroup1.")"); $idFormDest2 = mysqli_insert_id($database);
+		mysqli_query($database, "INSERT INTO formdest(user_id, formgroup_id) VALUES(".$idReceiver2.", ".$idFormGroup2.")"); $idFormDest3 = mysqli_insert_id($database);
+		mysqli_query($database, "INSERT INTO formdest(user_id, formgroup_id) VALUES(".$idReceiver1.", ".$idFormGroup3.")"); $idFormDest4 = mysqli_insert_id($database);
 		// Insert elements
-		mysql_query("INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup1.", ".constant("ELEMENT_MULTIPLE").", 'label', 10, 20)");
-		$idElement1 = mysql_insert_id();
-		mysql_query("INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup1.", ".constant("ELEMENT_TEXT").", 'label', 10, 20)");
-		$idElement2 = mysql_insert_id();
-		mysql_query("INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup2.", ".constant("ELEMENT_TEXT").", 'label', 10, 20)");
-		$idElement3 = mysql_insert_id();
-		mysql_query("INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup3.", ".constant("ELEMENT_DATE").", 'label', 10, 20)");
-		$idElement4 = mysql_insert_id();
+		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup1.", ".constant("ELEMENT_MULTIPLE").", 'label', 10, 20)");
+		$idElement1 = mysqli_insert_id($database);
+		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup1.", ".constant("ELEMENT_TEXT").", 'label', 10, 20)");
+		$idElement2 = mysqli_insert_id($database);
+		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup2.", ".constant("ELEMENT_TEXT").", 'label', 10, 20)");
+		$idElement3 = mysqli_insert_id($database);
+		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup3.", ".constant("ELEMENT_DATE").", 'label', 10, 20)");
+		$idElement4 = mysqli_insert_id($database);
 		// Insert answers
-		mysql_query("INSERT INTO answer(answer_status, formdest_id, answer_prev_id) VALUES (0,".$idFormDest1.",0)"); $idAnswer1 = mysql_insert_id();
-		mysql_query("INSERT INTO answer(answer_status, formdest_id, answer_prev_id) VALUES (1,".$idFormDest1.",0)"); $idAnswer2 = mysql_insert_id();
-		mysql_query("INSERT INTO answer(answer_status, formdest_id, answer_prev_id) VALUES (0,".$idFormDest3.",".$idAnswer1.")");$idAnswer3 = mysql_insert_id();
-		mysql_query("INSERT INTO answer(answer_status, formdest_id, answer_prev_id) VALUES (0,".$idFormDest4.",".$idAnswer3.")");$idAnswer4 = mysql_insert_id();
+		mysqli_query($database, "INSERT INTO answer(answer_status, formdest_id, answer_prev_id) VALUES (0,".$idFormDest1.",0)"); $idAnswer1 = mysqli_insert_id($database);
+		mysqli_query($database, "INSERT INTO answer(answer_status, formdest_id, answer_prev_id) VALUES (1,".$idFormDest1.",0)"); $idAnswer2 = mysqli_insert_id($database);
+		mysqli_query($database, "INSERT INTO answer(answer_status, formdest_id, answer_prev_id) VALUES (0,".$idFormDest3.",".$idAnswer1.")");$idAnswer3 = mysqli_insert_id($database);
+		mysqli_query($database, "INSERT INTO answer(answer_status, formdest_id, answer_prev_id) VALUES (0,".$idFormDest4.",".$idAnswer3.")");$idAnswer4 = mysqli_insert_id($database);
 
 		// Assertions
 		$Form = New Form($idForm);
@@ -64,17 +65,18 @@ class TestOfFormClass extends UnitTestCase {
 		// remains to do the test of the tree function
 		
 		// Delete test data (if we delete users the others are deleted by cascade)
-		mysql_query("DELETE FROM USER WHERE user_id = ".$idCreator);
-		mysql_query("DELETE FROM USER WHERE user_id = ".$idReceiver1);
-		mysql_query("DELETE FROM USER WHERE user_id = ".$idReceiver2);
+		mysqli_query($database, "DELETE FROM USER WHERE user_id = ".$idCreator);
+		mysqli_query($database, "DELETE FROM USER WHERE user_id = ".$idReceiver1);
+		mysqli_query($database, "DELETE FROM USER WHERE user_id = ".$idReceiver2);
 	}
 	
 	// Test save and set functions
 	function testSave(){
+		global $database;
 		// Insert basic data
-		mysql_query("INSERT INTO user(user_name) VALUES('Creator')"); $idCreator = mysql_insert_id(); 
-		mysql_query("INSERT INTO user(user_name) VALUES('Receiver1')"); $idReceiver1 = mysql_insert_id(); 
-		mysql_query("INSERT INTO user(user_name) VALUES('Receiver2')"); $idReceiver2 = mysql_insert_id(); 
+		mysqli_query($database, "INSERT INTO user(user_name) VALUES('Creator')"); $idCreator = mysqli_insert_id($database); 
+		mysqli_query($database, "INSERT INTO user(user_name) VALUES('Receiver1')"); $idReceiver1 = mysqli_insert_id($database); 
+		mysqli_query($database, "INSERT INTO user(user_name) VALUES('Receiver2')"); $idReceiver2 = mysqli_insert_id($database); 
 		// Create element and group objects 
 		$Element1 = new Element();
 		$Element1->type(constant("ELEMENT_NUMBER"));
@@ -118,8 +120,8 @@ class TestOfFormClass extends UnitTestCase {
 		$this->assertEqual($Form->groups(), [$Group1, $Group2]);
 		
 		// Delete test data (if we delete users the others are deleted by cascade)
-		mysql_query("DELETE FROM USER WHERE user_id = ".$idCreator);
-		mysql_query("DELETE FROM USER WHERE user_id = ".$idReceiver1);
-		mysql_query("DELETE FROM USER WHERE user_id = ".$idReceiver2);
+		mysqli_query($database, "DELETE FROM USER WHERE user_id = ".$idCreator);
+		mysqli_query($database, "DELETE FROM USER WHERE user_id = ".$idReceiver1);
+		mysqli_query($database, "DELETE FROM USER WHERE user_id = ".$idReceiver2);
 	}
 }

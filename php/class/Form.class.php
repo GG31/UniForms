@@ -10,19 +10,20 @@
 		private $anon;
 
 		public function __construct($id = NULL){
+			global $database;
 			if($id !== NULL){
 				// Id
 				$this->id = $id;
 
 				// Creator, Name, Status, Print, Anon
-				$query = mysql_query ("	SELECT 	*
+				$query = mysqli_query($database, "	SELECT 	*
 										FROM 	form
 										WHERE 	form_id = " . $this->id);
 
-				if (!mysql_num_rows($query)){
+				if (!mysqli_num_rows($query)){
 					die("Form::__construct() : id not found !");
 				}else{
-					$results = mysql_fetch_array($query);
+					$results = mysqli_fetch_array($query);
 
 					$this->creator 		= new User($results["user_id"]);
 					$this->name 		= $results["form_name"];
@@ -32,17 +33,17 @@
 				}
 				
 				// Groups
-				$query = mysql_query("	SELECT 		*
+				$query = mysqli_query($database, "	SELECT 		*
 										FROM 		formgroup
 										WHERE 		form_id = " . $this->id. "
 										ORDER BY 	formgroup_id");
 
-				if (!mysql_num_rows($query)){
+				if (!mysqli_num_rows($query)){
 					die("Form::__construct() : groups not found !");
 				}else{
 					$this->groups = [];
 
-					while ($results = mysql_fetch_array($query)){
+					while ($results = mysqli_fetch_array($query)){
 						$this->groups[] = new Group($results["formgroup_id"]);
 					}
 				}
@@ -242,9 +243,10 @@
 		}
 
 		public function save() {
+			global $database;
 			// Create form
 			if($this->id === NULL){
-				mysql_query("INSERT INTO form(
+				mysqli_query($database, "INSERT INTO form(
 											user_id,
 											form_name,
 											form_status,
@@ -259,12 +261,12 @@
 				or die("Form::save() can't create form : " . mysql_error());
 
 				// Auto generated id
-				$this->id = mysql_insert_id();
+				$this->id = mysqli_insert_id($database);
 			}
 			// Update form
 			else{
 				// Reset form
-				mysql_query("	UPDATE 	form
+				mysqli_query($database, "	UPDATE 	form
 								SET 	form_status 		= 		0,
 				                  		form_name 			= '" . 	 $this->name . "',
 										form_anonymous 		= "  . 	($this->anon 	? 1 : 0) . "
@@ -285,19 +287,21 @@
 		}
 
 		public function send(){
+			global $database;
 			$this->save();
 			$this->state = TRUE;
 
 			// Update status
-			mysql_query("	UPDATE 	form
+			mysqli_query($database, "	UPDATE 	form
 							SET 	form_status = 1
 							WHERE 	form_id 	= " . $this->id)
 			or die("Form::send() can't update status : " . mysql_error());
 		}
 
 		public function delete(){
+			global $database;
 			// Delete form (DELETE CASCADE)
-			mysql_query("	DELETE FROM form
+			mysqli_query($database, "	DELETE FROM form
 							WHERE 		form_id = " . $this->id)
 			or die("Form::delete() can't delete form : " . mysql_error());
 		}
@@ -308,19 +312,20 @@
 		* @return int
 	    */	
 		public function exportSQL(){
+			global $database;
 			if($this->state == FALSE or $this->id == NULL)
 				return 0;
 			
 			// Get current autoincrement values
-			$AIanswer = mysql_fetch_array(mysql_query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'answer';"));
-			$AIanswervalue = mysql_fetch_array(mysql_query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'answervalue';"));
-			$AIelementanswer = mysql_fetch_array(mysql_query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'elementanswer';"));
-			$AIelementoption = mysql_fetch_array(mysql_query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'elementoption';"));
-			$AIform = mysql_fetch_array(mysql_query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'form';"));
-			$AIformdest = mysql_fetch_array(mysql_query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'formdest';"));
-			$AIformelement = mysql_fetch_array(mysql_query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'formelement';"));
-			$AIformgroup = mysql_fetch_array(mysql_query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'formgroup';"));
-			$AIuser = mysql_fetch_array(mysql_query("SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'user';"));
+			$AIanswer = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'answer';"));
+			$AIanswervalue = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'answervalue';"));
+			$AIelementanswer = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'elementanswer';"));
+			$AIelementoption = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'elementoption';"));
+			$AIform = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'form';"));
+			$AIformdest = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'formdest';"));
+			$AIformelement = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'formelement';"));
+			$AIformgroup = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'formgroup';"));
+			$AIuser = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'user';"));
 
 			//$DBName = 'form'.$this->name();
 			$DBName = 'ExportedDB';
@@ -430,9 +435,9 @@
 			$sql .=	"INSERT INTO `user` VALUES (".$this->creator->id().", '".$this->creator->name()."');\r\n";
 			
 			// Insert recipients into table user
-			$querydests = mysql_query("SELECT DISTINCT user.user_id, user_name FROM user JOIN (formdest JOIN formgroup 
+			$querydests = mysqli_query($database, "SELECT DISTINCT user.user_id, user_name FROM user JOIN (formdest JOIN formgroup 
 										ON formdest.formgroup_id = formgroup.formgroup_id AND form_id = ".$this->id.") ON formdest.user_id = user.user_id");
-			while ($dests = mysql_fetch_array($querydests))
+			while ($dests = mysqli_fetch_array($querydests))
 				$sql .=	"INSERT INTO `user` VALUES(".$dests["user_id"].",'".$dests["user_name"]."');\r\n";
 							
 			// Insert groups into table formgroup
@@ -445,29 +450,29 @@
 					$sql .=	"INSERT INTO `formelement` VALUES(".$element->id().",".$element->type().",".$group->id().",'".$element->label()."');\r\n";
 					
 					// Insert element options into table elementoption
-					$queryelemoption = mysql_query("SELECT * FROM elementoption WHERE formelement_id = ".$element->id());
-					while ($options = mysql_fetch_array($queryelemoption))
+					$queryelemoption = mysqli_query($database, "SELECT * FROM elementoption WHERE formelement_id = ".$element->id());
+					while ($options = mysqli_fetch_array($queryelemoption))
 						$sql .=	"INSERT INTO `elementoption` VALUES(".$options["elementoption_id"].",'".$options["optionvalue"]."',".$element->id().");\r\n";
 				}
 				
 				// Insert users into table formdest
-				$queryformdest = mysql_query("SELECT * FROM formdest WHERE formgroup_id = ".$group->id());
-				while ($users = mysql_fetch_array($queryformdest)){
+				$queryformdest = mysqli_query($database, "SELECT * FROM formdest WHERE formgroup_id = ".$group->id());
+				while ($users = mysqli_fetch_array($queryformdest)){
 					$sql .=	"INSERT INTO `formdest` VALUES(".$users["formdest_id"].",".$users["user_id"].",".$group->id().");\r\n";
 					
 					// Insert validated answers into table answer
-					$queryanswer = mysql_query("SELECT * FROM answer WHERE answer_status = 1 AND formdest_id = ".$users["formdest_id"]);
-					while ($answers = mysql_fetch_array($queryanswer)){
+					$queryanswer = mysqli_query($database, "SELECT * FROM answer WHERE answer_status = 1 AND formdest_id = ".$users["formdest_id"]);
+					while ($answers = mysqli_fetch_array($queryanswer)){
 						$sql .=	"INSERT INTO `answer` VALUES(".$answers["answer_id"].",".$users["formdest_id"].",".$answers["answer_prev_id"].");\r\n";
 						
 						// Insert into table elementanswer 
-						$queryelemanswer = mysql_query("SELECT * FROM elementanswer WHERE answer_id = ".$answers["answer_id"]);
-						while ($elemanswers = mysql_fetch_array($queryelemanswer)){
+						$queryelemanswer = mysqli_query($database, "SELECT * FROM elementanswer WHERE answer_id = ".$answers["answer_id"]);
+						while ($elemanswers = mysqli_fetch_array($queryelemanswer)){
 							$sql .=	"INSERT INTO `elementanswer` VALUES(".$elemanswers["elementanswer_id"].",".$elemanswers["formelement_id"].",".$elemanswers["answer_id"].");\r\n";
 						
 							// Insert answer values into table answervalue 
-							$queryansvalue = mysql_query("SELECT * FROM answervalue WHERE elementanswer_id = ".$elemanswers["elementanswer_id"]);
-							while ($ansvalues = mysql_fetch_array($queryansvalue))
+							$queryansvalue = mysqli_query($database, "SELECT * FROM answervalue WHERE elementanswer_id = ".$elemanswers["elementanswer_id"]);
+							while ($ansvalues = mysqli_fetch_array($queryansvalue))
 								$sql .=	"INSERT INTO `answervalue` VALUES(".$ansvalues["answervalue_id"].",'".$ansvalues["value"]."',".$ansvalues["elementanswer_id"].");\r\n";
 						}
 					}

@@ -12,24 +12,25 @@ require_once('../php/class/Group.class.php');
 class TestOfElementClass extends UnitTestCase {
 	
 	function testConstruct(){
+		global $database;
 		// Inserts one user, one form and one form group, to be possible to insert an element into the database
-		mysql_query("INSERT INTO user(user_name) VALUES('User')"); 
-		$idUser = mysql_insert_id(); 
-		mysql_query("INSERT INTO form(user_id, form_name, form_status, form_printable, form_anonymous) VALUES (".$idUser.",'Name',0,1,0)"); 
-		$idForm = mysql_insert_id();	
-		mysql_query("INSERT INTO formgroup(form_id, group_limit) VALUES(".$idForm.",1)");
-		$idFormGroup = mysql_insert_id();
+		mysqli_query($database, "INSERT INTO user(user_name) VALUES('User')"); 
+		$idUser = mysqli_insert_id($database); 
+		mysqli_query($database, "INSERT INTO form(user_id, form_name, form_status, form_printable, form_anonymous) VALUES (".$idUser.",'Name',0,1,0)"); 
+		$idForm = mysqli_insert_id($database);	
+		mysqli_query($database, "INSERT INTO formgroup(form_id, group_limit) VALUES(".$idForm.",1)");
+		$idFormGroup = mysqli_insert_id($database);
 		
 		// Inserts into formelement
-		mysql_query("INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y, height, width, default_value, placeholder, min_value, max_value,
+		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y, height, width, default_value, placeholder, min_value, max_value,
 												required, isbiglist, direction, img)
 							VALUES (".$idFormGroup.", ".constant("ELEMENT_MULTIPLE").", 'label', 10, 20, 15, 80, 'default', 'placeholder', 
 										1, 10, 1, 0, ".constant("DIR_HORIZONTAL").", 'stringimg')");
-		$idElement = mysql_insert_id();
+		$idElement = mysqli_insert_id($database);
 		
 		// Insert element options
-		mysql_query("INSERT INTO elementoption(formelement_id, optionorder, optionvalue, optiondefault) VALUES (".$idElement.", 1, 'option 1', 0)");
-		mysql_query("INSERT INTO elementoption(formelement_id, optionorder, optionvalue, optiondefault) VALUES (".$idElement.", 2, 'option 2', 0)");
+		mysqli_query($database, "INSERT INTO elementoption(formelement_id, optionorder, optionvalue, optiondefault) VALUES (".$idElement.", 1, 'option 1', 0)");
+		mysqli_query($database, "INSERT INTO elementoption(formelement_id, optionorder, optionvalue, optiondefault) VALUES (".$idElement.", 2, 'option 2', 0)");
 		
 		$Element = new Element($idElement);
 		$this->assertEqual($Element->Type(), constant("ELEMENT_MULTIPLE"));
@@ -49,17 +50,18 @@ class TestOfElementClass extends UnitTestCase {
 		$this->assertEqual($Element->options(), [["order" => 1, "value" => "option 1" , "default" => 0], ["order" => 2, "value" => "option 2" , "default" => 0]]);
 		
 		// Delete test data (if we delete user the others are deleted by cascade)
-		mysql_query("DELETE FROM USER WHERE user_id = ".$idUser);
+		mysqli_query($database, "DELETE FROM USER WHERE user_id = ".$idUser);
 	}
 	
 	function testSave(){
+		global $database;
 		// Inserts one user, one form and one form group, to be possible to insert an element into the database
-		mysql_query("INSERT INTO user(user_name) VALUES('User')"); 
-		$idUser = mysql_insert_id(); 
-		mysql_query("INSERT INTO form(user_id, form_name, form_status, form_printable, form_anonymous) VALUES (".$idUser.",'Name',0,1,0)"); 
-		$idForm = mysql_insert_id();	
-		mysql_query("INSERT INTO formgroup(form_id, group_limit) VALUES(".$idForm.",1)");
-		$idFormGroup = mysql_insert_id();
+		mysqli_query($database, "INSERT INTO user(user_name) VALUES('User')"); 
+		$idUser = mysqli_insert_id($database); 
+		mysqli_query($database, "INSERT INTO form(user_id, form_name, form_status, form_printable, form_anonymous) VALUES (".$idUser.",'Name',0,1,0)"); 
+		$idForm = mysqli_insert_id($database);	
+		mysqli_query($database, "INSERT INTO formgroup(form_id, group_limit) VALUES(".$idForm.",1)");
+		$idFormGroup = mysqli_insert_id($database);
 		
 		// Creates new element and sets its properties, it's not necessary to fill properties which aren't related to element type.
 		$newInputNumber = new Element();
@@ -114,7 +116,7 @@ class TestOfElementClass extends UnitTestCase {
 		$this->assertEqual($Checkbox->options(), $arrayOpt);
 		
 		// Delete test data (if we delete the user the related data is deleted by cascade)
-		mysql_query("DELETE FROM USER WHERE user_id = ".$idUser);
+		mysqli_query($database, "DELETE FROM USER WHERE user_id = ".$idUser);
 	}
 	
 	/* All tests for gets and sets */

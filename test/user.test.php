@@ -12,12 +12,13 @@ require_once('../php/class/Group.class.php');
 class TestOfUserClass extends UnitTestCase {
 
    function testUser(){
-		mysql_query("INSERT INTO user(user_name) VALUES('User Test')");
-		$idUser = mysql_insert_id(); 
+	    global $database;
+		mysqli_query($database, "INSERT INTO user(user_name) VALUES('User Test')");
+		$idUser = mysqli_insert_id($database); 
 		$user = new User($idUser);
 		$this->assertEqual($user->name(), "User Test");
 		$this->assertEqual($user->id(), $idUser);
-		mysql_query("DELETE FROM USER WHERE user_id = ".$idUser);
+		mysqli_query($database, "DELETE FROM USER WHERE user_id = ".$idUser);
    }
    
    // Test Created Forms

@@ -11,8 +11,8 @@ if (isset ( $_POST ["login"] )) { // AND isset ( $_POST["password"] )
 	include "connect.php";
 	
 	// Asking for table row with matching USER_NAME
-	$q = mysql_query ( "SELECT * FROM user WHERE user_name = '" . $_POST ["login"] . "'" );
-	$line = mysql_fetch_array ( $q );
+	$q = mysqli_query($database, "SELECT * FROM user WHERE user_name = '" . $_POST ["login"] . "'" );
+	$line = mysqli_fetch_array ( $q );
 	
 	if ($line != FALSE) { // Something were found
 	                    // Saving USER_ID & USER_NAME in SESSION

@@ -36,19 +36,20 @@
 		private $img;
 
 		public function __construct($id = NULL){
+			global $database;
 			if ($id !== NULL){
 				// Id
 				$this->id = $id;
 
 				// Every attr except for options
-				$query = mysql_query("	SELECT *
+				$query = mysqli_query($database, "	SELECT *
 										FROM 	formelement 
 										WHERE 	formelement_id = " . $this->id);
 
-				if(!mysql_num_rows($query)){
+				if(!mysqli_num_rows($query)){
 					die("Element::__construct() : id not found !");
 				}else{
-					$results = mysql_fetch_array($query);
+					$results = mysqli_fetch_array($query);
 					
 					$this->type 		= $results["type_element"];
 					$this->label 		= $results["label"];
@@ -67,16 +68,16 @@
 				}
 				
 				// Options
-				$query = mysql_query("	SELECT 		*
+				$query = mysqli_query($database, "	SELECT 		*
 										FROM 		elementoption
 										WHERE 		formelement_id = " . $this->id . "
 										ORDER BY 	optionorder, optionvalue");
 				
-				if (!mysql_num_rows($query)){
+				if (!mysqli_num_rows($query)){
 					// Fail silently : elements may not have options
 				}else{
 					$this->options = [];
-					while($results = mysql_fetch_array($query)){
+					while($results = mysqli_fetch_array($query)){
 						$this->options[] = [
 							"order" 	=> $results["optionorder"],
 							"value" 	=> $results["optionvalue"],
@@ -335,8 +336,9 @@
 		}
 		
 		public function save($groupId){
+			global $database;
 			// Create element
-			mysql_query("INSERT INTO formelement(
+			mysqli_query($database, "INSERT INTO formelement(
 										formgroup_id,
 										type_element,
 										label,
@@ -371,12 +373,12 @@
 			or die("Element::save() can't save element : " . mysql_error());
 			
 			// Auto generated id
-			$this->id = mysql_insert_id();
+			$this->id = mysqli_insert_id($database);
 			
 			// Insert options
 			if (is_array($this->options)){
 				foreach ($this->options as $option){
-					mysql_query("INSERT INTO elementoption(
+					mysqli_query($database, "INSERT INTO elementoption(
 												formelement_id,
 												optionorder,
 												optionvalue,

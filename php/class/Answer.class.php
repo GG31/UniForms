@@ -7,33 +7,34 @@
 		private $elementsValues;
 
 		public function __construct($id = NULL){
+			global $database;
 			if($id !== NULL){
 				// Id
 				$this->id = $id;
 
 				// Prev, State
-				$query = mysql_query("	SELECT 	*
+				$query = mysqli_query($database, "	SELECT 	*
 										FROM 	answer
 										WHERE 	answer_id = " . $this->id);
 
-				if (!mysql_num_rows($query)){
+				if (!mysqli_num_rows($query)){
 					die("Answer::__construct() : id not found !");
 				}else{
-					$results = mysql_fetch_array($query);
+					$results = mysqli_fetch_array($query);
 
 					$this->prev 	= $results["answer_prev_id"];
 					$this->state 	= $results["answer_status"] 	== 1 ? TRUE : FALSE;
 				}
 
 				// ElementsValues
-				$query = mysql_query("	SELECT formelement_id, value
+				$query = mysqli_query($database, "	SELECT formelement_id, value
 										FROM 			answervalue
 												JOIN 	elementanswer
 												ON 		elementanswer.elementanswer_id = answervalue.elementanswer_id
 										WHERE 	elementanswer.answer_id = " . $this->id . "
 										ORDER BY formelement_id");
 				
-				if (!mysql_num_rows($query)){
+				if (!mysqli_num_rows($query)){
 					// TODO uncomment
 					// or make it silent, dunno
 					// die("Answer::__construct() : values not found !");
@@ -41,12 +42,12 @@
 					$this->elementsValues = [];
 
 					// Values are grouped together if they're multiple
-					$results 	= mysql_fetch_array($query);
+					$results 	= mysqli_fetch_array($query);
 					$elementId 	= $results["formelement_id"];
 					$values 	= [];
 					$values[] 	= $results["value"];
 
-					while($results = mysql_fetch_array($query)){
+					while($results = mysqli_fetch_array($query)){
 						if($results["formelement_id"] == $elementId){
 							$values[] = $results["value"];
 						}else{
@@ -130,27 +131,29 @@
 		}
 
 		public function userId(){
+			global $database;
 			$ret = "";
 
-			$query = mysql_query("	SELECT user_id
+			$query = mysqli_query($database, "	SELECT user_id
 									FROM 			answer
 											JOIN 	formdest
 											ON 		answer.formdest_id = formdest.formdest_id
 									WHERE 	answer.answer_id = " . $this->id);
 			
-			if (!mysql_num_rows($query)){
+			if (!mysqli_num_rows($query)){
 				die("Answer::userId() : user not found !");
 			}else{
-				$ret = mysql_fetch_array($query)["user_id"];
+				$ret = mysqli_fetch_array($query)["user_id"];
 			}
 
 			return $ret;
 		}
 
 		public function formId(){
+			global $database;
 			$ret = "";
 
-			$query = mysql_query("	SELECT form_id
+			$query = mysqli_query($database, "	SELECT form_id
 									FROM 			formgroup
 											JOIN 	(
 														formdest
@@ -160,19 +163,20 @@
 											ON 		formdest.formgroup_id = formgroup.formgroup_id
 									WHERE 	answer.answer_id = " . $this->id);
 			
-			if (!mysql_num_rows($query)){
+			if (!mysqli_num_rows($query)){
 				die("Answer::formId() : form not found !");
 			}else{
-				$ret = mysql_fetch_array($query)["form_id"];
+				$ret = mysqli_fetch_array($query)["form_id"];
 			}
 
 			return $ret;
 		}
 
 		public function save($formdestId){
+			global $database;
 			// Create answer
 			if($this->id === NULL){
-				mysql_query("INSERT INTO answer(
+				mysqli_query($database, "INSERT INTO answer(
 											answer_status,
 											formdest_id,
 											answer_prev_id)
@@ -184,19 +188,19 @@
 				or die("Answer::save() can't create answer : " . mysql_error());
 
 				// Auto generated id
-				$this->id = mysql_insert_id();
+				$this->id = mysqli_insert_id($database);
 			}
 			// Update answer
 			else{
 				// Delete values
-				mysql_query("	DELETE FROM elementanswer
+				mysqli_query($database, "	DELETE FROM elementanswer
 								WHERE 		answer_id = " . $this->id)
 				or die("Answer::save() can't update answer : " . mysql_error());
 			}
 			
 			// Create values
 			foreach($this->elementsValues as $elementValues){
-				mysql_query("	INSERT INTO elementanswer(
+				mysqli_query($database, "	INSERT INTO elementanswer(
 												formelement_id,
 												answer_id)
 										VALUES (" .
@@ -204,10 +208,10 @@
 											$this->id . ")")					// answer_id
 				or die("Answer::save() can't create elementanswer : " . mysql_error());
 
-				$elementAnswerId = mysql_insert_id();
+				$elementAnswerId = mysqli_insert_id($database);
 				$arr = $elementValues["values"];
 				foreach($arr as $value){
-					mysql_query("	INSERT INTO answervalue(
+					mysqli_query($database, "	INSERT INTO answervalue(
 													value,
 													elementanswer_id)
 											VALUES('" .
@@ -219,19 +223,21 @@
 		}
 
 		public function send($formdestId) {
+			global $database;
 			$this->save($formdestId);
 			$this->state = TRUE;
 
 			// Update status
-			mysql_query("	UPDATE 	answer
+			mysqli_query($database, "	UPDATE 	answer
 							SET 	answer_status = 1
 							WHERE 	answer_id = " . $this->id)
 			or die("Answer::send() can't update status : " . mysql_error());
 		}
 		
 		public function delete(){
+			global $database;
 			// Delete answer (DELETE CASCADE)
-			mysql_query("	DELETE FROM answer
+			mysqli_query($database, "	DELETE FROM answer
 							WHERE 		answer_id = ".$this->id)
 			or die("Answer::delete() can't delete answer : " . mysql_error());
 		}

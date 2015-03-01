@@ -1,22 +1,22 @@
 <?php
 	
 	Class User {
+		
 		private $id;
 		private $name;
-
+		
+		
 		public function __construct($id = NULL){
+			global $database;
 			// Id
 			$this->id = $id;
-
 			// Name
-			$query = mysql_query("	SELECT 	*
-									FROM 	user
-									WHERE 	user_id = " . $this->id);
+			$query = mysqli_query($database, "	SELECT 	* FROM 	user WHERE 	user_id = " . $this->id);
 
-			if (!mysql_num_rows($query)){
+			if (!mysqli_num_rows($query)){
 				die("User::__construct() : id not found !");
 			}else{
-				$results = mysql_fetch_array($query);
+				$results = mysqli_fetch_array($query);
 
 				$this->name = $results["user_name"];
 			}
@@ -47,13 +47,14 @@
 		}
 
 		public function created() {
-			$query = mysql_query("	SELECT 	form_id
+			global $database;
+			$query = mysqli_query($database, "	SELECT 	form_id
 									FROM 	form
 									WHERE 	user_id = " . $this->id)
 			or die("User::created() : user not found !");
 
 			$res = [];
-			while($line = mysql_fetch_array($query)){
+			while($line = mysqli_fetch_array($query)){
 				$res[] = new Form($line["form_id"]);
 			}
 
@@ -61,7 +62,8 @@
 		}
 
 		public function recipient() {
-			$query = mysql_query("	SELECT DISTINCT form_id
+			global $database;
+			$query = mysqli_query($database, "	SELECT DISTINCT form_id
 									FROM 			formdest
 											JOIN	formgroup
 											ON 		formdest.formgroup_id = formgroup.formgroup_id
@@ -69,7 +71,7 @@
 			or die("User::recipient() : user not found !");
 
 			$res = [];
-			while($line = mysql_fetch_array($query)){
+			while($line = mysqli_fetch_array($query)){
 				$form = new Form($line["form_id"]);
 
 				if($form->state()){

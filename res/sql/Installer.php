@@ -63,15 +63,16 @@
 			$username = $_POST['username'];
 			$password = $_POST['password'];
 			
-			mysql_pconnect ( $server, $username, $password );
+			mysqli_connect ( $server, $username, $password );
 			$sql = "DROP DATABASE IF EXISTS uniforms;";
-			mysql_query ( $sql ) or die ( mysql_error () );
+			global $database;
+			mysqli_query ($database, $sql ) or die ( mysql_error () );
 			
 			$sql = "CREATE DATABASE IF NOT EXISTS uniforms;";
-			mysql_query ( $sql ) or die ( mysql_error () );
+			mysqli_query ($database, $sql ) or die ( mysql_error () );
 			
 			$sql = "USE uniforms;";
-			mysql_query ( $sql ) or die ( mysql_error () );
+			mysqli_query ($database, $sql ) or die ( mysql_error () );
 			
 			$fich = fopen ( 'uniforms.sql', "r+" );
 			$lig = "";
@@ -79,7 +80,7 @@
 				$lig .= fgets ( $fich );
 			$req = explode ( ";", $lig );
 			foreach ( $req as $lii ) {
-				mysql_query ( $lii );
+				mysqli_query ( $lii );
 			}
 			fclose ( $fich );
 			

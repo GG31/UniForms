@@ -17,6 +17,6 @@ moreGroup = function(multiple) {
 
    $('#groupSection').append(newNode);
    groupElementsDroppable();
-   refreshGroupUsers("group_"+nb);
+   createGroup("group_"+nb);
 }
 

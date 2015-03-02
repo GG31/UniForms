@@ -12,23 +12,24 @@
 
 	$checkedAnon  	= FALSE;
 	$checkedPrint 	= TRUE;
-	// $maxAnswers 	= 1; // TODO ?
-	$groupsUsers = [];
-	$groupsLimit = [];
+	$groupsUsers 	= [];
+	$firstLimit		= 1;
 
 	if(isset($_GET["form_id"])){
 		$checkedAnon 	= $form->anon();
 		$checkedPrint 	= $form->printable();
-		// $maxAnswers   	= $form->getMaxAnswers(); // TODO ?
+		$first = TRUE;
 
 		// Users by group, limit by group
 		foreach ($form->groups() as $num => $group) {
-			$groupsUsers[$num] = [];
-			$groupsLimit[$num] = $group->limit();
+			if($first == TRUE){
+				$firstLimit = $group->limit();
+				$first = FALSE;
+			}
+			$groupsUsers["group_" . $num] = [];
 
 			foreach ($group->users() as $user) {
-				$groupsUsers[$num]["id"] = $user->id();
-				$groupsUsers[$num]["name"] = $user->name();
+				$groupsUsers["group_" . $num][] = ["id" => $user->id(), "name" => $user->name()];
 			}
 		}
 	}
@@ -88,10 +89,13 @@
 				/////////////////////////////////////////////
 				// Recipient by groups (for the modal) //
 				/////////////////////////////////////////////
-				groupsUsers = <?php echo json_encode($groupsUsers) ?>;// TODO
-				// console.log(groupsUsers);
+				GROUPSUSERS = <?php echo json_encode($groupsUsers) ?>;
+				if(Object.prototype.toString.call(GROUPSUSERS) === '[object Array]' && GROUPSUSERS.length === 0){
+					GROUPSUSERS = {'group_0': []};
+				}
+				$('#usersGroups').val(JSON.stringify(GROUPSUSERS));
 
-				GROUPSUSERS = {
+				// GROUPSUSERS = {
 					// 'group_0': [
 					// 		{'id': 1, 'name' : 'Romain'},
 					// 		{'id': 2, 'name' : 'Ayoub'}
@@ -100,7 +104,7 @@
 					// 		{'id': 1, 'name' : 'Romain'},
 					// 		{'id': 2, 'name' : 'Ayoub'}
 					// 	]
-				};
+				// };
 
 				copiedest = function() {
 					if($('#display').val()) {
@@ -139,6 +143,19 @@
 					$('#usersGroups').val(JSON.stringify(GROUPSUSERS));
 				};
 
+				deleteGroup = function(group){
+					delete GROUPSUSERS[group];
+				};
+
+				createGroup = function(group){
+					if(!(group in GROUPSUSERS)){
+						GROUPSUSERS[group] = [];
+					}
+					
+					// Attach to POST
+					$('#usersGroups').val(JSON.stringify(GROUPSUSERS));
+				};
+
 				displayGroupUser = function(id, name){
 					group = $('<div class="input-group"></div>');
 					addon = $('<span class="input-group-addon"></span>');
@@ -162,7 +179,7 @@
 				};
 
 				displayGroupUsers = function(group){
-					if(typeof GROUPSUSERS[group] == 'undefined'){
+					if(!(group in GROUPSUSERS)){
 						GROUPSUSERS[group] = [];
 					}
 					users = GROUPSUSERS[group];
@@ -309,7 +326,7 @@
 										id = "group_0_multiple"
 										type="number"
 										name="group_0_multiple"
-										value="1"
+										value="<?php echo $firstLimit ?>"
 										min="0"
 										class="form-control bfh-number"
 										style="width: 40pt;"
@@ -319,7 +336,7 @@
 									<!--<label for="multiple">Nombre de réponses max.</label>-->
 								</div>
 							</div>
-							<button type="button" class="btn btn-default btn-lg" onclick="moreGroup(0)">
+							<button type="button" class="btn btn-default btn-lg" onclick="moreGroup(1)">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 							</button>
 						</div>
@@ -426,6 +443,7 @@
 		<script src="../js/drag.js"></script>
 		<script src="../js/group.js"></script>
 		<script src="../js/includeFile.js"></script>
+		<script src="../js/navbar.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function(){
 				$('[data-toggle="tooltip"]').tooltip()
@@ -436,15 +454,15 @@
 
 				<?php
 					$groups = $form->groups();
-					$first = FALSE;
+					$first = TRUE;
 
 					if(count($groups)){
 						foreach ($groups as $num => $group) {
 							$elems = $group->elements();
 				?>
-							<?php echo !$first ? "moreGroup(" . $groupsLimit[$num] .");" : "" ?>
+							<?php echo $first == FALSE ? "moreGroup(" . $group->limit() .");" : "" ?>
 				<?php
-							$first = TRUE;
+							$first = FALSE;
 							foreach ($elems as $elem) {
 								$obj = $elem->attr();
 								$obj = json_encode($obj, true);
@@ -453,7 +471,7 @@
 								addElement(element.type,
 									element.x,
 									element.y,
-									ids,	// TODO ????????????????????
+									ids,
 									"elem_" + element.id
 								);
 								addProp("elem_" + element.id,
@@ -483,49 +501,3 @@
 		</script>
 	</body>
 </html>
-<script>
-   // $(function () {
-   //    $('[data-toggle="tooltip"]').tooltip()
-   // });
-   // //Récupère les éléments du formulaire si modification
-   // var formname = <?php //echo '"'.$form->name().'"' ?>;
-   // init(formname);
-<?php
-   // $elems = $form->getFormElements();
-
-   // foreach ($elems as $elem) {
-   //    $json = json_encode($elem->getAll(), true);
-?>
-      // var element = <?php //echo $json ?>;
-      // var elemId = "elem_" + element.id;
-      // addElement(element.type , element.x, element.y, ids, elemId);
-      // addProp(elemId, element.type, element.minvalue, element.maxvalue, element.default, element.required, element.width, element.height, element.placeholder, element.direction, element.big, element.options, element.label, element.img);
-<?php
-   // }
-?>
-   // var i = 0;
-<?php   
-   // $groups = $form->getFormGroups(); 
-   // foreach ($groups as $group) {
-?>
-      // if (i != 0) {
-      //    moreGroup();
-      // }
-      // i = i + 1;
-<?php
-      // $elementsOnGroup = $group->getGroupElements();
-      // foreach ($elementsOnGroup as $elementOnGroup) {
-?>
-         // var elementId = "elem_" + <?php //echo $elementOnGroup->getId(); ?>;
-         // var elementLabel = <?php //echo "'".$elementOnGroup->getLabel()."'"; ?>;
-         // if (elementLabel == "") {
-         //    elementLabel = elementId;
-         // }
-         // appendToGroup($('#groupSection .groupElements:last'), elementId, elementLabel);
-<?php
-   //    }
-   // }
-?>
-   //});
-   </script>
-<script src="../js/navbar.js"></script>

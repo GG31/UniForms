@@ -33,10 +33,6 @@
 					</div>
 				</div>
 			</div>
-			<div class="panel-footer">
-				<div class="form-group">
-				</div>
-			</div>
 		</form>
 			<?php include 'php/include/footer.php'; ?>
 		</div>

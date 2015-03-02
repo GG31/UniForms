@@ -352,6 +352,8 @@ sendJson = function() {
    }
 	document.getElementById("info").value = JSON.stringify(elementList);
 	document.getElementById("infoGroups").value = JSON.stringify(getGroupsAndElements());
+   console.log('lmklmksdflkkjsdlkfj');
+   return false;
 };
 
 getGroupsAndElements = function() {

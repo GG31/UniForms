@@ -267,17 +267,15 @@
 			else{
 				// Reset form
 				mysqli_query($database, "	UPDATE 	form
-								SET 	form_status 		= 		0,
-				                  		form_name 			= '" . 	 $this->name . "',
-										form_anonymous 		= "  . 	($this->anon 	? 1 : 0) . "
-										form_printable 		= "  . 	($this->print 	? 1 : 0) . "
-								WHERE 	form_id 			= "  . 	 $this->id)
+											SET 	form_status 		= 		0,
+													form_name 			= '" . 	 $this->name . "',
+													form_anonymous 		= "  . 	($this->anon 	? 1 : 0) . ",
+													form_printable 		= "  . 	($this->print 	? 1 : 0) . "
+											WHERE 	form_id 			= "  . 	 $this->id)
 				or die("Form::save() can't update form : " . mysqli_error($database));
 				
 				// Delete groups
-				foreach($this->$groups as $group){
-					$group->delete();
-				}
+				Group::delete($this->id);
 			}
 
 			// Create groups

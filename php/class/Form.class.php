@@ -267,17 +267,22 @@
 			else{
 				// Reset form
 				mysqli_query($database, "	UPDATE 	form
-								SET 	form_status 		= 		0,
-				                  		form_name 			= '" . 	 $this->name . "',
-										form_anonymous 		= "  . 	($this->anon 	? 1 : 0) . "
-										form_printable 		= "  . 	($this->print 	? 1 : 0) . "
-								WHERE 	form_id 			= "  . 	 $this->id)
+											SET 	form_status 		= 		0,
+							                  		form_name 			= '" . 	 $this->name . "',
+													form_anonymous 		= "  . 	($this->anon 	? 1 : 0) . ",
+													form_printable 		= "  . 	($this->print 	? 1 : 0) . "
+											WHERE 	form_id 			= "  . 	 $this->id)
 				or die("Form::save() can't update form : " . mysql_error());
 				
 				// Delete groups
-				foreach($this->$groups as $group){
-					$group->delete();
-				}
+				Group::delete($this->id);
+				// $g = $this->groups; // wtf ? dont work in the foreach anymore ... :(
+				// foreach($g as $group){
+				// 	echo "<pre>";
+				// 	var_dump($group);
+				// 	echo "</pre>";
+				// 	$group->delete();
+				// }
 			}
 
 			// Create groups

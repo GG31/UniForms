@@ -228,9 +228,9 @@
 				mysqli_query($database, "INSERT INTO formdest(
 											formgroup_id,
 											user_id)
-									VALUES("
-										. $this->id . ","				// formgroup_id
-										. $user->id() . ")")			// user_id
+										VALUES("
+											. $this->id . ","				// formgroup_id
+											. $user->id() . ")")			// user_id
 				or die("Group::save() can't insert recipients : " . mysql_error());
 			}
 			
@@ -240,13 +240,12 @@
 			}
 		}
 
-		public function delete(){
+		static function delete($formId){
 			global $database;
-			// DELETE CASCADE : formelements and formdest
+			// DELETE CASCADE : formdest, formelements and answers
 			mysqli_query($database, "	DELETE FROM formgroup
-							WHERE 		formgroup_id = " . $this->id)
+										WHERE 		form_id = " . $formId)
 			or die("Group::delete() can't delete group : " . mysql_error());
 		}
 	}
-
 ?>

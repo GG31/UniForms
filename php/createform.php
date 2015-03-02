@@ -12,23 +12,20 @@
 
 	$checkedAnon  	= FALSE;
 	$checkedPrint 	= TRUE;
-	// $maxAnswers 	= 1; // TODO ?
 	$groupsUsers = [];
 	$groupsLimit = [];
 
 	if(isset($_GET["form_id"])){
 		$checkedAnon 	= $form->anon();
 		$checkedPrint 	= $form->printable();
-		// $maxAnswers   	= $form->getMaxAnswers(); // TODO ?
 
 		// Users by group, limit by group
 		foreach ($form->groups() as $num => $group) {
-			$groupsUsers[$num] = [];
+			$groupsUsers["group_" . $num] = [];
 			$groupsLimit[$num] = $group->limit();
 
 			foreach ($group->users() as $user) {
-				$groupsUsers[$num]["id"] = $user->id();
-				$groupsUsers[$num]["name"] = $user->name();
+				$groupsUsers["group_" . $num][] = ["id" => $user->id(), "name" => $user->name()];
 			}
 		}
 	}
@@ -89,10 +86,14 @@
 				/////////////////////////////////////////////
 				// Recipient by groups (for the modal) //
 				/////////////////////////////////////////////
-				groupsUsers = <?php echo json_encode($groupsUsers) ?>;// TODO
-				// console.log(groupsUsers);
+				GROUPSUSERS = {};
+				GROUPSUSERS = <?php echo json_encode($groupsUsers) ?>;
+				if(Object.prototype.toString.call(GROUPSUSERS) === '[object Array]' && GROUPSUSERS.length === 0){
+					GROUPSUSERS = {};
+				}
+				$('#usersGroups').val(JSON.stringify(GROUPSUSERS));
 
-				GROUPSUSERS = {
+				// GROUPSUSERS = {
 					// 'group_0': [
 					// 		{'id': 1, 'name' : 'Romain'},
 					// 		{'id': 2, 'name' : 'Ayoub'}
@@ -101,7 +102,7 @@
 					// 		{'id': 1, 'name' : 'Romain'},
 					// 		{'id': 2, 'name' : 'Ayoub'}
 					// 	]
-				};
+				// };
 
 				copiedest = function() {
 					if($('#display').val()) { // TODO more verifs
@@ -159,7 +160,7 @@
 				};
 
 				displayGroupUsers = function(group){
-					if(typeof GROUPSUSERS[group] == 'undefined'){
+					if(!(group in GROUPSUSERS)){
 						GROUPSUSERS[group] = [];
 					}
 					users = GROUPSUSERS[group];
@@ -459,15 +460,15 @@
 
 				<?php
 					$groups = $form->groups();
-					$first = FALSE;
+					$first = TRUE;
 
 					if(count($groups)){
 						foreach ($groups as $num => $group) {
 							$elems = $group->elements();
 				?>
-							<?php echo !$first ? "moreGroup(" . $groupsLimit[$num] .");" : "" ?>
+							<?php echo $first == FALSE ? "moreGroup(" . $groupsLimit[$num] .");" : "" ?>
 				<?php
-							$first = TRUE;
+							$first = FALSE;
 							foreach ($elems as $elem) {
 								$obj = $elem->attr();
 								$obj = json_encode($obj, true);

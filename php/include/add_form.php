@@ -21,7 +21,6 @@ if (! empty ( $_POST )) {
 	 */
 	$printable = FALSE;
 	$anonymous = FALSE;
-	// $multifill = 1; // TODO
 	
 	if (isset ( $_POST ["param"] )) { // A checkbox is checked
       echo "PARAM<br><pre>";
@@ -30,9 +29,6 @@ if (! empty ( $_POST )) {
 		$printable = in_array ( "print", $_POST ["param"] ) ? TRUE : FALSE;
 		$anonymous = in_array ( "anon", $_POST ["param"] ) ? TRUE : FALSE;
 	} // Else : no param checked -> FALSE
-	// if (isset ( $_POST ["parammulti"] )) { // TODO
-	// 	$multifill = $_POST ["parammulti"];
-	// }
    if (isset ( $_POST ["infoFormName"] )) {
       echo "INFOFORMNAME:<br><pre>";
       var_dump($_POST["infoFormName"]);
@@ -52,7 +48,6 @@ if (! empty ( $_POST )) {
 	
 	$form->printable ( $printable );
 	$form->anon ( $anonymous );
-	// $form->setMaxAnswers ( $multifill ); // TODO
 	
    // It must create the groups and set the recipients and elements for each group.
    $group = new Group();
@@ -124,8 +119,6 @@ if (! empty ( $_POST )) {
          // $group->elements($arrayElements); // NOTE useless
          // $formGroups[] = $group;
          $form->groups($formGroups);
-
-
       } else {
 
 
@@ -143,7 +136,7 @@ if (! empty ( $_POST )) {
 	if (isset ( $_POST ['send'] )) {
 		$form->send ();
 	}
-   // return;
+   return;
 	header ( "Location: ../home.php" );
 }
 

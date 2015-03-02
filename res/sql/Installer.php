@@ -70,54 +70,57 @@
 			$server = $_POST['server'];
 			$username = $_POST['username'];
 			$password = $_POST['password'];
-			
-			$monfichier = fopen('../../php/include/connect.php', 'r+');
-			$contenu = file_get_contents('../../php/include/connect.php');
+			$conn = mysql_connect($_POST['server'], $_POST['username'], $_POST['password']);
+			if (mysql_ping($conn)){
+				$contenu = "<?php global \$database;  \$database = mysqli_connect('serverdb', 'userdb', 'passworddb', 'databasedb') ?>";
+				echo $contenu;	
+				$s1 =  $_POST["server"];
+				$ss1 = "$s1";
+				$contenuMod = str_replace('serverdb', $ss1, $contenu);
+					
+				$s2 =  $_POST["username"];
+				$ss2 = "$s2";
+				$contenuMod = str_replace('userdb', $ss2, $contenuMod );
+					
+				$s3 =  $_POST["password"];
+				$ss3 = "$s3";
+				$contenuMod = str_replace('passworddb', $ss3, $contenuMod);
+					
+				$s4 =  $_POST["dbname"];
+				$ss4 = "$s4";
+				$contenuMod = str_replace('databasedb', $ss4, $contenuMod);
+				//echo htmlentities($contenu);
+				fclose($monfichier);
+					
+				//ouverture en écriture
+				$monfichier2=fopen('../../php/include/connect.php','w+') or die("Fichier manquant");
+				fwrite($monfichier2,$contenuMod);
+				fclose($monfichier2);
 				
-			$s1 =  $_POST["server"];
-			$ss1 = "$s1";
-			$contenuMod = str_replace('serverdb', $ss1, $contenu);
+				mysql_pconnect ( $server, $username, $password );
+				$sql = "DROP DATABASE IF EXISTS ".$_POST['dbname'].";";
+				mysql_query ( $sql ) or die ( mysql_error () );
 				
-			$s2 =  $_POST["username"];
-			$ss2 = "$s2";
-			$contenuMod = str_replace('userdb', $ss2, $contenuMod );
+				$sql = "CREATE DATABASE IF NOT EXISTS ".$_POST['dbname'].";";
+				mysql_query ( $sql ) or die ( mysql_error () );
 				
-			$s3 =  $_POST["password"];
-			$ss3 = "$s3";
-			$contenuMod = str_replace('passworddb', $ss3, $contenuMod);
+				$sql = "USE ".$_POST['dbname'].";";
+				mysql_query ( $sql ) or die ( mysql_error () );
 				
-			$s4 =  $_POST["dbname"];
-			$ss4 = "$s4";
-			$contenuMod = str_replace('databasedb', $ss4, $contenuMod);
-			//echo htmlentities($contenu);
-			fclose($monfichier);
+				$fich = fopen ( 'uniforms.sql', "r+" );
+				$lig = "";
+				while ( ! feof ( $fich ) )
+					$lig .= fgets ( $fich );
+				$req = explode ( ";", $lig );
+				foreach ( $req as $lii ) {
+					mysql_query ( $lii );
+				}
+				fclose ( $fich );
 				
-			//ouverture en écriture
-			$monfichier2=fopen('../../php/include/connect.php','w+') or die("Fichier manquant");
-			fwrite($monfichier2,$contenuMod);
-			fclose($monfichier2);
-			
-			mysql_pconnect ( $server, $username, $password );
-			$sql = "DROP DATABASE IF EXISTS ".$_POST['dbname'].";";
-			mysql_query ( $sql ) or die ( mysql_error () );
-			
-			$sql = "CREATE DATABASE IF NOT EXISTS ".$_POST['dbname'].";";
-			mysql_query ( $sql ) or die ( mysql_error () );
-			
-			$sql = "USE ".$_POST['dbname'].";";
-			mysql_query ( $sql ) or die ( mysql_error () );
-			
-			$fich = fopen ( 'uniforms.sql', "r+" );
-			$lig = "";
-			while ( ! feof ( $fich ) )
-				$lig .= fgets ( $fich );
-			$req = explode ( ";", $lig );
-			foreach ( $req as $lii ) {
-				mysql_query ( $lii );
+				header ( "Location:../../" );
+			}else{
+				header ( "Location:error.php" );
 			}
-			fclose ( $fich );
-			
-			header ( "Location:../../" );
 		}
 		?>
 	</body>

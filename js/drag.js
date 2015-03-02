@@ -347,6 +347,9 @@ getType = function(node) {
 };
 
 sendJson = function() {
+   if ($("#formName").text() == "" || $("#formName").text() == "Click to add form name") {
+      $("#infoFormName").val("Formulaire sans nom");
+   }
 	document.getElementById("info").value = JSON.stringify(elementList);
 	document.getElementById("infoGroups").value = JSON.stringify(getGroupsAndElements());
    console.log('lmklmksdflkkjsdlkfj');
@@ -589,7 +592,7 @@ hasSeveralValues = function () {
 
 $("#formName").focusout(function() {
    if($("#formName").text() === '') {
-      $("#formName").text("NULL");
+      $("#formName").text("Formulaire sans nom");
    }
    $("#infoFormName").val($("#formName").text());
 });

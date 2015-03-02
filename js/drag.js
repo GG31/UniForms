@@ -20,10 +20,11 @@ var elementsCode = {
 }; 
 
 function init(formname) {
-console.log('###############################################################################');
    hideAll();
-   $("#formName").text(formname);
-   $("#infoFormName").val(formname);
+   if(formname.length !== 0){
+         $("#formName").text(formname);
+         $("#infoFormName").val(formname);
+   }
    groupElementsDroppable();
    drag();
 }

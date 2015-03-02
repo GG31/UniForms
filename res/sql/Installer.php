@@ -63,9 +63,9 @@
 			$username = $_POST['username'];
 			$password = $_POST['password'];
 			
-			mysqli_connect ( $server, $username, $password );
+			global $db;
+			$db = mysqli_connect ( $server, $username, $password );
 			$sql = "DROP DATABASE IF EXISTS uniforms;";
-			global $database;
 			mysqli_query ($database, $sql ) or die ( mysql_error () );
 			
 			$sql = "CREATE DATABASE IF NOT EXISTS uniforms;";

@@ -34,9 +34,9 @@
 				
 				// Groups
 				$query = mysqli_query($database, "	SELECT 		*
-										FROM 		formgroup
-										WHERE 		form_id = " . $this->id. "
-										ORDER BY 	formgroup_id");
+													FROM 		formgroup
+													WHERE 		form_id = " . $this->id. "
+													ORDER BY 	formgroup_id");
 
 				if (!mysqli_num_rows($query)){
 					die("Form::__construct() : groups not found !");

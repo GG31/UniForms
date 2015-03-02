@@ -257,8 +257,8 @@
 										. "'" . $this->name . "',"			// form_name
 										. "0,"								// form_status
 										. ($this->print ? 1 : 0) . ", "		// form_printable
-										. ($this->anon 	? 1 : 0) . ")")			// form_anonymous
-				or die("Form::save() can't create form : " . mysql_error());
+										. ($this->anon 	? 1 : 0) . ")")		// form_anonymous
+				or die("Form::save() can't create form : " . mysqli_error($database));
 
 				// Auto generated id
 				$this->id = mysqli_insert_id($database);
@@ -272,7 +272,7 @@
 										form_anonymous 		= "  . 	($this->anon 	? 1 : 0) . "
 										form_printable 		= "  . 	($this->print 	? 1 : 0) . "
 								WHERE 	form_id 			= "  . 	 $this->id)
-				or die("Form::save() can't update form : " . mysql_error());
+				or die("Form::save() can't update form : " . mysqli_error($database));
 				
 				// Delete groups
 				foreach($this->$groups as $group){
@@ -295,7 +295,7 @@
 			mysqli_query($database, "	UPDATE 	form
 							SET 	form_status = 1
 							WHERE 	form_id 	= " . $this->id)
-			or die("Form::send() can't update status : " . mysql_error());
+			or die("Form::send() can't update status : " . mysqli_error($database));
 		}
 
 		public function delete(){
@@ -303,7 +303,7 @@
 			// Delete form (DELETE CASCADE)
 			mysqli_query($database, "	DELETE FROM form
 							WHERE 		form_id = " . $this->id)
-			or die("Form::delete() can't delete form : " . mysql_error());
+			or die("Form::delete() can't delete form : " . mysqli_error($database));
 		}
 		
 		/**

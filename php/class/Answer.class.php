@@ -185,7 +185,7 @@
 											$formdestId . "," .	// formdest_id
 											$this->prev .		// answer_prev_id
 											")")
-				or die("Answer::save() can't create answer : " . mysql_error());
+				or die("Answer::save() can't create answer : " . mysqli_error($database));
 
 				// Auto generated id
 				$this->id = mysqli_insert_id($database);
@@ -195,7 +195,7 @@
 				// Delete values
 				mysqli_query($database, "	DELETE FROM elementanswer
 								WHERE 		answer_id = " . $this->id)
-				or die("Answer::save() can't update answer : " . mysql_error());
+				or die("Answer::save() can't update answer : " . mysqli_error($database));
 			}
 			
 			// Create values
@@ -206,7 +206,7 @@
 										VALUES (" .
 											$elementValues["elementId"] . "," .	// formelement_id
 											$this->id . ")")					// answer_id
-				or die("Answer::save() can't create elementanswer : " . mysql_error());
+				or die("Answer::save() can't create elementanswer : " . mysqli_error($database));
 
 				$elementAnswerId = mysqli_insert_id($database);
 				$arr = $elementValues["values"];
@@ -217,7 +217,7 @@
 											VALUES('" .
 												$value . "'," .				// value
 												$elementAnswerId . ")")		// elementanswer_id
-					or die("Answer::save() can't create answervalue : " . mysql_error());
+					or die("Answer::save() can't create answervalue : " . mysqli_error($database));
 				}
 			}
 		}
@@ -231,7 +231,7 @@
 			mysqli_query($database, "	UPDATE 	answer
 							SET 	answer_status = 1
 							WHERE 	answer_id = " . $this->id)
-			or die("Answer::send() can't update status : " . mysql_error());
+			or die("Answer::send() can't update status : " . mysqli_error($database));
 		}
 		
 		public function delete(){
@@ -239,7 +239,7 @@
 			// Delete answer (DELETE CASCADE)
 			mysqli_query($database, "	DELETE FROM answer
 							WHERE 		answer_id = ".$this->id)
-			or die("Answer::delete() can't delete answer : " . mysql_error());
+			or die("Answer::delete() can't delete answer : " . mysqli_error($database));
 		}
 	}
 

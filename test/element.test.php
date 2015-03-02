@@ -24,7 +24,7 @@ class TestOfElementClass extends UnitTestCase {
 		// Inserts into formelement
 		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y, height, width, default_value, placeholder, min_value, max_value,
 												required, isbiglist, direction, img)
-							VALUES (".$idFormGroup.", ".constant("ELEMENT_MULTIPLE").", 'label', 10, 20, 15, 80, 'default', 'placeholder', 
+							VALUES (".$idFormGroup.", ".constant("typeCheckbox").", 'label', 10, 20, 15, 80, 'default', 'placeholder', 
 										1, 10, 1, 0, ".constant("DIR_HORIZONTAL").", 'stringimg')");
 		$idElement = mysqli_insert_id($database);
 		
@@ -33,7 +33,7 @@ class TestOfElementClass extends UnitTestCase {
 		mysqli_query($database, "INSERT INTO elementoption(formelement_id, optionorder, optionvalue, optiondefault) VALUES (".$idElement.", 2, 'option 2', 0)");
 		
 		$Element = new Element($idElement);
-		$this->assertEqual($Element->Type(), constant("ELEMENT_MULTIPLE"));
+		$this->assertEqual($Element->Type(), constant("typeCheckbox"));
 		$this->assertEqual($Element->label(), "label");
 		$this->assertEqual($Element->x(), 10);
 		$this->assertEqual($Element->y(), 20);
@@ -65,7 +65,7 @@ class TestOfElementClass extends UnitTestCase {
 		
 		// Creates new element and sets its properties, it's not necessary to fill properties which aren't related to element type.
 		$newInputNumber = new Element();
-		$newInputNumber->type(constant("ELEMENT_NUMBER"));
+		$newInputNumber->type(constant("typeInputNumber"));
 		$newInputNumber->x(50);
 		$newInputNumber->y(30);
 		$newInputNumber->defaultValue("50");
@@ -79,7 +79,7 @@ class TestOfElementClass extends UnitTestCase {
 		
 		// Creates new element and sets its properties, it's not necessary to fill properties which aren't related to element type.
 		$newCheckbox = new Element();
-		$newCheckbox->type(constant("ELEMENT_MULTIPLE"));
+		$newCheckbox->type(constant("typeCheckbox"));
 		$newCheckbox->x(40);
 		$newCheckbox->y(60);
 		$newCheckbox->label("select multiple");
@@ -94,7 +94,7 @@ class TestOfElementClass extends UnitTestCase {
 		
 		// Verifies if they were saved correctly
 		$InputNumber = new Element($newInputNumber->id());
-		$this->assertEqual($InputNumber->Type(), constant("ELEMENT_NUMBER"));
+		$this->assertEqual($InputNumber->Type(), constant("typeInputNumber"));
 		$this->assertEqual($InputNumber->label(), "number field");
 		$this->assertEqual($InputNumber->x(), 50);
 		$this->assertEqual($InputNumber->y(), 30);
@@ -107,7 +107,7 @@ class TestOfElementClass extends UnitTestCase {
 		$this->assertTrue($InputNumber->required());
 		
 		$Checkbox = new Element($newCheckbox->id());
-		$this->assertEqual($Checkbox->Type(), constant("ELEMENT_MULTIPLE"));
+		$this->assertEqual($Checkbox->Type(), constant("typeCheckbox"));
 		$this->assertEqual($Checkbox->label(), "select multiple");
 		$this->assertEqual($Checkbox->x(), 40);
 		$this->assertEqual($Checkbox->y(), 60);
@@ -123,8 +123,8 @@ class TestOfElementClass extends UnitTestCase {
 	
 	function testType(){
   		$elem = new Element();
-		$elem->type(constant("ELEMENT_TIME"));
-  		$this->assertEqual($elem->type(), constant("ELEMENT_TIME"));
+		$elem->type(constant("typeInputTime"));
+  		$this->assertEqual($elem->type(), constant("typeInputTime"));
   	}
 	
 	function testX(){

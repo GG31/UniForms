@@ -370,7 +370,7 @@
 									"  .  	($this->bigList	? 1 : 0) 	. ",	
 									"  .	($this->direction? 1 : 0)	. ",	
 									'" . 	$this->img 					. "')")	
-			or die("Element::save() can't save element : " . mysql_error());
+			or die("Element::save() can't save element : " . mysqli_error($database));
 			
 			// Auto generated id
 			$this->id = mysqli_insert_id($database);
@@ -388,7 +388,7 @@
 											. 		$option["order"] 				. ","	// optionorder
 											. "'" . $option["value"] 				. "',"	// optionvalue
 											. 	   ($option["default"] ? 1 : 0) 	. ")")	// optiondefault
-					or die("Element::save() can't save option : " . mysql_error());
+					or die("Element::save() can't save option : " . mysqli_error($database));
 				}
 			}
 		}

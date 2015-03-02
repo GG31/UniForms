@@ -30,13 +30,13 @@ class TestOfFormClass extends UnitTestCase {
 		mysqli_query($database, "INSERT INTO formdest(user_id, formgroup_id) VALUES(".$idReceiver2.", ".$idFormGroup2.")"); $idFormDest3 = mysqli_insert_id($database);
 		mysqli_query($database, "INSERT INTO formdest(user_id, formgroup_id) VALUES(".$idReceiver1.", ".$idFormGroup3.")"); $idFormDest4 = mysqli_insert_id($database);
 		// Insert elements
-		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup1.", ".constant("ELEMENT_MULTIPLE").", 'label', 10, 20)");
+		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup1.", ".constant("typeCheckbox").", 'label', 10, 20)");
 		$idElement1 = mysqli_insert_id($database);
-		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup1.", ".constant("ELEMENT_TEXT").", 'label', 10, 20)");
+		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup1.", ".constant("typeInputText").", 'label', 10, 20)");
 		$idElement2 = mysqli_insert_id($database);
-		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup2.", ".constant("ELEMENT_TEXT").", 'label', 10, 20)");
+		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup2.", ".constant("typeInputText").", 'label', 10, 20)");
 		$idElement3 = mysqli_insert_id($database);
-		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup3.", ".constant("ELEMENT_DATE").", 'label', 10, 20)");
+		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup3.", ".constant("typeInputDate").", 'label', 10, 20)");
 		$idElement4 = mysqli_insert_id($database);
 		// Insert answers
 		mysqli_query($database, "INSERT INTO answer(answer_status, formdest_id, answer_prev_id) VALUES (0,".$idFormDest1.",0)"); $idAnswer1 = mysqli_insert_id($database);
@@ -79,15 +79,15 @@ class TestOfFormClass extends UnitTestCase {
 		mysqli_query($database, "INSERT INTO user(user_name) VALUES('Receiver2')"); $idReceiver2 = mysqli_insert_id($database); 
 		// Create element and group objects 
 		$Element1 = new Element();
-		$Element1->type(constant("ELEMENT_NUMBER"));
+		$Element1->type(constant("typeInputNumber"));
 		$Element1->x(50);
 		$Element1->y(30);	
 		$Element2 = new Element();
-		$Element2->type(constant("ELEMENT_TEXT"));
+		$Element2->type(constant("typeInputText"));
 		$Element2->x(20);
 		$Element2->y(20);
 		$Element3 = new Element();
-		$Element3->type(constant("ELEMENT_TEXT"));
+		$Element3->type(constant("typeInputText"));
 		$Element3->x(10);
 		$Element3->y(10);
 		$Group1 = new Group();

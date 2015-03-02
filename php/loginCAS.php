@@ -8,7 +8,7 @@ if (isset ( $_SESSION ['CAS_id'] )) {
 	include "include/connect.php";
 	
 	// Asking for table row with matching USER_NAME
-	$q = mysqli_query ($database, "SELECT * FROM user WHERE user_name = '" . $_SESSION ['CAS_id'] . "'" ) or die('<br><strong>SQL Error (1)</strong>:<br>'.mysql_error());
+	$q = mysqli_query ($database, "SELECT * FROM user WHERE user_name = '" . $_SESSION ['CAS_id'] . "'" ) or die('<br><strong>SQL Error (1)</strong>:<br>'.mysqli_error($database));
 	$line = mysqli_fetch_array ( $q );
 	
 	if ($line != FALSE) { // Something were found

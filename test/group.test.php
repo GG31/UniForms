@@ -29,9 +29,9 @@ class TestOfGroupClass extends UnitTestCase {
 		$idFormDest1 = mysqli_insert_id($database);
 		mysqli_query($database, "INSERT INTO formdest(user_id, formgroup_id) VALUES(".$idReceiver2.", ".$idFormGroup.")");
 		$idFormDest2 = mysqli_insert_id($database);
-		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup.", ".constant("ELEMENT_MULTIPLE").", 'label', 10, 20)");
+		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup.", ".constant("typeCheckbox").", 'label', 10, 20)");
 		$idElement1 = mysqli_insert_id($database);
-		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup.", ".constant("ELEMENT_TEXT").", 'label', 10, 20)");
+		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup.", ".constant("typeInputText").", 'label', 10, 20)");
 		$idElement2 = mysqli_insert_id($database);
 		mysqli_query($database, "INSERT INTO answer(answer_status, formdest_id, answer_prev_id) VALUES (0, " . $idFormDest1 . ", 0)");
 		$idAnswer1 = mysqli_insert_id($database);
@@ -72,12 +72,12 @@ class TestOfGroupClass extends UnitTestCase {
 		$idForm = mysqli_insert_id($database);	
 		
 		$Element1 = new Element();
-		$Element1->type(constant("ELEMENT_NUMBER"));
+		$Element1->type(constant("typeInputNumber"));
 		$Element1->x(50);
 		$Element1->y(30);
 		
 		$Element2 = new Element();
-		$Element2->type(constant("ELEMENT_TEXT"));
+		$Element2->type(constant("typeInputText"));
 		$Element2->x(20);
 		$Element2->y(20);
 		

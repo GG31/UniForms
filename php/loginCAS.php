@@ -3,12 +3,11 @@ session_start ();
 if (isset ( $_SESSION ["user_id"] )) {
 	header ( "Location: home.php" );
 }
-
+global $database;
 if (isset ( $_SESSION ['CAS_id'] )) { 
 	include "include/connect.php";
 	
 	// Asking for table row with matching USER_NAME
-	global $database;
 	$q = mysqli_query ($database, "SELECT * FROM user WHERE user_name = '" . $_SESSION ['CAS_id'] . "'" ) or die('<br><strong>SQL Error (1)</strong>:<br>'.mysql_error());
 	$line = mysqli_fetch_array ( $q );
 	

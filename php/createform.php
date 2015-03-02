@@ -10,27 +10,25 @@
 	$form_id 	= isset($_GET["form_id"]) ? $_GET["form_id"] : -1;
 	$form 		= new Form($form_id == -1 ? NULL : $form_id);
 
-	$checkedAnon		= FALSE;
-	$checkedPrint 		= TRUE;
-	$groupsUsers 		= [];
-	$groupsLimit 		= [];
-	$firstGroupLimit 	= 1;
+	$checkedAnon  	= FALSE;
+	$checkedPrint 	= TRUE;
+	// $maxAnswers 	= 1; // TODO ?
+	$groupsUsers = [];
+	$groupsLimit = [];
 
 	if(isset($_GET["form_id"])){
 		$checkedAnon 	= $form->anon();
 		$checkedPrint 	= $form->printable();
+		// $maxAnswers   	= $form->getMaxAnswers(); // TODO ?
 
-		// Users by group, limit for first group
-		$first = TRUE;
+		// Users by group, limit by group
 		foreach ($form->groups() as $num => $group) {
-			if($first){
-				$firstGroupLimit = $group->limit();
-				$first = FALSE;
-			}
-			$groupsUsers["group_" . $num] = [];
+			$groupsUsers[$num] = [];
+			$groupsLimit[$num] = $group->limit();
 
 			foreach ($group->users() as $user) {
-				$groupsUsers["group_" . $num][] = ["id" => $user->id(), "name" => $user->name()];
+				$groupsUsers[$num]["id"] = $user->id();
+				$groupsUsers[$num]["name"] = $user->name();
 			}
 		}
 	}
@@ -64,20 +62,19 @@
 				/////////////////////////////////////////////
 				$('#anon').on('change', function() {
 					if($(this).is(':checked')){
-						$( "#dest" ).hide("slow", function(){
-							$(this).parent().removeClass("panel-primary");
-							$(this).parent().addClass("panel-default");
-						});
-						$("#dest input").prop("disabled", true);
+						$( "#navbarGroups" ).hide("slow");
 					}else {
-						$( "#dest" ).show("slow", function(){
-							$(this).parent().removeClass("panel-default");
-							$(this).parent().addClass("panel-primary");
-						});
-						$("#dest input").prop("disabled", false);
+						$( "#navbarGroups" ).show("slow");
 					}
 				});
 
+				<?php 
+					if ($form->anon() == TRUE){
+					?>
+						$('#anon').trigger('click');
+					<?php 
+				}
+				?>
 				//////////////////////////////////////////
 				// Prevent validating form on ENTER //
 				//////////////////////////////////////////
@@ -91,13 +88,10 @@
 				/////////////////////////////////////////////
 				// Recipient by groups (for the modal) //
 				/////////////////////////////////////////////
-				GROUPSUSERS = <?php echo json_encode($groupsUsers) ?>;
-				if(Object.prototype.toString.call(GROUPSUSERS) === '[object Array]' && GROUPSUSERS.length === 0){
-					GROUPSUSERS = {'group_0': []};
-				}
-				$('#usersGroups').val(JSON.stringify(GROUPSUSERS));
+				groupsUsers = <?php echo json_encode($groupsUsers) ?>;// TODO
+				// console.log(groupsUsers);
 
-				// GROUPSUSERS = {
+				GROUPSUSERS = {
 					// 'group_0': [
 					// 		{'id': 1, 'name' : 'Romain'},
 					// 		{'id': 2, 'name' : 'Ayoub'}
@@ -106,7 +100,7 @@
 					// 		{'id': 1, 'name' : 'Romain'},
 					// 		{'id': 2, 'name' : 'Ayoub'}
 					// 	]
-				// };
+				};
 
 				copiedest = function() {
 					if($('#display').val()) {
@@ -145,10 +139,6 @@
 					$('#usersGroups').val(JSON.stringify(GROUPSUSERS));
 				};
 
-				deleteGroup = function(group){
-					delete GROUPSUSERS[group];
-				};
-
 				displayGroupUser = function(id, name){
 					group = $('<div class="input-group"></div>');
 					addon = $('<span class="input-group-addon"></span>');
@@ -172,7 +162,7 @@
 				};
 
 				displayGroupUsers = function(group){
-					if(!(group in GROUPSUSERS)){
+					if(typeof GROUPSUSERS[group] == 'undefined'){
 						GROUPSUSERS[group] = [];
 					}
 					users = GROUPSUSERS[group];
@@ -242,7 +232,6 @@
 									type="checkbox"
 									value="anon"
 									name="param[]"
-									<?php echo $checkedAnon ? "CHECKED" : "" ?>
 									data-toggle="tooltip" 
 								    data-placement="top" 
 									title="Si le formulaire est anonyme, il ne sera pas nécessaire de se connecter pour répondre et les personnes pouvant répondre à ce formulaire sont ceux disposant du lien.">
@@ -320,7 +309,7 @@
 										id = "group_0_multiple"
 										type="number"
 										name="group_0_multiple"
-										value="<?php echo $firstGroupLimit ?>"
+										value="1"
 										min="0"
 										class="form-control bfh-number"
 										style="width: 40pt;"
@@ -330,7 +319,7 @@
 									<!--<label for="multiple">Nombre de réponses max.</label>-->
 								</div>
 							</div>
-							<button type="button" class="btn btn-default btn-lg" onclick="moreGroup(1)">
+							<button type="button" class="btn btn-default btn-lg" onclick="moreGroup(0)">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 							</button>
 						</div>
@@ -403,6 +392,10 @@
                   </div><!--panel-body-->
 				   </div><!--panel-primary-->
 				</div><!--row-->
+
+				<div class="row">
+				<div class="alert alert-danger" role="alert" id="alertDestinataires"> </div>
+				</div>
 				<div class="row" onload="newFormModel();">
 					<div class="col-sm-offset-3 col-sm-6">
 						<input id="info" name="info" type="hidden">
@@ -410,23 +403,19 @@
 						<input id="usersGroups" name="usersGroups" type="hidden">
 						<input type="hidden" name="form_id" value="<?php echo $form_id ?>">
 						<input
-							id="input-save"
 							type="submit"
 							class="btn btn-default btn-lg btn-block"
 							value="Enregistrer"
 							name="save"
 							form="formulaire"
-							onclick="sendJson()"
 							<?php echo $form->state() ? "DISABLED" : "" ?>
 							>
 						<input
-							id="input-send"
 							type="submit"
 							class="btn btn-primary btn-lg btn-block"
 							value="Valider"
 							name="send"
 							form="formulaire"
-							onclick="sendJson()"
 							<?php echo $form->state() ? "DISABLED" : "" ?>
 							>
 					</div>
@@ -447,15 +436,15 @@
 
 				<?php
 					$groups = $form->groups();
-					$first = TRUE;
+					$first = FALSE;
 
 					if(count($groups)){
 						foreach ($groups as $num => $group) {
 							$elems = $group->elements();
 				?>
-							<?php echo $first == FALSE ? "moreGroup(" . $group->limit() .");" : "" ?>
+							<?php echo !$first ? "moreGroup(" . $groupsLimit[$num] .");" : "" ?>
 				<?php
-							$first = FALSE;
+							$first = TRUE;
 							foreach ($elems as $elem) {
 								$obj = $elem->attr();
 								$obj = json_encode($obj, true);
@@ -464,7 +453,7 @@
 								addElement(element.type,
 									element.x,
 									element.y,
-									ids,
+									ids,	// TODO ????????????????????
 									"elem_" + element.id
 								);
 								addProp("elem_" + element.id,

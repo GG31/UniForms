@@ -346,15 +346,21 @@ getType = function(node) {
    return null;
 };
 
-sendJson = function() {
+
+$('input[type=submit]').click(function() {
+   for(var group in GROUPSUSERS) {
+      if (GROUPSUSERS[group].length < 1) {
+         $('#alertDestinataires').text('Le groupe ' + group + " n'a pas de destinataire");
+         $('#alertDestinataires').show();
+         return false;
+      }
+   }
    if ($("#formName").text() == "" || $("#formName").text() == "Click to add form name") {
-      $("#infoFormName").val("Formulaire sans nom");
+      $("#infoFormName").val("Formulaire Sans Nom");
    }
 	document.getElementById("info").value = JSON.stringify(elementList);
 	document.getElementById("infoGroups").value = JSON.stringify(getGroupsAndElements());
-   console.log('lmklmksdflkkjsdlkfj');
-   return false;
-};
+});
 
 getGroupsAndElements = function() {
    var groupList = {};
@@ -456,6 +462,7 @@ $('#inputHeightValue').change(function() {
 });
 
 hideAll = function() {
+   $('#alertDestinataires').hide();
    $('#inputValueGroup').hide();
    $('#checkboxRequiredGroup').hide();
    $('#valuesGroup').hide();

@@ -1,5 +1,6 @@
 lessGroup = function(nb) {
    $("#" + nb).remove();
+   deleteGroup(nb);
 }
 
 moreGroup = function(multiple) {
@@ -16,5 +17,6 @@ moreGroup = function(multiple) {
 
    $('#groupSection').append(newNode);
    groupElementsDroppable();
+   refreshGroupUsers("group_"+nb);
 }
 

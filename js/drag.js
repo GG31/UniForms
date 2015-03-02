@@ -350,6 +350,8 @@ getType = function(node) {
 $('input[type=submit]').click(function() {
    for(var group in GROUPSUSERS) {
       if (GROUPSUSERS[group].length < 1) {
+         $('#alertDestinataires').text('Le groupe ' + group + " n'a pas de destinataire");
+         $('#alertDestinataires').show();
          return false;
       }
    }
@@ -359,7 +361,6 @@ $('input[type=submit]').click(function() {
 	document.getElementById("info").value = JSON.stringify(elementList);
 	document.getElementById("infoGroups").value = JSON.stringify(getGroupsAndElements());
 });
-
 
 getGroupsAndElements = function() {
    var groupList = {};
@@ -461,6 +462,7 @@ $('#inputHeightValue').change(function() {
 });
 
 hideAll = function() {
+   $('#alertDestinataires').hide();
    $('#inputValueGroup').hide();
    $('#checkboxRequiredGroup').hide();
    $('#valuesGroup').hide();

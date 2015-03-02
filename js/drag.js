@@ -346,13 +346,20 @@ getType = function(node) {
    return null;
 };
 
-sendJson = function() {
+
+$('input[type=submit]').click(function() {
+   for(var group in GROUPSUSERS) {
+      if (GROUPSUSERS[group].length < 1) {
+         return false;
+      }
+   }
    if ($("#formName").text() == "" || $("#formName").text() == "Click to add form name") {
-      $("#infoFormName").val("Formulaire sans nom");
+      $("#infoFormName").val("Formulaire Sans Nom");
    }
 	document.getElementById("info").value = JSON.stringify(elementList);
 	document.getElementById("infoGroups").value = JSON.stringify(getGroupsAndElements());
-};
+});
+
 
 getGroupsAndElements = function() {
    var groupList = {};

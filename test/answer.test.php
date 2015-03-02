@@ -25,9 +25,9 @@ class TestOfAnswerClass extends UnitTestCase {
 		$idFormGroup = mysqli_insert_id($database);
 		mysqli_query($database, "INSERT INTO formdest(user_id, formgroup_id) VALUES(".$idReceiver.", ".$idFormGroup.")");
 		$idFormDest = mysqli_insert_id($database);
-		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup.", ".constant("ELEMENT_MULTIPLE").", 'label', 10, 20)");
+		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup.", ".constant("typeCheckbox").", 'label', 10, 20)");
 		$idElement1 = mysqli_insert_id($database);
-		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup.", ".constant("ELEMENT_TEXT").", 'label', 10, 20)");
+		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup.", ".constant("typeInputText").", 'label', 10, 20)");
 		$idElement2 = mysqli_insert_id($database);
 		
 		// Inserts an answer into table answer
@@ -70,9 +70,9 @@ class TestOfAnswerClass extends UnitTestCase {
 		$idFormGroup = mysqli_insert_id($database);
 		mysqli_query($database, "INSERT INTO formdest(user_id, formgroup_id) VALUES(".$idReceiver.", ".$idFormGroup.")");
 		$idFormDest = mysqli_insert_id($database);
-		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup.", ".constant("ELEMENT_MULTIPLE").", 'label', 10, 20)");
+		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup.", ".constant("typeCheckbox").", 'label', 10, 20)");
 		$idElement1 = mysqli_insert_id($database);
-		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup.", ".constant("ELEMENT_TEXT").", 'label', 10, 20)");
+		mysqli_query($database, "INSERT INTO formelement(formgroup_id, type_element, label, pos_x, pos_y) VALUES (".$idFormGroup.", ".constant("typeInputText").", 'label', 10, 20)");
 		$idElement2 = mysqli_insert_id($database);
 		
 		// Creates new object answer and sets its properties

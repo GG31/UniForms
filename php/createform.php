@@ -438,7 +438,7 @@
 		<script src="../js/group.js"></script>
 		<script src="../js/includeFile.js"></script>
 		<script type="text/javascript">
-			(function(){
+			$(document).ready(function(){
 				$('[data-toggle="tooltip"]').tooltip()
 
 				// TODO si modif only !
@@ -490,7 +490,7 @@
 						}
 					}
 				?>
-			})();
+			});
 		</script>
 	</body>
 </html>

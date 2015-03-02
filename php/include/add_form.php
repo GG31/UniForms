@@ -49,22 +49,15 @@ if (! empty ( $_POST )) {
 	$form->printable ( $printable );
 	$form->anon ( $anonymous );
 	
-   // It must create the groups and set the recipients and elements for each group.
-   $group = new Group();
-
    /*
    * Recipients
    */
-   $recipients = [ ];
-   if ($anonymous) { // Anonymous user (user_id == 0)
-      $recipients [] = new User ( 0 );
-   } elseif (!empty($_POST ["recipient"])) {// Listing USERs
-      foreach ( $_POST ["recipient"] as $id ) {
-         echo "ID ".$id."<br>";
-         $recipients [] = new User ( $id );
-      }
-   }
-   $group->users($recipients);
+   // TODO if ANON !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+   // $recipients = [ ];
+   // if ($anonymous) { // Anonymous user (user_id == 0)
+   //    $recipients [] = new User ( 0 );
+   // }
+
    /*
    * Récupère les données des éléments
    */
@@ -115,7 +108,7 @@ if (! empty ( $_POST )) {
             }
          }
 
-         $formGroups[0] ->elements($arrayElements);
+         $formGroups[0]->elements($arrayElements);
          $form->groups($formGroups);
       } else {
 

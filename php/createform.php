@@ -91,10 +91,9 @@
 				/////////////////////////////////////////////
 				// Recipient by groups (for the modal) //
 				/////////////////////////////////////////////
-				GROUPSUSERS = {};
 				GROUPSUSERS = <?php echo json_encode($groupsUsers) ?>;
 				if(Object.prototype.toString.call(GROUPSUSERS) === '[object Array]' && GROUPSUSERS.length === 0){
-					GROUPSUSERS = {};
+					GROUPSUSERS = {'group_0': []};
 				}
 				$('#usersGroups').val(JSON.stringify(GROUPSUSERS));
 
@@ -144,6 +143,10 @@
 
 					// Attach to POST
 					$('#usersGroups').val(JSON.stringify(GROUPSUSERS));
+				};
+
+				deleteGroup = function(group){
+					delete GROUPSUSERS[group];
 				};
 
 				displayGroupUser = function(id, name){

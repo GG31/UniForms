@@ -218,7 +218,7 @@
 								VALUES(" . 
 										$formId . "," .			// form_id
 										$this->limit . ")")		// group_limit
-			or die("Group::save() can't create group : " . mysql_error());
+			or die("Group::save() can't create group : " . mysqli_error($database));
 
 			// Auto generated id
 			$this->id = mysqli_insert_id($database);
@@ -231,7 +231,7 @@
 									VALUES("
 										. $this->id . ","				// formgroup_id
 										. $user->id() . ")")			// user_id
-				or die("Group::save() can't insert recipients : " . mysql_error());
+				or die("Group::save() can't insert recipients : " . mysqli_error($database));
 			}
 			
 			// Insert elements
@@ -245,7 +245,7 @@
 			// DELETE CASCADE : formelements and formdest
 			mysqli_query($database, "	DELETE FROM formgroup
 							WHERE 		formgroup_id = " . $this->id)
-			or die("Group::delete() can't delete group : " . mysql_error());
+			or die("Group::delete() can't delete group : " . mysqli_error($database));
 		}
 	}
 

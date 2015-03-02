@@ -65,6 +65,7 @@ if (! empty ( $_POST )) {
       $recipients [] = new User ( 0 );
    } elseif (!empty($_POST ["recipient"])) {// Listing USERs
       foreach ( $_POST ["recipient"] as $id ) {
+         echo "ID ".$id."<br>";
          $recipients [] = new User ( $id );
       }
    }
@@ -92,8 +93,6 @@ if (! empty ( $_POST )) {
          var_dump($_POST["infoGroups"]);
          echo "</pre>";
 
-
-
          $formGroups = [];
          $obj=json_decode($_POST['infoGroups'], true, 4);
 
@@ -113,7 +112,7 @@ if (! empty ( $_POST )) {
             }
 
 
-            if (count($listEl) > 0) {
+            if (count($listEl) > 0 || $key == 0) {
                $group1->users($users);
                $group1->limit($_POST["group_" . $key . "_multiple"]);
                $group1->elements($listEl);
@@ -121,8 +120,7 @@ if (! empty ( $_POST )) {
             }
          }
 
-         // $group->elements($arrayElements); // NOTE useless
-         // $formGroups[] = $group;
+         $formGroups[0] ->elements($arrayElements);
          $form->groups($formGroups);
 
 

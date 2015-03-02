@@ -158,14 +158,6 @@ addElement = function(elementCodeId, posX, posY, idEl, idChild) {
 }
 
 addProp = function(id, type, minvalue,maxvalue,defaultValue,required, width, height, placeholder, direction, big, options, label, img) {
-   /*console.log("plop "+JSON.stringify(options));
-   for(key in options) {
-      if($.inArray(key, ["minvalue","maxvalue","default","required", "width", "height", "placeholder", "direction", "big", "options", "label"]) != -1) {
-         elementList[id][key] = options[key];
-         console.log(key + " " + options[key]);
-      }
-   }*/
-   
    elementList[id].minvalue = minvalue;
    elementList[id].maxvalue = maxvalue;
    elementList[id].value = defaultValue;

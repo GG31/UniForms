@@ -312,21 +312,18 @@
 								<div class="row" id="group_0">
 									<div class="panel panel-default col-sm-8">
 										<div class="panel-body">
-											<div class="groupElements"></div>
+											Éléments restants
 										</div>
 									</div>
 									<button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal">
 										<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
-									</button>
-									<button type="button" class="btn btn-default btn-lg" onclick="lessGroup('group_0')">
-										<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
 									</button>
 									<!-- TODO set multiple value on load !! -->
 									<input 
 										id = "group_0_multiple"
 										type="number"
 										name="group_0_multiple"
-										value="0"
+										value="1"
 										min="0"
 										class="form-control bfh-number"
 										style="width: 40pt;"
@@ -551,4 +548,4 @@
 ?>
    //});
    </script>
-<!--<script src="../js/navbar.js"></script> Retract nav-->
+<script src="../js/navbar.js"></script>

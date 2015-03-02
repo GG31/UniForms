@@ -141,6 +141,9 @@
 
 					// Attach to POST
 					$('#usersGroups').val(JSON.stringify(GROUPSUSERS));
+
+					// Display combinations
+					combinations();
 				};
 
 				deleteGroup = function(group){
@@ -190,6 +193,18 @@
 					});
 				};
 
+				combinations = function(){// TODO limit == 0
+					combs = 1;
+
+					for(var group in GROUPSUSERS){
+						limit 		= $('#' + group + '_multiple').val();
+						usersCount 	= GROUPSUSERS[group].length;
+
+						combs = combs * usersCount * limit;
+						$('#' + group + '_combinations').text(combs === 0 ? '\&infin\;' : combs);// TODO display correct 'infin' char !
+					}
+				}
+
 				$('#myModal').on('show.bs.modal', function (event) {
 					// Button that triggered the modal
 					button 	= $(event.relatedTarget);
@@ -201,7 +216,9 @@
 
 				$('#modalOK').on('click', function(){
 					refreshGroupUsers($(this).attr('data-group'));
-				})
+				});
+
+				$('#group_0_multiple').on('change', combinations);
 			});
 		</script>
 	</head>
@@ -334,6 +351,7 @@
 										data-placement="top"
 										title="Entrez le nombre de fois que le formulaire pourra être rempli par le(s) destinataire(s), 0 pour infini">
 									<!--<label for="multiple">Nombre de réponses max.</label>-->
+									<span id="group_0_combinations"></span>
 								</div>
 							</div>
 							<button type="button" class="btn btn-default btn-lg" onclick="moreGroup(1)">

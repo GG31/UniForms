@@ -64,17 +64,9 @@
 				/////////////////////////////////////////////
 				$('#anon').on('change', function() {
 					if($(this).is(':checked')){
-						$( "#dest" ).hide("slow", function(){
-							$(this).parent().removeClass("panel-primary");
-							$(this).parent().addClass("panel-default");
-						});
-						$("#dest input").prop("disabled", true);
+						$( "#navbarGroups" ).hide("slow");
 					}else {
-						$( "#dest" ).show("slow", function(){
-							$(this).parent().removeClass("panel-default");
-							$(this).parent().addClass("panel-primary");
-						});
-						$("#dest input").prop("disabled", false);
+						$( "#navbarGroups" ).show("slow");
 					}
 				});
 

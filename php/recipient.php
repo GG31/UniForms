@@ -18,7 +18,7 @@
 		<link rel="stylesheet" href="../lib/bootstrap-3.3.1/css/min.css"
 			type="text/css" />
 		<link rel="stylesheet" href="../css/styles.css" type="text/css" />
-
+		<link rel="shortcut icon" href="../res/img/favicon.png" />
 		<script src="../lib/jquery-2.1.1/min.js"></script>
 		<script src="../lib/bootstrap-3.3.1/js/min.js"></script>
 	</head>

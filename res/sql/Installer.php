@@ -89,8 +89,6 @@
 				$s4 =  $_POST["dbname"];
 				$ss4 = "$s4";
 				$contenuMod = str_replace('databasedb', $ss4, $contenuMod);
-				//echo htmlentities($contenu);
-				fclose($monfichier);
 					
 				//ouverture en écriture
 				$monfichier2=fopen('../../php/include/connect.php','w+') or die("Fichier manquant");

@@ -70,8 +70,8 @@
 			$server = $_POST['server'];
 			$username = $_POST['username'];
 			$password = $_POST['password'];
-			$conn = mysql_connect($_POST['server'], $_POST['username'], $_POST['password']);
-			if (mysql_ping($conn)){
+			$conn = mysqli_connect($_POST['server'], $_POST['username'], $_POST['password']);
+			if (!mysqli_connect_error()){
 				$contenu = "<?php global \$database;  \$database = mysqli_connect('serverdb', 'userdb', 'passworddb', 'databasedb') ?>";
 				echo $contenu;	
 				$s1 =  $_POST["server"];
@@ -97,15 +97,15 @@
 				fwrite($monfichier2,$contenuMod);
 				fclose($monfichier2);
 				
-				mysql_pconnect ( $server, $username, $password );
+				mysqli_connect ( $server, $username, $password );
 				$sql = "DROP DATABASE IF EXISTS ".$_POST['dbname'].";";
-				mysql_query ( $sql ) or die ( mysql_error () );
+				mysqli_query ($conn, $sql ) or die ( mysqli_error ($conn) );
 				
 				$sql = "CREATE DATABASE IF NOT EXISTS ".$_POST['dbname'].";";
-				mysql_query ( $sql ) or die ( mysql_error () );
+				mysqli_query ($conn,  $sql ) or die ( mysqli_error ($conn) );
 				
 				$sql = "USE ".$_POST['dbname'].";";
-				mysql_query ( $sql ) or die ( mysql_error () );
+				mysqli_query ($conn, $sql ) or die ( mysqli_error ($conn) );
 				
 				$fich = fopen ( 'uniforms.sql', "r+" );
 				$lig = "";
@@ -113,7 +113,7 @@
 					$lig .= fgets ( $fich );
 				$req = explode ( ";", $lig );
 				foreach ( $req as $lii ) {
-					mysql_query ( $lii );
+					mysqli_query ($conn, $lii );
 				}
 				fclose ( $fich );
 				

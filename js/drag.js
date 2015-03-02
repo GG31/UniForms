@@ -21,7 +21,8 @@ var elementsCode = {
 
 function init(formname) {
    hideAll();
-   if(formname.length !== 0){
+
+   if(typeof formname !== "undefined" && formname.length !== 0){
          $("#formName").text(formname);
          $("#infoFormName").val(formname);
    }

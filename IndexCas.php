@@ -3,6 +3,7 @@
 	
 	// Load the CAS lib
 	include_once ('CAS/CAS.php');
+	include_once('php/include/connect.php');
 	
 	// Initialize phpCAS
 	phpCAS::client ( CAS_VERSION_2_0, 'login.unice.fr', 443, '' );
@@ -18,8 +19,8 @@
 	// at this step, the user has been authenticated by the CAS server
 	// and the user's login name can be read with phpCAS::getUser().
 	$_SESSION ['CAS_id'] = phpCAS::getUser ();
-	var_dump(phpCAS::getAttributes ());
-	return;
+	// var_dump(phpCAS::getAttributes ());
+	// return;
 	header ( "Location: php/loginCAS.php" );
 	// logout if desired
 	/*if (isset($_REQUEST['logout'])) {

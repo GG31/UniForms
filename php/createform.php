@@ -104,11 +104,15 @@
 				};
 
 				copiedest = function() {
-					if($('#display').val()) { // TODO more verifs
-						id 		= $("#destinataires option[value=\'"+$("#display").val()+"\']").attr("userid");
-						name 	= $("#display").val();
-						$("#display").val('');
-						displayGroupUser(id, name);
+					if($('#display').val()) {
+					   $('#destinataires option').each(function() {
+					      if($(this).attr('value') == $('#display').val()) {
+						      id 		= $("#destinataires option[value=\'"+$("#display").val()+"\']").attr("userid");
+						      name 	= $("#display").val();
+						      $("#display").val('');
+						      displayGroupUser(id, name);
+						   }
+						});
 					}
 				};
 
@@ -238,23 +242,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
-					<?php
-						$destClass 	= "panel-";
-						$destClass .= $checkedAnon ? "default " : "primary ";
-						$destStyle  = $checkedAnon ? "display:none;" : "";
-					?>
-					<div class="panel <?php echo $destClass ?>">
-						<div class="panel-heading text-center text-capitalize">
-							<h3 class="panel-title">
-								<strong>Destinataires</strong>
-							</h3>
-						</div>
-						<div id="dest" class="panel-body" style="<?php echo $destStyle ?>">
-							<!-- TODO handle $destClass & $destStyle -->
-						</div>
-					</div>
-				</div>
+				
 				<!-- Modal -->
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					<div class="modal-dialog">

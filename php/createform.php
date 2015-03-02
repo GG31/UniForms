@@ -392,7 +392,10 @@
                   </div><!--panel-body-->
 				   </div><!--panel-primary-->
 				</div><!--row-->
-				
+
+				<div class="row">
+				<div class="alert alert-danger" role="alert" id="alertDestinataires"> </div>
+				</div>
 				<div class="row" onload="newFormModel();">
 					<div class="col-sm-offset-3 col-sm-6">
 						<input id="info" name="info" type="hidden">
@@ -405,7 +408,6 @@
 							value="Enregistrer"
 							name="save"
 							form="formulaire"
-							onclick="sendJson()"
 							<?php echo $form->state() ? "DISABLED" : "" ?>
 							>
 						<input
@@ -414,7 +416,6 @@
 							value="Valider"
 							name="send"
 							form="formulaire"
-							onclick="sendJson()"
 							<?php echo $form->state() ? "DISABLED" : "" ?>
 							>
 					</div>

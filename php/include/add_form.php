@@ -134,7 +134,7 @@ if (! empty ( $_POST )) {
 	if (isset ( $_POST ['send'] )) {
 		$form->send ();
 	}
-   return;
+   // return;
 	header ( "Location: ../home.php" );
 }
 

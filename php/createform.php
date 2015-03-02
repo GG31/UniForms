@@ -10,19 +10,24 @@
 	$form_id 	= isset($_GET["form_id"]) ? $_GET["form_id"] : -1;
 	$form 		= new Form($form_id == -1 ? NULL : $form_id);
 
-	$checkedAnon  	= FALSE;
-	$checkedPrint 	= TRUE;
-	$groupsUsers = [];
-	$groupsLimit = [];
+	$checkedAnon		= FALSE;
+	$checkedPrint 		= TRUE;
+	$groupsUsers 		= [];
+	$groupsLimit 		= [];
+	$firstGroupLimit 	= 1;
 
 	if(isset($_GET["form_id"])){
 		$checkedAnon 	= $form->anon();
 		$checkedPrint 	= $form->printable();
 
-		// Users by group, limit by group
+		// Users by group, limit for first group
+		$first = TRUE;
 		foreach ($form->groups() as $num => $group) {
+			if($first){
+				$firstGroupLimit = $group->limit();
+				$first = FALSE;
+			}
 			$groupsUsers["group_" . $num] = [];
-			$groupsLimit[$num] = $group->limit();
 
 			foreach ($group->users() as $user) {
 				$groupsUsers["group_" . $num][] = ["id" => $user->id(), "name" => $user->name()];
@@ -324,7 +329,7 @@
 										id = "group_0_multiple"
 										type="number"
 										name="group_0_multiple"
-										value="1"
+										value="<?php echo $firstGroupLimit ?>"
 										min="0"
 										class="form-control bfh-number"
 										style="width: 40pt;"
@@ -334,7 +339,7 @@
 									<!--<label for="multiple">Nombre de réponses max.</label>-->
 								</div>
 							</div>
-							<button type="button" class="btn btn-default btn-lg" onclick="moreGroup(0)">
+							<button type="button" class="btn btn-default btn-lg" onclick="moreGroup(1)">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 							</button>
 						</div>
@@ -407,7 +412,6 @@
                   </div><!--panel-body-->
 				   </div><!--panel-primary-->
 				</div><!--row-->
-				
 				<div class="row" onload="newFormModel();">
 					<div class="col-sm-offset-3 col-sm-6">
 						<input id="info" name="info" type="hidden">
@@ -415,6 +419,7 @@
 						<input id="usersGroups" name="usersGroups" type="hidden">
 						<input type="hidden" name="form_id" value="<?php echo $form_id ?>">
 						<input
+							id="input-save"
 							type="submit"
 							class="btn btn-default btn-lg btn-block"
 							value="Enregistrer"
@@ -424,6 +429,7 @@
 							<?php echo $form->state() ? "DISABLED" : "" ?>
 							>
 						<input
+							id="input-send"
 							type="submit"
 							class="btn btn-primary btn-lg btn-block"
 							value="Valider"
@@ -456,7 +462,7 @@
 						foreach ($groups as $num => $group) {
 							$elems = $group->elements();
 				?>
-							<?php echo $first == FALSE ? "moreGroup(" . $groupsLimit[$num] .");" : "" ?>
+							<?php echo $first == FALSE ? "moreGroup(" . $group->limit() .");" : "" ?>
 				<?php
 							$first = FALSE;
 							foreach ($elems as $elem) {
@@ -467,7 +473,7 @@
 								addElement(element.type,
 									element.x,
 									element.y,
-									ids,	// TODO ????????????????????
+									ids,
 									"elem_" + element.id
 								);
 								addProp("elem_" + element.id,

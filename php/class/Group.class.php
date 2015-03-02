@@ -244,7 +244,7 @@
 			global $database;
 			// DELETE CASCADE : formdest, formelements and answers
 			mysqli_query($database, "	DELETE FROM formgroup
-										WHERE 		formgroup_id = " . $this->id)
+										WHERE 		form_id = " . $formId)
 			or die("Group::delete() can't delete group : " . mysqli_error($database));
 		}
 	}

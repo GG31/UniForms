@@ -17,24 +17,128 @@
 	define("DIR_HORIZONTAL"		, 0);
 	define("DIR_VERTICAL"		, 1);
 	
+	/**
+	 * Represents an element of a form
+	 */	
+	
 	Class Element {
+		
+		/**
+		 * @access private
+		 * @var integer
+		 */
 		private $id;
+		
+		/**
+		 * type of the element. Use the constants typeCheckbox, typeInput, typeTextArea, typeRadioButton... they are all defined below this class
+		 * @access private
+		 * @var integer
+		 */
 		private $type;
+		
+		/**
+		 * label of the element
+		 * @access private
+		 * @var string
+		 */
 		private $label;
+		
+		/**
+		 * position x of the element
+		 * @access private
+		 * @var integer
+		 */
 		private $x;
+		
+		/**
+		 * position y of the element
+		 * @access private
+		 * @var integer
+		 */
 		private $y;
+		
+		/**
+		 * Height of element
+		 * @access private
+		 * @var integer
+		 */
 		private $height = NULL;
+		
+		/**
+		 * Width of element
+		 * @access private
+		 * @var integer
+		 */
 		private $width = NULL;
+		
+		/**
+		 * default value of the field
+		 * @access private
+		 * @var string
+		 */
 		private $defaultValue;
+		
+		/**
+		 * The placeholder attribute specifies a short hint that describes the expected value of an input field 
+		 * (e.g. a sample value or a short description of the expected format).
+		 * @access private
+		 * @var string
+		 */
 		private $placeholder;
+		
+		/**
+		 * minimum value accepted by the element
+		 * @access private
+		 * @var integer
+		 */
 		private $min = NULL;
+		
+		/**
+		 * maximum value accepted by the element
+		 * @access private
+		 * @var integer
+		 */
 		private $max = NULL;
+		
+		/**
+		 * defines if it is a required field
+		 * @access private
+		 * @var integer 0 (required) or 1(not required)
+		 */
 		private $required = 0;
+		
+		/**
+		 * defines if the list of options is big (the representation in paper will be diferent).
+		 * @access private
+		 * @var integer
+		 */
 		private $bigList = 0;
+		
+		/**
+		 * direction that options are shown (1 - vertical or  0 - horizontal)
+		 * @access private
+		 * @var integer
+		 */
 		private $direction = 0;
+		
+		/**
+		 * list of options of this element. array with four fields: elementoption id, option value, option order and option default
+		 * @access private
+		 * @var array of options
+		 */
 		private $options = [];
+		
+		/**
+		 * defines if it is a image
+		 * @access private
+		 * @var string
+		 */
 		private $img;
 
+		/**
+		 * Constructor
+		 * @param string $id
+		 */
 		public function __construct($id = NULL){
 			global $database;
 			if ($id !== NULL){
@@ -88,6 +192,10 @@
 			}
 		}
 
+		/**
+		 * Get and Set all the element's attributes !
+		 * @return array of attributes
+		 */
 		public function attr(){
 			$num = func_num_args();
 
@@ -143,6 +251,11 @@
 			}
 		}
 		
+		/**
+		 * Get and Set the element's id
+		 * @param integer $id
+		 * @return integer
+		 */
 		public function id($id = NULL){
 			// Get
 			if($id === NULL){
@@ -155,6 +268,11 @@
 			}
 		}
 		
+		/**
+		 * Get and Set the element's type
+		 * @param integer $type
+		 * @return integer
+		 */
 		public function type($type = NULL){
 			// Get
 			if($type === NULL){
@@ -167,6 +285,11 @@
 			}
 		}
 		
+		/**
+		 * Get and Set the label
+		 * @param string $label
+		 * @return string
+		 */
 		public function label($label = NULL){
 			// Get
 			if($label === NULL){
@@ -179,6 +302,11 @@
 			}
 		}
 		
+		/**
+		 * Get and Set the x position
+		 * @param integer $x
+		 * @return integer
+		 */
 		public function x($x = NULL){
 			// Get
 			if($x === NULL){
@@ -191,6 +319,11 @@
 			}
 		}
 		
+		/**
+		 * Get and Ser the y position
+		 * @param integer $y
+		 * @return integer
+		 */
 		public function y($y = NULL){
 			// Get
 			if($y === NULL){
@@ -203,6 +336,11 @@
 			}
 		}
 		
+		/**
+		 * Get and Set the min value allowed
+		 * @param integer $min
+		 * @return integer
+		 */
 		public function min($min = NULL){
 			// Get
 			if($min === NULL){
@@ -215,6 +353,11 @@
 			}
 		}
 		
+		/**
+		 * Get and Set the max value allowed
+		 * @param integer $max
+		 * @return integer
+		 */
 		public function max($max = NULL){
 			// Get
 			if($max === NULL){
@@ -227,6 +370,11 @@
 			}
 		}
 		
+		/**
+		 * Get and Set the width
+		 * @param integer $width
+		 * @return integer
+		 */
 		public function width($width = NULL){
 			// Get
 			if($width === NULL){
@@ -239,6 +387,11 @@
 			}
 		}
 		
+		/**
+		 * Get and Set the height
+		 * @param integer $height
+		 * @return integer
+		 */
 		public function height($height = NULL){
 			// Get
 			if($height === NULL){
@@ -251,6 +404,11 @@
 			}
 		}
 		
+		/**
+		 * Get and Set the default value
+		 * @param string $defaultvalue
+		 * @return string
+		 */
 		public function defaultValue($defaultValue = NULL){
 			// Get
 			if($defaultValue === NULL){
@@ -263,6 +421,11 @@
 			}
 		}
 		
+		/**
+		 * Get and Ser the placeholder
+		 * @param string $placeholder
+		 * @return string
+		 */
 		public function placeholder($placeholder = NULL){
 			// Get
 			if($placeholder === NULL){
@@ -275,6 +438,11 @@
 			}
 		}
 		
+		/**
+		 * Get and Set if the element is required
+		 * @param boolean $required
+		 * @return boolean
+		 */
 		public function required($required = NULL){
 			// Get
 			if($required === NULL){
@@ -287,6 +455,11 @@
 			}
 		}
 		
+		/**
+		 * Get and Set if the element is image
+		 * @param boolean $required
+		 * @return boolean
+		 */
 		public function img($img = NULL){
 			// Get
 			if($img === NULL){
@@ -299,6 +472,11 @@
 			}
 		}
 		
+		/**
+		 * Get and Set if the list big
+		 * @param boolean $bigList
+		 * @return boolean
+		 */
 		public function bigList($bigList = NULL){
 			// Get
 			if($bigList === NULL){
@@ -311,6 +489,11 @@
 			}
 		}
 		
+		/**
+		 * Get and Set the direction
+		 * @param integer $direction
+		 * @return integer
+		 */
 		public function direction($direction = NULL){
 			// Get
 			if($direction === NULL){
@@ -323,6 +506,11 @@
 			}
 		}
 		
+		/**
+		 * Get ans Set the element's options
+		 * @param array of array $options. for each option must exist an array with: "value" "order" "default".
+		 * @return array
+		 */
 		public function options($options = NULL){
 			// Get
 			if($options === NULL){
@@ -335,6 +523,10 @@
 			}
 		}
 		
+		/**
+		 * Save the element on the database
+		 * @param Group $groupId
+		 */
 		public function save($groupId){
 			global $database;
 			// Create element

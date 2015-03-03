@@ -1,11 +1,41 @@
 <?php
-
+	/**
+	 * Represents an answer
+	 */
 	Class Answer {
+		
+		/**
+		 * id of the answer
+		 * @access private
+		 * @var integer
+		 */
 		private $id;
+		
+		/**
+		 * id of the previous answer
+		 * @access private
+		 * @var integer
+		 */
 		private $prev;
+		
+		/**
+		 * Answer's state, TRUE if sent, FALSE if not
+		 * @access private
+		 * @var boolean
+		 */
 		private $state;
+		
+		/**
+		 * 
+		 * @var unknown
+		 */
 		private $elementsValues;
 
+		/**
+		 * Constructor
+		 * Create an answer, if already exist fill the attributes from the database
+		 * @param integer $id the id's answer default NULL
+		 */
 		public function __construct($id = NULL){
 			global $database;
 			if($id !== NULL){
@@ -69,6 +99,11 @@
 			}
 		}
 
+		/**
+		 * Get and set the form's id
+		 * @param integer $id the id's answer default NULL
+		 * @return integer
+		 */
 		public function id($id = NULL){
 			// Get
 			if($id === NULL){
@@ -80,7 +115,12 @@
 				return $this;
 			}
 		}
-
+		
+		/**
+		 * Get and set the answer's state
+   		 * @param integer $state
+		 * @return boolean TRUE (validated) or FALSE(not validated yet)
+		 */
 		public function state($state = NULL){
 			// Get
 			if($state === NULL){
@@ -93,6 +133,11 @@
 			}
 		}
 
+		/**
+		 * Get and set the previous answer's id
+		 * @param integer $formId the id of the associated form
+		 * @return boolean TRUE (validated) or FALSE(not validated yet)
+		 */
 		public function prev($prev = NULL){
 			// Get
 			if($prev === NULL){
@@ -172,6 +217,10 @@
 			return $ret;
 		}
 
+		/**
+		 * Save the form on the database
+		 * @param Form $formdestId
+		 */
 		public function save($formdestId){
 			global $database;
 			// Create answer
@@ -222,6 +271,10 @@
 			}
 		}
 
+		/**
+		 * save() and update status to TRUE
+		 * @param Form $formdestId
+		 */
 		public function send($formdestId) {
 			global $database;
 			$this->save($formdestId);
@@ -234,6 +287,9 @@
 			or die("Answer::send() can't update status : " . mysqli_error($database));
 		}
 		
+		/**
+		 * Delete all registers related to an answer and in the tables formdest, elementanswer, answervalue
+		 */
 		public function delete(){
 			global $database;
 			// Delete answer (DELETE CASCADE)

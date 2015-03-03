@@ -1,12 +1,48 @@
 <?php
-	
+	/**
+	 * A group represents a subset of fields of one form. It contains three properties: an id, a list of recipients and a list of fields.
+	 */
 	Class Group {
+		
+		/**
+		 * @access private
+		 * @var integer
+		 */
 		private $id;
+		
+		/**
+		 * The number of answer accepted by a recipient. 0 is infinite
+		 * @access private
+		 * @var integer number of allowed answers
+		 */
 		private $limit;
+		
+		/**
+		 * List of elements of this form. Each element of this list is basically a representation of one line of the table formelement.
+		 * @access private
+		 * @var array of elements
+		 */
 		private $elements;
+		
+		/**
+		 * List of recipient for this group, for each recipient there are the status, the Answer and the formDestId associated.
+		 * @access private
+		 * @var User
+		 */
 		private $users;
+		
+		/**
+		 * List of elements answer's of this form. 
+		 * @access private
+		 * @var Answer
+		 */
 		private $answers;
 
+		/**
+		 * Constructor
+		 * Create a form group, if already exist, find the information on the database to fill the attributes
+		 * @param integer $idForm the id's form default NULL
+		 */
 		public function __construct($id = NULL){
 			global $database;
 			if ($id !== NULL){
@@ -74,6 +110,12 @@
 			}
 		}
 		
+
+		/**
+		 * Get and Set the group's id
+		 * @param integer $id the id's group default NULL
+		 * @return integer
+		 */
 		public function id($id = NULL){
 			// Get
 			if($id === NULL){
@@ -86,6 +128,11 @@
 			}
 		}
 		
+		/**
+		 * Get and Set the form's maxAnswers, the maximum of fill possibilities by one recipient
+		 * @param integer $limit
+		 * @return integer
+		 */
 		public function limit($limit = NULL){
 			// Get
 			if($limit === NULL){
@@ -209,6 +256,10 @@
 			return $ret;
 		}
 
+		/**
+		 * Saves the group on the database
+		 * @param integer $formId
+		 */
 		public function save($formId){
 			global $database;
 			// Insert group

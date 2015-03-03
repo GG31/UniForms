@@ -1,14 +1,63 @@
 <?php
-	
+	/**
+	 * Represents a form that has an id, a creator, a state, two booleans properties to define if it is anonymous and printable and an array of groups of elements and recipients.
+	 */	
 	Class Form {
+		
+		/**
+		 * Id of this form
+		 * @access private
+		 * @var integer
+		 */
 		private $id;
+		
+		/**
+		 * Creator of this form
+		 * @access private
+		 * @var User
+		 */
 		private $creator;
+		
+		/**
+		 * Id of this form
+		 * @access private
+		 * @var string
+		 */
 		private $name;
+		
+		/**
+		 * State of the form
+		 * @access private
+		 * @var boolean TRUE (validated) or FALSE(not validated yet)
+		 */
 		private $state;
+		
+		/**
+		 * A form group is a group of form elements and the recipients that can answer these elements.
+		 * @access private
+		 * @var Group
+		 */
 		private $groups;
+		
+		/**
+		 * Form which can be printed
+		 * @access private
+		 * @var boolean TRUE (printable) or FALSE(not printable)
+		 */
 		private $print;
+		
+		/**
+		 * Form which can be filled by everybody
+		 * @access private
+		 * @var boolean TRUE (anonymous) or FALSE(not anonymous)
+		 */
 		private $anon;
 
+		/**
+		 * Constructor
+		 * Create a form, if already exist, find the information on the database to fill the attributes
+		 * @param integer $id the id's form default NULL
+		 */
 		public function __construct($id = NULL){
 			global $database;
 			if($id !== NULL){
@@ -50,6 +99,11 @@
 			}
 		}
 
+		/**
+		 * Get and Set the form's id
+		 * @param integer $id
+		 * @return integer
+		 */
 		public function id($id = NULL){
 			// Get
 			if($id === NULL){
@@ -62,6 +116,11 @@
 			}
 		}
 
+		/**
+		 * Get and Set the form's creator
+		 * @param User $creator
+		 * @return User
+		 */
 		public function creator($creator = NULL){
 			// Get
 			if($creator === NULL){
@@ -74,6 +133,11 @@
 			}
 		}
 
+		/**
+		 * Get and Set the form's name
+		 * @param string $name
+		 * @return string
+		 */
 		public function name($name = NULL){
 			// Get
 			if($name === NULL){
@@ -86,6 +150,11 @@
 			}
 		}
 
+		/**
+		 * Get and Set the form's state
+		 * @param boolean $state
+		 * @return boolean TRUE (validated) or FALSE(not validated yet)
+		 */
 		public function state($state = NULL){
 			// Get
 			if($state === NULL){
@@ -98,6 +167,11 @@
 			}
 		}
 
+		/**
+		 * Get and Set the form's group
+		 * @param Group $groups
+		 * @return Group
+		 */
 		public function groups($groups = NULL){
 			// Get
 			if($groups === NULL){
@@ -110,6 +184,11 @@
 			}
 		}
 
+		/**
+		 * Give printable variable
+		 * @param boolean $print
+		 * @return boolean true if printable, false if is not
+		 */
 		public function printable($print = NULL){
 			// Get
 			if($print === NULL){
@@ -122,6 +201,11 @@
 			}
 		}
 
+		/**
+		 * Get and Set anonymous variable
+		 * @param boolean $anon
+		 * @return boolean true if is anonymous, false if is not
+		 */
 		public function anon($anon = NULL){
 			// Get
 			if($anon === NULL){
@@ -133,7 +217,19 @@
 				return $this;
 			}
 		}
-
+	
+		/**
+		 * Generate answers tree : Find groups in which the user belongs
+		 * For each group, find validated answers in previous groups
+		 * If first group, consider every user's answers
+		 * For each answers in the valid set, find if user answered
+		 * Find out if limit is reached
+		 * Filter answers with $state
+		 * @param User $userId
+		 * @param boolean $state
+		 * @param Group $groups
+		 * @return Ambigous <multitype:multitype: , number, unknown>
+		 */
 		public function tree($userId, $state = FALSE, $groups = NULL){
 			$ret = [];
 
@@ -194,6 +290,10 @@
 			return $ret;
 		}
 
+		/**
+		 * @param User $userId
+		 * @return Group
+		 */
 		public function whichGroups($userId){
 			$ret = [];
 
@@ -205,7 +305,12 @@
 
 			return $ret;
 		}
-
+		
+		/**
+		 * @param User $userId
+		 * @param Group $groupNum
+		 * @return Group
+		 */
 		public function formdestId($userId, $groupNum){
 			$group = $this->groups[$groupNum];
 
@@ -241,7 +346,10 @@
 			// TODO
 			return FALSE;
 		}
-
+		
+		/**
+		 * Save the form on the database
+		 */
 		public function save() {
 			global $database;
 			// Create form
@@ -284,6 +392,9 @@
 			}
 		}
 
+		/**
+		 * save() and update status to TRUE
+		 */
 		public function send(){
 			global $database;
 			$this->save();
@@ -296,6 +407,9 @@
 			or die("Form::send() can't update status : " . mysqli_error($database));
 		}
 
+		/**
+		 * Delete one form and all registers related to it in other tables (formdest, formelement, elementanswer, answervalue)
+		 */
 		public function delete(){
 			global $database;
 			// Delete form (DELETE CASCADE)
@@ -307,7 +421,7 @@
 		/**
 	    * Creates a file with a SQL script. This script generates a database and tables containing information related to all validated answers of this form.
 		* If the form is not validated returns 0, else returns 1.
-		* @return int
+		* @return file "exportSQL.sql"
 	    */	
 		public function exportSQL(){
 			global $database;

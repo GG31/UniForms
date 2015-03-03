@@ -27,7 +27,7 @@
 		
 		/**
 		 * 
-		 * @var unknown
+		 * @var Element
 		 */
 		private $elementsValues = [];
 

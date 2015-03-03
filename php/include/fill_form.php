@@ -19,5 +19,5 @@
 		$ans->send($_POST["formdest_id"]);
 	}
 
-	header( "Location: ../home.php" );
+	header( "Location: ../recipient.php" );
 ?>

@@ -548,21 +548,21 @@
 										direction,
 										img)
 								VALUES ("
-									. 		$groupId 					. ",	
-									"  . 	$this->type 				. ",	
-									'" . 	$this->label 				. "',	
-									"  . 	$this->x 					. ",	
-									"  . 	$this->y 					. ",	
-									0" . 	$this->height				. ",	
-									0" . 	$this->width 				. ",	
-									'" . 	$this->defaultValue			. "',	
-									'" . 	$this->placeholder			. "',	
-									0" . 	$this->min 					. ",	
-									0" . 	$this->max 					. ",	
-									"  .	($this->required ? 1 : 0) 	. ",	
-									"  .  	($this->bigList	? 1 : 0) 	. ",	
-									"  .	($this->direction? 1 : 0)	. ",	
-									'" . 	$this->img 					. "')")	
+									. 		$groupId 													. ",	
+									"  . 	$this->type 												. ",	
+									'" . 	mysqli_real_escape_string($database, $this->label) 			. "',	
+									"  . 	$this->x 													. ",	
+									"  . 	$this->y 													. ",	
+									0" . 	$this->height												. ",	
+									0" . 	$this->width 												. ",	
+									'" . 	mysqli_real_escape_string($database, $this->defaultValue)	. "',	
+									'" . 	mysqli_real_escape_string($database, $this->placeholder	)	. "',	
+									0" . 	$this->min 													. ",	
+									0" . 	$this->max 													. ",	
+									"  .	($this->required ? 1 : 0) 									. ",	
+									"  .  	($this->bigList	? 1 : 0) 									. ",	
+									"  .	($this->direction? 1 : 0)									. ",	
+									'" . 	$this->img 													. "')")	
 			or die("Element::save() can't save element : " . mysqli_error($database));
 			
 			// Auto generated id

@@ -183,6 +183,7 @@
 					$this->options = [];
 					while($results = mysqli_fetch_array($query)){
 						$this->options[] = [
+							"elementoption_id" 	=> $results["elementoption_id"],
 							"order" 	=> $results["optionorder"],
 							"value" 	=> $results["optionvalue"],
 							"default" 	=> $results["optiondefault"] 

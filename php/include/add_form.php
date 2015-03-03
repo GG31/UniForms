@@ -48,15 +48,6 @@ if (! empty ( $_POST )) {
 	
 	$form->printable ( $printable );
 	$form->anon ( $anonymous );
-	
-   /*
-   * Recipients
-   */
-   // TODO if ANON !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-   // $recipients = [ ];
-   // if ($anonymous) { // Anonymous user (user_id == 0)
-   //    $recipients [] = new User ( 0 );
-   // }
 
    /*
    * Récupère les données des éléments
@@ -76,7 +67,8 @@ if (! empty ( $_POST )) {
       }
 
 
-      if(isset($_POST['infoGroups'])) {
+      // if(isset($_POST['infoGroups'])) {
+      if($anonymous == FALSE) {
          echo "INFOGROUPS:<br><pre>";
          var_dump($_POST["infoGroups"]);
          echo "</pre>";
@@ -111,10 +103,11 @@ if (! empty ( $_POST )) {
          $formGroups[0]->elements($arrayElements);
          $form->groups($formGroups);
       } else {
-
-
+         $group = new Group();
+         $group->users([new User(0)]); // Anonymous user
+         $group->limit(0);
          $group->elements($arrayElements);
-         $form->groups(array($group)); // The argument here must be an array of all groups of this form
+         $form->groups([$group]); // The argument here must be an array of all groups of this form
       }
    }
    

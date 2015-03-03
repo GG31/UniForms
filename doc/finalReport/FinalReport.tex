@@ -97,21 +97,23 @@ Uniforms, form
 \section{Introduction}
 De nos jours, deux types de formulaire existent. Les formulaires papiers, distribués puis collectés physiquement et les formulaires électroniques, qui peuvent être envoyés par e-mail, les destinataires répondent alors par l’intermédiaire d’une page web leur affichant les questions et les champs de réponses possibles.\\
 L’idée générale de ce projet est de proposer une manière de concevoir les formulaires, les partager et les gérer sans avoir recours à une application externe à l’université de Nice Sophia-Antipolis car de nombreuses applications de création de formulaire existantes collectent et conservent les données sur leurs serveurs. Il faut également que notre application puisse proposer les deux types de transmission, physique, grâce à une fonctionnalité d’impression des formulaires, et électronique.\\
-D’autres points sont essentiels à ce projet comme le besoin de proposer une interface instinctive à l’utilisateur, qu’il puisse comprendre facilement le fonctionnement de l’application et qu’il ne perde pas de temps, que l’application soit bénéfique tout autant dans le temps que par les possibilités de création et de gestion par rapport à ses moyens actuels. \\
+D’autres points sont essentiels à ce projet comme le besoin de proposer une interface intuitive à l’utilisateur, qu’il puisse comprendre facilement le fonctionnement de l’application et qu’il ne perde pas de temps, que l’application soit bénéfique tout autant dans le temps que par les possibilités de création et de gestion par rapport à ses moyens actuels. \\
 De plus, l’application devra être compatible avec les technologies de l’université car elle y sera hébergées.\\
 
 Nous verrons tout d'abord les scénarios justifiants du besoin de cette application, puis la description de notre contribution, les tests réalisés, le positionnement de notre application par rapport à l'état de l'art pour enfin conclure.
 
 
 %------------------Section scénario
-\section{Un exemple}
+\section{Un exemple}\label{sec:scenarios}
 Notre problème se décompose en plusieurs scénarios distincts, la création/modification de formulaire, la consultation des réponses, la réalisation des réponses à un formulaire non anonyme et anonyme et le remplissage de formulaire papier. Nous pouvons voir un résumé de tous ces scénarios figure~\ref{scenarios} avec leurs descriptifs figure~\ref{listScenarios}.
-
-\noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
+\begin{figure}
+\begin{center}
 \makebox[\linewidth]{%        to center the image
   \includegraphics [width=70mm]{images/listScenarios.png}}
-\captionof{figure}{Descriptif des scénarios}\label{listScenarios}
-\end{minipage}
+\end{center}
+\caption{Descriptif des scénarios}
+\label{listScenarios}
+\end{figure}
 
 \subsection{S'authentifier}
 L’utilisateur doit tout d’abord s'identifier avec le CAS\footnote{Central Authentification Service} ou localement. Ensuite, il aura accès aux formulaires qui lui sont destinés et aux fonctionnalités de création.
@@ -124,21 +126,25 @@ Si le formulaire est imprimable alors les éléments seront arrangés de telle m
 De plus, l’utilisateur peut définir un nombre de réponse accepté par personne pour un même formulaire, de 1 à l’infini.\\
 Après ces paramétrages, l’utilisateur peut soit enregistrer, soit publier le formulaire. Dans ce dernier cas, le formulaire sera pourra être rempli par ses destinataires et il ne pourra plus être modifié.\\
 
-\noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
+\begin{figure}
+\begin{center}
 \makebox[\linewidth]{%        to center the image
   \includegraphics [width=70mm]{images/scenarios.png}}
-\captionof{figure}{Scénarios}\label{scenarios}
-\end{minipage}
+\end{center}
+\caption{Scénarios}
+\label{scenarios}
+\end{figure}
 
 \subsection{Créer un formulaire avec des groupes}
+Lors de la création d'un formulaire, l'utilisateur peut créer des groupes d'éléments pour que le formulaire soit répondu par un ensemble de personnes en assignant les champs à chaque destinataire. Pour chaque groupe créé, l'utilisateur doit renseigner le ou les destinataires ainsi que le nombre de fois que le formulaire peut être répondu par chaque destinataire.\\
+L'utilisateur peut ensuite enregistrer ou publier le formulaire. Si un champs est manquant, une alert s'affichera.
 
 \subsection{Modifier un formulaire}
 Les formulaires enregistrés peuvent être modifiés. Parmi toute la liste des formulaires qu’il a créés, l’utilisateur peut modifier ceux qui ne sont pas publiés. Dans ce cas, la page de création de formulaire lui est présentée préremplie par les informations enregistrées du formulaire en cours de construction. 
 
 \subsection{Consulter les réponses}
 Le créateur peut consulter les réponses des formulaires qu’il a créés. Pour cela, il doit s’identifier sur la plate-forme, puis aller sur la page de consultation des réponses du formulaire souhaité. Les réponses s’affiche aux fur et à mesure que les destinataires répondent au formulaire.\\
-Les réponses peuvent être consultées directement sur l’application ou bien être téléchargées en CSV et/ou SQL.\\
-%ne faudrait-il pas développer ? Pourquoi deux formats ? Comment et par qui peuvent être utilisés ces formats ? Quelles connaissances/logiciels nécessitent-ils ? Quels avantages et inconvénients ?
+Les réponses peuvent être consultées directement sur l’application ou bien être téléchargées en CSV et/ou SQL\footnote{Structured Query Language}.
 
 \subsection{Répondre à un formulaire}
 Pour les formulaires non anonymes, les destinataires doivent tout d’abord s’identifier pour pouvoir répondre à un formulaire. Ils accèdent alors à l’ensemble des formulaires dont ils sont destinataires, ils peuvent alors y répondre. \\
@@ -171,7 +177,7 @@ Les versions utilisées sont les suivantes :
 \item [MySQL] : 5.5.*
 \end{description}
 
-\subsubsection{Coté client}
+\subsubsection{Coté client}\label{langagesClient}
 Plusieurs langages sont nécessaires coté client, un langage de balisage (HTML\footnote{Hypertext Markup Language}, XML\footnote{eXtended Markup Language}, Latex,...), un langage de script (JavaScript, ActionScript, JScript, VBScript\footnote{Microsoft Visual Basic Scripting Edition},...) et des feuilles de style (CSS\footnote{Cascading Style Sheets}).
 \begin{itemize}
 \item Langage de balisage\\
@@ -190,7 +196,7 @@ Les versions utilisées sont les suivantes :
 
 Cependant, tout développer depuis zéro, nous paraissait trop long et fastidieux, de plus, javaScript peut avoir des résultats différents suivant les navigateurs, c'est pourquoi nous avons décidé d'utiliser des librairies et frameworks.
 
-\subsection{Librairie/Framework}
+\subsection{Librairie/Framework}\label{librairieFramework}
 Nous avons choisi JQuery\cite{urljQuery}, une librairie JavaScript libre, pour sa simplicité et efficacité afin de faciliter l'écriture de scripts coté client.\\
 Certaines fonctionnalités comme le drag’n’drop est plus facile à implémenter depuis cette librairie qu’en JavaScript pur. JQuery propose de nombreuses fonctionnalités telles que le parcours et modification du DOM\footnote{Document Object Model}, gestion des événements, création d'effets visuels et d'animations,...\\
 JQuery est une librairie relativement complète mais n'est pas un framework, ce qui veut dire que le développement de l'application ne sera pas ``enfermé'' et nous garderons une certaine liberté de développement.\\
@@ -213,60 +219,118 @@ Le gestionnaire de tâches est un système de tickets, l’équipe en définit t
 Les tâches ont été définies de telles manière à suivre la méthode agile décrite dans le DoW\footnote{Description Of Work} et pouvoir progresser en lot.
 
 %------------------------Section management
-\section{Management}
+\section{Management}%TODO
 \subsection{Planning prévisionnel}
+\subsection{Reunions}
+\subsection{Imprévus}
 \subsection{Planning réalisé}
 %là, il faut tout développer, expliquer les difficultés de rdv, l'arrivée d'un nouveau membre, la découverte du problème des multi-groupes, les modifications qui en ont découlées. Il faut montrer votre adaptabilité aux événements
 %------------------------Section architecture
 \section{Architecture}
-L'architecture figure~\ref{fonctionnementAppli} mise en place est assez simple. A gauche, les pages de notre application développées principalement avec les standards du web HTML, CSS et JavaScript avec l’utilisation du framework Bootstrap,  de l'autre un serveur d'application Apache pour interprété le code PHP qui permet de requêter ma base de données MySQL et fournir du résultat sous forme des pages HTML, Les échanges entre ces deux plateformes ceux font via le protocole HTTP.
-
-\noindent\begin{minipage}{\linewidth}% to keep image and caption on one page
+L'architecture figure~\ref{fonctionnementAppli} mise en place est assez simple. À gauche, les pages de notre application développées avec les langages de la section~\ref{langagesClient}, la librairie et le framework Bootstrap de la section~\ref{librairieFramework}. De l'autre coté, à droite, un serveur d'application Apache pour interpréter le code PHP qui permet de requêter la base de données MySQL et fournir du résultat sous forme des pages HTML. Les échanges entre ces deux plateformes se font via le protocole HTTP.
+\begin{figure}
+\begin{center}
 \makebox[\linewidth]{%        to center the image
   \includegraphics [width=90mm]{images/architecture.png}}
-\captionof{figure}{Fonctionnement de l'application}\label{fonctionnementAppli}
-\end{minipage}
+\end{center}
+\caption{Fonctionnement de l'application}\label{fonctionnementAppli}
+\end{figure}
 
-\subsection{Base de données}
-%il faut développer l'aspect bd, l'aspect objet et peut-être en profiter pour montrer ce qu'il faut faire pour ajouter un composant -> cela montrera comment étendre votre projet
+\subsection{Base de données}\label{sec:BDD}
+La figure~\ref{schemaBDD} montre la structure de la base de données. Elle est faite de telle manière à ce que chaque groupe d'éléments de formulaire puisse être répondu par un utilisateur. Un ensemble de groupe forme un formulaire.\\
+Pour chaque élément, il peut y avoir une (champs d'entrée à une réponse) ou plusieurs (cases à cocher) réponses.\\
+Les mêmes champs peuvent être renseigner pour tous les types d'éléments (table ``formelement''), si jamais l'élément à plusieurs options (cases à cocher ou boutons radios), la table ``elementoption'' se remplira avec toutes les options.\\
+Pour stocker l'état d'une réponse, dans la table ``answer'' la valeur de ``answer\_status'' est ``0'' pour enregistré, ``1'' pour envoyé. De même pour ``form\_status'' pour le formulaire enregistré et publié, les valeurs sont respectivement ``0'', ``1''.\\ 
+Si l'on souhaite ajouter un nouveau type d'élément, la base de données n'a pas besoin d'être modifiée. En effet, chaque élément proposé sur la page de création de formulaire correspont à un nombre. Ce nombre est le type\_element de la classe ``formelement''. Pour ajouter un nouveau type d'élément, il suffit de définir un nombre pour ce nouveau type. En effet, que l'élément possède une ou plusieurs valeurs, lors de l'enregistrement du formulaire, l'élément s'enregistrera dans la base de données comme n'importe quel autre, sauf que son type\_element sera le nouveau défini.\\
+Chaque formulaire peut être répondu une ou plusieurs fois par le même destinataire. Cette information est stockée avec l'attribut ``group\_limit'' de ``formgroup''. En effet, répondre à un formulaire correspond à répondre à un ou plusieurs groupes d'éléments.\\
+``elementanswer'' est une table de jointure entre ``answer'', ``answervalue'' (qui contient la ou les valeurs de réponses) et ``formelement''.
+
+\begin{figure*}
+\begin{center}
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=150mm]{images/bdd_diagram.png}}
+\end{center}
+\caption{Schéma de la base de données}\label{schemaBDD}
+\end{figure*}
+
 \subsection{Classes PHP}
+Afin d'extraire et de remplir des informations dans les tables de la base de données figure~\ref{schemaBDD}, des classes PHP ont été utilisées.\\
+On remarque figure~\ref{diagrammeClasses} que les classes construites sont plus ou moins les mêmes que les tables de la base de données. On retrouve ``Form'' pour ``form'' de la base de données, ``Group'' pour ``formgroup'', ``User'' pour ``user'', ``Element'' pour ``formelement'' et ``elementoption'' et enfin ``Answer'' pour ``answer'', ``elementanswer'' et ``ànswervalue''.\\
+Cette structure nous permet en créant des objets d'extraire et remplir facilement les données des tables de la base de données et de les exploiter dans notre application.
 
+\begin{figure*}
+\begin{center}
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=160mm]{images/class_diagram.jpg}}
+\end{center}
+\caption{Diagramme de classes}\label{diagrammeClasses}
+\end{figure*}
 
-\section{Connexion et compte}
-\subsection{CAS}
-\subsection{Session}
+\section{Connexion}
+L’ensemble des utilisateurs ayant un compte CAS à l’Université de Nice peuvent utiliser UniForms, et ce sans avoir besoin de se créer un compte au préalable. Comme déjà précisé, il est également possible d’accéder à l’application sans s’authentifier, dans le cadre de la réponse à un formulaire anonyme.\\
+
+Le service CAS est un système d’authentification unique sur un ensemble de site web. C’est le système utilisé dans la majorité des Université de France et est très répandu dans les Universités à travers le monde.\\
+Un serveur CAS étant déjà en place à l’Université, nous n’avons uniquement eu besoin d’implémenter un client CAS pour notre application. CAS gère l’authentification d’une personne à l’aide d’un cookie stocké dans le navigateur de l’utilisateur et de tickets échangés entre l’application cliente et le serveur.\\
+Nous proposons donc à nos utilisateurs n’ayant pas un cookie à jour de se connecter à travers le portail de connexion usuel de l’Université. Lorsque le serveur CAS nous retourne un identifiant, ils sont ensuite redirigés vers notre page d’accueil. Nous proposons de même un lien vers la page de déconnexion usuelle de l’Université pour libérer son cookie, bien que se scénario ne se présente pas souvent dans la pratique.
+
 %---------------------------------Section fonctionnalité développées----------------
 \section{Les fonctionnalités développées}
 \subsection{Création/Modification de formulaire}
 \subsubsection{Éléments choisis (lesquels/pourquoi)}
 Douze éléments sont proposés. Ils ont été choisis de manière stratégique afin de proposer un ensemble assez divers, que l’utilisateur puisse exprimer ce qu’il souhaite tout en prenant en compte les contraintes de temps qui nous étaient imposées pour la réalisation du projet.\\
-Ainsi l’utilisateur peut mettre des questions (grâce aux labels), mettre des champs de réponses de questions à choix multiples (bouton radio et cases à cocher), mettre des champs simples (input text, paragraphe),... Mais aussi, il peut dessiner des zones grâce au carré et au cercle ainsi qu’ajouter par exemple un logo grâce à l’insertion d’images.
+Trois types d'éléments sont donc proposés :
+\begin{description}
+\item [Pour des questions ouvertes] : Champs d'entrée texte simple, date, heure, paragraphe, téléphone et nombre.
+\item [Pour des questions fermées] : Cases à cocher et boutons radio.
+\item [Pour la mise en page] : Label, carré (ou rectangle si modification de la taille), cercle (ou rectangle arrondi si modification de la taille) et insertion d'images.
+\end{description}
+Ainsi l’utilisateur peut proposer tous les types de questions : questions ouvertes de type texte (champs texte court ou long), questions ouvertes de type prédéfini (heure, date, téléphone), questions à choix unique (boutons radios) et questions à choix multiple (cases à cocher).\\
+Certains éléments n'ont pas été implémenté, par exemple le champs d'entré URL car nous avons pensé qu'ils n'étaient pas indispensables. En effet, si l'utilisateur souhaite que le destinataire entre une URL par exemple, l'élément pour proposer ce type de champs d'entrée n'est pas disponible, cependant un alternative est possible, l'utilisateur peut proposer un champs texte qui peut être rempli par un URL. De plus, pour implémenter un nouvel élément, il suffit de l'ajouter dans la liste des éléments de la page createform.php et la gérer dans drag.js, ensuite il n'y a aucun besoin de modifier la base de données comme expliqué section~\ref{sec:BDD} et les classes PHP n'ont nul besoin d'être modifiées.
+
+\subsubsection{Groupes}
+L'idée de départ était d'offrir la possibilité à l'utilisateur de créer des formulaires pouvant être remplissable par partie par différents utilisateurs.\\
+Deux solutions nous paraissaient faisables. La première consistait à glisser-déposer des groupes sur le champs quadrillé puis d'insérer les éléments dans les groupes sur la zone de drop. La deuxième consistait à créer un formulaire normalement puis créer des groupes sur une autre zone avec la possibilité d'en faire ou pas. Les éléments n'étant dans aucun groupe aurait un destinataire commun.\\
+Nous avons penché pour la deuxième solution car la première avait deux points négatifs. Premièrement, les éléments devaient forcément se positionner sur la même zone pour être regroupés et donc enlevait de la liberté de création et deuxièmement parce que demander à l'utilisateur les destinataires et nombre maximal de remplissage dans ce cas était moins clair pour l'utilisateur. Alors que la deuxième solution propose une zone spécialement dédiée aux groupes et donc l'utilisateur dispose d'une vue d'ensemble sur ces derniers.\\
+Un autre problème s'est posé, celui des éléments restants, en effet, si l'utilisateur ne souhaite pas faire de groupe, il devait tous les mettre dans un groupe avec le destinataire. C'est pourquoi nous avons décidé de créer un groupe par défaut, le premier affiché non supprimable, il contient par défaut tous les éléments restants. Ainsi, l'utilisateur renseigne les paramètres destinataires et nombre maximum de réponse de ce groupe pour un formulaire à un seul destinataire.\\
+Cette manière de faire permet d'envoyer des formulaires pour plusieurs destinataires remplissable plusieurs fois, le nombre de réponse attendu est donc de l'ordre du nombre de destinataires du premier groupe multiplié par le nombre de destinataires du deuxième groupe jusqu'au dernier groupe et multiplié par le nombre de réponse possible de chaque groupe.
 
 \subsubsection{Destinataires}
 Pour la sélection de destinataires, un champs d’entrée est proposé. Dans ce champs à chaque entrée de caractère, des propositions de destinataires sont affichées.\\
 Ce choix pour la sélection de destinataires a été fait pour palier au grand nombre de destinataires qui seront disponibles. En effet, ce nombre peut atteindre deux ou trois milles, l’affichage de tous les destinataires sur une page n’étaient donc pas adapté.\\
-D’autre part, la sélection de destinataire se fait par identifiant CAS, c’est-à- dire que le créateur doit connaître les identifiants des personnes à qui il souhaite envoyer le formulaire. Ce choix est dû au fait que l’on ne possédait pas assez d’informations pour lier les noms, prénoms, promotion aux identifiants de connexion CAS.
+D’autre part, la sélection de destinataire se fait par identifiant CAS, c’est-à- dire que le créateur doit connaître les identifiants des personnes à qui il souhaite envoyer le formulaire. Ce choix est dû au fait que les informations des utilisateurs noms, prénoms, promotion,...se situe sur LDAP et nous n'avons pas eu les droits d'accès. Avec les droits d'accès, nous aurions pu proposer d'autres solutions de sélection de destinataire par groupe, promotion, recherche par nom puis prénom,...
 
-\subsubsection{Paramètres (lesquels et pourquoi avoir choisi ces paramètres)}
-Trois paramètres nous ont paru indispensables et suffisants. 
+\subsubsection{Paramètres}\label{sec:parametres}% (lesquels et pourquoi avoir choisi ces paramètres)
+Deux paramètres nous ont paru indispensables et suffisants. %
 \begin{itemize}
 \item “Imprimable” car dans les objectifs du DoW mais pas forcément obligatoire pour chaque formulaire.
 \item “Anonyme” pour pouvoir offrir la possibilité de faire un sondage comme les concurrents sans connaître l’identité des personnes et donc soumettre un formulaire à des personnes externes à l’université.
-\item “Nombre de réponses max” afin de ne pas avoir à recréer un même formulaire pour obtenir plusieurs réponses d’une même personne.
 \end{itemize}
-Ces paramètres sont ensuite traités en PHP grâce à une requête POST\footnote{HyperText Transfer Protocol} envoyée à l’enregistre ou à la validation du formulaire.
+Ces paramètres sont ensuite traités en PHP et sauvegardé dans la table ``form'' de la base de données, voir section~\ref{schemaBDD}.\\
+
+D'autres paramètres pour insérer un thème au formulaire ou choisir les dimensions de la feuille du formulaire aurait pu être ajouté cependant, les objectifs étaient clairs et précis, nous n'avons pas voulu en ajouter trop car le temps était limité. Si nous avions implémenté d'autres paramètres, il aurait juste fallu ajouter les champs correspondant dans la base de données et les méthodes pour remplir les informations dans la base.
 
 \subsubsection{Glisser-déposer}
-Un glisser-déposer aussi appelé drag'n'drop a été implémenté en JQuery afin de donner la possibilité de créer le formulaire le plus proche possible de la réalité. Le champs disponible pour la position des éléments est de la taille d’une page A4, une fois rempli la page s’agrandit d’une page en hauteur.\\
-L'ensemble des éléments positionnés est au fur et à mesure enregistré grâce à des objets JavaScript, on peut ainsi récupérer les paramètres que l'utilisateur renseigne.\\
-Pour la formation de groupes, c’est le même principe, sauf que les informations des groupes ne sont récupérées qu’à la fin, au moment de l’enregistrement (ou validation) car aucun paramètre n’est à renseigner.\\
-Lors de l’enregistrement (ou validation), deux variables sont envoyées en requêtes POST pour le détails des éléments et groupes créés par l’utilisateur.
+Un glisser-déposer aussi appelé drag'n'drop a été implémenté en JQuery afin de donner la possibilité de créer le formulaire le plus proche possible de la réalité. Le champs disponible pour la position des éléments est de la taille d’une page A4 et est quadrillée pour l'aide au positionnement, une fois rempli la page s’agrandit d’une page en hauteur.\\
+L'ensemble des éléments positionnés est au fur et à mesure enregistré grâce à des objets JavaScript. Dans chaque objet (correspondant à un élément), les paramètres sont enregistrés en tant qu'attribut de l'objet. On peut ainsi récupérer les paramètres que l'utilisateur renseigne à chaque fois qu'il en selectionne un, et remplir les champs de paramètre. L'utilisateur peut alors modifier les paramètres de l'éléments.\\
+Lors de l'enregistrement (ou publication) du formulaire, la liste de tous les objets des éléments est envoyé en JSON\footnote{JavaScript Object Notation} par l'intermédiaire d'un champs d'entré ``input'' caché à la page add\_form.php qui traite tous les éléments avec leurs paramètres pour créer les objets PHP et insérer toutes les informations dans la base de données vu section~\ref{sec:BDD}.\\
 
-\subsection{Répondre à un formulaire}
+Pour la formation de groupes, c’est le même principe, sauf que les informations des groupes ne sont récupérées qu’à la fin, au moment de l’enregistrement (ou validation) car le paramètre destinataire est conservé par une autre variable USERSGROUP de createform et le nombre maximum de réponse autorisé est conservé par les champs nombres de chaque groupe.\\
+Au moment de l'enregistrement (ou de la publication), on vérifie que chaque groupe à bien un destinataire, si ce n'est pas le cas, un message d'alerte est affiché à l'utilisateur.
+
+\subsection{Répondre à un formulaire} 
+Pour répondre à un formulaire, comme annoncé dans les scénarios section~\ref{sec:scenarios}, il est possible de le faire de manière papier ou par l'intermédiaire de l'application. Ce choix est dû au fait que l'application devait remplir les besoin de création de formulaire de manière classique mais aussi les e-formulaires du web pour obtenir les résultats numériquement pour une traitement plus simple et court.\\
+Sur le web, la page de formulaire est présenté aux destinataires telles qu'elle a été créée. Sur papier, c'est la même chose sauf que les réponses ne sont pas enregistrées dans la base de données.
 
 \subsection{Consulter les réponses aux formulaires}
 \subsubsection{En ligne}
+La consultation en ligne est la même que si l'utilisateur consultait les réponses sur papier car les réponses sont présentées tel que le formulaire a été rempli à l'utilisateur et il peut passer de résultat en résultat par deux boutons ``Next'' et ``Back''.
+
 \subsubsection{Télécharger les résultats}
+Deux formats de téléchargement des résultats sont proposés, SQL et CSV.\\
+Ces choix de format ont été faits suivant le type des futurs utilisateurs de notre application.\\
+CSV est utile pour les utilisateurs se servant d'Excel, logiciel appartenant au pack Office installé dans la plupart des entreprises et donc à l'université. Une fois importé dans Excel, cela permet une manipulation des données par l'utilisateur de manière aisée sans avoir besoin de connaissances informatiques spécifiques.\\
+SQL est pour une manipulation plus complexe des données, mais peut être utile si les données doivent être exporté dans une nouvelle base et/ou utilisé dans une autre application. Les utilisateurs visés sont ceux connaissant le langage SQL.\\
+Il ne nous a pas paru necessaire d'autres formes d'exportation, en effet, l'exportation dans une page web existante peut être réalisé avec l'exportation SQL et le xls avec le CSV. Beaucoup de cas découlent de ces deux formats.
 
 %---------------------------Section Validation
 \section{Validation}
@@ -277,10 +341,10 @@ Afin de réaliser les tests nous avons utiliser deux outils, SimpleTest pour les
 Malgré que PHPUnit soit un standard des framework de tests PHP, nous avons choisi SimpleTest car il possède une interface web pour l’exécution des tests. De plus, l’équipe travaillant sur deux systèmes d’exploitation différents, SimpleTest fonctionnait sur les deux à la différence de PHPUnit.\\
 Selenium est un plugin fonctionnant sur de nombreux navigateurs (Firefox, Chrome, Opéra,...) permet de tester les scénarios.
 
-\subsection{Tests classes PHP}
+\subsection{Tests classes PHP} %TODO
 Afin de vérifier le bon fonctionnement des méthodes de nos classes PHP, nous les avons testé en utilisant SimpleTest.
 
-\subsection{Tests scénarios}
+\subsection{Tests scénarios} %TODO
 Sélénium IDE pour les tests d’interface
 
 \subsection{Tests utilisateurs}
@@ -298,7 +362,7 @@ De plus, certain outil tel que Word ne propose pas une variété d’éléments 
 Uniforms a été développée de manière à proposer à l’utilisateur un outil accessible à tous sans les inconvénients cités précédemment.
 
 \subsection{Face aux e-formulaire}
-De nombreux e-Formulaires sur le web proposent des interfaces graphiques pour réaliser des formulaires. Tous proposent des interfaces plus ou moins instinctives, l’utilisateur n’a pas besoin d’écrire de code. \\
+De nombreux e-Formulaires sur le web proposent des interfaces graphiques pour réaliser des formulaires. Tous proposent des interfaces plus ou moins intuitives, l’utilisateur n’a pas besoin d’écrire de code. \\
 Ici, nous allons comparer ces applications à Uniforms sous divers points de vue.
 \subsubsection{Utilisabilité}
 Les applications existantes n’obligent pas forcément l’utilisateur à se connecter, c’est pourquoi, il doit créer le formulaire ne une fois, sans pause ni coupure de connexion. Pour un meilleur confort de l’utilisateur, nous avons pensé à implémenter la fonctionnalité d’enregistrement pour modification et validation plus tard tout autant dans la création de formulaires comme dans les réponses faites par les destinataires.\\
@@ -308,10 +372,14 @@ Les applications existantes proposent une version mobile, notre application est 
 Pour ce qui est de l’interface, elle est simple, intuitive et un manuel d’utilisation a été rédigé afin d’en faciliter l’utilisation tout comme pour les application existantes.
 \subsubsection{Éléments proposés}
 Les éléments proposés dans notre application sont au nombre de douze (label, nombre, champs texte, paragraphe, boutons radios, cases à cocher, date, heure, numéro de téléphone, image, carré et cercle). D’autres application telles que Oxiform ou Typeform en propose plus en y ajoutant le champs d’url, d’email, de liste déroulante...à ceux que nous proposons.\\ Cependant, notre application n’est pas totalement mal placé car certaines applications proposent moins d’éléments, WebQuest n’en propose que huit.
-\subsubsection{Anonymat}
+\subsubsection{Anonymat}\label{sec:anonymat}
 La question de l’anonymat à la réponse d’un formulaire se pose très souvent. Les destinataires doivent-ils être identifié ou non ? L’entrée de leurs identifiants (nom, prénom, numéro,...) est-elle suffisante pour que le créateur soit sur que la réponse a été effectuée par un certain destinataire.\\
 Sur le web, la majorité des applications de création de formulaire ne propose pas d’identification, n’importe quelle personne étant en possession du lien du formulaire peut y répondre. Par exemple, Oxiform ou Typeform. \\
 Nous avons voulu y rémédier, notre application propose de créer des formulaires anonymes ou non, ce qui permet de faire des sondages sans se soucier de qui répond au formulaire tout comme les applications déjà existantes, mais aussi de créer des formulaires nominatifs, ajouter des destinataires précis grâce au système d’identification CAS intégré.
+\subsubsection{Remplir un formulaire à plusieurs}
+Une des fonctionnalités majeures de notre application est le fait de pouvoir déterminer des utilisateurs pour certains champs d'entrées. Le formulaire peut alors être rempli à plusieurs.\\
+Dans nos recherches, nous n'avons pas trouvé de concurrent à ce niveau là, car comme dit à la section~\ref{sec:anonymat} la plupart des applications de formulaires existants proposent des formulaires anonymes avec aucun moyen de définir plusieurs destinataires pour un seul et même formulaire.
+
 \subsubsection{Confidentialité}
 Toutes les applications du web stockent les données dans le Cloud, ce qui veut dire que les applications existantes disposent d’autant de données que de champs de formulaire remplis par les destinataires. Pour ce point là, uniforms a pour principal but de se mettre au service de l’université, il y est hébergé, les données ne sont donc pas partagées avec un tiers.
 \subsubsection{Design}
@@ -322,10 +390,10 @@ Diverses méthodes d’exportation sont disponibles avec les applications exista
 Notre application est totalement gratuite, toutes les applications existantes auxquelles nous avons comparé uniforms précédemment sont soit limités en nombre de formulaire ou dans le temps (sauf Google Form).
 
 \subsection{Synthèse}
-Nous avons précédemment comparé notre application à celles existantes sous divers aspects. En général, nous avons vu que notre application se démarquait pour certains aspects comme la confidentialité, l’anonymat ou même la gratuité.\\
-En revanche, sous d’autres aspects, elle est plus faible, par exemple le nombre d’éléments disponibles qui, en moyenne, est plus élevé. L’exportation de données ne se fait que sous deux formes alors que d’autres applications proposent beaucoup plus. Cependant, l’objectif de notre application n’est pas l’exportation, mais plutôt de pouvoir gérer les résultats en dehors de l’application, l’objectif est donc atteint. \\
-Au niveau du design, notre application a pour but d’être imprimable, il est donc normal de ne pas proposer de thèmes comme les applications existantes.\\
-En ce qui concerne l’utilisabilité, elle se positionne au même niveau que les applications existantes, ergonome et instinctive malgré le fait qu’elle ne propose pas de version mobile, elle propose néanmoins des possibilités de modification (formulaire ou réponse).
+Nous avons précédemment comparé notre application à celles existantes sous divers aspects.\\ En général, nous avons vu que notre application se démarquait pour certains aspects comme la confidentialité, l’anonymat ou même la gratuité qui sont des points très important. Mais surtout sur le fait qu'un formulaire peut être rempli par plusieurs personnes ce qui n'a pas été trouvé dans une autre application.\\
+En revanche, sous d’autres aspects moins important, elle est plus faible, par exemple le nombre d’éléments disponibles qui, en moyenne, est plus élevé. L’exportation de données ne se fait que sous deux formes alors que d’autres applications proposent beaucoup plus. Cependant, l’objectif de notre application n’est pas l’exportation, mais plutôt de pouvoir gérer les résultats en dehors de l’application pour des utilisateurs de l'université, c'est-à-dire utilisant Excel et/ou SQL. L’objectif est donc atteint. \\
+Au niveau du design, notre application a pour but d’être imprimable, il est donc normal de ne pas proposer de thèmes comme les applications existantes. Cependant, il suffirait d'ajouter un paramètre pour le thème et des paramètres de coloration des éléments pour obtenir quelque chose de similaire comme expliqué section~\ref{sec:parametres}.\\
+En ce qui concerne l’utilisabilité un point très important suivant notre DoW, elle se positionne au même niveau que les applications existantes, ergonome et intuitive malgré le fait qu’elle ne propose pas de version mobile, elle propose néanmoins des fonctionnalités compensant cette faiblesse, par exemple la modification (formulaire ou réponse).
 
 %--------------------------Section Conclusion
 \section{Conclusion}
@@ -349,7 +417,9 @@ Deux documentations ont été réalisées. Une documentation technique à l’ai
 Cette documentation valide également un critère de succès.
 \end{itemize}
 
-Les autres critères de succès, génération de formulaire papier exploitable et création d’un package sont également validés car lors de la création d’un formulaire, l’utilisateur peut imprimer son formulaire grâce à la combinaison de touche Ctrl + P. Il peut ainsi vérifier sa mise en page finale. Pour le package d’installation…
+Les autres critères de succès, génération de formulaire papier exploitable et création d’un package sont également validés car lors de la création d’un formulaire, l’utilisateur peut imprimer son formulaire grâce à la combinaison de touche Ctrl + P. Il peut ainsi vérifier sa mise en page finale.\\
+Pour le package d’installation, seul l'installation de la base de données est nécessaire, c'est pourquoi nous proposons une page où les informations de la base de données sont requies et un script l'installe.
+
 \subsubsection{Synthèse}
 Pour conclure sur les résultats obtenus, nous pouvons dire que tous les critères de succès ont été atteints. Hormis l’objectif du pré-remplissage des champs qui est compensé par le formulaire “collaboratif”, tous les objectifs ont également été atteints.
 

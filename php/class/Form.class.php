@@ -362,7 +362,7 @@
 											form_anonymous)
 									VALUES ("
 										. $this->creator->id() . ","		// user_id
-										. "'" . $this->name . "',"			// form_name
+										. "'" . mysqli_real_escape_string($database, $this->name) . "',"			// form_name
 										. "0,"								// form_status
 										. ($this->print ? 1 : 0) . ", "		// form_printable
 										. ($this->anon 	? 1 : 0) . ")")		// form_anonymous

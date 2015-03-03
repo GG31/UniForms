@@ -218,7 +218,7 @@
 		}
 
 		/**
-		 * Save the form on the database
+		 * Saves answer in the database
 		 * @param Form $formdestId
 		 */
 		public function save($formdestId){
@@ -264,8 +264,8 @@
 													value,
 													elementanswer_id)
 											VALUES('" .
-												$value . "'," .				// value
-												$elementAnswerId . ")")		// elementanswer_id
+												mysqli_real_escape_string($database, $value) . "'," .	// value
+												$elementAnswerId . ")")									// elementanswer_id
 					or die("Answer::save() can't create answervalue : " . mysqli_error($database));
 				}
 			}

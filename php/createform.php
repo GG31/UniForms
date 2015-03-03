@@ -223,6 +223,52 @@
 		</script>
 	</head>
 	<body>
+
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Ajouter des Destinataires</h4>
+					</div>
+					<!-- Modal body -->
+					<div class="modal-body">
+						<!-- Search input -->
+						<input list="destinataires" id="display" name="destinataire">
+
+						<!-- Autocompletion datalist -->
+						<datalist id="destinataires">
+							<?php
+								$users = User::all ();
+								foreach ( $users as $user ) {
+							?>
+							<option
+								value=<?php echo '"'.$user->name().'"' ?>
+								userid=<?php echo '"'.$user->id().'"' ?> />
+							<?php
+								}
+							?>
+						</datalist>
+						<!-- Add recipient button -->
+						<button type="button" class="btn btn-default btn-sm" onclick="copiedest()">
+							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+						</button>
+
+						<!-- Recipient list -->
+						<span id="listdest"></span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+						<button id="modalOK" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- CONTAINER -->
 		<div class="container">
 		<div id="body">
 			<span id="header"><?php include 'include/header.php'; ?></span>
@@ -242,6 +288,8 @@
 				role="form"
 				action="include/add_form.php"
 				method="post">
+
+				<!--
 				<div class="row">
 					<div id="parametre" class="panel panel-primary">
 						<div class="panel-heading text-center text-capitalize">
@@ -256,10 +304,10 @@
 									type="checkbox"
 									value="print"
 									name="param[]"
-									<?php echo $checkedPrint ? "CHECKED" : "" ?>
+									<?php //echo $checkedPrint ? "CHECKED" : "" ?>
 									data-toggle="tooltip" 
 								    data-placement="top" 
-									title="Si le formulaire est imprimable alors les éléments seront arrangés de telle manière à ce qu’ils puissent être sur une page A4 physique.">
+									title="Si le formulaire est imprimable alors les éléments seront arrangés de telle manière à ce qu’ils puissent être sur une page A4 physique." />
 								<label for="print">Imprimable</label>
 								<input
 									id="anon"
@@ -268,56 +316,14 @@
 									name="param[]"
 									data-toggle="tooltip" 
 								    data-placement="top" 
-									title="Si le formulaire est anonyme, il ne sera pas nécessaire de se connecter pour répondre et les personnes pouvant répondre à ce formulaire sont ceux disposant du lien.">
+									title="Si le formulaire est anonyme, il ne sera pas nécessaire de se connecter pour répondre et les personnes pouvant répondre à ce formulaire sont ceux disposant du lien." />
 								<label for="anon">Anonyme</label>
 							</div>
 						</div>
 					</div>
 				</div>
+				-->
 				
-				<!-- Modal -->
-				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-								<h4 class="modal-title" id="myModalLabel">Ajouter des Destinataires</h4>
-							</div>
-							<!-- Modal body -->
-							<div class="modal-body">
-								<!-- Search input -->
-								<input list="destinataires" id="display" name="destinataire">
-
-								<!-- Autocompletion datalist -->
-								<datalist id="destinataires">
-									<?php
-										$users = User::all ();
-										foreach ( $users as $user ) {
-									?>
-									<option
-										value=<?php echo '"'.$user->name().'"' ?>
-										userid=<?php echo '"'.$user->id().'"' ?> />
-									<?php
-										}
-									?>
-								</datalist>
-								<!-- Add recipient button -->
-								<button type="button" class="btn btn-default btn-sm" onclick="copiedest()">
-									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-								</button>
-
-								<!-- Recipient list -->
-								<span id="listdest"></span>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-								<button id="modalOK" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
-							</div>
-						</div>
-					</div>
-				</div>
 				
 				<div id="navbarGroups" class="nav navbar-nav navbar-right"> 
 				   <div class="panel panel-default" style="padding:10px"> 
@@ -366,7 +372,7 @@
 					<div id="panelPanneau" class="panel panel-primary">
 					   <div class="panel-heading text-center text-capitalize">
 						   <h3 class="panel-title">
-								<strong>Formulaire : </strong> <span contentEditable="true" id="formName">Click to add form name</span><input id="infoFormName" name="infoFormName" type="hidden" />
+								<span contentEditable="true" id="formName">Nom du formulaire</span><input id="infoFormName" name="infoFormName" type="hidden" />
 							</h3>
 						</div>
 						<div class="panel-body ">
@@ -377,46 +383,71 @@
                         </div>
                         
                      </div>
-                     
-		               <div id="panel" class="panel panel-default groupOfElements" style="padding:10px width:10px">     
+
+						<div id="panel" class="panel panel-default groupOfElements" style="padding:10px width:10px">
+							<div class="form-group">
+								<input
+									id="print"
+									type="checkbox"
+									value="print"
+									name="param[]"
+									<?php echo $checkedPrint ? "CHECKED" : "" ?>
+									data-toggle="tooltip" 
+									data-placement="top" 
+									title="Si le formulaire est imprimable alors les éléments seront arrangés de telle manière à ce qu’ils puissent être sur une page A4 physique." />
+								<label for="print">Imprimable</label>
+								<br>
+								<input
+									id="anon"
+									type="checkbox"
+									value="anon"
+									name="param[]"
+									data-toggle="tooltip" 
+									data-placement="top" 
+									title="Si le formulaire est anonyme, il ne sera pas nécessaire de se connecter pour répondre et les personnes pouvant répondre à ce formulaire sont ceux disposant du lien." />
+								<label for="anon">Anonyme</label>
+							</div>
+						</div>
+
+		               <div id="panel" class="panel panel-default groupOfElements" style="padding:10px width:10px">
                         <div class="draggable" id="draggableLabel" draggable="true"><span>Label</span></div>
                         <div class="draggable" id="draggableNumber" draggable="true"><span>Nombre</span></div>
                         <div class="draggable" id="draggableDate" draggable="true"><span>Date</span></div>
                         <div class="draggable" id="draggableTime" draggable="true"><span>Heure</span></div>
                         <div class="draggable" id="draggableTextarea" draggable="true"><span>Paragraphe</span></div>
                         <div class="draggable" id="draggableTel" draggable="true"><span>Téléphone</span></div>
-                        <div class="draggable" id="draggableText" draggable="true"><span>Champs texte</span></div>
+                        <div class="draggable" id="draggableText" draggable="true"><span>Champ texte</span></div>
                         <div class="draggable" id="draggableRadio" draggable="true"><span>Boutons radio</span></div>
                         <div class="draggable" id="draggableCheckbox" draggable="true"><span>Cases à cocher</span></div>
-                        <div class="draggable" id="draggableSquare" draggable="true"><span>Carre</span></div>
+                        <div class="draggable" id="draggableSquare" draggable="true"><span>Carré</span></div>
                         <div class="draggable" id="draggableCircle" draggable="true"><span>Cercle</span></div>
                         <div class="draggable" id="draggableImg" draggable="true"><span>Image</span></div>
                      
                         <div class="panel panel-default">
                            <div id="divDetail" class="panel-body">
                               <div id="checkboxRequiredGroup">
-                                 <input type="Checkbox" id="checkboxRequired"> Required
+                                 <label><input type="Checkbox" id="checkboxRequired"> Requis</label>
                               </div>
                               <div id="labelGroup">
-                                 Label <input type="Textbox" id="inputLabelValue">
+                                 <label>Label <input type="Textbox" id="inputLabelValue"></label>
                               </div>
                               <div id="sizeGroup">
-                                 Width <input type="Number" id="inputWidthValue" step="1"><br>
-                                 Height <input type="Number" id="inputHeightValue" step="1">
+                                 <label>Hauteur <input type="Number" id="inputHeightValue" step="1"><br></label>
+                                 <label>Largeur <input type="Number" id="inputWidthValue" step="1"></label>
                               </div>
                               <div id="fileGroup"><input type="file" id="files"/><br/></div>
                               <div id="defaultValueGroup">
-                                 Default Value<input type="Textbox" id="inputdefaultValue">
+                                 <label>Valeur par défaut <input type="Textbox" id="inputdefaultValue"></label>
                               </div>
                               <div id="inputValueGroup">
-                                 Value <input type="Text" id="inputValue">
+                                 <label>Valeur <input type="Text" id="inputValue"></label>
                               </div>
                               <div id="inputNumberGroup">
-                                 Min <input type="number" id="inputNumberMin"><br>
-                                 Max <input type="number" id="inputNumberMax">
+                                 <label>Min <input type="number" id="inputNumberMin"><br></label>
+                                 <label>Max <input type="number" id="inputNumberMax"></label>
                               </div>
                               <div id="valuesGroup">
-                                 Values <button type="button" id="moreValues" class="btn btn-default btn-lg">
+                                 Valeurs <button type="button" id="moreValues" class="btn btn-default btn-lg">
       <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
       </button>
       <br><div><input type="Text" class="valueItem" id="valueItem_0" onchange="valueItemChange(0)"><button type="button" id="lessValues_0" class="btn btn-default btn-lg valueItemLess" onclick="valueItemLess(0)"><span>-</span></button></div><br>
@@ -455,7 +486,7 @@
 							>
 					</div>
 				</div>
-			</form>			
+			</form>
 	        <span id="footer"><?php include 'include/footer.php'; ?></span>
 	    </div>
 		<script src="../js/drag.js"></script>

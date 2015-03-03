@@ -56,7 +56,7 @@
 						<thead>
 							<tr class="success">
 								<th>Nom</th>
-								<th>URL</th>
+								<th></th>
 								<th>Status</th>
 							</tr>
 						</thead>
@@ -88,17 +88,16 @@
 										$content .= $link;
 								?>
 								<td><button type='button' class='btn btn-primary' data-toggle='popover' data-title='A copier' data-content='<?php echo $content ?>'>URL</button></td>
-								<td>Validé</td>
+								<td>Publié</td>
 								<?php
 									}else{
 								?>
-								<td></td>
-								<td>A valider
+								<td>
 									<a href="include/deleteform.php?form_id=<?php echo $formId ?>" class="text-muted">
-										<span class="glyphicon glyphicon-trash" aria-hidden="true" onclick="return confirm('Voulez-vous vraiment supprimer ?');">
-										</span>
+										<span class="glyphicon glyphicon-trash" aria-hidden="true" onclick="return confirm('Voulez-vous vraiment supprimer ?');"></span>
 									</a>
 								</td>
+								<td>Enregistré</td>
 								<?php
 									}
 								?>

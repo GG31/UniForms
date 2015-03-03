@@ -174,6 +174,7 @@
                   class="btn btn-default btn-lg btn-block"
                   value="Enregistrer"
                   name="save"
+                  style="<?php echo $form->anon() == TRUE ? "display:none;" : "" ?>"
                   form="answerSheet"
                   <?php echo $state ? "DISABLED" : "" ?>
                   >

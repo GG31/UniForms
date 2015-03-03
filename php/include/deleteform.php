@@ -3,5 +3,5 @@
    include_once 'includes.php';
    $form = new Form($_GET["form_id"]);
    $form->delete();
-   header("Location: ../home.php" );
+   header("Location: ../created.php" );
 ?>

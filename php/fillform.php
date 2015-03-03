@@ -35,12 +35,12 @@
       type="text/css" />
    <link rel="stylesheet" href="../css/styles.css" type="text/css" />
    <?php
-   if($form->printable()==FALSE){
+   /*if($form->printable()==FALSE){
       echo "<link rel='stylesheet' media='print' href='../css/notprint.css' type='text/css' />";
    }else {
       echo "<link rel='stylesheet' media='print' href='../css/print.css' type='text/css' />";
-   }
-?>
+   }*/
+   ?>
 
    <script src="../lib/jquery-2.1.1/min.js"></script>
    <script src="../lib/bootstrap-3.3.1/js/min.js"></script>

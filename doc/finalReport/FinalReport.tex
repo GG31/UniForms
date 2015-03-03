@@ -104,7 +104,7 @@ Nous verrons tout d'abord les scénarios justifiants du besoin de cette applicat
 
 
 %------------------Section scénario
-\section{Un exemple}
+\section{Un exemple}\label{sec:scenarios}
 Notre problème se décompose en plusieurs scénarios distincts, la création/modification de formulaire, la consultation des réponses, la réalisation des réponses à un formulaire non anonyme et anonyme et le remplissage de formulaire papier. Nous pouvons voir un résumé de tous ces scénarios figure~\ref{scenarios} avec leurs descriptifs figure~\ref{listScenarios}.
 \begin{figure}
 \begin{center}
@@ -144,7 +144,7 @@ Les formulaires enregistrés peuvent être modifiés. Parmi toute la liste des f
 
 \subsection{Consulter les réponses}
 Le créateur peut consulter les réponses des formulaires qu’il a créés. Pour cela, il doit s’identifier sur la plate-forme, puis aller sur la page de consultation des réponses du formulaire souhaité. Les réponses s’affiche aux fur et à mesure que les destinataires répondent au formulaire.\\
-Les réponses peuvent être consultées directement sur l’application ou bien être téléchargées en CSV et/ou SQL.
+Les réponses peuvent être consultées directement sur l’application ou bien être téléchargées en CSV et/ou SQL\footnote{Structured Query Language}.
 
 \subsection{Répondre à un formulaire}
 Pour les formulaires non anonymes, les destinataires doivent tout d’abord s’identifier pour pouvoir répondre à un formulaire. Ils accèdent alors à l’ensemble des formulaires dont ils sont destinataires, ils peuvent alors y répondre. \\
@@ -221,6 +221,8 @@ Les tâches ont été définies de telles manière à suivre la méthode agile d
 %------------------------Section management
 \section{Management}%TODO
 \subsection{Planning prévisionnel}
+\subsection{Reunions}
+\subsection{Imprévus}
 \subsection{Planning réalisé}
 %là, il faut tout développer, expliquer les difficultés de rdv, l'arrivée d'un nouveau membre, la découverte du problème des multi-groupes, les modifications qui en ont découlées. Il faut montrer votre adaptabilité aux événements
 %------------------------Section architecture
@@ -252,15 +254,17 @@ Chaque formulaire peut être répondu une ou plusieurs fois par le même destina
 \end{figure*}
 
 \subsection{Classes PHP}
-Afin d'extraire et de remplir des informations dans les tables de la base de données figure~\ref{schemaBDD}, des classes PHP(diagramme figure~\ref{diagrammeClasses}) ont été utilisées.
-%TODO
-\begin{figure}
+Afin d'extraire et de remplir des informations dans les tables de la base de données figure~\ref{schemaBDD}, des classes PHP ont été utilisées.\\
+On remarque figure~\ref{diagrammeClasses} que les classes construites sont plus ou moins les mêmes que les tables de la base de données. On retrouve ``Form'' pour ``form'' de la base de données, ``Group'' pour ``formgroup'', ``User'' pour ``user'', ``Element'' pour ``formelement'' et ``elementoption'' et enfin ``Answer'' pour ``answer'', ``elementanswer'' et ``ànswervalue''.\\
+Cette structure nous permet en créant des objets d'extraire et remplir facilement les données des tables de la base de données et de les exploiter dans notre application.
+
+\begin{figure*}
 \begin{center}
-%\makebox[\linewidth]{%        to center the image
-%  \includegraphics [width=90mm]{images/architecture.png}}
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=160mm]{images/class_diagram.jpg}}
 \end{center}
 \caption{Diagramme de classes}\label{diagrammeClasses}
-\end{figure}
+\end{figure*}
 
 \section{Connexion}
 L’ensemble des utilisateurs ayant un compte CAS à l’Université de Nice peuvent utiliser UniForms, et ce sans avoir besoin de se créer un compte au préalable. Comme déjà précisé, il est également possible d’accéder à l’application sans s’authentifier, dans le cadre de la réponse à un formulaire anonyme.\\
@@ -283,8 +287,12 @@ Trois types d'éléments sont donc proposés :
 Ainsi l’utilisateur peut proposer tous les types de questions : questions ouvertes de type texte (champs texte court ou long), questions ouvertes de type prédéfini (heure, date, téléphone), questions à choix unique (boutons radios) et questions à choix multiple (cases à cocher).\\
 Certains éléments n'ont pas été implémenté, par exemple le champs d'entré URL car nous avons pensé qu'ils n'étaient pas indispensables. En effet, si l'utilisateur souhaite que le destinataire entre une URL par exemple, l'élément pour proposer ce type de champs d'entrée n'est pas disponible, cependant un alternative est possible, l'utilisateur peut proposer un champs texte qui peut être rempli par un URL. De plus, pour implémenter un nouvel élément, il suffit de l'ajouter dans la liste des éléments de la page createform.php et la gérer dans drag.js, ensuite il n'y a aucun besoin de modifier la base de données comme expliqué section~\ref{sec:BDD} et les classes PHP n'ont nul besoin d'être modifiées.
 
-\subsubsection{Groupes} %TODO 
-%comment vous en êtes arrivés à cette solution
+\subsubsection{Groupes}
+L'idée de départ était d'offrir la possibilité à l'utilisateur de créer des formulaires pouvant être remplissable par partie par différents utilisateurs.\\
+Deux solutions nous paraissaient faisables. La première consistait à glisser-déposer des groupes sur le champs quadrillé puis d'insérer les éléments dans les groupes sur la zone de drop. La deuxième consistait à créer un formulaire normalement puis créer des groupes sur une autre zone avec la possibilité d'en faire ou pas. Les éléments n'étant dans aucun groupe aurait un destinataire commun.\\
+Nous avons penché pour la deuxième solution car la première avait deux points négatifs. Premièrement, les éléments devaient forcément se positionner sur la même zone pour être regroupés et donc enlevait de la liberté de création et deuxièmement parce que demander à l'utilisateur les destinataires et nombre maximal de remplissage dans ce cas était moins clair pour l'utilisateur. Alors que la deuxième solution propose une zone spécialement dédiée aux groupes et donc l'utilisateur dispose d'une vue d'ensemble sur ces derniers.\\
+Un autre problème s'est posé, celui des éléments restants, en effet, si l'utilisateur ne souhaite pas faire de groupe, il devait tous les mettre dans un groupe avec le destinataire. C'est pourquoi nous avons décidé de créer un groupe par défaut, le premier affiché non supprimable, il contient par défaut tous les éléments restants. Ainsi, l'utilisateur renseigne les paramètres destinataires et nombre maximum de réponse de ce groupe pour un formulaire à un seul destinataire.\\
+Cette manière de faire permet d'envoyer des formulaires pour plusieurs destinataires remplissable plusieurs fois, le nombre de réponse attendu est donc de l'ordre du nombre de destinataires du premier groupe multiplié par le nombre de destinataires du deuxième groupe jusqu'au dernier groupe et multiplié par le nombre de réponse possible de chaque groupe.
 
 \subsubsection{Destinataires}
 Pour la sélection de destinataires, un champs d’entrée est proposé. Dans ce champs à chaque entrée de caractère, des propositions de destinataires sont affichées.\\
@@ -296,7 +304,6 @@ Deux paramètres nous ont paru indispensables et suffisants. %
 \begin{itemize}
 \item “Imprimable” car dans les objectifs du DoW mais pas forcément obligatoire pour chaque formulaire.
 \item “Anonyme” pour pouvoir offrir la possibilité de faire un sondage comme les concurrents sans connaître l’identité des personnes et donc soumettre un formulaire à des personnes externes à l’université.
-%\item “Nombre de réponses max” afin de ne pas avoir à recréer un même formulaire pour obtenir plusieurs réponses d’une même personne.%TODO le mettre à qq part si je l'ai pas mis
 \end{itemize}
 Ces paramètres sont ensuite traités en PHP et sauvegardé dans la table ``form'' de la base de données, voir section~\ref{schemaBDD}.\\
 
@@ -310,12 +317,20 @@ Lors de l'enregistrement (ou publication) du formulaire, la liste de tous les ob
 Pour la formation de groupes, c’est le même principe, sauf que les informations des groupes ne sont récupérées qu’à la fin, au moment de l’enregistrement (ou validation) car le paramètre destinataire est conservé par une autre variable USERSGROUP de createform et le nombre maximum de réponse autorisé est conservé par les champs nombres de chaque groupe.\\
 Au moment de l'enregistrement (ou de la publication), on vérifie que chaque groupe à bien un destinataire, si ce n'est pas le cas, un message d'alerte est affiché à l'utilisateur.
 
-\subsection{Répondre à un formulaire} %TODO
+\subsection{Répondre à un formulaire} 
+Pour répondre à un formulaire, comme annoncé dans les scénarios section~\ref{sec:scenarios}, il est possible de le faire de manière papier ou par l'intermédiaire de l'application. Ce choix est dû au fait que l'application devait remplir les besoin de création de formulaire de manière classique mais aussi les e-formulaires du web pour obtenir les résultats numériquement pour une traitement plus simple et court.\\
+Sur le web, la page de formulaire est présenté aux destinataires telles qu'elle a été créée. Sur papier, c'est la même chose sauf que les réponses ne sont pas enregistrées dans la base de données.
 
-\subsection{Consulter les réponses aux formulaires}%TODO
+\subsection{Consulter les réponses aux formulaires}
 \subsubsection{En ligne}
+La consultation en ligne est la même que si l'utilisateur consultait les réponses sur papier car les réponses sont présentées tel que le formulaire a été rempli à l'utilisateur et il peut passer de résultat en résultat par deux boutons ``Next'' et ``Back''.
+
 \subsubsection{Télécharger les résultats}
-%TODO ne faudrait-il pas développer ? Pourquoi deux formats ? Comment et par qui peuvent être utilisés ces formats ? Quelles connaissances/logiciels nécessitent-ils ? Quels avantages et inconvénients ?
+Deux formats de téléchargement des résultats sont proposés, SQL et CSV.\\
+Ces choix de format ont été faits suivant le type des futurs utilisateurs de notre application.\\
+CSV est utile pour les utilisateurs se servant d'Excel, logiciel appartenant au pack Office installé dans la plupart des entreprises et donc à l'université. Une fois importé dans Excel, cela permet une manipulation des données par l'utilisateur de manière aisée sans avoir besoin de connaissances informatiques spécifiques.\\
+SQL est pour une manipulation plus complexe des données, mais peut être utile si les données doivent être exporté dans une nouvelle base et/ou utilisé dans une autre application. Les utilisateurs visés sont ceux connaissant le langage SQL.\\
+Il ne nous a pas paru necessaire d'autres formes d'exportation, en effet, l'exportation dans une page web existante peut être réalisé avec l'exportation SQL et le xls avec le CSV. Beaucoup de cas découlent de ces deux formats.
 
 %---------------------------Section Validation
 \section{Validation}

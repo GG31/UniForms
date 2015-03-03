@@ -3,3 +3,6 @@
 css/ayoub.css
 test/simpletest/
 *.swp
+.buildpath
+.project
+.settings/

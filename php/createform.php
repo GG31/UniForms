@@ -38,6 +38,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>UniForms</title>
+		<link rel='stylesheet' media='print' href='../css/print.css' type='text/css' />
 		<link rel="shortcut icon" href="../res/img/favicon.png" />
 		<link rel="stylesheet" href="../lib/bootstrap-3.3.1/css/min.css"
 			type="text/css" />
@@ -224,8 +225,8 @@
 	<body>
 		<div class="container">
 		<div id="body">
-			<?php include 'include/header.php'; ?>
-			<?php include 'include/nav.php'; ?>
+			<span id="header"><?php include 'include/header.php'; ?></span>
+			<span id="nav"><?php include 'include/nav.php'; ?></span>
 			<?php
 				if($form->state() == TRUE){
 			?>
@@ -242,7 +243,7 @@
 				action="include/add_form.php"
 				method="post">
 				<div class="row">
-					<div class="panel panel-primary">
+					<div id="parametre" class="panel panel-primary">
 						<div class="panel-heading text-center text-capitalize">
 							<h3 class="panel-title">
 								<strong>Paramètres</strong>
@@ -377,7 +378,7 @@
                         
                      </div>
                      
-		               <div class="panel panel-default groupOfElements" style="padding:10px width:10px">     
+		               <div id="panel" class="panel panel-default groupOfElements" style="padding:10px width:10px">     
                         <div class="draggable" id="draggableLabel" draggable="true"><span>Label</span></div>
                         <div class="draggable" id="draggableNumber" draggable="true"><span>Nombre</span></div>
                         <div class="draggable" id="draggableDate" draggable="true"><span>Date</span></div>
@@ -455,7 +456,7 @@
 					</div>
 				</div>
 			</form>			
-	        <?php include 'include/footer.php'; ?>
+	        <span id="footer"><?php include 'include/footer.php'; ?></span>
 	    </div>
 		<script src="../js/drag.js"></script>
 		<script src="../js/group.js"></script>

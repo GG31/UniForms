@@ -384,9 +384,9 @@
                         <div class="draggable" id="draggableTime" draggable="true"><span>Heure</span></div>
                         <div class="draggable" id="draggableTextarea" draggable="true"><span>Paragraphe</span></div>
                         <div class="draggable" id="draggableTel" draggable="true"><span>Téléphone</span></div>
-                        <div class="draggable" id="draggableText" draggable="true"><span>Input Text</span></div>
+                        <div class="draggable" id="draggableText" draggable="true"><span>Champs texte</span></div>
                         <div class="draggable" id="draggableRadio" draggable="true"><span>Boutons radio</span></div>
-                        <div class="draggable" id="draggableCheckbox" draggable="true"><span>Checkbox</span></div>
+                        <div class="draggable" id="draggableCheckbox" draggable="true"><span>Cases à cocher</span></div>
                         <div class="draggable" id="draggableSquare" draggable="true"><span>Carre</span></div>
                         <div class="draggable" id="draggableCircle" draggable="true"><span>Cercle</span></div>
                         <div class="draggable" id="draggableImg" draggable="true"><span>Image</span></div>

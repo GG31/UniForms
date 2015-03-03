@@ -22,6 +22,21 @@
 
 		<script src="../lib/jquery-2.1.1/min.js"></script>
 		<script src="../lib/bootstrap-3.3.1/js/min.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function(){
+			$('[data-toggle="popover"]').popover({
+				placement : 'top'
+			});
+		});
+		</script>
+		<style type="text/css">
+			.bs-example{
+				margin: 150px 50px;
+			}
+			.popover-examples{
+				margin-bottom: 20px;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="container">
@@ -32,6 +47,13 @@
 					<div class="panel-heading text-center text-capitalize">
 						<h3 class="panel-title">
 							<strong><?php echo $form->name();?></strong>
+							<br>
+							<a href="include/download_csv.php?form=<?php echo $formId ?>" style="text-decoration:none">CSV
+								<span class="glyphicon glyphicon-circle-arrow-down" aria-hidden="true"></span>
+							</a>
+							<a href="include/exportSQL.php?form_id=<?php echo $formId ?>" style="text-decoration:none">SQL
+								<span class="glyphicon glyphicon-circle-arrow-down" aria-hidden="true"></span>
+							</a>
 						</h3>
 					</div>
 <?php
@@ -58,6 +80,7 @@
 									echo $user->name();
 								?>
 								</th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -68,6 +91,17 @@
 ?>
 							<tr class="info">
 								<td><a href="<?php echo $link ?>">Réponse #<?php echo $key ?></a></td>
+								<td>
+									<a
+										href="include/download_csv.php?ans=<?php echo $ansId ?>"
+										data-toggle="popover"
+										data-trigger="hover"
+										data-title="Télécharger"
+										data-content="Télécharger cette réponse au format CSV"
+										>
+										<span class="glyphicon glyphicon-circle-arrow-down" aria-hidden="true"></span>
+									</a>
+								</td>
 							</tr>
 <?php
 				}

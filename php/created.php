@@ -23,11 +23,11 @@
 		<script src="../lib/jquery-2.1.1/min.js"></script>
 		<script src="../lib/bootstrap-3.3.1/js/min.js"></script>
 		<script type="text/javascript">
-		$(document).ready(function(){
-			$('[data-toggle="popover"]').popover({
-				placement : 'top'
+			$(document).ready(function(){
+				$('[data-toggle="popover"]').popover({
+					placement : 'top'
+				});
 			});
-		});
 		</script>
 		<style type="text/css">
 			.bs-example{
@@ -87,7 +87,7 @@
 										}
 										$content .= $link;
 								?>
-								<td><button type='button' class='btn btn-primary' data-toggle='popover' title='A copier' data-content='<?php echo $content ?>'>URL</button></td>
+								<td><button type='button' class='btn btn-primary' data-toggle='popover' data-title='A copier' data-content='<?php echo $content ?>'>URL</button></td>
 								<td>Validé</td>
 								<?php
 									}else{

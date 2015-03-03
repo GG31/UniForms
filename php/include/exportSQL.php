@@ -8,7 +8,7 @@ if (isset($_GET["form_id"])) {
 		fwrite($file, $form->exportSQL());
 		fclose($file);*/
 		header ( "Content-disposition: attachment; filename=" . $fileName );
-		header ( "Content-Type: application/force-download" );
+		header ( "Content-Type: application/octet-stream" );
 		header ( "Pragma: no-cache" );
 		header ( "Cache-Control: must-revalidate, post-check=0, pre-check=0, public" );
 		header ( "Expires: 0" );

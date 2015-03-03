@@ -121,7 +121,7 @@ if (! empty ( $_POST )) {
 		$form->send ();
 	}
    // return;
-	header ( "Location: ../home.php" );
+	header ( "Location: ../created.php" );
 }
 
 function treatmentElement($key, $array) {

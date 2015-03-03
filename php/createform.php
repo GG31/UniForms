@@ -447,7 +447,7 @@
 						<input
 							type="submit"
 							class="btn btn-primary btn-lg btn-block"
-							value="Valider"
+							value="Publier"
 							name="send"
 							form="formulaire"
 							<?php echo $form->state() ? "DISABLED" : "" ?>

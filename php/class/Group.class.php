@@ -202,11 +202,11 @@
 			$ret = "";
 
 			$query = mysqli_query($database, "	SELECT 	formdest_id
-									FROM 			formgroup
-											JOIN 	formdest
-											ON 		formgroup.formgroup_id = formdest.formgroup_id
-									WHERE 	user_id = " . $userId . "
-									AND 	formgroup.formgroup_id = " . $this->id);
+												FROM 			formgroup
+														JOIN 	formdest
+														ON 		formgroup.formgroup_id = formdest.formgroup_id
+												WHERE 	user_id = " . $userId . "
+												AND 	formgroup.formgroup_id = " . $this->id);
 
 			if (!mysqli_num_rows($query)){
 				die("Group::formdestId() : formdest_id not found !");

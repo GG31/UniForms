@@ -180,7 +180,7 @@
                <input
                   type="submit"
                   class="btn btn-primary btn-lg btn-block"
-                  value="Valider"
+                  value="Envoyer"
                   name="send"
                   form="answerSheet"
                   <?php echo $state ? "DISABLED" : "" ?>

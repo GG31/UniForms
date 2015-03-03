@@ -38,7 +38,6 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>UniForms</title>
-		<link rel="stylesheet" media="print" href="../css/print.css" type="text/css" />
 		<link rel="shortcut icon" href="../res/img/favicon.png" />
 		<link rel="stylesheet" href="../lib/bootstrap-3.3.1/css/min.css"
 			type="text/css" />

@@ -348,16 +348,26 @@ getType = function(node) {
 
 
 $('input[type=submit]').click(function() {
-   for(var group in GROUPSUSERS) {
-      if (GROUPSUSERS[group].length < 1) {
-         $('#alertDestinataires').text('Le groupe ' + group + " n'a pas de destinataire");
-         $('#alertDestinataires').show();
-         return false;
+
+   // Every group must have at least one recipient
+   // (In the case of a non-anonymous form)
+   if($('#anon').is(':checked') == false){
+      for(var group in GROUPSUSERS) {
+         if (GROUPSUSERS[group].length < 1) {
+            $('#alertDestinataires').text('Le groupe ' + group + " n'a pas de destinataire");
+            $('#alertDestinataires').show();
+            return false;
+         }
       }
    }
+
+   // Form must have a name
+   // Default name : "Formulaire Sans Nom"
    if ($("#formName").text() == "" || $("#formName").text() == "Click to add form name") {
       $("#infoFormName").val("Formulaire Sans Nom");
    }
+
+   // Attach to DOM
 	document.getElementById("info").value = JSON.stringify(elementList);
 	document.getElementById("infoGroups").value = JSON.stringify(getGroupsAndElements());
 });

@@ -22,6 +22,21 @@
 
 		<script src="../lib/jquery-2.1.1/min.js"></script>
 		<script src="../lib/bootstrap-3.3.1/js/min.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function(){
+			$('[data-toggle="popover"]').popover({
+				placement : 'top'
+			});
+		});
+		</script>
+		<style type="text/css">
+			.bs-example{
+				margin: 150px 50px;
+			}
+			.popover-examples{
+				margin-bottom: 20px;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="container">
@@ -41,6 +56,7 @@
 						<thead>
 							<tr class="success">
 								<th>Nom</th>
+								<th>URL</th>
 								<th>Status</th>
 							</tr>
 						</thead>
@@ -61,11 +77,22 @@
 								<td><a href="<?php echo $link ?>"><?php echo $name ?></a></td>
 								<?php
 									if($status == TRUE){
+										$content = $_SERVER['SERVER_NAME'] . substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], "/"));
+
+										if($form->anon() == TRUE){
+											$formdestId = $form->formdestId(0, 0);
+											$link = "fillform.php?form_id=$formId&formdest_id=$formdestId&prev_id=0";
+										}else{
+											$link = "/form.php?form=$formId";
+										}
+										$content .= $link;
 								?>
+								<td><button type='button' class='btn btn-primary' data-toggle='popover' title='A copier' data-content='<?php echo $content ?>'>URL</button></td>
 								<td>Validé</td>
 								<?php
 									}else{
 								?>
+								<td></td>
 								<td>A valider
 									<a href="include/deleteform.php?form_id=<?php echo $formId ?>" class="text-muted">
 										<span class="glyphicon glyphicon-trash" aria-hidden="true" onclick="return confirm('Voulez-vous vraiment supprimer ?');">

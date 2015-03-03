@@ -81,7 +81,7 @@
 
 										if($form->anon() == TRUE){
 											$formdestId = $form->formdestId(0, 0);
-											$link = "fillform.php?form_id=$formId&formdest_id=$formdestId&prev_id=0";
+											$link = "/fillform.php?form_id=$formId&formdest_id=$formdestId&prev_id=0";
 										}else{
 											$link = "/form.php?form_id=$formId";
 										}

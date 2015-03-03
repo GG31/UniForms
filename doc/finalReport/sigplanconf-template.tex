@@ -1,0 +1,154 @@
+%-----------------------------------------------------------------------------
+%
+%               Template for sigplanconf LaTeX Class
+%
+% Name:         sigplanconf-template.tex
+%
+% Purpose:      A template for sigplanconf.cls, which is a LaTeX 2e class
+%               file for SIGPLAN conference proceedings.
+%
+% Guide:        Refer to "Author's Guide to the ACM SIGPLAN Class,"
+%               sigplanconf-guide.pdf
+%
+% Author:       Paul C. Anagnostopoulos
+%               Windfall Software
+%               978 371-2316
+%               paul@windfall.com
+%
+% Created:      15 February 2005
+%
+%-----------------------------------------------------------------------------
+
+
+\documentclass{sigplanconf}
+
+% The following \documentclass options may be useful:
+
+% preprint      Remove this option only once the paper is in final form.
+% 10pt          To set in 10-point type instead of 9-point.
+% 11pt          To set in 11-point type instead of 9-point.
+% authoryear    To obtain author/year citation style instead of numeric.
+
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+\begin{document}
+
+\special{papersize=8.5in,11in}
+\setlength{\pdfpageheight}{\paperheight}
+\setlength{\pdfpagewidth}{\paperwidth}
+
+\conferenceinfo{CONF 'yy}{Month d--d, 20yy, City, ST, Country} 
+\copyrightyear{20yy} 
+\copyrightdata{978-1-nnnn-nnnn-n/yy/mm} 
+\doi{nnnnnnn.nnnnnnn}
+
+% Uncomment one of the following two, if you are not going for the 
+% traditional copyright transfer agreement.
+
+%\exclusivelicense                % ACM gets exclusive license to publish, 
+                                  % you retain copyright
+
+\permissiontopublish             % ACM gets nonexclusive license to publish
+                                  % (paid open-access papers, 
+                                  % short abstracts)
+
+\titlebanner{banner above paper title}        % These are ignored unless
+\preprintfooter{short description of paper}   % 'preprint' option specified.
+
+\title{Uniforms}
+\subtitle{e-Formulaire, Jalon \#1}
+
+\authorinfo{Michel Gautero}
+           {I3S}
+           {Michel.Gautero@unice.fr}
+\authorinfo{Ayoub Benathmane}
+           {M2 IFI}
+           {benathmane.ab@gmail.com}
+\authorinfo{Genevi\`eve Cirera}
+           {SI5}
+           {genevieve.cirera@gmail.com}
+\authorinfo{Lu\'is Felipe Polo}
+           {SI5}
+           {luisfelipepolo@hotmail.com}
+\authorinfo{Romain Truchi}
+           {M2 IFI}
+           {romain.truchi.06@gmail.com}
+
+\maketitle
+
+\begin{abstract}
+This paper describes the progress of the project e-formulaire. Our application, named Uniforms, aims basically to create a web system which can be easily used by the people of the university and provide a paper representation of the forms. At the time, the development of lot two was completed, this lot corresponds to the core of the application. As was added one new person to the group, more resources will be offered and our planification is currently being modified.
+\end{abstract}
+
+%\category{CR-number}{subcategory}{third-level}
+
+% general terms are not compulsory anymore, 
+% you may leave them out
+\terms
+formulaire
+
+\keywords
+Uniforms, formulaire, destinataire, demandeur, diffusion
+
+\section{Context}
+Afin d'\'echapper aux formulaires papiers classiques, aux probl\`emes de confidentialit\'e et d'avoir des formulaires web avec une repr\'esentation papier si n\'ecessaire, M. Gautero a eu l'id\'ee de concevoir une application propre \`a l'Universit\'e de Nice Sophia-Antipolis. L'application web d\'evelopp\'ee devra r\'epondre \`a certaines exigences tels que proposer une interface instinctive afin que le personnel de l'Universit\'e ait une aisance d'utilisation, \^etre compatible avec les technologies de l'universit\'e...
+
+
+\section{Avancement de notre projet du point de vue scientifique}
+Le lot 2 de l'application, correspondant \`a la cr\'eation d'un prototype basique de la plateforme e-formulaire, socle de nos futurs d\'eveloppements, a \'et\'e impl\'ement\'e.\\ 
+Actuellement, l'application pr\'esente une interface d'authentification, de cr\'eation de formulaire, d'enregistrement du formulaire cr\'e\'e dans une base de donn\'ees, ajout de destinataires, listage des formulaires cr\'e\'es par l'utilisateur avec possibilit\'e de voir les r\'eponses, ainsi que ceux pour lesquels il est destinataire.\\
+L'interface a \'et\'e réalis\'ee \`a l'aide de la biblioth\`eque CSS Bootstrap. Nous avons install\'e un serveur web local pour nos d\'eveloppement (LAMP/WAMP), qui inclu PHP v5 et une base de données MySQL v2.\\
+Il a \'et\'e n\'ecessaire de cr\'eer la base de donn\'ees quasiment compl\`ete d\`es le d\'ebut afin de bien organiser le code, les classes PHP (3 classes pour le moment : User, Form et Answer), mais cette base sera chang\'ee au fur et \`a mesure en avancement dans le projet et cela permettra d'int\'egrer de nouvelles tables selon les besoins.\\
+\`A la fin de ce second lot, une r\'eunion a \'et\'e programm\'ee avec M. Gautero, pendant laquelle nous avons pu faire la revue du sprint et valider le livrable.\\
+On peut voir une d\'emo de notre application sur ce lien : \url{http://youtu.be/GXa3ZiU7zrU}
+
+\section{Budget consomm\'e et les d\'eviations par rapport aux plan initial du DoW}
+Apr\`es avoir consomm\'e 20h/personnes dans le DoW et 39h/personnes dans le premier lot, nous nous retrouvons avec un budget consomm\'e de 59h par personne au total. Il reste donc 257h par personne jusqu'\`a la fin du projet qui pourront \^etre mis \`a profit.\\
+En ce qui concerne la nouvelle ressource, une nouvelle personne s'est jointe \`a l\'equipe lors de la semaine 6. Nous avons donc l\'eg\`erement adapt\'ee notre planification afin de r\'ealiser le deuxi\`eme lot \`a quatre personnes au lieu de trois. Lors de la r\'eunion de revue de sprint avec notre encadrant/client, nous avons pu d\'efinir de nouveaux objectifs \`a int\'egrer \`a notre projet. Une nouvelle planification de nos ressources est actuellement en cours d'\'elaboration.\\
+L'objectif suppl\'ementaire d\'efini avec M. Gautero consiste \`a rendre un formulaire remplissable par plusieurs personnes, les personnes ayant une partie du formulaire à renseigner assign\'ee. Le formulaire se transmettra \`a toutes les personnes mais chaque personne aura ses propres champs \`a remplir et ne pourra pas modifier les champs qui ne lui sont pas destin\'es. Mais aussi donner une dur\'ee de vie au formulaire, ainsi si le cr\'eateur du formulaire n\'ecessite une r\'eponse avant une certaine date, il peut le configurer et le fomulaire sera d\'etruit apr\`es cette date car devenu obsol\`ete.\\
+On offrira \'egalement la possibilit\'e au cr\'eateur de donner un certain nombre de remplissages du formulaire possible. Par exemple, le cr\'eateur construit un formulaire de demande et le propose \`a quelqu'un. Cette demande peut \^etre r\'ealis\'ee un nombre x fois seulement.\\
+Ce nouvel objectif sera int\'egr\'e \`a la nouvelle planification.
+
+
+\section{Plan d'action jusqu'au prochain jalon}
+Suivant notre planification, les lots 3, 4, 5 et 6 doivent \^etre termin\'es pour le jalon 2, c'est-\`a-dire, int\'egrer au prototype des \'el\'ements de formulaire tels que champs texte, zone de texte, bouton radio... en g\'erant le Drag and Drop de ces \'el\'ements et la personnalisation graphique des formulaires.\\
+Cependant, nous allons revoir la planification pour une meilleure efficacit\'e de l'\'equipe. Dans celle-ci, nous allons essayer de maintenir la r\'ealisation des lots 3, 4, 5 et 6 ou un avancement \'equivalent avant le jalon 2. Nous maintenons donc les r\'eunions programm\'ees avec notre encadrant dans le but d'assurer le bon avancement du projet en fonction des objectifs attendus, la prochaine r\'eunion aura lieu le 05/12/2014 pour tester et valider les fonctionnalités du lot 3 de l'actuel DoW.\\
+La nouvelle planification aura pour but de concevoir l'application dans son ensemble, les parties ind\'ependantes, avoir une vision globale (parties ind\'ependantes et les liens entres ces derni\`eres tout en essayant de garder la base d\'ej\`a réalis\'ee pour ce jalon), puis passer l'impl\'ementation. Tous les membres du groupe pourront alors d\'evelopper en parall\`ele puis mettre en commun les parties, une fois impl\'ement\'ees et test\'ees.\\
+Revoir la planification de cette mani\`ere nous permettra de gagner du temps, \'eviter les conflits et de mieux finaliser les d\'etails de l'application.\\
+Les tests unitaires de nos m\'ethodes seront faits en PHPUnit, nous feront aussi appel \`a une personne de l'universit\'e qui n'a jamais entendu parl\'e de ce projet. Ainsi, nous auront l'avis d'un utilisateur sans aucun apriori qui d\'ecouvrira l'application. Ces r\'eactions ne seront donc pas influenc\'ees et nous pourront noter les facilit\'es et/ou difficult\'es rencontr\'ees et ainsi am\'eliorer l'utilisabilit\'e.\\
+
+
+\appendix
+%\section{Appendix Title}
+
+%This is the text of the appendix, if you need one.
+
+%\acks
+
+%Acknowledgments, if needed.
+
+% We recommend abbrvnat bibliography style.
+
+\bibliographystyle{abbrvnat}
+
+% The bibliography should be embedded for final submission.
+
+%\begin{thebibliography}{}
+%\softraggedright
+
+%\bibitem[Smith et~al.(2009)Smith, Jones]{smith02}
+%P. Q. Smith, and X. Y. Jones. ...reference text...
+
+%\end{thebibliography}
+
+
+\end{document}
+
+%                       Revision History
+%                       -------- -------
+%  Date         Person  Ver.    Change
+%  ----         ------  ----    ------
+
+%  2013.06.29   TU      0.1--4  comments on permission/copyright notices
+

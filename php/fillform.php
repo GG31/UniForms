@@ -174,9 +174,9 @@
                   class="btn btn-default btn-lg btn-block"
                   value="Enregistrer"
                   name="save"
-                  style="<?php echo $form->anon() == TRUE ? "display:none;" : "" ?>"
+                  style="<?php echo $form->anon() == TRUE || $state == TRUE ? "display:none;" : "" ?>"
                   form="answerSheet"
-                  <?php echo $state ? "DISABLED" : "" ?>
+                  <?php //echo $state ? "DISABLED" : "" ?>
                   >
                <input
                   type="submit"
@@ -184,7 +184,8 @@
                   value="Envoyer"
                   name="send"
                   form="answerSheet"
-                  <?php echo $state ? "DISABLED" : "" ?>
+                  style="<?php echo $state == TRUE ? "display:none;" : "" ?>"
+                  <?php //echo $state ? "DISABLED" : "" ?>
                   >
             </div>
          </div>

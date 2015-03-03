@@ -29,7 +29,7 @@
 		 * 
 		 * @var unknown
 		 */
-		private $elementsValues;
+		private $elementsValues = [];
 
 		/**
 		 * Constructor

@@ -72,7 +72,7 @@
 			$password = $_POST['password'];
 			$conn = mysqli_connect($_POST['server'], $_POST['username'], $_POST['password']);
 			if (!mysqli_connect_error()){
-				$contenu = "<?php global \$database;  \$database = mysqli_connect('serverdb', 'userdb', 'passworddb', 'databasedb') ?>";
+				$contenu = "<?php global \$database;  \$database = mysqli_connect('serverdb', 'userdb', 'passworddb', 'databasedb'); ?>";
 				echo $contenu;	
 				$s1 =  $_POST["server"];
 				$ss1 = "$s1";

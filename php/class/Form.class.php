@@ -428,25 +428,28 @@
 			if($this->state == FALSE or $this->id == NULL)
 				return 0;
 			
+			// Get current database name
+			$db = mysqli_fetch_array(mysqli_query($database, "SELECT DATABASE()"));
+			$dbName = $db["DATABASE()"];
+			
 			// Get current autoincrement values
-			$AIanswer = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'answer';"));
-			$AIanswervalue = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'answervalue';"));
-			$AIelementanswer = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'elementanswer';"));
-			$AIelementoption = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'elementoption';"));
-			$AIform = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'form';"));
-			$AIformdest = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'formdest';"));
-			$AIformelement = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'formelement';"));
-			$AIformgroup = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'formgroup';"));
-			$AIuser = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'uniforms' AND TABLE_NAME = 'user';"));
+			$AIanswer = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$dbName."' AND TABLE_NAME = 'answer';"));
+			$AIanswervalue = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$dbName."' AND TABLE_NAME = 'answervalue';"));
+			$AIelementanswer = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$dbName."' AND TABLE_NAME = 'elementanswer';"));
+			$AIelementoption = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$dbName."' AND TABLE_NAME = 'elementoption';"));
+			$AIform = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$dbName."' AND TABLE_NAME = 'form';"));
+			$AIformdest = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$dbName."' AND TABLE_NAME = 'formdest';"));
+			$AIformelement = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$dbName."' AND TABLE_NAME = 'formelement';"));
+			$AIformgroup = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$dbName."' AND TABLE_NAME = 'formgroup';"));
+			$AIuser = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$dbName."' AND TABLE_NAME = 'user';"));
 
-			//$DBName = 'form'.$this->name();
-			$DBName = 'ExportedDB';
+			$NewDBName = 'ExportedDB';
 			
 			// Disable constraints and drop, create and select database
 			$sql = 'SET FOREIGN_KEY_CHECKS=0;
-					DROP DATABASE IF EXISTS `'.$DBName.'`;
-					CREATE DATABASE IF NOT EXISTS `'.$DBName.'`;
-					USE `'.$DBName.'`;';
+					DROP DATABASE IF EXISTS `'.$NewDBName.'`;
+					CREATE DATABASE IF NOT EXISTS `'.$NewDBName.'`;
+					USE `'.$NewDBName.'`;';
 			
 			// Create all tables
 			$sql .=	"DROP TABLE IF EXISTS `answer`;
@@ -549,9 +552,11 @@
 			// Insert recipients into table user
 			$querydests = mysqli_query($database, "SELECT DISTINCT user.user_id, user_name FROM user JOIN (formdest JOIN formgroup 
 										ON formdest.formgroup_id = formgroup.formgroup_id AND form_id = ".$this->id.") ON formdest.user_id = user.user_id");
-			while ($dests = mysqli_fetch_array($querydests))
-				$sql .=	"INSERT INTO `user` VALUES(".$dests["user_id"].",'".$dests["user_name"]."');\r\n";
-							
+										
+			while ($dests = mysqli_fetch_array($querydests))	
+				if ($dests["user_id"] != $this->creator->id())
+					$sql .=	"INSERT INTO `user` VALUES(".$dests["user_id"].",'".$dests["user_name"]."');\r\n";	
+			
 			// Insert groups into table formgroup
 			foreach ($this->groups as $group){
 				$sql .=	"INSERT INTO `formgroup` VALUES(".$group->id().",".$this->id.");\r\n";
@@ -594,12 +599,12 @@
 			// Enable constraints
 			$sql .=	"SET FOREIGN_KEY_CHECKS=1;";
 
-			$fileName = "../res/sql/exportSQL.sql";
+			//$fileName = "../res/sql/exportSQL.sql";
 			//$fileName .= "ExportedForm-".date('Y-m-d_H:i:s').".sql";
 			
-			$file = fopen($fileName, "c");
-			fwrite($file, $sql);
-			fclose($file);
+			//$file = fopen($fileName, "c");
+			//fwrite($file, $sql);
+			//fclose($file);
 		
 			return $sql;
 		}

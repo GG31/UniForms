@@ -5,6 +5,7 @@
 	Class Group {
 		
 		/**
+		 * Id of this group
 		 * @access private
 		 * @var integer
 		 */
@@ -41,6 +42,7 @@
 		/**
 		 * Constructor
 		 * Create a form group, if already exist, find the information on the database to fill the attributes
+		 * @access public
 		 * @param integer $idForm the id's form default NULL
 		 */
 		public function __construct($id = NULL){
@@ -113,6 +115,7 @@
 
 		/**
 		 * Get and Set the group's id
+		 * @access public
 		 * @param integer $id the id's group default NULL
 		 * @return integer
 		 */
@@ -130,6 +133,7 @@
 		
 		/**
 		 * Get and Set the form's maxAnswers, the maximum of fill possibilities by one recipient
+		 * @access public
 		 * @param integer $limit
 		 * @return integer
 		 */
@@ -144,7 +148,13 @@
 				return $this;
 			}
 		}
-
+		
+		/**
+		 * Get and Set the group's elements
+		 * @access public
+		 * @param Element $elements
+		 * @return Element
+		 */
 		public function elements($elements = NULL){
 			// Get
 			if($elements === NULL){
@@ -157,6 +167,12 @@
 			}
 		}
 
+		/**
+		 * Get and Set the user's elements
+		 * @access public
+		 * @param User $users
+		 * @return User
+		 */
 		public function users($users = NULL){
 			// Get
 			if($users === NULL){
@@ -169,6 +185,12 @@
 			}
 		}
 
+		/**
+		 * Get and Set the group's answers
+		 * @access public
+		 * @param Answer $answers
+		 * @return Answer
+		 */
 		public function answers($answers = NULL){
 			// Get
 			if($answers === NULL){
@@ -181,6 +203,11 @@
 			}
 		}
 
+		/**
+		 * Return a list of all the validated answers
+		 * @access public
+		 * @return array(Answer)
+		 */
 		public function validAnswers(){
 			$ret = [];
 
@@ -197,6 +224,12 @@
 			return $ret;
 		}
 
+		/**
+		 * Return the list of recipients
+		 * @access public
+		 * @param integer $userId
+		 * @return array(User)
+		 */
 		public function formdestId($userId){
 			global $database;
 			$ret = "";
@@ -219,6 +252,13 @@
 			return $ret;
 		}
 
+		/**
+		 * Return a list of ids of a group of users who responded to a form
+		 * @access public
+		 * @param integer $formdestId
+		 * @param integer $ansId
+		 * @return array
+		 */
 		public function in($formdestId = NULL, $ansId = NULL){
 			global $database;
 			$ret = FALSE;
@@ -258,6 +298,7 @@
 
 		/**
 		 * Saves the group on the database
+		 * @access public
 		 * @param integer $formId
 		 */
 		public function save($formId){
@@ -291,6 +332,11 @@
 			}
 		}
 
+		/**
+		 * Delete groups
+		 * @static
+		 * @param integer $formId
+		 */
 		static function delete($formId){
 			global $database;
 			// DELETE CASCADE : formdest, formelements and answers

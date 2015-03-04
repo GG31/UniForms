@@ -1,11 +1,28 @@
 <?php
-	
+	/**
+	 * Represent a user, he has an id and a name.
+	 */
 	Class User {
 		
+		/**
+		 * Id of this user
+		 * @access private
+		 * @var integer
+		 */
 		private $id;
+		
+		/**
+		 * Name of this user
+		 * @access private
+		 * @var string
+		 */
 		private $name;
 		
-		
+		/**
+		 * Constructor, create a user
+		 * @access public
+		 * @param integer $userId the id of the user default NULL
+		 */
 		public function __construct($id = NULL){
 			global $database;
 			// Id
@@ -22,6 +39,12 @@
 			}
 		}
 
+		/**
+		 * Get and Set the user's id
+		 * @access public
+		 * @param integer $id the id's user default NULL
+		 * @return integer
+		 */
 		public function id($id = NULL){
 			// Get
 			if($id === NULL){
@@ -33,7 +56,13 @@
 				return $this;
 			}
 		}
-
+		
+		/**
+		 * Get and Set the user's name
+		 * @access public
+		 * @param string $name the name's user default NULL
+		 * @return string
+		 */
 		public function name($name = NULL){
 			// Get
 			if($name === NULL){
@@ -46,6 +75,11 @@
 			}
 		}
 
+		/**
+		 * Give the forms created by the user
+		 * @access public
+		 * @return array of Form
+		 */
 		public function created() {
 			global $database;
 			$query = mysqli_query($database, "	SELECT 	form_id
@@ -61,6 +95,11 @@
 			return $res;
 		}
 
+		/**
+		 * Give the forms which the user is recipient
+		 * @access public
+		 * @return array of Form
+		 */
 		public function recipient() {
 			global $database;
 			$query = mysqli_query($database, "	SELECT DISTINCT form_id
@@ -82,11 +121,22 @@
 			return $res;
 		}
 
+		/**
+		 * The user is creator of the form formId
+		 * @access public
+		 * @param integer $formId id's form
+		 * @return boolean TRUE (FALSE) if user is (not) creator of form
+		 */
 		public function isCreator($formId){
 			// TODO
 			return FALSE;
 		}
 
+		/**
+		 * Give all users
+		 * @static
+		 * @return array of User
+		 */
 		public static function all() {
 			global $database;
 			$res = [];

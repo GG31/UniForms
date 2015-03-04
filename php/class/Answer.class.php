@@ -26,14 +26,16 @@
 		private $state;
 		
 		/**
-		 * 
-		 * @var Element
+		 * The list of responses for each element
+		 * @access private
+		 * @var Array()
 		 */
 		private $elementsValues = [];
 
 		/**
 		 * Constructor
 		 * Create an answer, if already exist fill the attributes from the database
+		 * @access public
 		 * @param integer $id the id's answer default NULL
 		 */
 		public function __construct($id = NULL){
@@ -101,6 +103,7 @@
 
 		/**
 		 * Get and set the form's id
+		 * @access public
 		 * @param integer $id the id's answer default NULL
 		 * @return integer
 		 */
@@ -118,6 +121,7 @@
 		
 		/**
 		 * Get and set the answer's state
+		 * @access public
    		 * @param integer $state
 		 * @return boolean TRUE (validated) or FALSE(not validated yet)
 		 */
@@ -135,6 +139,7 @@
 
 		/**
 		 * Get and set the previous answer's id
+		 * @access public
 		 * @param integer $formId the id of the associated form
 		 * @return boolean TRUE (validated) or FALSE(not validated yet)
 		 */
@@ -150,6 +155,12 @@
 			}
 		}
 
+		/**
+		 * Get and set the list of responses for each element
+		 * @access public
+		 * @param integer $elementsValues
+		 * @return array
+		 */
 		public function elementsValues($elementsValues = NULL){
 			// Get
 			if($elementsValues === NULL){
@@ -162,6 +173,12 @@
 			}
 		}
 
+		/**
+		 * Put in a table the list of answers for a given element
+		 * @access public
+		 * @param integer $formId the id of the associated form
+		 * @return array
+		 */
 		public function values($elemId){
 			$ret = [];
 			// var_dump($this->elementsValues);
@@ -171,10 +188,14 @@
 					break;
 				}
 			}
-
 			return $ret;
 		}
 
+		/**
+		 * Returns an array of ids of users who responded
+		 * @access public
+		 * @return array
+		 */
 		public function userId(){
 			global $database;
 			$ret = "";
@@ -194,6 +215,11 @@
 			return $ret;
 		}
 
+		/**
+		 * Returns an array of identifiers of forms has owned a reply
+		 * @access public
+		 * @return array
+		 */
 		public function formId(){
 			global $database;
 			$ret = "";
@@ -219,6 +245,7 @@
 
 		/**
 		 * Saves answer in the database
+		 * @access public
 		 * @param Form $formdestId
 		 */
 		public function save($formdestId){
@@ -273,6 +300,7 @@
 
 		/**
 		 * save() and update status to TRUE
+		 * @access public
 		 * @param Form $formdestId
 		 */
 		public function send($formdestId) {
@@ -289,6 +317,7 @@
 		
 		/**
 		 * Delete all registers related to an answer and in the tables formdest, elementanswer, answervalue
+		 * @access public
 		 */
 		public function delete(){
 			global $database;

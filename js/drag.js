@@ -68,7 +68,6 @@ groupElementsDroppable = function() {
          });
          if (yes) {
             appendToGroup($(this), idToPutIntoGroup, valueToPutIntoGroup);
-            //$(this).append($('<div class="alert alert-warning alert-dismissible" role="alert" style="display: inline-block">  <button type="button" class="close btn btn-primary btn-lg" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span class="valueLabelElementsOfGroup">'+valueToPutIntoGroup+'</span><span class="valueIdElementsOfGroup">'+idToPutIntoGroup+'</span></div>'));
          }
          ui.draggable.draggable('option','revert',true);
          setTimeout(function () {
@@ -155,6 +154,7 @@ addElement = function(elementCodeId, posX, posY, idEl, idChild) {
    resize(el);
    
    registerPos(idChild, el);
+   growZone();
    ids = ids + 1;
 }
 
@@ -189,9 +189,13 @@ addProp = function(id, type, minvalue,maxvalue,defaultValue,required, width, hei
      $('#'+id).append(div);
      i = i + 1;
    });
-   elementList[id].label = label; 
-   $('#label_'+id).text(label);
+   if (type != 9) {
+      elementList[id].label = label;
+      $('#label_'+id).text(label); 
+   }
    if (type == 9) {
+      elementList[id].value = label;
+      console.log("label " + label);
       $('#'+id).text(elementList[id].value);
    } 
    
@@ -368,7 +372,7 @@ $('input[type=submit]').click(function() {
 
    // Form must have a name
    // Default name : "Formulaire Sans Nom"
-   if ($("#formName").text() == "" || $("#formName").text() == "Nom du formulaire") {
+   if ($("#formName").text() == "" || $("#formName").text() == "Formulaire sans nom") {
       $("#infoFormName").val("Formulaire Sans Nom");
    }
 
@@ -614,7 +618,7 @@ hasSeveralValues = function () {
 
 $("#formName").focusout(function() {
    if($("#formName").text() === '') {
-      $("#formName").text("Formulaire sans nom");
+      $("#formName").text("Formulaire Sans Nom");
    }
    $("#infoFormName").val($("#formName").text());
 });

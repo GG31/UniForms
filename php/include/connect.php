@@ -1,1 +1,1 @@
-<?php global $database;  $database = mysqli_connect('localhost', 'root', 'root', 'uniforms') ?>
+<?php global $database;  $database = mysqli_connect('localhost', 'root', 'root', 'uniforms'); ?>

@@ -20,10 +20,10 @@
 	/**
 	 * Represents an element of a form
 	 */	
-	
 	Class Element {
 		
 		/**
+		 * Id of the element
 		 * @access private
 		 * @var integer
 		 */
@@ -137,6 +137,7 @@
 
 		/**
 		 * Constructor
+		 * @access public
 		 * @param string $id
 		 */
 		public function __construct($id = NULL){
@@ -195,6 +196,7 @@
 
 		/**
 		 * Get and Set all the element's attributes !
+		 * @access public
 		 * @return array of attributes
 		 */
 		public function attr(){
@@ -254,6 +256,7 @@
 		
 		/**
 		 * Get and Set the element's id
+		 * @access public
 		 * @param integer $id
 		 * @return integer
 		 */
@@ -271,6 +274,7 @@
 		
 		/**
 		 * Get and Set the element's type
+		 * @access public
 		 * @param integer $type
 		 * @return integer
 		 */
@@ -288,6 +292,7 @@
 		
 		/**
 		 * Get and Set the label
+		 * @access public
 		 * @param string $label
 		 * @return string
 		 */
@@ -305,6 +310,7 @@
 		
 		/**
 		 * Get and Set the x position
+		 * @access public
 		 * @param integer $x
 		 * @return integer
 		 */
@@ -322,6 +328,7 @@
 		
 		/**
 		 * Get and Ser the y position
+		 * @access public
 		 * @param integer $y
 		 * @return integer
 		 */
@@ -339,6 +346,7 @@
 		
 		/**
 		 * Get and Set the min value allowed
+		 * @access public
 		 * @param integer $min
 		 * @return integer
 		 */
@@ -356,6 +364,7 @@
 		
 		/**
 		 * Get and Set the max value allowed
+		 * @access public
 		 * @param integer $max
 		 * @return integer
 		 */
@@ -373,6 +382,7 @@
 		
 		/**
 		 * Get and Set the width
+		 * @access public
 		 * @param integer $width
 		 * @return integer
 		 */
@@ -390,6 +400,7 @@
 		
 		/**
 		 * Get and Set the height
+		 * @access public
 		 * @param integer $height
 		 * @return integer
 		 */
@@ -407,6 +418,7 @@
 		
 		/**
 		 * Get and Set the default value
+		 * @access public
 		 * @param string $defaultvalue
 		 * @return string
 		 */
@@ -424,6 +436,7 @@
 		
 		/**
 		 * Get and Ser the placeholder
+		 * @access public
 		 * @param string $placeholder
 		 * @return string
 		 */
@@ -441,6 +454,7 @@
 		
 		/**
 		 * Get and Set if the element is required
+		 * @access public
 		 * @param boolean $required
 		 * @return boolean
 		 */
@@ -458,6 +472,7 @@
 		
 		/**
 		 * Get and Set if the element is image
+		 * @access public
 		 * @param boolean $required
 		 * @return boolean
 		 */
@@ -475,6 +490,7 @@
 		
 		/**
 		 * Get and Set if the list big
+		 * @access public
 		 * @param boolean $bigList
 		 * @return boolean
 		 */
@@ -492,6 +508,7 @@
 		
 		/**
 		 * Get and Set the direction
+		 * @access public
 		 * @param integer $direction
 		 * @return integer
 		 */
@@ -509,6 +526,7 @@
 		
 		/**
 		 * Get ans Set the element's options
+		 * @access public
 		 * @param array of array $options. for each option must exist an array with: "value" "order" "default".
 		 * @return array
 		 */
@@ -526,6 +544,7 @@
 		
 		/**
 		 * Save the element on the database
+		 * @access public
 		 * @param Group $groupId
 		 */
 		public function save($groupId){

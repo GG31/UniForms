@@ -1,30 +1,30 @@
 ﻿<!doctype html>
 <?php
-   ini_set('display_errors', 1);
-   error_reporting ( E_ALL );
-   include_once 'include/includes.php';
+ini_set ( 'display_errors', 1 );
+error_reporting ( E_ALL );
+include_once 'include/includes.php';
 
-   if(isset($_GET["form_id"]) && isset($_GET["formdest_id"]) && isset($_GET["prev_id"])){     // New answer
-      $form_id    = $_GET["form_id"];
-      $formdest_id= $_GET["formdest_id"];
-      $prev_id    = $_GET["prev_id"];
+if (isset ( $_GET ["form_id"] ) && isset ( $_GET ["formdest_id"] ) && isset ( $_GET ["prev_id"] )) { // New answer
+	$form_id = $_GET ["form_id"];
+	$formdest_id = $_GET ["formdest_id"];
+	$prev_id = $_GET ["prev_id"];
+	
+	$form = new Form ( $form_id );
+	$state = FALSE;
+	$new = TRUE;
+}
 
-      $form       = new Form($form_id);
-      $state      = FALSE;
-      $new        = TRUE;
-   }
-   
-   if(isset($_GET["ans_id"])){      // Load answer
-      $ans_id     = $_GET["ans_id"];
-
-      $ans        = new Answer($ans_id);
-      $prev_id    = $ans->prev();
-      $form_id    = $ans->formId();
-
-      $form       = new Form($form_id);
-      $state      = $ans->state();
-      $new        = FALSE;
-   }
+if (isset ( $_GET ["ans_id"] )) { // Load answer
+	$ans_id = $_GET ["ans_id"];
+	
+	$ans = new Answer ( $ans_id );
+	$prev_id = $ans->prev ();
+	$form_id = $ans->formId ();
+	
+	$form = new Form ( $form_id );
+	$state = $ans->state ();
+	$new = FALSE;
+}
 ?>
 <html>
 <head>
@@ -34,20 +34,43 @@
    <link rel="stylesheet" href="../lib/bootstrap-3.3.1/css/min.css"
       type="text/css" />
    <link rel="stylesheet" href="../css/styles.css" type="text/css" />
+   <style type="text/css">
+      #answerSheet{
+         border: 1px solid black;
+         width: 794px;
+         height: 1122px;
+      }
+      .square {
+         width:200px;
+         height:200px;
+         background:transparent;
+         border: 2px solid black;
+      }
+      .circle{
+         width:200px;
+         height:200px;
+         background:transparent;
+         border: 2px solid black;
+         -webkit-border-radius:100px;
+         -moz-border-radius:100px;
+         -o-border-radius:100px;
+         border-radius:100px;
+      }
+   </style>
    <?php
-   /*if($form->printable()==FALSE){
-      echo "<link rel='stylesheet' media='print' href='../css/notprint.css' type='text/css' />";
-   }else {
-      echo "<link rel='stylesheet' media='print' href='../css/print.css' type='text/css' />";
-   }*/
-   ?>
+			if ($form->printable () == 0) {
+				echo "<link rel='stylesheet' media='print' href='../css/notprint.css' type='text/css' />";
+			} else {
+				echo "<link rel='stylesheet' media='print' href='../css/print.css' type='text/css' />";
+			}
+			?>
 
    <script src="../lib/jquery-2.1.1/min.js"></script>
-   <script src="../lib/bootstrap-3.3.1/js/min.js"></script>
-   <script src="../js/elems.js"></script>
+<script src="../lib/bootstrap-3.3.1/js/min.js"></script>
+<script src="../js/elems.js"></script>
 </head>
 <body>
-   <script>
+	<script>
       $(document).ready(function(){
          elems    = [];
          
@@ -68,37 +91,38 @@
             }
 
             $prevs = array_reverse($prevs);
+            $maxBottom = 0;
 
             foreach ($groups as $groupNum => $group) {
                $elems = $group->elements();
 
                foreach ($elems as $elem) {
+                  $attr = $elem->attr();
+                  // var_dump($attr);
+                  $bottom = $attr["y"] + $attr["height"] + (strlen($attr["label"]) > 0 ? 25 : 0) + count($attr["options"])*25;
+                  $maxBottom = max($maxBottom, $bottom);
+
                   $json = json_encode($elem->attr());
          ?>
                   e = new Element(<?php echo $json ?>, '#answerSheet')
                         .answers(
-                           <?php echo isset($prevs[$groupNum]) ?
-                                    json_encode(
-                                       $prevs[$groupNum]->values($elem->id())
-                                    ) :
-                                    "[]";
-                           ?>
+                           <?php echo isset ( $prevs [$groupNum] ) ? json_encode ( $prevs [$groupNum]->values ( $elem->id () ) ) : "[]";
+											?>
                         );
                   <?php
-                     $in = $new ?
-                              $group->in($formdest_id) :
-                              $group->in(NULL, $ans_id);
-
-                     echo !$in ?
-                              "e.disable();" :
-                              "";
-                  ?>
+											$in = $new ? $group->in ( $formdest_id ) : $group->in ( NULL, $ans_id );
+											
+											echo ! $in ? "e.disable();" : "";
+											?>
 
                   elems.push(e);
          <?php
-               }
-            }
-         ?>
+										}
+									}
+									?>
+
+         // Set height of answer sheet
+         $('#answerSheet').css('height', "<?php echo $maxBottom + 5 ?>px");
 
          $('input[type=submit]').on('click', {elems: elems}, function(event){
             $('input[name=answers]').attr('value', JSON.stringify(getAnswers(elems)));
@@ -106,22 +130,22 @@
          });
 
          <?php
-            if($state == TRUE){
-         ?>
+      		if ($state == TRUE) {
+      	?>
             disableForm('#answerSheet');
          <?php
-            }
-         ?>
+				}
+			?>
       });
 
    </script>
-   	<div class="container">
-         <?php include 'include/header.php'; ?>
-  		   <?php include 'include/nav.php'; ?>
+	<div class="container">
+		<span id="header"><?php include 'include/header.php'; ?></span> <span
+			id="nav"><?php include 'include/nav.php'; ?></span>
          <?php
-
-            if($state == TRUE){
-         ?>
+									
+									if ($state == TRUE) {
+										?>
                <div class="alert alert-warning text-center" role="alert">
 			Ce formulaire a déjà été validé !</div>
          <?php
@@ -135,10 +159,11 @@
                <div class="panel-body">
                   <form
                      id="answerSheet"
+                     class="center-block"
                      role="form"
                      action="include/fill_form.php"
                      method="post"
-                     style="overflow:visible;height:493px;"
+                     style="position:relative;overflow:visible;height:493px;"
                      >
                   </form>
                </div>
@@ -177,8 +202,7 @@
                   style="<?php echo $form->anon() == TRUE || $state == TRUE ? "display:none;" : "" ?>"
                   form="answerSheet"
                   <?php //echo $state ? "DISABLED" : "" ?>
-                  >
-               <input
+                  > <input
                   type="submit"
                   class="btn btn-primary btn-lg btn-block"
                   value="Envoyer"
@@ -187,9 +211,9 @@
                   style="<?php echo $state == TRUE ? "display:none;" : "" ?>"
                   <?php //echo $state ? "DISABLED" : "" ?>
                   >
-            </div>
-         </div>
-   	  	<?php include 'include/footer.php'; ?>
-      </div>
+			</div>
+		</div>
+		<span id="footer"><?php include 'include/footer.php'; ?></span>
+	</div>
 </body>
 </html>

@@ -1,293 +1,638 @@
 <?php
-/**
- * Represents a form that has an id, a creator, a state, two booleans properties to define if it is anonymous and printable and an array of groups of elements and recipients.
- */
-class Form {
 	/**
-     * @access private
-     * @var integer 
-     */
-	private $id = NULL;
-	
-	/**
-     * @access private
-     * @var string 
-     */
-	private $name = NULL;
-	
-	/**
-	  * Creator of this form
-     * @access private
-     * @var User 
-     */
-	private $creator;
+	 * Represents a form that has an id, a creator, a state, two booleans properties to define if it is anonymous and printable and an array of groups of elements and recipients.
+	 */	
+	Class Form {
+		
+		/**
+		 * Id of this form
+		 * @access private
+		 * @var integer
+		 */
+		private $id;
+		
+		/**
+		 * Creator of this form
+		 * @access private
+		 * @var User
+		 */
+		private $creator;
+		
+		/**
+		 * Id of this form
+		 * @access private
+		 * @var string
+		 */
+		private $name;
+		
+		/**
+		 * State of the form
+		 * @access private
+		 * @var boolean TRUE (validated) or FALSE(not validated yet)
+		 */
+		private $state;
+		
+		/**
+		 * A form group is a group of form elements and the recipients that can answer these elements.
+		 * @access private
+		 * @var Group
+		 */
+		private $groups;
+		
+		/**
+		 * Form which can be printed
+		 * @access private
+		 * @var boolean TRUE (printable) or FALSE(not printable)
+		 */
+		private $print;
+		
+		/**
+		 * Form which can be filled by everybody
+		 * @access private
+		 * @var boolean TRUE (anonymous) or FALSE(not anonymous)
+		 */
+		private $anon;
 
-	/**
-	 * State of the form 
-     * @access private
-     * @var boolean TRUE (validated) or FALSE(not validated yet)
-     */
-	private $state;
-	
-	/**
-	 * Form which can be filled by everybody 
-     * @access private
-     * @var boolean TRUE (anonymous) or FALSE(not anonymous)
-     */
-	private $anonymous;
-	
-	/**
-	 * Form which can be printed
-     * @access private
-     * @var boolean TRUE (printable) or FALSE(not printable)
-     */
-	private $printable;
-	
-	/**
-	 * The number of answer accepted by a recipient.
-     * @access private
-     * @var integer number of allowed answers
-     */
-	private $maxAnswers;
-	
-	/*
-	* A form group is a group of form elements and the recipients that can answer these elements.
-	* @access private
-	* @var FormGroup 
-	*/
-	private $formGroups;
-	
-	/**
-	 * Constructor
-	 * Create a form, if already exist, find the information on the database to fill the attributes
-	 * @param integer $idForm the id's form default -1
-	 */
-	public function __construct($idForm = -1) {
-		if ($idForm == - 1)
-			$this->state = FALSE;
-		else {
-			$this->id = $idForm;
+		/**
+		 * Constructor
+		 * Create a form, if already exist, find the information on the database to fill the attributes
+		 * @access public
+		 * @param integer $id the id's form default NULL
+		 */
+		public function __construct($id = NULL){
+			global $database;
+			if($id !== NULL){
+				// Id
+				$this->id = $id;
 
-			$qForm = mysql_query ( "SELECT * FROM form WHERE form_id = " . $idForm );
-			if (! mysql_num_rows ( $qForm )) {
-				// Error...
-				exit ();
-			}
-			
-			$rForm = mysql_fetch_array ( $qForm );
-			
-			$this->creator = new User ( $rForm ["user_id"] );
-			$this->state = $rForm ["form_status"] == 1 ? TRUE : FALSE;
-			$this->printable = $rForm ["form_printable"] == 1 ? TRUE : FALSE;
-			$this->anonymous = $rForm ["form_anonymous"] == 1 ? TRUE : FALSE;
-			$this->maxAnswers = $rForm ["form_maxanswers"];
-			$this->name = $rForm ["form_name"];
-			
-			// Load Groups
-			$this->formGroups = array();
-			$qFormGroup = mysql_query("SELECT * FROM formgroup WHERE form_id = ".$this->id);
-			while ($rFormGroup = mysql_fetch_array($qFormGroup)){
-				array_push ($this->formGroups, new FormGroup($rFormGroup["formgroup_id"]));
+				// Creator, Name, Status, Print, Anon
+				$query = mysqli_query($database, "	SELECT 	*
+										FROM 	form
+										WHERE 	form_id = " . $this->id);
+
+				if (!mysqli_num_rows($query)){
+					die("Form::__construct() : id not found !");
+				}else{
+					$results = mysqli_fetch_array($query);
+
+					$this->creator 		= new User($results["user_id"]);
+					$this->name 		= $results["form_name"];
+					$this->state 		= $results["form_status"] 		== 1 ? TRUE : FALSE;
+					$this->print 	 	= $results["form_printable"] 	== 1 ? TRUE : FALSE;
+					$this->anon 	 	= $results["form_anonymous"] 	== 1 ? TRUE : FALSE;
+				}
+				
+				// Groups
+				$query = mysqli_query($database, "	SELECT 		*
+													FROM 		formgroup
+													WHERE 		form_id = " . $this->id. "
+													ORDER BY 	formgroup_id");
+
+				if (!mysqli_num_rows($query)){
+					die("Form::__construct() : groups not found !");
+				}else{
+					$this->groups = [];
+
+					while ($results = mysqli_fetch_array($query)){
+						$this->groups[] = new Group($results["formgroup_id"]);
+					}
+				}
 			}
 		}
-	}
-	
-	/**
-	 * Give the form's id
-	 * @return integer
-	 */
-	public function getId() {
-		return $this->id;
-	}
-	
-	/**
-	 * Give the form's name
-	 * @return string
-	 */
-	public function getName() {
-		return $this->name;
-	}
-	
-	/**
-	 * Give the form's state
-	 * @return boolean TRUE (validated) or FALSE(not validated yet)
-	 */
-	public function getState() {
-		return $this->state;
-	}
-	
-	/**
-	 * Give the form's creator
-	 * @return User
-	 */
-	public function getCreator() {
-		return $this->creator;
-	}
-	
-	/**
-	 * Give the form's maxAnswers, the maximum of fill possibilities by one recipient
-	 * @return integer
-	 */
-	public function getMaxAnswers() {
-		return $this->maxAnswers;
-	}
-	
-	/**
-	 * Give all recipients of the form
-	 * @return array of User
-	 */
-	/*public function getRecipient() {
-		$recipients = array ();
-		foreach ( $this->listRecipient as $user )
-			if (! in_array ( $user ["User"], $recipients ))
-				array_push ( $recipients, $user ["User"] );
-		return $recipients;
-	}*/
-	
-	/**
-	 * Give printable variable
-	 * @return boolean true if printable, false if is not
-	 */
-	public function getPrintable() {
-		return $this->printable;
-	}
-	
-	/**
-	 * Give anonymous variable
-	 * @return boolean true if is anonymous, false if is not
-	 */
-	public function getAnonymous() {
-		return $this->anonymous;
-	}
-	
-	/**
-	 * Give all elements of the form
-	 * @return array of elements
-	 */
-	public function getFormElements() {
-		$res = [];
-		foreach ($this->formGroups as $group)
-			$res = array_merge($res, $group->getGroupElements()); // Union of arrays		
-		return $res;
-	}
-	
-	/**
-	 * Give the list of recipient who have the status of its answers equals to $state
-	 * @param array of integer $user_ids
-	 * @param integer $state. (default: -1) state of answers
-	 * @return array of User
-	 */
-	public function getFormRecipients($user_ids = [], $state = NULL){
-		$res = [];
-		foreach ($this->formGroups as $group)
-			$res = array_merge($res, $group->getFormGroupRecipients($user_ids, $state)); // Union of arrays		
-		return $res;
-	}
 
-   /**
-    * Sets the creator of the form
-    * @param User $user
-    */
-	public function setCreator($user){
-		$this->creator = $user;
-	}
-	
-	/**
-    * Sets the name of the form
-    * @param string $name
-    */
-	public function setName($name){
-		$this->name = $name;
-	}
-	
-	/**
-    * Sets the printable value
-    * @param boolean $isPrintable
-    */
-	public function setPrintable($isPrintable) {
-		$this->printable = $isPrintable;
-	}
-	
-	/**
-    * Sets the anonymous value
-    * @param boolean $isAnonymous
-    */
-	public function setAnonymous($isAnonymous) {
-		$this->anonymous = $isAnonymous;
-	}
-	
-	/**
-	 * Set the maxAnswers value, number maximum of answers by a recipient
-	 * @param integer $maxAnswers
-	 */
-	public function setMaxAnswers($maxAnswers) {
-		$this->maxAnswers = $maxAnswers;
-	}
-	
-	/**
-	 * Save the form on the database
-	 */
-	public function save() {
-		// Forms can be created or loaded
-		if($this->id == NULL) {			// Creates new form
-			// Inserts status, anonymous, print and maxAnswers
-			mysql_query("INSERT INTO form(user_id, form_name, form_status, form_anonymous, form_printable, form_maxanswers) VALUES ("
-									. $this->creator->getId()
-									. ",'" . $this->name . "'"
-									. ", 0, "
-									. ($this->anonymous ? 1 : 0) . ", "
-									. ($this->printable ? 1 : 0) . ", "
-									. $this->maxAnswers 
-									. ") "
-			) or die('<br><strong>SQL Error (1)</strong>:<br>'.mysql_error());
-			$this->id = mysql_insert_id();
+		/**
+		 * Get and Set the form's id
+		 * @access public
+		 * @param integer $id
+		 * @return integer
+		 */
+		public function id($id = NULL){
+			// Get
+			if($id === NULL){
+				return $this->id;
+			}
+			// Set
+			else{
+				$this->id = $id;
+				return $this;
+			}
+		}
 
-		} else {				// Updates existing form
-			// Updates status, anonymous, print and maxAnswers
-			mysql_query("UPDATE form SET form_status = 0"
-			                  .", form_name = '" . $this->name ."'" 
-									.", form_anonymous = " . ($this->anonymous ? 1 : 0)
-									.", form_printable = " . ($this->printable ? 1 : 0)
-									.", form_maxanswers = " . $this->maxAnswers
-									." WHERE form_id = "   . $this->id
-			) or die('<br><strong>SQL Error (2)</strong>:<br>'.mysql_error());
-			
-			// Cleans form groups list in db. It automatically cleans formelements and formdest.
-			mysql_query("DELETE FROM formgroup WHERE form_id = ".$this->id
-			) or die('<br><strong>SQL Error (5)</strong>:<br>'.mysql_error());
+		/**
+		 * Get and Set the form's creator
+		 * @access public
+		 * @param User $creator
+		 * @return User
+		 */
+		public function creator($creator = NULL){
+			// Get
+			if($creator === NULL){
+				return $this->creator;
+			}
+			// Set
+			else{
+				$this->creator = $creator;
+				return $this;
+			}
+		}
+
+		/**
+		 * Get and Set the form's name
+		 * @access public
+		 * @param string $name
+		 * @return string
+		 */
+		public function name($name = NULL){
+			// Get
+			if($name === NULL){
+				return $this->name;
+			}
+			// Set
+			else{
+				$this->name = $name;
+				return $this;
+			}
+		}
+
+		/**
+		 * Get and Set the form's state
+		 * @access public
+		 * @param boolean $state
+		 * @return boolean TRUE (validated) or FALSE(not validated yet)
+		 */
+		public function state($state = NULL){
+			// Get
+			if($state === NULL){
+				return $this->state;
+			}
+			// Set
+			else{
+				$this->state = $state;
+				return $this;
+			}
+		}
+
+		/**
+		 * Get and Set the form's group
+		 * @access public
+		 * @param Group $groups
+		 * @return Group
+		 */
+		public function groups($groups = NULL){
+			// Get
+			if($groups === NULL){
+				return $this->groups;
+			}
+			// Set
+			else{
+				$this->groups = $groups;
+				return $this;
+			}
+		}
+
+		/**
+		 * Give printable variable
+		 * @access public
+		 * @param boolean $print
+		 * @return boolean true if printable, false if is not
+		 */
+		public function printable($print = NULL){
+			// Get
+			if($print === NULL){
+				return $this->print;
+			}
+			// Set
+			else{
+				$this->print = $print;
+				return $this;
+			}
+		}
+
+		/**
+		 * Get and Set anonymous variable
+		 * @access public
+		 * @param boolean $anon
+		 * @return boolean true if is anonymous, false if is not
+		 */
+		public function anon($anon = NULL){
+			// Get
+			if($anon === NULL){
+				return $this->anon;
+			}
+			// Set
+			else{
+				$this->anon = $anon;
+				return $this;
+			}
+		}
+	
+		/**
+		 * Generate answers tree : Find groups in which the user belongs
+		 * For each group, find validated answers in previous groups
+		 * If first group, consider every user's answers
+		 * For each answers in the valid set, find if user answered
+		 * Find out if limit is reached
+		 * Filter answers with $state
+		 * @access public
+		 * @param User $userId
+		 * @param boolean $state
+		 * @param Group $groups
+		 * @return Ambigous <multitype:multitype: , number, unknown>
+		 */
+		public function tree($userId, $state = FALSE, $groups = NULL){
+			$ret = [];
+
+			// Find groups in which the user belongs
+			$whichGroups = $groups ? $groups : $this->whichGroups($userId);
+			$whichLength = count($whichGroups);
+
+			// For each group, find validated answers in previous groups
+			for($i = 0; $i < $whichLength; $i++){
+				$g = $whichGroups[$i];
+				$group = $this->groups[$g];
+
+				$ret[$g] = [];
+				$answers = $group->answers()[$userId];
+
+				// If first group, consider every user's answers
+				if($g == 0){
+					$ret[$g][0] = $answers;
+				}else{
+					$prevGroup = $this->groups[$g - 1];
+					$valid = $prevGroup->validAnswers(); // Valid set
+
+					// For each answers in the valid set, find if user answered
+					foreach($valid as $validAnswers){
+						foreach($validAnswers as $validAnswer){
+							$ret[$g][$validAnswer->id()] = [];
+
+							foreach($answers as $key => $answer){
+								if($answer->prev() == $validAnswer->id()){
+									$ret[$g][$validAnswer->id()][] = $answer;
+									unset($answers[$key]);
+								}
+							}
+						}
+					}
+				}
+
+				// Now $ret[$g] contains : ["prevAnsId" => [$ans0, $ans1, ...], ...]
+				// Find out if limit is reached
+				$lim = $group->limit();
+				foreach($ret[$g] as $prevAnsId => $answers){
+					if($lim > 0){
+						$left = $lim - count($answers);
+						$ret[$g][$prevAnsId]["left"] = $left;
+					}else{
+						$ret[$g][$prevAnsId]["left"] = -1;
+					}
+
+					// Filter answers with $state
+					foreach ($answers as $key => $answer) {
+						if($answer->state() != $state){
+							unset($ret[$g][$prevAnsId][$key]);
+						}
+					}
+				}
+			}
+
+			return $ret;
+		}
+
+		/**
+		 * Retourn the group of a user
+		 * @access public
+		 * @param User $userId
+		 * @return Group
+		 */
+		public function whichGroups($userId){
+			$ret = [];
+
+			foreach($this->groups as $groupNum => $group){
+				if(array_key_exists($userId, $group->answers())){
+					$ret[] = $groupNum;
+				}
+			}
+
+			return $ret;
 		}
 		
-		//For each group: insert group, insert elements, insert recipients.
-		foreach($this->formGroups as $indexGroup => $formGroup){
-			$formGroup->save($this->id);
+		/**
+		 * Allocates and returns a list of ids of a group
+		 * @access public
+		 * @param User $userId
+		 * @param Group $groupNum
+		 * @return Group
+		 */
+		public function formdestId($userId, $groupNum){
+			$group = $this->groups[$groupNum];
+
+			return $group->formdestId($userId);
 		}
+
+		/**
+		 * Returns a list of all users of the previous groups who responded
+		 * @access public
+		 * @param Answer $ansId
+		 * @return array(User)
+		 */
+		public function chain($ansId){
+			if($ansId != 0){
+				$ret = [];
+
+				$ans = new Answer($ansId);
+				$ret[] = $ans->userId();
+				$prev = $ans->prev();
+
+				while($prev != 0){
+					$ans = new Answer($prev);
+					$ret[] = $ans->userId();
+					$prev = $ans->prev();
+				}
+			}
+
+			$ret[] = $this->creator->id();
+
+			return array_reverse($ret);
+		}
+
+		public function done(){
+			// TODO !!!!!!!!!!!!!!!!!!!!!!!!!!! ??????
+			return false;
+		}
+
+		public function getListRecipient($WTF){
+			// TODO
+			return FALSE;
+		}
+		
+		/**
+		 * Save the form on the database
+		 * @access public
+		 */
+		public function save() {
+			global $database;
+			// Create form
+			if($this->id === NULL){
+				mysqli_query($database, "INSERT INTO form(
+											user_id,
+											form_name,
+											form_status,
+											form_printable,
+											form_anonymous)
+									VALUES ("
+										. $this->creator->id() . ","		// user_id
+										. "'" . mysqli_real_escape_string($database, $this->name) . "',"			// form_name
+										. "0,"								// form_status
+										. ($this->print ? 1 : 0) . ", "		// form_printable
+										. ($this->anon 	? 1 : 0) . ")")		// form_anonymous
+				or die("Form::save() can't create form : " . mysqli_error($database));
+
+				// Auto generated id
+				$this->id = mysqli_insert_id($database);
+			}
+			// Update form
+			else{
+				// Reset form
+				mysqli_query($database, "	UPDATE 	form
+											SET 	form_status 		= 		0,
+													form_name 			= '" . 	 $this->name . "',
+													form_anonymous 		= "  . 	($this->anon 	? 1 : 0) . ",
+													form_printable 		= "  . 	($this->print 	? 1 : 0) . "
+											WHERE 	form_id 			= "  . 	 $this->id)
+				or die("Form::save() can't update form : " . mysqli_error($database));
+				
+				// Delete groups
+				Group::delete($this->id);
+			}
+
+			// Create groups
+			foreach($this->groups as $group){
+				$group->save($this->id);
+			}
+		}
+
+		/**
+		 * save() and update status to TRUE
+		 * @access public
+		 */
+		public function send(){
+			global $database;
+			$this->save();
+			$this->state = TRUE;
+
+			// Update status
+			mysqli_query($database, "	UPDATE 	form
+							SET 	form_status = 1
+							WHERE 	form_id 	= " . $this->id)
+			or die("Form::send() can't update status : " . mysqli_error($database));
+		}
+
+		/**
+		 * Delete one form and all registers related to it in other tables (formdest, formelement, elementanswer, answervalue)
+		 * @access public
+		 */
+		public function delete(){
+			global $database;
+			// Delete form (DELETE CASCADE)
+			mysqli_query($database, "	DELETE FROM form
+							WHERE 		form_id = " . $this->id)
+			or die("Form::delete() can't delete form : " . mysqli_error($database));
+		}
+		
+		/**
+	    * Creates a file with a SQL script. This script generates a database and tables containing information related to all validated answers of this form.
+		* If the form is not validated returns 0, else returns 1.
+		* @access public
+		* @return file "exportSQL.sql"
+	    */	
+		public function exportSQL(){
+			global $database;
+			if($this->state == FALSE or $this->id == NULL)
+				return 0;
+			
+			// Get current database name
+			$db = mysqli_fetch_array(mysqli_query($database, "SELECT DATABASE()"));
+			$dbName = $db["DATABASE()"];
+			
+			// Get current autoincrement values
+			$AIanswer = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$dbName."' AND TABLE_NAME = 'answer';"));
+			$AIanswervalue = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$dbName."' AND TABLE_NAME = 'answervalue';"));
+			$AIelementanswer = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$dbName."' AND TABLE_NAME = 'elementanswer';"));
+			$AIelementoption = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$dbName."' AND TABLE_NAME = 'elementoption';"));
+			$AIform = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$dbName."' AND TABLE_NAME = 'form';"));
+			$AIformdest = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$dbName."' AND TABLE_NAME = 'formdest';"));
+			$AIformelement = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$dbName."' AND TABLE_NAME = 'formelement';"));
+			$AIformgroup = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$dbName."' AND TABLE_NAME = 'formgroup';"));
+			$AIuser = mysqli_fetch_array(mysqli_query($database, "SELECT `AUTO_INCREMENT` FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '".$dbName."' AND TABLE_NAME = 'user';"));
+
+			$NewDBName = 'ExportedDB';
+			
+			// Disable constraints and drop, create and select database
+			$sql = 'SET FOREIGN_KEY_CHECKS=0;
+					DROP DATABASE IF EXISTS `'.$NewDBName.'`;
+					CREATE DATABASE IF NOT EXISTS `'.$NewDBName.'`;
+					USE `'.$NewDBName.'`;';
+			
+			// Create all tables
+			$sql .=	"DROP TABLE IF EXISTS `answer`;
+					CREATE TABLE IF NOT EXISTS `answer` (
+					  `answer_id` int(11) NOT NULL AUTO_INCREMENT,
+					  `formdest_id` int(11) NOT NULL,
+					  `answer_prev_id` int(11) NOT NULL,
+					  PRIMARY KEY (`answer_id`),
+					  KEY `fk_answer_formdest_idx` (`formdest_id`),
+					  CONSTRAINT `fk_answer_formdest_idx` FOREIGN KEY (`formdest_id`) REFERENCES `formdest` (`formdest_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+					) ENGINE=InnoDB AUTO_INCREMENT=".$AIanswer["AUTO_INCREMENT"]." DEFAULT CHARSET=utf8;
+
+					DROP TABLE IF EXISTS `answervalue`;
+					CREATE TABLE IF NOT EXISTS `answervalue` (
+					  `answervalue_id` int(11) NOT NULL AUTO_INCREMENT,
+					  `value` varchar(255) DEFAULT NULL,
+					  `elementanswer_id` int(11) NOT NULL,
+					  PRIMARY KEY (`answervalue_id`),
+					  KEY `fk_answervalue_elementanswer1_idx` (`elementanswer_id`),
+					  CONSTRAINT `fk_answervalue_elementanswer` FOREIGN KEY (`elementanswer_id`) REFERENCES `elementanswer` (`elementanswer_id`) ON DELETE CASCADE
+					) ENGINE=InnoDB AUTO_INCREMENT=".$AIanswervalue["AUTO_INCREMENT"]." DEFAULT CHARSET=utf8;
+
+					DROP TABLE IF EXISTS `elementanswer`;
+					CREATE TABLE IF NOT EXISTS `elementanswer` (
+					  `elementanswer_id` int(11) NOT NULL AUTO_INCREMENT,
+					  `formelement_id` int(11) NOT NULL,
+					  `answer_id` int(11) NOT NULL,
+					  PRIMARY KEY (`elementanswer_id`),
+					  KEY `fk_formanswers_formlist1_idx` (`formelement_id`),
+					  KEY `fk_formanswers_answer1_idx` (`answer_id`),
+					  CONSTRAINT `fk_formanswers_answer1_idx` FOREIGN KEY (`answer_id`) REFERENCES `answer` (`answer_id`) ON DELETE CASCADE,
+					  CONSTRAINT `fk_formanswers_formlist1_idx` FOREIGN KEY (`formelement_id`) REFERENCES `formelement` (`formelement_id`) ON DELETE CASCADE
+					) ENGINE=InnoDB AUTO_INCREMENT=".$AIelementanswer["AUTO_INCREMENT"]." DEFAULT CHARSET=utf8;
+
+					DROP TABLE IF EXISTS `elementoption`;
+					CREATE TABLE IF NOT EXISTS `elementoption` (
+					  `elementoption_id` int(11) NOT NULL AUTO_INCREMENT,
+					  `optionvalue` varchar(255) NOT NULL DEFAULT '0',
+					  `formelement_id` int(11) DEFAULT NULL,
+					  PRIMARY KEY (`elementoption_id`),
+					  KEY `FK_elementoption_formelement` (`formelement_id`),
+					  CONSTRAINT `FK_elementoption_formelement` FOREIGN KEY (`formelement_id`) REFERENCES `formelement` (`formelement_id`) ON DELETE CASCADE
+					) ENGINE=InnoDB AUTO_INCREMENT=".$AIelementoption["AUTO_INCREMENT"]." DEFAULT CHARSET=utf8;
+
+					DROP TABLE IF EXISTS `form`;
+					CREATE TABLE IF NOT EXISTS `form` (
+					  `form_id` int(11) NOT NULL AUTO_INCREMENT,
+					  `form_name` varchar(255) DEFAULT NULL,
+					  `user_id` int(11) NOT NULL,
+					  PRIMARY KEY (`form_id`),
+					  KEY `fk_form_user_idx` (`user_id`),
+					  CONSTRAINT `fk_form_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+					) ENGINE=InnoDB AUTO_INCREMENT=".$AIform["AUTO_INCREMENT"]." DEFAULT CHARSET=utf8;
+
+					DROP TABLE IF EXISTS `formdest`;
+					CREATE TABLE IF NOT EXISTS `formdest` (
+					  `formdest_id` int(11) NOT NULL AUTO_INCREMENT,
+					  `user_id` int(11) NOT NULL,
+					  `formgroup_id` int(11) NOT NULL,
+					  PRIMARY KEY (`formdest_id`),
+					  KEY `fk_formdest_user1_idx` (`user_id`),
+					  KEY `fk_formdest_form1_idx` (`formgroup_id`),
+					  CONSTRAINT `fk_formdest_form1` FOREIGN KEY (`formgroup_id`) REFERENCES `formgroup` (`formgroup_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+					  CONSTRAINT `fk_formdest_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+					) ENGINE=InnoDB AUTO_INCREMENT=".$AIformdest["AUTO_INCREMENT"]." DEFAULT CHARSET=utf8;
+
+					DROP TABLE IF EXISTS `formelement`;
+					CREATE TABLE IF NOT EXISTS `formelement` (
+					  `formelement_id` int(11) NOT NULL AUTO_INCREMENT,
+					  `type_element` int(11) DEFAULT NULL,
+					  `formgroup_id` int(11) NOT NULL,
+					  `label` varchar(255) DEFAULT NULL,
+					  PRIMARY KEY (`formelement_id`),
+					  KEY `fk_formlist_form1_idx` (`formgroup_id`),
+					  CONSTRAINT `fk_formgroup_formelement` FOREIGN KEY (`formgroup_id`) REFERENCES `formgroup` (`formgroup_id`) ON DELETE CASCADE
+					) ENGINE=InnoDB AUTO_INCREMENT=".$AIformelement["AUTO_INCREMENT"]." DEFAULT CHARSET=utf8;
+
+					DROP TABLE IF EXISTS `formgroup`;
+					CREATE TABLE IF NOT EXISTS `formgroup` (
+					  `formgroup_id` int(11) NOT NULL AUTO_INCREMENT,
+					  `form_id` int(11) NOT NULL DEFAULT '0',
+					  PRIMARY KEY (`formgroup_id`),
+					  KEY `fk_form_formgroup` (`form_id`),
+					  CONSTRAINT `fk_form_formgroup` FOREIGN KEY (`form_id`) REFERENCES `form` (`form_id`) ON DELETE CASCADE ON UPDATE NO ACTION
+					) ENGINE=InnoDB AUTO_INCREMENT=".$AIformgroup["AUTO_INCREMENT"]." DEFAULT CHARSET=latin1;
+
+					DROP TABLE IF EXISTS `user`;
+					CREATE TABLE IF NOT EXISTS `user` (
+					  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+					  `user_name` varchar(255) DEFAULT NULL,
+					  PRIMARY KEY (`user_id`)
+					) ENGINE=InnoDB AUTO_INCREMENT=".$AIuser["AUTO_INCREMENT"]." DEFAULT CHARSET=utf8;";
+			
+			// Insert form into table form
+			$sql .=	"INSERT INTO `form` VALUES (".$this->id.", '".$this->name."', ".$this->creator->id().");\r\n";
+			
+			// Insert creator into table user
+			$sql .=	"INSERT INTO `user` VALUES (".$this->creator->id().", '".$this->creator->name()."');\r\n";
+			
+			// Insert recipients into table user
+			$querydests = mysqli_query($database, "SELECT DISTINCT user.user_id, user_name FROM user JOIN (formdest JOIN formgroup 
+										ON formdest.formgroup_id = formgroup.formgroup_id AND form_id = ".$this->id.") ON formdest.user_id = user.user_id");
+										
+			while ($dests = mysqli_fetch_array($querydests))	
+				if ($dests["user_id"] != $this->creator->id())
+					$sql .=	"INSERT INTO `user` VALUES(".$dests["user_id"].",'".$dests["user_name"]."');\r\n";	
+			
+			// Insert groups into table formgroup
+			foreach ($this->groups as $group){
+				$sql .=	"INSERT INTO `formgroup` VALUES(".$group->id().",".$this->id.");\r\n";
+				
+				// Insert elements into table formelement
+				$elements = $group->elements();
+				foreach ($elements as $element){
+					$sql .=	"INSERT INTO `formelement` VALUES(".$element->id().",".$element->type().",".$group->id().",'".$element->label()."');\r\n";
+					
+					// Insert element options into table elementoption
+					$queryelemoption = mysqli_query($database, "SELECT * FROM elementoption WHERE formelement_id = ".$element->id());
+					while ($options = mysqli_fetch_array($queryelemoption))
+						$sql .=	"INSERT INTO `elementoption` VALUES(".$options["elementoption_id"].",'".$options["optionvalue"]."',".$element->id().");\r\n";
+				}
+				
+				// Insert users into table formdest
+				$queryformdest = mysqli_query($database, "SELECT * FROM formdest WHERE formgroup_id = ".$group->id());
+				while ($users = mysqli_fetch_array($queryformdest)){
+					$sql .=	"INSERT INTO `formdest` VALUES(".$users["formdest_id"].",".$users["user_id"].",".$group->id().");\r\n";
+					
+					// Insert validated answers into table answer
+					$queryanswer = mysqli_query($database, "SELECT * FROM answer WHERE answer_status = 1 AND formdest_id = ".$users["formdest_id"]);
+					while ($answers = mysqli_fetch_array($queryanswer)){
+						$sql .=	"INSERT INTO `answer` VALUES(".$answers["answer_id"].",".$users["formdest_id"].",".$answers["answer_prev_id"].");\r\n";
+						
+						// Insert into table elementanswer 
+						$queryelemanswer = mysqli_query($database, "SELECT * FROM elementanswer WHERE answer_id = ".$answers["answer_id"]);
+						while ($elemanswers = mysqli_fetch_array($queryelemanswer)){
+							$sql .=	"INSERT INTO `elementanswer` VALUES(".$elemanswers["elementanswer_id"].",".$elemanswers["formelement_id"].",".$elemanswers["answer_id"].");\r\n";
+						
+							// Insert answer values into table answervalue 
+							$queryansvalue = mysqli_query($database, "SELECT * FROM answervalue WHERE elementanswer_id = ".$elemanswers["elementanswer_id"]);
+							while ($ansvalues = mysqli_fetch_array($queryansvalue))
+								$sql .=	"INSERT INTO `answervalue` VALUES(".$ansvalues["answervalue_id"].",'".$ansvalues["value"]."',".$ansvalues["elementanswer_id"].");\r\n";
+						}
+					}
+				}
+			}
+			
+			// Enable constraints
+			$sql .=	"SET FOREIGN_KEY_CHECKS=1;";
+
+			//$fileName = "../res/sql/exportSQL.sql";
+			//$fileName .= "ExportedForm-".date('Y-m-d_H:i:s').".sql";
+			
+			//$file = fopen($fileName, "c");
+			//fwrite($file, $sql);
+			//fclose($file);
+		
+			return $sql;
+		}
+
 	}
 
-	/**
-	 * save() and update status to TRUE
-	 */
-	public function send() {
-		$this->save ();
-		$this->state = TRUE;
-		// Update status
-		mysql_query ( "UPDATE form SET form_status = 1 WHERE form_id = " . $this->id ) or die ( '<br><strong>SQL Error (7)</strong>:<br>' . mysql_error () );
-	}
-	
-	/**
-	 * Delete one form and all registers related to it in other tables (formdest, formelement, elementanswer, answervalue) 
-	 */
-	public function deleteForm(){
-		// Delete the form. All related to this form is deleted on cascade according to the definition of the foreign keys
-		mysql_query("DELETE FROM form WHERE form_id = ".$this->getId());
-	}
-	
-	/**
-    * Add a group to the form
-    * @param array FormGroup $listGroup
-    */
-	public function setGroups($listGroup){
-		$this->formGroups = $listGroup;
-	}
-}
 ?>
 

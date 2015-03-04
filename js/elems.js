@@ -12,6 +12,7 @@ Container = (function(){
 			label 		= $('<label></label>')
 							.attr('for', 'elem-' + obj.id)
 							.text(obj.label);
+
 			if(obj.type == 9){
 				container = container.append(label);
 			}else{

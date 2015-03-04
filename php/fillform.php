@@ -92,15 +92,16 @@ if (isset ( $_GET ["ans_id"] )) { // Load answer
 
             $prevs = array_reverse($prevs);
             $maxBottom = 0;
-            $margin = 0;
 
             foreach ($groups as $groupNum => $group) {
                $elems = $group->elements();
 
                foreach ($elems as $elem) {
-                  $margin = $elem->attr()["height"];
-                  $bottom = $elem->attr()["y"] + $margin;
+                  $attr = $elem->attr();
+                  // var_dump($attr);
+                  $bottom = $attr["y"] + $attr["height"] + (strlen($attr["label"]) > 0 ? 25 : 0) + count($attr["options"])*25;
                   $maxBottom = max($maxBottom, $bottom);
+
                   $json = json_encode($elem->attr());
          ?>
                   e = new Element(<?php echo $json ?>, '#answerSheet')
@@ -120,7 +121,8 @@ if (isset ( $_GET ["ans_id"] )) { // Load answer
 									}
 									?>
 
-         $('#answerSheet').css('height', "<?php echo $maxBottom ?>px");
+         // Set height of answer sheet
+         $('#answerSheet').css('height', "<?php echo $maxBottom + 5 ?>px");
 
          $('input[type=submit]').on('click', {elems: elems}, function(event){
             $('input[name=answers]').attr('value', JSON.stringify(getAnswers(elems)));
@@ -128,12 +130,12 @@ if (isset ( $_GET ["ans_id"] )) { // Load answer
          });
 
          <?php
-									if ($state == TRUE) {
-										?>
+      		if ($state == TRUE) {
+      	?>
             disableForm('#answerSheet');
          <?php
-									}
-									?>
+				}
+			?>
       });
 
    </script>

@@ -401,8 +401,22 @@ Selenium est un plugin fonctionnant sur de nombreux navigateurs (Firefox, Chrome
 \subsection{Tests classes PHP} %TODO
 Afin de vérifier le bon fonctionnement des méthodes de nos classes PHP, nous les avons testé en utilisant SimpleTest.
 
-\subsection{Tests scénarios} %TODO
-Sélénium IDE pour les tests d’interface
+\subsection{Tests scénarios}
+Afin de valider nos scénarios d’utilisation de “UniForms”, nous avons utilisé Sélénium IDE~\ref{selenium} v2.8.0 qui est un outil  d'automatisation permettant de faire des tests d'interface des applications Web.
+\begin{figure}
+\begin{center}
+\makebox[\linewidth]{%        to center the image
+  \includegraphics [width=80mm]{images/selenium.jpg}}
+\end{center}
+\caption{Interface plugin Selenium}\label{selenium}
+\end{figure}
+Sélénium est très instinctif et son temps d’apprentissage est très court, quelques minutes, cependant il ne permet pas de tester le glisser-déposer des éléments ce qui nous a empêché de tester certains de nos scénarios.\\
+Seulement trois scénarios d’utilisation ont pu être testé :
+\begin{itemize}
+\item Scénario global qui permet de faire un tour sur différentes pages de notre application (connexion puis page de création, page des réponses et enfin la page de consultation des réponses)
+\item Consulter la liste de mes formulaires, pour un formulaire donné consulter leur réponses et les exporter sous les 2 formats CSV et SQL.
+\item Répondre à un formulaire dont je suis destinataire, sauvegarder la réponse et la récupérer après pour pouvoir la modifier.
+\end{itemize}
 
 \subsection{Tests utilisateurs}
 Nous avons essayé de faire appel à des personnes de l’université qui n’ont jamais entendu parlé de ce projet, leurs réactions ne seront donc pas influencées et nous pourront noter les facilités et/ou difficultés rencontrées et ainsi améliorer l’utilisabilité. Malheureusement nous n’avons pas pu le faire pour la simple raison que les créneaux consacrés pour le projet de fin d'étude en temps complet coïncident avec les vacances universitaires, c’est pourquoi il a été difficile pour nous et pour notre encadrant pour trouver des personnes disponibles.

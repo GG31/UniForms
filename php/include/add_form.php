@@ -54,9 +54,9 @@ if (! empty ( $_POST )) {
    * Récupère les données des éléments
    */
    if(isset($_POST['info'])) {
-      // echo "INFO:<br><pre>";
-      // var_dump($_POST["info"]);
-      // echo "</pre>";
+       /*echo "INFO:<br><pre>";
+       var_dump($_POST["info"]);
+       echo "</pre>";*/
 
 
       $obj=json_decode($_POST['info'], true, 4);
@@ -148,6 +148,9 @@ function treatmentElement($key, $array) {
    }
    if(array_key_exists("label", $array)) {
       $attrs['label'] = $array['label'];
+   }
+   if(array_key_exists("value", $array)) {
+      $attrs['defaultValue'] = $array['value'];
    }
    if(array_key_exists("defaultValue", $array)) {
       $attrs['defaultValue'] = $array['defaultValue'];

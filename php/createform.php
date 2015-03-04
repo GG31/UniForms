@@ -201,7 +201,12 @@
 						usersCount 	= GROUPSUSERS[group].length;
 
 						combs = combs * usersCount * limit;
-						$('#' + group + '_combinations').text(combs === 0 ? '\&infin\;' : combs);// TODO display correct 'infin' char !
+						text = "Ce groupe génère potentiellement ";
+						text = text + (combs === 0 ?
+										"une infinité de réponses" : combs === 1 ? 
+																		"une réponse" : combs + " réponses");
+
+						$('#' + group + '_combinations').text(text);
 					}
 				}
 
@@ -357,7 +362,7 @@
 										data-placement="top"
 										title="Entrez le nombre de fois que le formulaire pourra être rempli par le(s) destinataire(s), 0 pour infini">
 									<!--<label for="multiple">Nombre de réponses max.</label>-->
-									<span id="group_0_combinations"></span>
+									<p id="group_0_combinations"></p>
 								</div>
 							</div>
 							<button type="button" class="btn btn-default btn-lg" onclick="moreGroup(1)">

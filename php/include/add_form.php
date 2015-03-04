@@ -150,7 +150,7 @@ function treatmentElement($key, $array) {
       $attrs['label'] = $array['label'];
    }
    if(array_key_exists("value", $array)) {
-      $attrs['defaultValue'] = $array['value'];
+      $attrs['label'] = $array['value'];
    }
    if(array_key_exists("defaultValue", $array)) {
       $attrs['defaultValue'] = $array['defaultValue'];

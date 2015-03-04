@@ -187,9 +187,13 @@ addProp = function(id, type, minvalue,maxvalue,defaultValue,required, width, hei
      $('#'+id).append(div);
      i = i + 1;
    });
-   elementList[id].label = label; 
-   $('#label_'+id).text(label);
+   if (type != 9) {
+      elementList[id].label = label;
+      $('#label_'+id).text(label); 
+   }
    if (type == 9) {
+      elementList[id].value = label;
+      console.log("label " + label);
       $('#'+id).text(elementList[id].value);
    } 
    

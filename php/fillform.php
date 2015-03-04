@@ -34,6 +34,29 @@
    <link rel="stylesheet" href="../lib/bootstrap-3.3.1/css/min.css"
       type="text/css" />
    <link rel="stylesheet" href="../css/styles.css" type="text/css" />
+   <style type="text/css">
+      #answerSheet{
+         border: 1px solid black;
+         width: 794px;
+         height: 1122px;
+      }
+      .square {
+         width:200px;
+         height:200px;
+         background:transparent;
+         border: 2px solid black;
+      }
+      .circle{
+         width:200px;
+         height:200px;
+         background:transparent;
+         border: 2px solid black;
+         -webkit-border-radius:100px;
+         -moz-border-radius:100px;
+         -o-border-radius:100px;
+         border-radius:100px;
+      }
+   </style>
    <?php
    /*if($form->printable()==FALSE){
       echo "<link rel='stylesheet' media='print' href='../css/notprint.css' type='text/css' />";
@@ -68,11 +91,16 @@
             }
 
             $prevs = array_reverse($prevs);
+            $maxBottom = 0;
+            $margin = 0;
 
             foreach ($groups as $groupNum => $group) {
                $elems = $group->elements();
 
                foreach ($elems as $elem) {
+                  $margin = $elem->attr()["height"];
+                  $bottom = $elem->attr()["y"] + $margin;
+                  $maxBottom = max($maxBottom, $bottom);
                   $json = json_encode($elem->attr());
          ?>
                   e = new Element(<?php echo $json ?>, '#answerSheet')
@@ -99,6 +127,8 @@
                }
             }
          ?>
+
+         $('#answerSheet').css('height', "<?php echo $maxBottom ?>px");
 
          $('input[type=submit]').on('click', {elems: elems}, function(event){
             $('input[name=answers]').attr('value', JSON.stringify(getAnswers(elems)));
@@ -135,10 +165,11 @@
                <div class="panel-body">
                   <form
                      id="answerSheet"
+                     class="center-block"
                      role="form"
                      action="include/fill_form.php"
                      method="post"
-                     style="overflow:visible;height:493px;"
+                     style="position:relative;overflow:visible;height:493px;"
                      >
                   </form>
                </div>

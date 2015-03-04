@@ -2,16 +2,21 @@ Container = (function(){
 	function Container(obj){
 		container 	= $('<div></div>')
 						.attr('id', 'container-' + obj.id)
-						.css('position', 'relative')
+						.css('display', 'inline')
+						.css('position', 'absolute') // absolute relative
 						.css('top', obj.y + 'px')
 						.css('left', obj.x + 'px');
 
-		label 		= $('<label></label>')
-						.attr('for', 'elem-' + obj.id)
-						.text(obj.label);
+
+		if(obj.label !== ""){
+			label 		= $('<label></label>')
+							.attr('for', 'elem-' + obj.id)
+							.text(obj.label);
+			container = container.append(label).append($('<br/>'));
+		}
 
 		// ! : this 'class' returns a jQuery object !
-		return container.append(label);
+		return container;
 	}
 
 	return Container;
@@ -36,7 +41,7 @@ Radio = (function(){
 						.prop('checked', obj.options[i]['default'] == '1' ? true : false);
 
 			label.append(input).append(obj.options[i].value);
-			radio.append(label);
+			radio.append(label).append($('<br/>'));
 		}
 
 		this.element = radio;
@@ -136,7 +141,7 @@ Multiple = (function(){
 						.prop('checked', obj.options[i]['default'] == '1' ? true : false);
 
 			label.append(box).append(obj.options[i].value);
-			multiple.append(label);
+			multiple.append(label).append($('<br/>'));
 		}
 
 		this.element = multiple;
@@ -209,7 +214,9 @@ Element = (function(){
 				obj.type = 5;
 				break;
 			case 8:
-				element = $('<textarea></textarea>').css('height', obj.height + 'px');
+				element = $('<textarea></textarea>')
+							.css('height', obj.height + 'px')
+							.css('resize', 'none');
 				obj.type = 6;
 				break;
 			case 7:
@@ -220,7 +227,22 @@ Element = (function(){
 				element = new Multiple(obj);
 				obj.type = 8;
 				break;
+			// case 9:// span - label TODO
+			// 	element = $('<div></div>').addClass("square");
+			// 	break;
+			case 10:
+				element = $('<div></div>').addClass("square");
+				break;
+			case 11:
+				element = $('<div></div>').addClass("circle");
+				break;
+			case 12:
+				element = $('<img/>').attr("src", obj.img);
+				console.log(obj);
+				break;
 			default:
+				element = $('<p>Element inconnu (' + obj.type + ')</p>');
+				// obj.type = 0;
 				break;
 		}
 

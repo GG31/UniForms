@@ -32,7 +32,6 @@
 						<center><B><a href="indexOther.php">Autres utilisateurs</a></B></center>
 					</div>
 				</div>
-			</div>
 		</form>
 			<?php include 'php/include/footer.php'; ?>
 		</div>

@@ -20,6 +20,21 @@
 
 <script src="../lib/jquery-2.1.1/min.js"></script>
 <script src="../lib/bootstrap-3.3.1/js/min.js"></script>
+<script type="text/javascript">
+			$(document).ready(function(){
+				$('[data-toggle="popover"]').popover({
+					placement : 'top'
+				});
+			});
+		</script>
+		<style type="text/css">
+			.bs-example{
+				margin: 150px 50px;
+			}
+			.popover-examples{
+				margin-bottom: 20px;
+			}
+		</style>
 </head>
 <body>
 	<div class="container">

@@ -7,7 +7,11 @@
 		genevieve.cirera@gmail.com
 	</div>
 	<div class="col-sm-4">© 2014-2015<br/>
-		<a href="../doc/userManual/UserManual.html" style="text-decoration:none">
+	<?php 
+		$content = $_SERVER['SERVER_NAME'] . substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], "/"));
+		$content = str_replace("/php", "", $content);
+	?>
+		<a href="<?php echo "http://".$content."/doc/userManual/UserManual.html";?>" style="text-decoration:none">
 			<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 			Manuel d'utilisation
 		</a>

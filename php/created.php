@@ -66,6 +66,7 @@
 			$formId = $form->id();
 			$name = $form->name();
 			$status = $form->state();
+			$anon = $form->anon();
 
 			if($status == TRUE){
 				$link = "results.php?form=$formId";
@@ -77,17 +78,23 @@
 								<td><a href="<?php echo $link ?>"><?php echo $name ?></a></td>
 								<?php
 									if($status == TRUE){
-										$content = $_SERVER['SERVER_NAME'] . substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], "/"));
 
-										if($form->anon() == TRUE){
+										if($anon == TRUE){
+											$content = $_SERVER['SERVER_NAME'] . substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], "/"));
 											$formdestId = $form->formdestId(0, 0);
 											$link = "/fillform.php?form_id=$formId&formdest_id=$formdestId&prev_id=0";
-										}else{
-											$link = "/form.php?form=$formId";
+											$content .= $link;
 										}
-										$content .= $link;
 								?>
-								<td><button type='button' class='btn btn-primary' data-toggle='popover' data-title='A copier' data-content='<?php echo $content ?>'>URL</button></td>
+								<td>
+									<?php
+										if($anon == TRUE){
+									?>
+										<button type='button' class='btn btn-primary' data-toggle='popover' data-title='A copier' data-content='<?php echo $content ?>'>URL</button>
+									<?php
+										}
+									?>
+								</td>
 								<td>Publié</td>
 								<?php
 									}else{

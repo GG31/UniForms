@@ -210,7 +210,7 @@
 					"y" 				=> $this->y,
 					"width" 			=> $this->width,
 					"height" 			=> $this->height,
-					"default" 			=> $this->defaultValue,
+					"defaultValue" 		=> $this->defaultValue,
 					"placeholder" 		=> $this->placeholder,
 					"min"	 			=> $this->min,
 					"max"	 			=> $this->max,

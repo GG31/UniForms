@@ -150,11 +150,8 @@ addElement = function(elementCodeId, posX, posY, idEl, idChild) {
    
    onhover();
    ondrag();
-   if(!elChild.is("fieldset") && !elChild.is("span")) {
       resize(el);
-   } else {
-      registerWidthHeight(idChild, elChild.width(), elChild.height());
-   }
+   
    registerPos(idChild, posX, posY);
    ids = ids + 1;
 }

@@ -221,8 +221,31 @@ Les tâches ont été définies de telles manière à suivre la méthode agile d
 %------------------------Section management
 \section{Management}%TODO
 \subsection{Planning prévisionnel}
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|l|c|c|}
+\hline
+ \# & Titre du lot & Début & Fin \\ \hline
+L1 & Management du projet & S1 & S21\\
+L2 & Cœur de l'application & S1 & S21\\
+L3 & Cœur de l'application & S1 & S21\\
+L4 & Management du projet & S1 & S21\\
+L5 & Management du projet & S1 & S21\\
+\end{tabular}
+\end{center}
+\caption{Planification prévisionnelle}\label{planifPrev}
+\end{table}
+
 \subsection{Reunions}
+Au début du projet, nous avions plannifié une réunion après chaque fin de lot avec notre tuteur pour validation. Cependant, durant les périodes à temps partiels, tous les membres du group n'ont pas le même emploi du temps et notre tuteur non plus, un créneau disponible était difficil à trouver. C'est pourquoi, beaucoup de mail ont été échangés afin de compenser les réunions qui ne pouvaient pas avoir lieu.\\
+Pour les démonstrations de l'application, à partir de février, nous avons réalisé un déploiement sur un serveur de test, l'application était donc accessible sur \url{http://uniform.gautero.fr/}. Ainsi, notre tuteur pouvait voir l'avancement ainsi que nous commenter les améliorations souhaitées et bugs rencontrés.
+
 \subsection{Imprévus}
+Après la réalisation du DoW, une nouvelle ressource a été disponible pour le projet, il a donc fallu revoir les fonctionnalités à développer, en ajouter et revoir la plannification. Un nouveau lot a donc été ajouté, la ``Collaboration'' qui consiste à rendre un formulaire remplissable par plusieurs personnes.\\
+D'autre part, du retard a été pris durant le projet, dû à des développements qui ont pris plus de temps que prévu, les spécificités de la ``Collaboration'' ont été ajustées au fur et à mesure et sa conception et son développements à pris plus de temps. Il nous aura fallu plusieurs réunions avec le client pour mettre au point une solution adapté au besoin.\\
+Les conséquences du retard de ce lot a été que le lot d'interfaçage avec base de données externes n'a pas été réalisé car les spécificités de ce lot ont aussi été ajusté, son développement demandait plus de temps que prévu également, c'est pourquoi avec l'accord du client, nous avons décidé de nous concentrer sur les autres fonctionnalités et d'abandonner le lot de l'interfaçage.\\
+Par manque de temps, nous avons également décidé de ne développer qu'une partie des éléments pouvant être placés dans le formulaire. Les éléments ont été choisis de manière à ce qu'un maximum de possibilité soit proposer, par exemple, le champs URL peut être remplacé par un champs d'entrée simple.
+
 \subsection{Planning réalisé}
 %là, il faut tout développer, expliquer les difficultés de rdv, l'arrivée d'un nouveau membre, la découverte du problème des multi-groupes, les modifications qui en ont découlées. Il faut montrer votre adaptabilité aux événements
 %------------------------Section architecture
@@ -255,7 +278,7 @@ Chaque formulaire peut être répondu une ou plusieurs fois par le même destina
 
 \subsection{Classes PHP}
 Afin d'extraire et de remplir des informations dans les tables de la base de données figure~\ref{schemaBDD}, des classes PHP ont été utilisées.\\
-On remarque figure~\ref{diagrammeClasses} que les classes construites sont plus ou moins les mêmes que les tables de la base de données. On retrouve ``Form'' pour ``form'' de la base de données, ``Group'' pour ``formgroup'', ``User'' pour ``user'', ``Element'' pour ``formelement'' et ``elementoption'' et enfin ``Answer'' pour ``answer'', ``elementanswer'' et ``ànswervalue''.\\
+On remarque figure~\ref{diagrammeClasses} que les classes construites sont plus ou moins les mêmes que les tables de la base de données. On retrouve ``Form'' pour ``form'' de la base de données, ``Group'' pour ``formgroup'', ``User'' pour ``user'', ``Element'' pour ``formelement'' et ``elementoption'' et enfin ``Answer'' pour ``answer'', ``elementanswer'' et ``answervalue''.\\
 Cette structure nous permet en créant des objets d'extraire et remplir facilement les données des tables de la base de données et de les exploiter dans notre application.
 
 \begin{figure*}

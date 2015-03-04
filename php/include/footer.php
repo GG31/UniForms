@@ -7,7 +7,7 @@
 		genevieve.cirera@gmail.com
 	</div>
 	<div class="col-sm-4">© 2014-2015<br/>
-		<a href="../doc/userManual/UserManual.html" style="text-decoration:none">
+		<a href="doc/userManualHTML/UserManual.html" style="text-decoration:none">
 			<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 			Manuel d'utilisation
 		</a>

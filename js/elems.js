@@ -12,7 +12,11 @@ Container = (function(){
 			label 		= $('<label></label>')
 							.attr('for', 'elem-' + obj.id)
 							.text(obj.label);
-			container = container.append(label).append($('<br/>'));
+			if(obj.type == 9){
+				container = container.append(label);
+			}else{
+				container = container.append(label).append($('<br/>'));
+			}
 		}
 
 		// ! : this 'class' returns a jQuery object !
@@ -227,9 +231,10 @@ Element = (function(){
 				element = new Multiple(obj);
 				obj.type = 8;
 				break;
-			// case 9:// span - label TODO
-			// 	element = $('<div></div>').addClass("square");
-			// 	break;
+			case 9:
+				element = $('<span></span>');
+				console.log(obj);
+				break;
 			case 10:
 				element = $('<div></div>').addClass("square");
 				break;
@@ -238,7 +243,6 @@ Element = (function(){
 				break;
 			case 12:
 				element = $('<img/>').attr("src", obj.img);
-				console.log(obj);
 				break;
 			default:
 				element = $('<p>Element inconnu (' + obj.type + ')</p>');

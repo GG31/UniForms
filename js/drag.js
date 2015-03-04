@@ -68,7 +68,6 @@ groupElementsDroppable = function() {
          });
          if (yes) {
             appendToGroup($(this), idToPutIntoGroup, valueToPutIntoGroup);
-            //$(this).append($('<div class="alert alert-warning alert-dismissible" role="alert" style="display: inline-block">  <button type="button" class="close btn btn-primary btn-lg" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><span class="valueLabelElementsOfGroup">'+valueToPutIntoGroup+'</span><span class="valueIdElementsOfGroup">'+idToPutIntoGroup+'</span></div>'));
          }
          ui.draggable.draggable('option','revert',true);
          setTimeout(function () {
@@ -150,9 +149,10 @@ addElement = function(elementCodeId, posX, posY, idEl, idChild) {
    
    onhover();
    ondrag();
-      resize(el);
+   resize(el);
    
    registerPos(idChild, posX, posY);
+   growZone();
    ids = ids + 1;
 }
 

@@ -2,9 +2,9 @@
 include_once 'includes.php';
 if (! empty ( $_POST )) {
 
-   echo "<pre>";
-   var_dump($_POST);
-   echo "</pre>";
+   // echo "<pre>";
+   // var_dump($_POST);
+   // echo "</pre>";
 	/*
 	 * Getting a Form object
 	 */
@@ -23,27 +23,27 @@ if (! empty ( $_POST )) {
 	$anonymous = FALSE;
 	
 	if (isset ( $_POST ["param"] )) { // A checkbox is checked
-      echo "PARAM<br><pre>";
-      var_dump($_POST["param"]);
-      echo "</pre>";
+      // echo "PARAM<br><pre>";
+      // var_dump($_POST["param"]);
+      // echo "</pre>";
 		$printable = in_array ( "print", $_POST ["param"] ) ? TRUE : FALSE;
 		$anonymous = in_array ( "anon", $_POST ["param"] ) ? TRUE : FALSE;
 	} // Else : no param checked -> FALSE
    if (isset ( $_POST ["infoFormName"] )) {
-      echo "INFOFORMNAME:<br><pre>";
-      var_dump($_POST["infoFormName"]);
-      echo "</pre>";
+      // echo "INFOFORMNAME:<br><pre>";
+      // var_dump($_POST["infoFormName"]);
+      // echo "</pre>";
       $formName = $_POST ["infoFormName"];
       $form->name($formName);
    }
 	if (isset ( $_POST ["usersGroups"] )) {
-      echo "USERSGROUPS:<br><pre>";
-      var_dump($_POST["usersGroups"]);
-      echo "</pre>";
+      // echo "USERSGROUPS:<br><pre>";
+      // var_dump($_POST["usersGroups"]);
+      // echo "</pre>";
 		$usersGroups = json_decode($_POST ["usersGroups"], true);
-      echo "USERSGROUPS (decoded) :<br><pre>";
-      var_dump($usersGroups);
-      echo "</pre>";
+      // echo "USERSGROUPS (decoded) :<br><pre>";
+      // var_dump($usersGroups);
+      // echo "</pre>";
 	}
 	
 	$form->printable ( $printable );
@@ -53,9 +53,9 @@ if (! empty ( $_POST )) {
    * Récupère les données des éléments
    */
    if(isset($_POST['info'])) {
-      echo "INFO:<br><pre>";
-      var_dump($_POST["info"]);
-      echo "</pre>";
+      // echo "INFO:<br><pre>";
+      // var_dump($_POST["info"]);
+      // echo "</pre>";
 
 
       $obj=json_decode($_POST['info'], true, 4);
@@ -69,9 +69,9 @@ if (! empty ( $_POST )) {
 
       // if(isset($_POST['infoGroups'])) {
       if($anonymous == FALSE) {
-         echo "INFOGROUPS:<br><pre>";
-         var_dump($_POST["infoGroups"]);
-         echo "</pre>";
+         // echo "INFOGROUPS:<br><pre>";
+         // var_dump($_POST["infoGroups"]);
+         // echo "</pre>";
 
          $formGroups = [];
          $obj=json_decode($_POST['infoGroups'], true, 4);

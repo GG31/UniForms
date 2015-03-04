@@ -23,27 +23,27 @@ if (! empty ( $_POST )) {
 	$anonymous = FALSE;
 	
 	if (isset ( $_POST ["param"] )) { // A checkbox is checked
-      echo "PARAM<br><pre>";
+      /*echo "PARAM<br><pre>";
       var_dump($_POST["param"]);
-      echo "</pre>";
+      echo "</pre>";*/
 		$printable = in_array ( "print", $_POST ["param"] ) ? TRUE : FALSE;
 		$anonymous = in_array ( "anon", $_POST ["param"] ) ? TRUE : FALSE;
 	} // Else : no param checked -> FALSE
-   if (isset ( $_POST ["infoFormName"] )) {
-      echo "INFOFORMNAME:<br><pre>";
+    if (isset ( $_POST ["infoFormName"] )) {
+      /*echo "INFOFORMNAME:<br><pre>";
       var_dump($_POST["infoFormName"]);
-      echo "</pre>";
+      echo "</pre>";*/
       $formName = $_POST ["infoFormName"];
       $form->name($formName);
-   }
+    }
 	if (isset ( $_POST ["usersGroups"] )) {
-      echo "USERSGROUPS:<br><pre>";
+      /*echo "USERSGROUPS:<br><pre>";
       var_dump($_POST["usersGroups"]);
-      echo "</pre>";
+      echo "</pre>";*/
 		$usersGroups = json_decode($_POST ["usersGroups"], true);
-      echo "USERSGROUPS (decoded) :<br><pre>";
+      /*echo "USERSGROUPS (decoded) :<br><pre>";
       var_dump($usersGroups);
-      echo "</pre>";
+      echo "</pre>";*/
 	}
 	
 	$form->printable ( $printable );
@@ -53,9 +53,9 @@ if (! empty ( $_POST )) {
    * Récupère les données des éléments
    */
    if(isset($_POST['info'])) {
-      echo "INFO:<br><pre>";
+      /*echo "INFO:<br><pre>";
       var_dump($_POST["info"]);
-      echo "</pre>";
+      echo "</pre>";*/
 
 
       $obj=json_decode($_POST['info'], true, 4);
@@ -69,9 +69,9 @@ if (! empty ( $_POST )) {
 
       // if(isset($_POST['infoGroups'])) {
       if($anonymous == FALSE) {
-         echo "INFOGROUPS:<br><pre>";
+         /*echo "INFOGROUPS:<br><pre>";
          var_dump($_POST["infoGroups"]);
-         echo "</pre>";
+         echo "</pre>";*/
 
          $formGroups = [];
          $obj=json_decode($_POST['infoGroups'], true, 4);
@@ -148,8 +148,8 @@ function treatmentElement($key, $array) {
    if(array_key_exists("label", $array)) {
       $attrs['label'] = $array['label'];
    }
-   if(array_key_exists("value", $array)) {
-      $attrs['value'] = $array['value'];
+   if(array_key_exists("defaultValue", $array)) {
+      $attrs['defaultValue'] = $array['defaultValue'];
    }
    if(array_key_exists("minvalue", $array)) {
       $attrs['min'] = $array['minvalue'];

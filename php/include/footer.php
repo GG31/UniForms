@@ -11,7 +11,7 @@
 		$content = $_SERVER['SERVER_NAME'] . substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], "/"));
 		$content = str_replace("/php", "", $content);
 	?>
-		<a href="<?php echo "http://".$content."/doc/userManualHTML/UserManual.html";?>" style="text-decoration:none">
+		<a href="<?php echo "http://".$content."/doc/userManual/UserManual.html";?>" style="text-decoration:none">
 			<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 			Manuel d'utilisation
 		</a>

@@ -45,8 +45,8 @@
 
 					foreach ($groups as $groupNum => $group) {
 
-						foreach ($group->elements() as $elem) {
-							if(!in_array($prevs[$groupNum]->id(), $doneAnswers)){
+						if(!in_array($prevs[$groupNum]->id(), $doneAnswers)){
+							foreach ($group->elements() as $elem) {
 								if(!isset($valuesTable[$elem->id()])){
 									$valuesTable[$elem->id()] = [
 										"label" => $elem->label(),
@@ -54,10 +54,28 @@
 									];
 								}
 
-								$valuesTable[$elem->id()]["values"][] = $prevs[$groupNum]->values($elem->id());
+								$v = $prevs[$groupNum]->values($elem->id());
 
-								$doneAnswers[] = $prevs[$groupNum]->id();
+								if($elem->attr()["type"] == constant("typeCheckbox") || $elem->attr()["type"] == constant("typeRadioButton")){
+									global $database;
+									$query = mysqli_query($database, "	SELECT 	optionvalue
+																		FROM 	elementoption
+																		WHERE 	elementoption_id IN (" . implode(',',$v) . ")");
+
+									if (mysqli_num_rows($query)){
+										$v = [];
+
+										while($results = mysqli_fetch_array($query)){
+											$v[] = $results["optionvalue"];
+										}
+									}
+								}
+
+								$valuesTable[$elem->id()]["values"][] = $v;
+
 							}
+
+							$doneAnswers[] = $prevs[$groupNum]->id();
 						}
 					}
 				}
@@ -100,14 +118,31 @@
 					];
 				}
 
-				$valuesTable[$elem->id()]["values"][] = $prevs[$groupNum]->values($elem->id());
+				$v = $prevs[$groupNum]->values($elem->id());
+
+				if($elem->attr()["type"] == constant("typeCheckbox") || $elem->attr()["type"] == constant("typeRadioButton")){
+					global $database;
+					$query = mysqli_query($database, "	SELECT 	optionvalue
+														FROM 	elementoption
+														WHERE 	elementoption_id IN (" . implode(',',$v) . ")");
+
+					if (mysqli_num_rows($query)){
+						$v = [];
+
+						while($results = mysqli_fetch_array($query)){
+							$v[] = $results["optionvalue"];
+						}
+					}
+				}
+
+				$valuesTable[$elem->id()]["values"][] = $v;
 			}
 		}
 
 		return array_merge($valuesTable, []);
 	}
 
-	function toCSV($valuesTable){
+	function toCSV($valuesTable, $delim = ';', $eol = "\r\n"){
 		$matrix = [];
 
 		foreach ($valuesTable as $key => $elem) {
@@ -137,11 +172,11 @@
 
 			for($j = 0; $j < $lj; $j++){
 				$csv .= isset($matrix[$i][$j]) ? $matrix[$i][$j] : "";
-				$csv .= ",";
+				$csv .= $delim;
 			}
 
 			$csv = substr($csv, 0, strlen($csv) - 1);
-			$csv .= "\r\n";
+			$csv .= $eol;
 		}
 
 		return $csv;

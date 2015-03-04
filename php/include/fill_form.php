@@ -10,14 +10,20 @@
 		$ans->prev($_POST["prev_id"]);
 	}
 
+	// echo "<pre>";
+	// var_dump($_POST["answers"]);
+	// echo "</pre>";
 	$ans->elementsValues(json_decode($_POST["answers"],true));
-
+	// echo "<pre>";
+	// var_dump($ans->elementsValues());
+	// echo "</pre>";
+	// return;
 	if(isset($_POST["save"])){
 		$ans->save($_POST["formdest_id"]);
 	}
 	if(isset($_POST["send"])){
 		$ans->send($_POST["formdest_id"]);
 	}
-
+	
 	header( "Location: ../recipient.php" );
 ?>

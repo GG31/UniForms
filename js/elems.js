@@ -62,9 +62,14 @@ Radio = (function(){
 	};
 
 	Radio.prototype.getAnswers = function(){
+		values = [];
+		this.element.find(':checked').each(function(){
+			values.push($(this).val().split('-')[1]);
+		});
+
 		return {
 					elementId	: this.obj.id,
-					values		: [ this.element.find(':checked').val().split('-')[1] ]
+					values		: values
 				};
 	}
 
@@ -163,8 +168,6 @@ Multiple = (function(){
 
 	Multiple.prototype.getAnswers = function(){
 		id = this.obj.id;
-
-
 
 		return {
 			elementId 	: id,

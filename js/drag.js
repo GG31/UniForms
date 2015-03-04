@@ -360,7 +360,7 @@ $('input[type=submit]').click(function() {
 
    // Form must have a name
    // Default name : "Formulaire Sans Nom"
-   if ($("#formName").text() == "" || $("#formName").text() == "Click to add form name") {
+   if ($("#formName").text() == "" || $("#formName").text() == "Nom du formulaire") {
       $("#infoFormName").val("Formulaire Sans Nom");
    }
 
@@ -565,6 +565,7 @@ hasValueText = function () {
 
 hasDefaultValueText = function () {
    $('#defaultValueGroup').show();
+   console.log("v " +elementList[currentElement].defaultValue);
    $('#inputdefaultValue').val(elementList[currentElement].defaultValue);
 };
 

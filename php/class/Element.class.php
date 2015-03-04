@@ -20,7 +20,6 @@
 	/**
 	 * Represents an element of a form
 	 */	
-	
 	Class Element {
 		
 		/**

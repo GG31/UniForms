@@ -70,15 +70,9 @@ if (! empty ( $_POST )) {
 
       // if(isset($_POST['infoGroups'])) {
       if($anonymous == FALSE) {
-<<<<<<< HEAD
-         /*echo "INFOGROUPS:<br><pre>";
-         var_dump($_POST["infoGroups"]);
-         echo "</pre>";*/
-=======
          // echo "INFOGROUPS:<br><pre>";
          // var_dump($_POST["infoGroups"]);
          // echo "</pre>";
->>>>>>> 5c99b755b7bef0e4cba1d6e12e72fd1a866e67cd
 
          $formGroups = [];
          $obj=json_decode($_POST['infoGroups'], true, 4);

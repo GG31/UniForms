@@ -1,125 +1,157 @@
 <?php
-/**
- * Represent a user, he has an id and a name.
- */
-class User {
 	/**
-     * @access private
-     * @var integer 
-     */
-	private $id;
-	
-	/**
-     * @access private
-     * @var string 
-     */
-	private $name;
-	
-	/**
-	 * Constructor, create a user
-	 * @param integer $userId the id of the user
+	 * Represent a user, he has an id and a name.
 	 */
-	function __construct($userId) {
-		$this->id = $userId;
-		$q = mysql_query ( "SELECT * FROM user WHERE user_id = " . $this->id );
-		$line = mysql_fetch_array ( $q );
-		$this->name = $line ["user_name"];
-	}
-	
-	/**
-	 * Give the user's id
-	 * @return integer
-	 */
-	public function getId() {
-		return $this->id;
-	}
-	
-	/**
-	 * Give the user's name
-	 * @return string
-	 */
-	public function getName() {
-		return $this->name;
-	}
-	
-	/**
-	 * Give all users
-	 * @static
-	 * @return array of User
-	 */
-	public static function all() {
-		$q = mysql_query ( "SELECT user_id FROM user" );
-		$res = [ ];
-		while ( $line = mysql_fetch_array ( $q ) ) {
-			if ($line ["user_id"] != 0) // User 0 is Anonymous
-				$res [] = new User ( $line ["user_id"] );
-		}
-		return $res;
-	}
-	
-	/**
-	 * Give the forms created by the user
-	 * @return array of Form
-	 */
-	public function getCreatedForms() {
-		$q = mysql_query ( "SELECT form_id FROM form WHERE user_id = " . $this->id );
-		$res = [ ];
-		while ( $line = mysql_fetch_array ( $q ) ) {
-			$res [] = new Form ( $line ["form_id"] );
-		}
-		return $res;
-	}
-	
-	/**
-	 * Give the forms which the user is recipient
-	 * @return array of Form
-	 */
-	public function getDestinatairesForms(){
-	   $q = mysql_query("SELECT DISTINCT form.form_id FROM form JOIN (formgroup JOIN formdest ON formgroup.formgroup_id = formdest.formgroup_id AND formdest.user_id = ".$this->id.") ON formgroup.form_id = form.form_id ");
-		$res = [];
-		while($line = mysql_fetch_array($q)){
-		   $res[] = new Form($line["form_id"]);
-		}
-		return $res;
-	}
-	
-	/**
-	 * The user is creator of the form formId
-	 * @param integer $formId id's form
-	 * @return boolean TRUE (FALSE) if user is (not) creator of form
-	 */
-	public function isCreator($formId) {
-		if ($formId == - 1)
-			return FALSE;
+	Class User {
 		
-		$f = new Form ( $formId );
-		if ($f->getCreator ()->getId () == $this->id)
-			return TRUE;
-		else
-			return FALSE;
-	}
-	
-	/**
-	 * The user is recipient of the form formId
-	 * @param integer $formId id's form
-	 * @return boolean TRUE (FALSE) if form is (not) destinated to user
-	 */
-	public function isDestinataire($formId) {
-		$q = mysql_query("SELECT * FROM formdest JOIN formgroup ON formgroup.formgroup_id = formdest.formgroup_id WHERE form_id = ".$formId." AND user_id = ".$this->id);
+		/**
+		 * Id of this user
+		 * @access private
+		 * @var integer
+		 */
+		private $id;
 		
-		if (mysql_num_rows($q))
-			return true;
+		/**
+		 * Name of this user
+		 * @access private
+		 * @var string
+		 */
+		private $name;
 		
-		return false;
-	}
-	
-	/**
-	 * The user is anonymous. Anonymous user is used to deal with anonymous forms
-	 * @return boolean TRUE if user is anonymous user (user_id = 0)
-	 */
-	public function isAnonymous() {
-		return $this->id == 0;
-	}
-}
-?>
+		/**
+		 * Constructor, create a user
+		 * @access public
+		 * @param integer $userId the id of the user default NULL
+		 */
+		public function __construct($id = NULL){
+			global $database;
+			// Id
+			$this->id = $id;
+			// Name
+			$query = mysqli_query($database, "	SELECT 	* FROM 	user WHERE 	user_id = " . $this->id);
 
+			if (!mysqli_num_rows($query)){
+				die("User::__construct() : id not found !");
+			}else{
+				$results = mysqli_fetch_array($query);
+
+				$this->name = $results["user_name"];
+			}
+		}
+
+		/**
+		 * Get and Set the user's id
+		 * @access public
+		 * @param integer $id the id's user default NULL
+		 * @return integer
+		 */
+		public function id($id = NULL){
+			// Get
+			if($id === NULL){
+				return $this->id;
+			}
+			// Set
+			else{
+				$this->id = $id;
+				return $this;
+			}
+		}
+		
+		/**
+		 * Get and Set the user's name
+		 * @access public
+		 * @param string $name the name's user default NULL
+		 * @return string
+		 */
+		public function name($name = NULL){
+			// Get
+			if($name === NULL){
+				return $this->name;
+			}
+			// Set
+			else{
+				$this->name = $name;
+				return $this;
+			}
+		}
+
+		/**
+		 * Give the forms created by the user
+		 * @access public
+		 * @return array of Form
+		 */
+		public function created() {
+			global $database;
+			$query = mysqli_query($database, "	SELECT 	form_id
+									FROM 	form
+									WHERE 	user_id = " . $this->id)
+			or die("User::created() : user not found !");
+
+			$res = [];
+			while($line = mysqli_fetch_array($query)){
+				$res[] = new Form($line["form_id"]);
+			}
+
+			return $res;
+		}
+
+		/**
+		 * Give the forms which the user is recipient
+		 * @access public
+		 * @return array of Form
+		 */
+		public function recipient() {
+			global $database;
+			$query = mysqli_query($database, "	SELECT DISTINCT form_id
+									FROM 			formdest
+											JOIN	formgroup
+											ON 		formdest.formgroup_id = formgroup.formgroup_id
+									WHERE 	user_id = " . $this->id)
+			or die("User::recipient() : user not found !");
+
+			$res = [];
+			while($line = mysqli_fetch_array($query)){
+				$form = new Form($line["form_id"]);
+
+				if($form->state()){
+					$res[] = $form;
+				}
+			}
+
+			return $res;
+		}
+
+		/**
+		 * The user is creator of the form formId
+		 * @access public
+		 * @param integer $formId id's form
+		 * @return boolean TRUE (FALSE) if user is (not) creator of form
+		 */
+		public function isCreator($formId){
+			// TODO
+			return FALSE;
+		}
+
+		/**
+		 * Give all users
+		 * @static
+		 * @return array of User
+		 */
+		public static function all() {
+			global $database;
+			$res = [];
+
+			$query = mysqli_query ($database, "	SELECT user_id
+												FROM user" )
+			or die("User::all() : users not found !");
+			
+			while ( $results = mysqli_fetch_array ( $query ) ) {
+				if ($results ["user_id"] != 0) // User 0 is Anonymous
+					$res [] = new User ( $results ["user_id"] );
+			}
+			
+			return $res;
+		}
+	}
+
+?>

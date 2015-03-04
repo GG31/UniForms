@@ -570,7 +570,7 @@
 			$sql .=	"INSERT INTO `form` VALUES (".$this->id.", '".$this->name."', ".$this->creator->id().");\r\n";
 			
 			// Insert creator into table user
-			$sql .=	"INSERT INTO `user` VALUES (".$this->creator->id().", '".$this->creator->name()."');\r\n";
+			$sql .=	"INSERT INTO `user` VALUES (".$this->creator->id().", '".mysqli_real_escape_string($database, $this->creator->name())."');\r\n";
 			
 			// Insert recipients into table user
 			$querydests = mysqli_query($database, "SELECT DISTINCT user.user_id, user_name FROM user JOIN (formdest JOIN formgroup 
@@ -578,7 +578,7 @@
 										
 			while ($dests = mysqli_fetch_array($querydests))	
 				if ($dests["user_id"] != $this->creator->id())
-					$sql .=	"INSERT INTO `user` VALUES(".$dests["user_id"].",'".$dests["user_name"]."');\r\n";	
+					$sql .=	"INSERT INTO `user` VALUES(".$dests["user_id"].",'".mysqli_real_escape_string($database, $dests["user_name"])."');\r\n";	
 			
 			// Insert groups into table formgroup
 			foreach ($this->groups as $group){
@@ -587,12 +587,12 @@
 				// Insert elements into table formelement
 				$elements = $group->elements();
 				foreach ($elements as $element){
-					$sql .=	"INSERT INTO `formelement` VALUES(".$element->id().",".$element->type().",".$group->id().",'".$element->label()."');\r\n";
+					$sql .=	"INSERT INTO `formelement` VALUES(".$element->id().",".$element->type().",".$group->id().",'".mysqli_real_escape_string($database, $element->label())."');\r\n";
 					
 					// Insert element options into table elementoption
 					$queryelemoption = mysqli_query($database, "SELECT * FROM elementoption WHERE formelement_id = ".$element->id());
 					while ($options = mysqli_fetch_array($queryelemoption))
-						$sql .=	"INSERT INTO `elementoption` VALUES(".$options["elementoption_id"].",'".$options["optionvalue"]."',".$element->id().");\r\n";
+						$sql .=	"INSERT INTO `elementoption` VALUES(".$options["elementoption_id"].",'".mysqli_real_escape_string($database, $options["optionvalue"])."',".$element->id().");\r\n";
 				}
 				
 				// Insert users into table formdest
@@ -613,7 +613,7 @@
 							// Insert answer values into table answervalue 
 							$queryansvalue = mysqli_query($database, "SELECT * FROM answervalue WHERE elementanswer_id = ".$elemanswers["elementanswer_id"]);
 							while ($ansvalues = mysqli_fetch_array($queryansvalue))
-								$sql .=	"INSERT INTO `answervalue` VALUES(".$ansvalues["answervalue_id"].",'".$ansvalues["value"]."',".$ansvalues["elementanswer_id"].");\r\n";
+								$sql .=	"INSERT INTO `answervalue` VALUES(".$ansvalues["answervalue_id"].",'".mysqli_real_escape_string($database, $ansvalues["value"])."',".$ansvalues["elementanswer_id"].");\r\n";
 						}
 					}
 				}

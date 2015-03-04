@@ -86,9 +86,10 @@ $('#panneau').droppable(
       drop: function (e, ui) {
          posX = e.pageX - $('#panneau').offset().left;
          posY = e.pageY - $('#panneau').offset().top;
+		 console.log(e);
          if ($(ui.draggable).attr("id").split('_')[0] == 'child' || $(ui.draggable).attr("id").split('_')[0] == 'elem' || $(ui.draggable).attr("id") < ids) {
             currentElement = $(ui.draggable).children("span").next().attr("id");
-            registerPos(currentElement, posX, posY);
+            registerPos(currentElement, $(ui.draggable));			
             //posX = checkPosition(e.pageX, $(ui.draggable));
          } else {
             posX = posX < 0 ? 0 : posX;
@@ -123,6 +124,7 @@ addElement = function(elementCodeId, posX, posY, idEl, idChild) {
    
    elChild = $(elementsCode[elementCodeId]);
    elChild.attr("id", idChild);
+   
    if(elChild.hasClass("figure")) {
       el.css({
          cursor:'grab',
@@ -151,7 +153,7 @@ addElement = function(elementCodeId, posX, posY, idEl, idChild) {
    ondrag();
    resize(el);
    
-   registerPos(idChild, posX, posY);
+   registerPos(idChild, el);
    growZone();
    ids = ids + 1;
 }
@@ -209,9 +211,9 @@ addProp = function(id, type, minvalue,maxvalue,defaultValue,required, width, hei
    }
 }
 
-registerPos = function (id, posX, posY) {
-   elementList[id].posX = posX;
-   elementList[id].posY = posY;
+registerPos = function (currentElement, el) {
+    elementList[currentElement].posX = $(el).css("left").substring(0, $(el).css("left").length-2);
+    elementList[currentElement].posY = $(el).css("top").substring(0, $(el).css("top").length-2);
 }
 
 createElement = function(id) {
@@ -271,28 +273,35 @@ ondrag = function() {
    });
 };
 
-checkPosition = function(posX, el) {
+/*
+checkPosition = function(el) {
    var width = elementList[currentElement].width;
    var pos;
-   if (posX+width>$('#panneau').offset().left+$('#panneau').width()) {
+   console.log("checkPosition width:"+width+" posX:"+posX);
+   console.log("posX:"+posX+" width:"+width+" $('#panneau').offset().left:"+$('#panneau').offset().left+" $('#panneau').width():"+$('#panneau').width());
+   if (Number(posX)+Number(width) > Number($('#panneau').width())) {
       //console.log("1nd if");
-      pos = $('#panneau').offset().left + $('#panneau').width() - width - 50;
+      pos = $('#panneau').width() - width - 50;
       el.css({
          left: pos +"px"
       });
+	  console.log("if 1 checkPosition width:"+width+" el.width:"+el+" posX:"+pos);
       return pos;
    }
-   if((posX-width/2 < $('#panneau').offset().left)){
+   if(Number(posX) < 50){
       //console.log("2nd if");
       pos = $('#panneau').offset().left + 10;
-      el.css({
+	  el.css({
          left: pos + "px"
       });
+	  console.log("if 2 checkPosition width:"+width+" posX:"+pos);
       return pos;
    } 
+   console.log("else checkPosition width:"+width+" posX:"+posX);
    //console.log("else");
    return posX;
 };
+*/
 
 findMoreBottomElement = function() {
    var max = 0;
@@ -346,7 +355,6 @@ getType = function(node) {
    }
    return null;
 };
-
 
 $('input[type=submit]').click(function() {
 
@@ -410,10 +418,10 @@ $( "#checkboxRequired" ).click(function(e) {
 });
 
 $('#moreValues').click(function() {
-   var nb = parseInt($("input[name="+currentElement+"]:last+span").attr("class"), 10) + 1;
-   var id = 'valueItem_'+currentElement+'_'+nb;
-   //var nb = elementList[currentElement].values.length;
-   var newTextBoxDiv = $('<div id="div'+id+'"><input type="Text" class="valueItem" id='+id+' onchange="valueItemChange('+nb+')">'+buttonLess(nb)+'</div>');
+    var nb = parseInt($("input[name="+currentElement+"]:last+span").attr("class"), 10) + 1;
+    var id = 'valueItem_'+currentElement+'_'+nb;
+    //var nb = elementList[currentElement].values.length;
+    var newTextBoxDiv = $('<div id="div'+id+'"><input type="Text" class="valueItem" id='+id+' onchange="valueItemChange('+nb+')">'+buttonLess(nb)+'</div>');
 	$("#valuesGroup").append(newTextBoxDiv);
 	
     var te = $('<div id="item'+id+'"><input type="'+type+'" name="'+currentElement+'"> <span class="'+nb+'"><span></div>');
@@ -464,8 +472,8 @@ $('#inputValue').change(function() {
 $('#inputWidthValue').change(function() {
    $("#"+currentElement).width($('#inputWidthValue').val());
    elementList[currentElement].width = $('#inputWidthValue').val();
-   posX = checkPosition(elementList[currentElement].posX, $("#"+currentElement));
-   elementList[currentElement].posX = posX;
+   //posX = checkPosition(elementList[currentElement].posX, $("#"+currentElement));
+   //elementList[currentElement].posX = posX;
 });
 $('#inputHeightValue').change(function() {
    $("#"+currentElement).height($('#inputHeightValue').val());
@@ -569,7 +577,6 @@ hasValueText = function () {
 
 hasDefaultValueText = function () {
    $('#defaultValueGroup').show();
-   console.log("v " +elementList[currentElement].defaultValue);
    $('#inputdefaultValue').val(elementList[currentElement].defaultValue);
 };
 

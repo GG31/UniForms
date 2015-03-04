@@ -60,11 +60,11 @@
 
 				// ElementsValues
 				$query = mysqli_query($database, "	SELECT formelement_id, value
-										FROM 			answervalue
-												JOIN 	elementanswer
-												ON 		elementanswer.elementanswer_id = answervalue.elementanswer_id
-										WHERE 	elementanswer.answer_id = " . $this->id . "
-										ORDER BY formelement_id");
+													FROM 			answervalue
+															JOIN 	elementanswer
+															ON 		elementanswer.elementanswer_id = answervalue.elementanswer_id
+													WHERE 	elementanswer.answer_id = " . $this->id . "
+													ORDER BY formelement_id");
 				
 				if (!mysqli_num_rows($query)){
 					// TODO uncomment
@@ -72,6 +72,43 @@
 					// die("Answer::__construct() : values not found !");
 				}else{
 					$this->elementsValues = [];
+
+					// ---------------------------
+					// $done = [];
+					// while($results = mysqli_fetch_array($query)){
+					// 	echo "<pre>";
+					// 	var_dump($results);
+					// 	echo "</pre>";
+					// 	if(!in_array($results["formelement_id"], $done)){
+					// 		$values = [];
+					// 		$query2 = mysqli_query($database, "	SELECT 	optionvalue
+					// 											FROM 	elementoption
+					// 											WHERE 	formelement_id = " . $results["formelement_id"] . "
+					// 											AND 	elementoption_id = " . $results["value"]);
+
+					// 		if (!mysqli_num_rows($query2)){
+					// 			$values[] 	= $results["value"];
+					// 		}else{
+					// 			while($results2 = mysqli_fetch_array($query2)){
+					// 				$values[] = $results2["optionvalue"];
+					// 			}
+					// 		}
+
+
+					// 		$this->elementsValues[] = [
+					// 			"elementId" => $results["formelement_id"],
+					// 			"values" => $values
+					// 		];
+
+					// 		$done[] = $results["formelement_id"];
+					// 	}
+					// }
+
+
+
+
+
+					// ---------------------------
 
 					// Values are grouped together if they're multiple
 					$results 	= mysqli_fetch_array($query);

@@ -364,7 +364,7 @@ $('input[type=submit]').click(function() {
 
    // Form must have a name
    // Default name : "Formulaire Sans Nom"
-   if ($("#formName").text() == "" || $("#formName").text() == "Nom du formulaire") {
+   if ($("#formName").text() == "" || $("#formName").text() == "Formulaire sans nom") {
       $("#infoFormName").val("Formulaire Sans Nom");
    }
 
@@ -611,7 +611,7 @@ hasSeveralValues = function () {
 
 $("#formName").focusout(function() {
    if($("#formName").text() === '') {
-      $("#formName").text("Formulaire sans nom");
+      $("#formName").text("Formulaire Sans Nom");
    }
    $("#infoFormName").val($("#formName").text());
 });

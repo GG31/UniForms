@@ -28,12 +28,35 @@ if (isset ( $_GET ["ans_id"] )) { // Load answer
 ?>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>UniForms</title>
-<link rel="shortcut icon" href="../res/img/favicon.png" />
-<link rel="stylesheet" href="../lib/bootstrap-3.3.1/css/min.css"
-	type="text/css" />
-<link rel="stylesheet" href="../css/styles.css" type="text/css" />
+   <meta charset="UTF-8">
+   <title>UniForms</title>
+   <link rel="shortcut icon" href="../res/img/favicon.png" />
+   <link rel="stylesheet" href="../lib/bootstrap-3.3.1/css/min.css"
+      type="text/css" />
+   <link rel="stylesheet" href="../css/styles.css" type="text/css" />
+   <style type="text/css">
+      #answerSheet{
+         border: 1px solid black;
+         width: 794px;
+         height: 1122px;
+      }
+      .square {
+         width:200px;
+         height:200px;
+         background:transparent;
+         border: 2px solid black;
+      }
+      .circle{
+         width:200px;
+         height:200px;
+         background:transparent;
+         border: 2px solid black;
+         -webkit-border-radius:100px;
+         -moz-border-radius:100px;
+         -o-border-radius:100px;
+         border-radius:100px;
+      }
+   </style>
    <?php
 			if ($form->printable () == 0) {
 				echo "<link rel='stylesheet' media='print' href='../css/notprint.css' type='text/css' />";
@@ -52,34 +75,38 @@ if (isset ( $_GET ["ans_id"] )) { // Load answer
          elems    = [];
          
          <?php
-									$groups = $form->groups ();
-									
-									$prevs = [ ];
-									$prev = $prev_id;
-									
-									if ($new === FALSE) {
-										$prevs [] = $ans;
-									}
-									
-									while ( $prev != 0 ) {
-										$ans = new Answer ( $prev );
-										$prevs [] = $ans;
-										$prev = $ans->prev ();
-									}
-									
-									$prevs = array_reverse ( $prevs );
-									
-									foreach ( $groups as $groupNum => $group ) {
-										$elems = $group->elements ();
-										
-										foreach ( $elems as $elem ) {
-											$json = json_encode ( $elem->attr () );
-											?>
+            $groups = $form->groups();
+
+            $prevs = [];
+            $prev = $prev_id;
+
+            if($new === FALSE){
+               $prevs[] = $ans;
+            }
+
+            while($prev != 0){
+               $ans     = new Answer($prev);
+               $prevs[] = $ans;
+               $prev    = $ans->prev();
+            }
+
+            $prevs = array_reverse($prevs);
+            $maxBottom = 0;
+
+            foreach ($groups as $groupNum => $group) {
+               $elems = $group->elements();
+
+               foreach ($elems as $elem) {
+                  $attr = $elem->attr();
+                  // var_dump($attr);
+                  $bottom = $attr["y"] + $attr["height"] + (strlen($attr["label"]) > 0 ? 25 : 0) + count($attr["options"])*25;
+                  $maxBottom = max($maxBottom, $bottom);
+
+                  $json = json_encode($elem->attr());
+         ?>
                   e = new Element(<?php echo $json ?>, '#answerSheet')
                         .answers(
-                           <?php
-											
-echo isset ( $prevs [$groupNum] ) ? json_encode ( $prevs [$groupNum]->values ( $elem->id () ) ) : "[]";
+                           <?php echo isset ( $prevs [$groupNum] ) ? json_encode ( $prevs [$groupNum]->values ( $elem->id () ) ) : "[]";
 											?>
                         );
                   <?php
@@ -94,18 +121,21 @@ echo isset ( $prevs [$groupNum] ) ? json_encode ( $prevs [$groupNum]->values ( $
 									}
 									?>
 
+         // Set height of answer sheet
+         $('#answerSheet').css('height', "<?php echo $maxBottom + 5 ?>px");
+
          $('input[type=submit]').on('click', {elems: elems}, function(event){
             $('input[name=answers]').attr('value', JSON.stringify(getAnswers(elems)));
             // event.preventDefault();
          });
 
          <?php
-									if ($state == TRUE) {
-										?>
+      		if ($state == TRUE) {
+      	?>
             disableForm('#answerSheet');
          <?php
-									}
-									?>
+				}
+			?>
       });
 
    </script>
@@ -119,31 +149,52 @@ echo isset ( $prevs [$groupNum] ) ? json_encode ( $prevs [$groupNum]->values ( $
                <div class="alert alert-warning text-center" role="alert">
 			Ce formulaire a déjà été validé !</div>
          <?php
-									}
-									?>
-         <div id="untruc" class="row">
-			<div class="panel panel-primary">
-				<div class="panel-heading text-center text-capitalize">
-					<h3 class="panel-title">
-						<strong><?php echo $form->name() ?></strong>
-					</h3>
-				</div>
-				<div class="panel-body">
-					<form id="answerSheet" role="form" action="include/fill_form.php"
-						method="post" style="overflow: visible; height: 493px;"></form>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-offset-3 col-sm-6">
-				<input type="hidden" name=<?php echo $new ? "form_id" : "ans_id"?>
-					form="answerSheet" value=<?php echo $new ? $form_id : $ans_id ?>>
-				<!-- TODO formid useful ?-->
-				<input type="hidden" name="formdest_id" form="answerSheet"
-					value=<?php echo $new ? $formdest_id : "" ?>> <input type="hidden"
-					name="prev_id" form="answerSheet"
-					value=<?php echo $new ? $prev_id : "" ?>> <input type="hidden"
-					name="answers" form="answerSheet"> <input
+				}
+			?>
+         <div class="row">
+            <div class="panel panel-primary">
+               <div class="panel-heading text-center text-capitalize">
+                  <h3 class="panel-title"><strong><?php echo $form->name() ?></strong></h3>
+               </div>
+               <div class="panel-body">
+                  <form
+                     id="answerSheet"
+                     class="center-block"
+                     role="form"
+                     action="include/fill_form.php"
+                     method="post"
+                     style="position:relative;overflow:visible;height:493px;"
+                     >
+                  </form>
+               </div>
+            </div>
+   	   </div>
+         <div class= "row">
+            <div class="col-sm-offset-3 col-sm-6">
+               <input
+                  type="hidden"
+                  name=<?php echo $new ? "form_id" : "ans_id" ?>
+                  form="answerSheet"
+                  value=<?php echo $new ? $form_id : $ans_id ?>
+                  ><!-- TODO formid useful ?-->
+               <input
+                  type="hidden"
+                  name="formdest_id"
+                  form="answerSheet"
+                  value=<?php echo $new ? $formdest_id : "" ?>
+                  >
+               <input
+                  type="hidden"
+                  name="prev_id"
+                  form="answerSheet"
+                  value=<?php echo $new ? $prev_id : "" ?>
+                  >
+               <input
+                  type="hidden"
+                  name="answers"
+                  form="answerSheet"
+                  >
+               <input
                   type="submit"
                   class="btn btn-default btn-lg btn-block"
                   value="Enregistrer"

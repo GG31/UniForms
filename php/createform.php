@@ -58,6 +58,9 @@
 	
 		<script>
 			$(document).ready(function(){
+
+				$('#formName').trigger('focusout');
+
 				/////////////////////////////////////////////
 				// Toggle recipient when toogling anon 	//
 				/////////////////////////////////////////////
@@ -377,7 +380,7 @@
 					<div id="panelPanneau" class="panel panel-primary">
 					   <div class="panel-heading text-center text-capitalize">
 						   <h3 class="panel-title">
-								<span contentEditable="true" id="formName">Nom du formulaire</span><input id="infoFormName" name="infoFormName" type="hidden" />
+								<span contentEditable="true" id="formName">Formulaire Sans Nom</span><input id="infoFormName" name="infoFormName" type="hidden" />
 							</h3>
 						</div>
 						<div class="panel-body ">

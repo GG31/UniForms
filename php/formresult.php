@@ -62,6 +62,29 @@
    <link rel="stylesheet" href="../lib/bootstrap-3.3.1/css/min.css"
       type="text/css" />
    <link rel="stylesheet" href="../css/styles.css" type="text/css" />
+   <style type="text/css">
+      #answerSheet{
+         border: 1px solid black;
+         width: 794px;
+         height: 1122px;
+      }
+      .square {
+         width:200px;
+         height:200px;
+         background:transparent;
+         border: 2px solid black;
+      }
+      .circle{
+         width:200px;
+         height:200px;
+         background:transparent;
+         border: 2px solid black;
+         -webkit-border-radius:100px;
+         -moz-border-radius:100px;
+         -o-border-radius:100px;
+         border-radius:100px;
+      }
+   </style>
    <?php
       if($form->printable()==FALSE){
          echo "<link rel='stylesheet' media='print' href='../css/notprint.css' type='text/css' />";
@@ -93,14 +116,27 @@
             }
 
             $prevs = array_reverse($prevs);
+            $maxBottom = 0;
 
             foreach ($groups as $groupNum => $group) {
                $elems = $group->elements();
 
                foreach ($elems as $elem) {
-                  $json = json_encode($elem->attr());
+                  $attr = $elem->attr();
+                  $bottom = $attr["y"] + $attr["height"] + (strlen($attr["label"]) > 0 ? 25 : 0) + count($attr["options"])*25;
+                  $maxBottom = max($maxBottom, $bottom);
+
+                  $json = json_encode($attr);
          ?>
-                  e = new Element(<?php echo $json ?>, '#answerSheet')
+                  json = <?php echo $json ?>;
+                  json.x = parseInt(json.x) + parseInt($('#answerSheet').offset().left);
+                  json.y = parseInt(json.y) + parseInt($('#answerSheet').offset().top);
+
+                  console.log($('#answerSheet').offset().top);
+                  console.log($('#answerSheet').offset().left);
+                  console.log(json);
+
+                  e = new Element(json, '#answerSheet')
                         .answers(
                            <?php echo isset($prevs[$groupNum]) ?
                                     json_encode(
@@ -114,6 +150,9 @@
                }
             }
          ?>
+
+         // Set height of answer sheet
+         $('#answerSheet').css('height', "<?php echo $maxBottom + 5 ?>px");
          
          disableForm('#answerSheet');
 
@@ -141,8 +180,8 @@
 
    </script>
    	<div class="container">
-         <?php include 'include/header.php'; ?>
-  		   <?php include 'include/nav.php'; ?>
+         <span id="header"><?php include 'include/header.php'; ?></span>
+  		   <span id="nav"><?php include 'include/nav.php'; ?></span>
          <div class="row">
             <div class="panel panel-primary">
                <div class="panel-heading text-center text-capitalize">
@@ -151,7 +190,8 @@
                <div class="panel-body">
                   <form
                      id="answerSheet"
-                     style="overflow:visible;height:493px;"
+                     class="center-block"
+                     style="overflow:visible;"
                      >
                   </form>
                </div>
@@ -183,7 +223,7 @@
                </ul>
             </nav>
          </div>
-   	  	<?php include 'include/footer.php'; ?>
+   	  	<span id="footer"><?php include 'include/footer.php'; ?></span>
       </div>
 </body>
 </html>

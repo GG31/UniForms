@@ -47,6 +47,11 @@
 
 						if(!in_array($prevs[$groupNum]->id(), $doneAnswers)){
 							foreach ($group->elements() as $elem) {
+								$type = $elem->attr()["type"];
+								if($type == constant("typeSpan") || $type == constant("typeSquare") || $type == constant("typeCircle") || $type == constant("typeImage")){
+									continue;
+								}
+
 								if(!isset($valuesTable[$elem->id()])){
 									$valuesTable[$elem->id()] = [
 										"label" => $elem->label(),
@@ -55,8 +60,11 @@
 								}
 
 								$v = $prevs[$groupNum]->values($elem->id());
+								if($type == constant("typeTextArea")){
+									$v[0] = "\"" . $v[0] . "\"";
+								}
 
-								if($elem->attr()["type"] == constant("typeCheckbox") || $elem->attr()["type"] == constant("typeRadioButton")){
+								if($type == constant("typeCheckbox") || $type == constant("typeRadioButton")){
 									global $database;
 									$query = mysqli_query($database, "	SELECT 	optionvalue
 																		FROM 	elementoption
@@ -111,6 +119,11 @@
 		foreach ($groups as $groupNum => $group) {
 
 			foreach ($group->elements() as $elem) {
+				$type = $elem->attr()["type"];
+				if($type == constant("typeSpan") || $type == constant("typeSquare") || $type == constant("typeCircle") || $type == constant("typeImage")){
+					continue;
+				}
+
 				if(!isset($valuesTable[$elem->id()])){
 					$valuesTable[$elem->id()] = [
 						"label" => $elem->label(),
@@ -119,8 +132,11 @@
 				}
 
 				$v = $prevs[$groupNum]->values($elem->id());
+				if($type == constant("typeTextArea")){
+					$v[0] = "\"" . $v[0] . "\"";
+				}
 
-				if($elem->attr()["type"] == constant("typeCheckbox") || $elem->attr()["type"] == constant("typeRadioButton")){
+				if($type == constant("typeCheckbox") || $type == constant("typeRadioButton")){
 					global $database;
 					$query = mysqli_query($database, "	SELECT 	optionvalue
 														FROM 	elementoption

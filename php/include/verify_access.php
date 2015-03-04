@@ -1,166 +1,68 @@
 <?php
-	// TODO 									UPDATE THIS FILE !!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 
-
 	/*
 		Triggers verification
 	 */
 	switch (explode('.', basename($_SERVER["REQUEST_URI"]), 2)[0]) {
-		case 'answers':
-			// verify_access_answers();
-			break;
 		case 'createform':
-			// verify_access_create();
+			if (isset($_GET["form_id"])) 
+				verify_creator($_GET["form_id"]); 
+			elseif ($_SESSION["user_id"] == 0) 
+				header("Location: include/logout.php" );
 			break;
 		case 'fillform':
-			// verify_access_fill();
+			verify_access_fill();
 			break;
-	   default:
-	      if ($_SESSION["user_id"] == 0) {
-	         header("Location: include/logout.php" );
-	      }
-	      break;
-	}
-
-	/*
-		ANSWERS.PHP:
-			$_GET["form_id"]:
-				$_SESSION["user_id"] is creator of $_GET["form_id"]
-			$_GET["form_id"] AND $_GET["user_id"]:
-				$_SESSION["user_id"] is creator of $_GET["form_id"]
-				$_GET["form_id"] answered by $_GET["user_id"]
-	 */
-	function verify_access_answers() {
-		$b1 = FALSE;
-		$b2 = TRUE;
-		
-		if ($_SESSION["user_id"] == 0) {
-		   header("Location: include/logout.php" );
-		}
-		
-		if (isset ( $_GET ["form_id"] )) {
-			$b1 = (new User ( $_SESSION ["user_id"] ))->isCreator ( $_GET ["form_id"] );
-			$b1 ? TRUE : header ( "Location: error.php?e=1" );
-			
-			if (isset ( $_GET ["user_id"] )) {
-				$ans = (new Form ( $_GET ["form_id"] ))->getListRecipient ( [ 
-															$_GET ["user_id"] 
-														], 1 );
-				$b2 = count ( $ans ) == 1 ? TRUE : FALSE;// ? TODO
-				$b2 ? TRUE : header ( "Location: error.php?e=2" );
-			}
-		}
-	}
-
-	/*
-	 * CREATEFORM.PHP:
-	 * 		$_GET["form_id"]:
-	 *   		$_SESSION["user_id"] is creator of $_GET["form_id"]
-	 *     void:
-	 *     		ok
-	 */
-	function verify_access_create() {
-		$b = TRUE;
-		
-		if (isset ( $_GET ["form_id"] )) {
-			$b = (new User ( $_SESSION ["user_id"] ))->isCreator ( $_GET ["form_id"] );
-			$b ? TRUE : header ( "Location: error.php?e=3" );
-		} else if ($_SESSION["user_id"] == 0) {
-		   header("Location: include/logout.php" );
-		}
-	}
-
-	/*
-		FILLFORM.PHP: (Anonymous are allowed if form is anonymous)
-			$_GET["form_id"]:
-				form is validated (creation) & user is dest of form
-				answer limit not reached
-			$_GET["ans_id"]:
-				form is validated (creation) & user is dest of form
-	 */
-	function verify_access_fill(){
-		$b1 = FALSE;
-		$b2 = FALSE;
-		if(isset($_GET["form_id"])){
-			$form_id = $_GET["form_id"];
-		}
-		if(isset($_GET["ans_id"])){
-			$ans = new Answer($_GET["ans_id"]);
-			$form_id = $ans->getFormId();
-		}
-		$form = new Form($form_id);
-		if($form->anon()){ // Anonymous allowed if anonymous form
-			return;
-	    }
-	   
-	   //Si l'utilisateur est anonyme et formulaire non anonyme
-	   if ($_SESSION["user_id"] == 0) {
-	      header("Location: include/logout.php" );
-	      return;
-	   }
-	   
-		$user = new User($_SESSION["user_id"]);
-		$forms = $user->recipient(); // Returns validated (creation) forms
-		foreach ($forms as $f) {
-			if($f->id() == $form_id){
-				$b1 = TRUE;
-				break;
-			}
-		}
-		$b1 ? TRUE : header("Location: error.php?e=4" );
-
-		if(isset($_GET["form_id"])){
-			$max = $form->getMaxAnswers();
-			if($max == 0) // b2 should be TRUE -> 0 - (-1) > 0
-				$current = -1;
+		case 'exportSQL':
+		case 'download_csv':
+		case 'results':
+			if (isset($_GET["form"])) 
+				verify_creator($_GET["form"]); 
+			else 
+				header ( "Location: error.php?e=99" );
+			break;
+		case 'formresult':
+			if (isset($_GET["ans_id"]) and $_SESSION["user_id"]) 
+				verify_ans_id($_GET["ans_id"]);
 			else
-			$current = count($form->getFormRecipients([$_SESSION["user_id"]]));
-			$b2 = $max - $current > 0;
-			$b2 ? TRUE : header("Location: error.php?e=5" );
+				header ( "Location: error.php?e=99" );
+			break;
+	    default:
+			if ($_SESSION["user_id"] == 0) {
+				header("Location: include/logout.php" );
+			}
+			break;
+	}
+	
+	/* Verifies if current user is creator of $formId */
+	function verify_creator($formId ) {
+		if (!((new Form($formId))->creator()->id() == $_SESSION ["user_id"]))
+			header ( "Location: error.php?e=3" );
+	}
+	
+	/* Verifies if current user is creator of form of $ansId */
+	function verify_ans_id($ansId = null) {
+		if (!((new Form((new Answer($ansId))->formId()))->creator()->id() == $_SESSION ["user_id"]))
+			header ( "Location: error.php?e=3" );
+	}
+
+	/* Verifies access to fill form page */
+	function verify_access_fill(){
+		if(isset($_GET["form_id"]) and isset($_GET["formdest_id"]) and isset($_GET["prev_id"])){
+			$form = new Form($_GET["form_id"]);
+			if((!$form->anon()) and $_SESSION["user_id"] == 0)
+				header("Location: include/logout.php" );
+			if($form->state() == FALSE)
+				header ( "Location: error.php?e=99" );
+			if((new User($_SESSION["user_id"]))->isFormIdRecipient($_GET["formdest_id"]) == FALSE)
+				header ( "Location: error.php?e=4" );
+			if ((new User($_SESSION["user_id"]))->isLimitReached($_GET["formdest_id"]))
+				header ( "Location: error.php?e=5" );
+			//  prev id
+		}elseif(isset($_GET["ans_id"])){
+			if ((new Answer($_GET["ans_id"]))->userId() != $_SESSION["user_id"])
+				header ( "Location: error.php?e=4" );
+		}else{
+			header ( "Location: error.php?e=99" );
 		}
 	}
 ?>

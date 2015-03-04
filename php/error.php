@@ -1,15 +1,15 @@
-<!doctype html>
+﻿<!doctype html>
 <?php include_once 'include/includes.php'; ?>
 <?php
 	switch ($_GET ["e"]) {
 		case 1 :
-			$error = "Vous n'êtes pas le créateur de ce formualire !";
+			$error = "Vous n'êtes pas le créateur de ce formulaire !";
 			break;
 		case 2 :
 			$error = "Cette personne n'a pas répondu à ce formulaire !";
 			break;
 		case 3 :
-			$error = "Vous nêtes pas le créateur de ce formulaire !";
+			$error = "Vous n'êtes pas le créateur de ce formulaire !";
 			break;
 		case 4 :
 			$error = "Ce formulaire ne vous est pas destiné !";

@@ -128,7 +128,7 @@
 		 * @return boolean TRUE (FALSE) if user is (not) creator of form
 		 */
 		public function isCreator($formId){
-			// TODO
+
 			return FALSE;
 		}
 
@@ -151,6 +151,23 @@
 			}
 			
 			return $res;
+		}
+		
+		public function isFormIdRecipient($formDestId){
+			global $database;
+			$query = mysqli_query($database, "SELECT * FROM formdest WHERE formdest_id = ".$formDestId." AND user_id = ".$this->id());
+			if (mysqli_num_rows($query)) 
+				return true;
+			return false;
+		}
+
+		public function isLimitReached($formDestId){
+			global $database;
+			$query = mysqli_query($database, "SELECT * FROM answer WHERE formdest_id = ".$formDestId);
+			$limit = mysqli_fetch_array(mysqli_query($database, "SELECT * FROM formgroup JOIN formdest ON formgroup.formgroup_id = formdest.formgroup_id AND formdest_id = ".$formDestId))["group_limit"];
+			if (mysqli_num_rows($query) >= $limit) 
+				return true;
+			return false;
 		}
 	}
 

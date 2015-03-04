@@ -229,9 +229,9 @@
 		}
 
 		/**
-		 * Returns an array of ids of users who responded
+		 * Returns an array of ids of users who answered  ???????
 		 * @access public
-		 * @return array
+		 * @return array  ??????
 		 */
 		public function userId(){
 			global $database;
@@ -253,9 +253,9 @@
 		}
 
 		/**
-		 * Returns an array of identifiers of forms has owned a reply
+		 * Returns an array of identifiers of forms has owned a reply  ??????
 		 * @access public
-		 * @return array
+		 * @return array    ?????
 		 */
 		public function formId(){
 			global $database;

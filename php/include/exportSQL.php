@@ -1,7 +1,7 @@
 <?php
 include_once ('includes.php');
-if (isset($_GET["form_id"])) {
-	$form = new Form($_GET["form_id"]);
+if (isset($_GET["form"])) {
+	$form = new Form($_GET["form"]);
 	if ($form->creator()->id() == $_SESSION["user_id"]){
 		$fileName = "exportedform.sql";
 		/*$file = fopen($fileName, "c");

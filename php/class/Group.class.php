@@ -225,10 +225,10 @@
 		}
 
 		/**
-		 * Return the list of recipients
+		 * Return the list of recipients ????????
 		 * @access public
 		 * @param integer $userId
-		 * @return array(User)
+		 * @return array(User) ????????
 		 */
 		public function formdestId($userId){
 			global $database;

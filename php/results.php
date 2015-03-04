@@ -51,7 +51,7 @@
 							<a href="include/download_csv.php?form=<?php echo $formId ?>" style="text-decoration:none">CSV
 								<span class="glyphicon glyphicon-circle-arrow-down" aria-hidden="true"></span>
 							</a>
-							<a href="include/exportSQL.php?form_id=<?php echo $formId ?>" style="text-decoration:none">SQL
+							<a href="include/exportSQL.php?form=<?php echo $formId ?>" style="text-decoration:none">SQL
 								<span class="glyphicon glyphicon-circle-arrow-down" aria-hidden="true"></span>
 							</a>
 						</h3>

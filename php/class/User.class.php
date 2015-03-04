@@ -5,12 +5,14 @@
 	Class User {
 		
 		/**
+		 * Id of this user
 		 * @access private
 		 * @var integer
 		 */
 		private $id;
 		
 		/**
+		 * Name of this user
 		 * @access private
 		 * @var string
 		 */
@@ -18,6 +20,7 @@
 		
 		/**
 		 * Constructor, create a user
+		 * @access public
 		 * @param integer $userId the id of the user default NULL
 		 */
 		public function __construct($id = NULL){
@@ -38,6 +41,7 @@
 
 		/**
 		 * Get and Set the user's id
+		 * @access public
 		 * @param integer $id the id's user default NULL
 		 * @return integer
 		 */
@@ -55,6 +59,7 @@
 		
 		/**
 		 * Get and Set the user's name
+		 * @access public
 		 * @param string $name the name's user default NULL
 		 * @return string
 		 */
@@ -72,6 +77,7 @@
 
 		/**
 		 * Give the forms created by the user
+		 * @access public
 		 * @return array of Form
 		 */
 		public function created() {
@@ -91,6 +97,7 @@
 
 		/**
 		 * Give the forms which the user is recipient
+		 * @access public
 		 * @return array of Form
 		 */
 		public function recipient() {
@@ -116,6 +123,7 @@
 
 		/**
 		 * The user is creator of the form formId
+		 * @access public
 		 * @param integer $formId id's form
 		 * @return boolean TRUE (FALSE) if user is (not) creator of form
 		 */

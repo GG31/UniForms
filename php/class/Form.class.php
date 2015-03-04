@@ -56,6 +56,7 @@
 		/**
 		 * Constructor
 		 * Create a form, if already exist, find the information on the database to fill the attributes
+		 * @access public
 		 * @param integer $id the id's form default NULL
 		 */
 		public function __construct($id = NULL){
@@ -101,6 +102,7 @@
 
 		/**
 		 * Get and Set the form's id
+		 * @access public
 		 * @param integer $id
 		 * @return integer
 		 */
@@ -118,6 +120,7 @@
 
 		/**
 		 * Get and Set the form's creator
+		 * @access public
 		 * @param User $creator
 		 * @return User
 		 */
@@ -135,6 +138,7 @@
 
 		/**
 		 * Get and Set the form's name
+		 * @access public
 		 * @param string $name
 		 * @return string
 		 */
@@ -152,6 +156,7 @@
 
 		/**
 		 * Get and Set the form's state
+		 * @access public
 		 * @param boolean $state
 		 * @return boolean TRUE (validated) or FALSE(not validated yet)
 		 */
@@ -169,6 +174,7 @@
 
 		/**
 		 * Get and Set the form's group
+		 * @access public
 		 * @param Group $groups
 		 * @return Group
 		 */
@@ -186,6 +192,7 @@
 
 		/**
 		 * Give printable variable
+		 * @access public
 		 * @param boolean $print
 		 * @return boolean true if printable, false if is not
 		 */
@@ -203,6 +210,7 @@
 
 		/**
 		 * Get and Set anonymous variable
+		 * @access public
 		 * @param boolean $anon
 		 * @return boolean true if is anonymous, false if is not
 		 */
@@ -225,6 +233,7 @@
 		 * For each answers in the valid set, find if user answered
 		 * Find out if limit is reached
 		 * Filter answers with $state
+		 * @access public
 		 * @param User $userId
 		 * @param boolean $state
 		 * @param Group $groups
@@ -291,6 +300,8 @@
 		}
 
 		/**
+		 * Retourn the group of a user
+		 * @access public
 		 * @param User $userId
 		 * @return Group
 		 */
@@ -307,6 +318,8 @@
 		}
 		
 		/**
+		 * Allocates and returns a list of ids of a group
+		 * @access public
 		 * @param User $userId
 		 * @param Group $groupNum
 		 * @return Group
@@ -317,6 +330,12 @@
 			return $group->formdestId($userId);
 		}
 
+		/**
+		 * Returns a list of all users of the previous groups who responded
+		 * @access public
+		 * @param Answer $ansId
+		 * @return array(User)
+		 */
 		public function chain($ansId){
 			if($ansId != 0){
 				$ret = [];
@@ -349,6 +368,7 @@
 		
 		/**
 		 * Save the form on the database
+		 * @access public
 		 */
 		public function save() {
 			global $database;
@@ -394,6 +414,7 @@
 
 		/**
 		 * save() and update status to TRUE
+		 * @access public
 		 */
 		public function send(){
 			global $database;
@@ -409,6 +430,7 @@
 
 		/**
 		 * Delete one form and all registers related to it in other tables (formdest, formelement, elementanswer, answervalue)
+		 * @access public
 		 */
 		public function delete(){
 			global $database;
@@ -421,6 +443,7 @@
 		/**
 	    * Creates a file with a SQL script. This script generates a database and tables containing information related to all validated answers of this form.
 		* If the form is not validated returns 0, else returns 1.
+		* @access public
 		* @return file "exportSQL.sql"
 	    */	
 		public function exportSQL(){

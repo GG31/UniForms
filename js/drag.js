@@ -150,11 +150,8 @@ addElement = function(elementCodeId, posX, posY, idEl, idChild) {
    
    onhover();
    ondrag();
-   if(!elChild.is("fieldset") && !elChild.is("span")) {
       resize(el);
-   } else {
-      registerWidthHeight(idChild, elChild.width(), elChild.height());
-   }
+   
    registerPos(idChild, posX, posY);
    ids = ids + 1;
 }
@@ -162,7 +159,7 @@ addElement = function(elementCodeId, posX, posY, idEl, idChild) {
 addProp = function(id, type, minvalue,maxvalue,defaultValue,required, width, height, placeholder, direction, big, options, label, img) {
    elementList[id].minvalue = minvalue;
    elementList[id].maxvalue = maxvalue;
-   elementList[id].value = defaultValue;
+   elementList[id].defaultValue = defaultValue;
    elementList[id].required = required;
    elementList[id].width = width;
    elementList[id].height = height;
@@ -363,7 +360,7 @@ $('input[type=submit]').click(function() {
 
    // Form must have a name
    // Default name : "Formulaire Sans Nom"
-   if ($("#formName").text() == "" || $("#formName").text() == "Click to add form name") {
+   if ($("#formName").text() == "" || $("#formName").text() == "Nom du formulaire") {
       $("#infoFormName").val("Formulaire Sans Nom");
    }
 
@@ -568,6 +565,7 @@ hasValueText = function () {
 
 hasDefaultValueText = function () {
    $('#defaultValueGroup').show();
+   console.log("v " +elementList[currentElement].defaultValue);
    $('#inputdefaultValue').val(elementList[currentElement].defaultValue);
 };
 

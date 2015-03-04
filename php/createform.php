@@ -532,7 +532,7 @@
 									element.type,
 									element.min,
 									element.max,
-									element.default,
+									element.defaultValue,
 									element.required,
 									element.width,
 									element.height,

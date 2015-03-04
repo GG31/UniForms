@@ -35,8 +35,9 @@ if (! empty ( $_POST )) {
       // echo "</pre>";
       $formName = $_POST ["infoFormName"];
       $form->name($formName);
-   }
+    }
 	if (isset ( $_POST ["usersGroups"] )) {
+
       // echo "USERSGROUPS:<br><pre>";
       // var_dump($_POST["usersGroups"]);
       // echo "</pre>";
@@ -148,8 +149,8 @@ function treatmentElement($key, $array) {
    if(array_key_exists("label", $array)) {
       $attrs['label'] = $array['label'];
    }
-   if(array_key_exists("value", $array)) {
-      $attrs['value'] = $array['value'];
+   if(array_key_exists("defaultValue", $array)) {
+      $attrs['defaultValue'] = $array['defaultValue'];
    }
    if(array_key_exists("minvalue", $array)) {
       $attrs['min'] = $array['minvalue'];

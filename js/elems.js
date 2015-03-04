@@ -7,6 +7,9 @@ Container = (function(){
 						.css('top', obj.y + 'px')
 						.css('left', obj.x + 'px');
 
+		if(!(obj.type == 10 || obj.type == 11 || obj.type == 12)){
+			container.css('z-index', '1');
+		}
 
 		if(obj.label !== ""){
 			label 		= $('<label></label>')
@@ -223,7 +226,7 @@ Element = (function(){
 				break;
 			case 8:
 				element = $('<textarea></textarea>')
-							.css('height', obj.height + 'px')
+							// .css('height', obj.height + 'px')
 							.css('resize', 'none');
 				obj.type = 6;
 				break;
@@ -237,20 +240,23 @@ Element = (function(){
 				break;
 			case 9:
 				element = $('<span></span>');
-				console.log(obj);
+				obj.type = 9;
 				break;
 			case 10:
 				element = $('<div></div>').addClass("square");
+				obj.type = 10;
 				break;
 			case 11:
 				element = $('<div></div>').addClass("circle");
+				obj.type = 11;
 				break;
 			case 12:
 				element = $('<img/>').attr("src", obj.img);
+				obj.type = 12;
 				break;
 			default:
 				element = $('<p>Element inconnu (' + obj.type + ')</p>');
-				// obj.type = 0;
+				obj.type = 0;
 				break;
 		}
 
@@ -283,10 +289,15 @@ Element = (function(){
 			case 4:
 			case 5:
 			case 6:
+			case 9:
+			case 10:
+			case 11:
+			case 12:
 				this.element
 					.attr('id', 'elem-' + obj.id)
 					.attr('placeholder', obj.placeholder)
 					.attr('required', obj.required)
+					.css('height', obj.height + 'px')
 					.css('width', obj.width + 'px');
 				break;
 			case 7:
@@ -323,7 +334,8 @@ Element = (function(){
 			case 8:
 				res = get ? this.element.getAnswers() : this.element.setAnswers(answers);
 				break;
-			default:
+			default:// 9 10 11 12
+				res = get ? {elementId: this.obj.id, values: []} : null;
 				break;
 		}
 

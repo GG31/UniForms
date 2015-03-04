@@ -98,11 +98,10 @@ if (isset ( $_GET ["ans_id"] )) { // Load answer
 
                foreach ($elems as $elem) {
                   $attr = $elem->attr();
-                  // var_dump($attr);
                   $bottom = $attr["y"] + $attr["height"] + (strlen($attr["label"]) > 0 ? 25 : 0) + count($attr["options"])*25;
                   $maxBottom = max($maxBottom, $bottom);
 
-                  $json = json_encode($elem->attr());
+                  $json = json_encode($attr);
          ?>
                   e = new Element(<?php echo $json ?>, '#answerSheet')
                         .answers(
@@ -163,7 +162,7 @@ if (isset ( $_GET ["ans_id"] )) { // Load answer
                      role="form"
                      action="include/fill_form.php"
                      method="post"
-                     style="position:relative;overflow:visible;height:493px;"
+                     style="position:relative;overflow:visible;"
                      >
                   </form>
                </div>

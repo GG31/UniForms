@@ -126,19 +126,26 @@ Css: div.abstract {width:100%;}
 Css: .frenchb-nbsp{font-size:75%;}
 Css: .frenchb-thinspace{font-size:75%;}
 Css: .figure img.graphics {margin-left:10%;}
+File: images/installer.png
 File: images/authentification.png
 File: images/authCAS.png
+File: images/authentificationAutre.png
 File: images/pageAccueil.png
-File: images/barreOptionsAccueil.png
-File: images/zoneFormulairesCreesAccueil.png
+File: images/barreOptions.png
+File: images/pageMesFormulaires.png
 File: images/urlForm.png
-File: images/zoneDestinataire.png
+File: images/pageBoiteRecep.png
+File: images/listRepNone.png
+File: images/listRepMulti.png
+File: images/listRepMultiCollab.png
+File: images/consultRepEnvoye.png
 File: images/pageCreation.png
-File: images/parametresCreation.png
-File: images/destinataires.png
-File: images/destinatairesCheckbox.png
+File: images/params.png
+File: images/zoneGroup.png
+File: images/modaleDest.png
+File: images/modalDestCheckbox.png
 File: images/elements.png
-File: images/consultResult.png
+File: images/listReponseConsultation.png
 File: images/consultResultForm.png
 File: images/repondre.png
 --- characters ---

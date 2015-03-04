@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=latex 2014.9.26)  4 MAR 2015 14:03
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=latex 2014.9.26)  4 MAR 2015 18:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -700,7 +700,11 @@ version 2009-05-18-23:01
 )
 (/usr/share/texmf/tex/generic/tex4ht/html4-math.4ht
 version 2009-05-18-23:01
-)) (./UserManual.aux)
+)) (./UserManual.aux
+
+LaTeX Warning: Label `zoneGroup' multiply defined.
+
+)
 \openout1 = `UserManual.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
@@ -979,7 +983,7 @@ and I'll forget about whatever was undefined.
 ! Undefined control sequence.
 <write> ...k\endcsname{1}{x1-1000}{QQ2-1-1}{\:ttl 
                                                   {}}}{\folio }\relax 
-l.49 ...ndcsname{1}{x1-330005}{QQ2-1-48}{FAQ}}{14}
+l.56 ...n n'affiche pas correctement la page}}{15}
                                                   \relax
 The control sequence at the end of the top line
 of your error message was never \def'ed. If you have
@@ -989,118 +993,171 @@ and I'll forget about whatever was undefined.
 
 ]) [4]
 Chapitre 1.
+l.41 --- TeX4ht warning --- \Link{x1-60011}? ---
+l.45 --- TeX4ht warning --- Cannot determine size of graphic in images/installe
+r.png (no BoundingBox) ---
+l. 45 --- needs --- images/installer.png ---
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 47.
 [5
 
 ]
 Chapitre 2.
-l.46 --- TeX4ht warning --- \Link{x1-90011}? ---
-l.50 --- TeX4ht warning --- Cannot determine size of graphic in images/authenti
+l.51 --- TeX4ht warning --- \Link{x1-80011}? ---
+l.55 --- TeX4ht warning --- Cannot determine size of graphic in images/authenti
 fication.png (no BoundingBox) ---
-l. 50 --- needs --- images/authentification.png ---
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 52.
-l.56 --- TeX4ht warning --- \Link{x1-100012}? ---
-l.58 --- TeX4ht warning --- \Link{x1-120013}? ---
-l.62 --- TeX4ht warning --- Cannot determine size of graphic in images/authCAS.
+l. 55 --- needs --- images/authentification.png ---
+l.61 --- TeX4ht warning --- \Link{x1-90012}? ---
+l.63 --- TeX4ht warning --- \Link{x1-110014}? ---
+l.67 --- TeX4ht warning --- Cannot determine size of graphic in images/authCAS.
 png (no BoundingBox) ---
-l. 62 --- needs --- images/authCAS.png ---
-l.68 --- TeX4ht warning --- \Link{x1-120013}? ---
-l.71 --- TeX4ht warning --- Cannot determine size of graphic in images/pageAccu
+l. 67 --- needs --- images/authCAS.png ---
+l.72 --- TeX4ht warning --- \Link{x1-100013}? ---
+l.73 --- TeX4ht warning --- \Link{x1-110014}? ---
+l.73 --- TeX4ht warning --- \Link{x1-80011}? ---
+l.77 --- TeX4ht warning --- Cannot determine size of graphic in images/authenti
+ficationAutre.png (no BoundingBox) ---
+l. 77 --- needs --- images/authentificationAutre.png ---
+l.82 --- TeX4ht warning --- \Link{x1-110014}? ---
+l.85 --- TeX4ht warning --- Cannot determine size of graphic in images/pageAccu
 eil.png (no BoundingBox) ---
-l. 71 --- needs --- images/pageAccueil.png ---
-l.76 --- TeX4ht warning --- \Link{x1-130014}? ---
+l. 85 --- needs --- images/pageAccueil.png ---
 [6
 
 ]
-l.86 --- TeX4ht warning --- Cannot determine size of graphic in images/barreOpt
-ionsAccueil.png (no BoundingBox) ---
-l. 86 --- needs --- images/barreOptionsAccueil.png ---
-l.91 --- TeX4ht warning --- \Link{x1-140015}? ---
-l.96 --- TeX4ht warning --- Cannot determine size of graphic in images/zoneForm
-ulairesCreesAccueil.png (no BoundingBox) ---
-l. 96 --- needs --- images/zoneFormulairesCreesAccueil.png ---
-l.105 --- TeX4ht warning --- Cannot determine size of graphic in images/urlForm
-.png (no BoundingBox) ---
-l. 105 --- needs --- images/urlForm.png ---
-l.110 --- TeX4ht warning --- \Link{x1-190011}? ---
+l.90 --- TeX4ht warning --- \Link{x1-120015}? ---
+l.92 --- TeX4ht warning --- \Link{x1-110014}? ---
+l.93 --- TeX4ht warning --- \Link{x1-180011}? ---
+l.94 --- TeX4ht warning --- \Link{x1-130016}? ---
+l.95 --- TeX4ht warning --- \Link{x1-160018}? ---
+l.101 --- TeX4ht warning --- Cannot determine size of graphic in images/barreOp
+tions.png (no BoundingBox) ---
+l. 101 --- needs --- images/barreOptions.png ---
+l.106 --- TeX4ht warning --- \Link{x1-130016}? ---
+l.106 --- TeX4ht warning --- \Link{x1-130016}? ---
 [7]
-l.113 --- TeX4ht warning --- \Link{x1-170017}? ---
-l.114 --- TeX4ht warning --- \Link{x1-170017}? ---
-l.115 --- TeX4ht warning --- \Link{x1-170017}? ---
-l.116 --- TeX4ht warning --- \Link{x1-170017}? ---
-l.122 --- TeX4ht warning --- Cannot determine size of graphic in images/zoneDes
-tinataire.png (no BoundingBox) ---
-l. 122 --- needs --- images/zoneDestinataire.png ---
+l.112 --- TeX4ht warning --- Cannot determine size of graphic in images/pageMes
+Formulaires.png (no BoundingBox) ---
+l. 112 --- needs --- images/pageMesFormulaires.png ---
+l.118 --- TeX4ht warning --- \Link{x1-140017}? ---
+l.122 --- TeX4ht warning --- Cannot determine size of graphic in images/urlForm
+.png (no BoundingBox) ---
+l. 122 --- needs --- images/urlForm.png ---
+l.127 --- TeX4ht warning --- \Link{x1-180011}? ---
+l.130 --- TeX4ht warning --- \Link{x1-160018}? ---
+l.134 --- TeX4ht warning --- Cannot determine size of graphic in images/pageBoi
+teRecep.png (no BoundingBox) ---
+l. 134 --- needs --- images/pageBoiteRecep.png ---
+l.141 --- TeX4ht warning --- \Link{x1-160029}? ---
 [8]
+l.145 --- TeX4ht warning --- Cannot determine size of graphic in images/listRep
+None.png (no BoundingBox) ---
+l. 145 --- needs --- images/listRepNone.png ---
+l.149 --- TeX4ht warning --- \Link{x1-1600310}? ---
+l.150 --- TeX4ht warning --- \Link{x1-300011}? ---
+l.151 --- TeX4ht warning --- \Link{x1-300011}? ---
+l.155 --- TeX4ht warning --- Cannot determine size of graphic in images/listRep
+Multi.png (no BoundingBox) ---
+l. 155 --- needs --- images/listRepMulti.png ---
+l.159 --- TeX4ht warning --- \Link{x1-1600411}? ---
+l.163 --- TeX4ht warning --- Cannot determine size of graphic in images/listRep
+MultiCollab.png (no BoundingBox) ---
+l. 163 --- needs --- images/listRepMultiCollab.png ---
+l.168 --- TeX4ht warning --- \Link{x1-160018}? ---
+l.168 --- TeX4ht warning --- \Link{x1-1600512}? ---
+l.172 --- TeX4ht warning --- Cannot determine size of graphic in images/consult
+RepEnvoye.png (no BoundingBox) ---
+l. 172 --- needs --- images/consultRepEnvoye.png ---
+[9]
 Chapitre 3.
-l.128 --- TeX4ht warning --- \Link{x1-130014}? ---
-l.128 --- TeX4ht warning --- \Link{x1-190011}? ---
-l.134 --- TeX4ht warning --- Cannot determine size of graphic in images/pageCre
-ation.png (no BoundingBox) ---
-l. 134 --- needs --- images/pageCreation.png ---
-l.139 --- TeX4ht warning --- \Link{x1-200012}? ---
-l.148 --- TeX4ht warning --- Cannot determine size of graphic in images/paramet
-resCreation.png (no BoundingBox) ---
-l. 148 --- needs --- images/parametresCreation.png ---
-l.153 --- TeX4ht warning --- \Link{x1-210013}? ---
-[9
+l.178 --- TeX4ht warning --- \Link{x1-120015}? ---
+l.178 --- TeX4ht warning --- \Link{x1-180011}? ---
 
-]
-l.157 --- TeX4ht warning --- Cannot determine size of graphic in images/destina
-taires.png (no BoundingBox) ---
-l. 157 --- needs --- images/destinataires.png ---
-l.161 --- TeX4ht warning --- \Link{x1-210024}? ---
-l.165 --- TeX4ht warning --- Cannot determine size of graphic in images/destina
-tairesCheckbox.png (no BoundingBox) ---
-l. 165 --- needs --- images/destinatairesCheckbox.png ---
-l.174 --- TeX4ht warning --- \Link{x1-230015}? ---
-l.178 --- TeX4ht warning --- Cannot determine size of graphic in images/element
-s.png (no BoundingBox) ---
-l. 178 --- needs --- images/elements.png ---
---- file UserManual2.html ---
+LaTeX Warning: Reference `params' on page 10 undefined on input line 179.
+
+l.179 --- TeX4ht warning --- \Link{x1-220016}? ---
+l.184 --- TeX4ht warning --- Cannot determine size of graphic in images/pageCre
+ation.png (no BoundingBox) ---
+l. 184 --- needs --- images/pageCreation.png ---
+l.189 --- TeX4ht warning --- \Link{x1-190012}? ---
+l.198 --- TeX4ht warning --- Cannot determine size of graphic in images/params.
+png (no BoundingBox) ---
+l. 198 --- needs --- images/params.png ---
+l.203 --- TeX4ht warning --- \Link{x1-210025}? ---
 [10
 
 ]
-l.217 --- TeX4ht warning --- \Link{x1-140015}? ---
-l.217 --- TeX4ht warning --- \Link{x1-290016}? ---
+l.208 --- TeX4ht warning --- Cannot determine size of graphic in images/zoneGro
+up.png (no BoundingBox) ---
+l. 208 --- needs --- images/zoneGroup.png ---
+
+LaTeX Warning: Reference `modaleDest' on page 11 undefined on input line 213.
+
+
+LaTeX Warning: Reference `modaleDest' on page 11 undefined on input line 217.
+
+l.221 --- TeX4ht warning --- Cannot determine size of graphic in images/modaleD
+est.png (no BoundingBox) ---
+l. 221 --- needs --- images/modaleDest.png ---
+l.225 --- TeX4ht warning --- \Link{x1-210014}? ---
+l.230 --- TeX4ht warning --- Cannot determine size of graphic in images/modalDe
+stCheckbox.png (no BoundingBox) ---
+l. 230 --- needs --- images/modalDestCheckbox.png ---
+l.235 --- TeX4ht warning --- \Link{x1-220016}? ---
+l.239 --- TeX4ht warning --- Cannot determine size of graphic in images/element
+s.png (no BoundingBox) ---
+l. 239 --- needs --- images/elements.png ---
 [11]
-l.221 --- TeX4ht warning --- Cannot determine size of graphic in images/consult
-Result.png (no BoundingBox) ---
-l. 221 --- needs --- images/consultResult.png ---
-l.225 --- TeX4ht warning --- \Link{x1-290027}? ---
-l.226 --- TeX4ht warning --- \Link{x1-290027}? ---
-l.226 --- TeX4ht warning --- \Link{x1-290016}? ---
-l.230 --- TeX4ht warning --- Cannot determine size of graphic in images/consult
-ResultForm.png (no BoundingBox) ---
-l. 230 --- needs --- images/consultResultForm.png ---
-[12]
-Chapitre 4.
-l.236 --- TeX4ht warning --- \Link{x1-170017}? ---
-l.236 --- TeX4ht warning --- \Link{x1-310011}? ---
-l.240 --- TeX4ht warning --- Cannot determine size of graphic in images/repondr
-e.png (no BoundingBox) ---
-l. 240 --- needs --- images/repondre.png ---
-l.247 --- TeX4ht warning --- \Link{x1-170017}? ---
-l.247 --- TeX4ht warning --- \Link{x1-120013}? ---
-l.248 --- TeX4ht warning --- \Link{x1-310011}? ---
-[13
+--- file UserManual2.html ---
+ [12
 
 ]
-Chapitre 5.
+l.260 --- TeX4ht warning --- \Link{x1-130016}? ---
+l.263 --- TeX4ht warning --- \Link{x1-130016}? ---
+l.263 --- TeX4ht warning --- \Link{x1-280017}? ---
+l.268 --- TeX4ht warning --- Cannot determine size of graphic in images/listRep
+onseConsultation.png (no BoundingBox) ---
+l. 268 --- needs --- images/listReponseConsultation.png ---
+l.272 --- TeX4ht warning --- \Link{x1-280028}? ---
+l.273 --- TeX4ht warning --- \Link{x1-280028}? ---
+l.273 --- TeX4ht warning --- \Link{x1-280017}? ---
+l.277 --- TeX4ht warning --- Cannot determine size of graphic in images/consult
+ResultForm.png (no BoundingBox) ---
+l. 277 --- needs --- images/consultResultForm.png ---
+[13]
+Chapitre 4.
+l.284 --- TeX4ht warning --- \Link{x1-160018}? ---
+l.284 --- TeX4ht warning --- \Link{x1-300011}? ---
+l.288 --- TeX4ht warning --- Cannot determine size of graphic in images/repondr
+e.png (no BoundingBox) ---
+l. 288 --- needs --- images/repondre.png ---
+l.295 --- TeX4ht warning --- \Link{x1-1600310}? ---
+l.296 --- TeX4ht warning --- \Link{x1-300011}? ---
 [14
 
 ]
-Chapitre 6.
+Chapitre 5.
 [15
 
-] [16] (./UserManual.aux) ) 
+]
+Chapitre 6.
+[16
+
+] [17] (./UserManual.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
 Here is how much of TeX's memory you used:
- 7543 strings out of 495000
- 97831 string characters out of 6180254
- 292291 words of memory out of 5000000
- 10615 multiletter control sequences out of 15000+600000
+ 7605 strings out of 495000
+ 98983 string characters out of 6180254
+ 292370 words of memory out of 5000000
+ 10670 multiletter control sequences out of 15000+600000
  8974 words of font info for 32 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  38i,6n,44p,3009b,519s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on UserManual.dvi (17 pages, 65972 bytes).
+Output written on UserManual.dvi (18 pages, 79372 bytes).

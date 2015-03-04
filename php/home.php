@@ -45,7 +45,7 @@
 						</thead>
 						<tbody>
 <?php
-      for ($nbForm = 0; $nbForm < 3; $nbForm++) {
+      for ($nbForm = 0; $nbForm < 3 && count($recipient) > 0; $nbForm++) {
 		   $form = array_pop($created);
 			$formId = $form->id();
 			$name = $form->name();
@@ -116,7 +116,7 @@
 						</thead>
 						<tbody>
 <?php
-      for($nb = 0; $nb < 4; $nb++) {
+      for($nb = 0; $nb < 3 && count($recipient) > 0; $nb++) {
 		   $form = array_pop($recipient);
 			$id = $form->id();
 			$name = $form->name();

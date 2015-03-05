@@ -112,7 +112,7 @@ Nous verrons tout d'abord les scénarios issus des besoins de cette application,
 
 %------------------Section scénario
 \section{Scénarios}\label{sec:scenarios}
-Notre problème se décompose en plusieurs scénarios distincts, la création/modification de formulaire, la consultation des réponses, la réalisation des réponses à un formulaire non anonyme et anonyme et le remplissage de formulaire papier. Nous pouvons voir un résumé de tous ces scénarios figure~\ref{scenarios} avec leurs descriptifs figure~\ref{listScenarios}.
+Notre problème se décompose en plusieurs scénarios distincts, la création/modification de formulaire, la consultation des réponses, la réalisation des réponses à un formulaire non anonyme et anonyme et le remplissage de formulaire papier. Nous pouvons voir un résumé de tous ces scénarios figure~\ref{scenarios} et figure~\ref{scenariosCollab} avec leurs descriptifs figure~\ref{listScenarios}.
 \begin{figure}
 \begin{center}
 \makebox[\linewidth]{%        to center the image
@@ -138,7 +138,7 @@ Après ces paramétrages, l’utilisateur peut soit enregistrer, soit publier le
 \makebox[\linewidth]{%        to center the image
   \includegraphics [width=70mm]{images/scenarios.png}}
 \end{center}
-\caption{Scénarios}
+\caption{Scénarios ``Collaboratif''}
 \label{scenarios}
 \end{figure}
 
@@ -161,14 +161,13 @@ Pour les formulaires anonymes, aucune identification n’est obligatoire, les pe
 
 Dans le cas d'un formulaire collaboratif, les destinataires sont obligatoirement authentifiés. Les destinataires du premier groupe recoivent directement le formulaire dans leur boîtes de récéption à la publicaction de celui-ci. Lorsqu'un de ces utilisateurs valide une réponse, le formulaire est envoyé à tous les destinataires du second groupe, et ainsi de suite de groupe en groupe. Lorsqu'une personne affectée au dernier groupe valide une réponse, le formulaire (totalement rempli) est alors retourné à son créateur.\\
 
-% TODO (Romain) vérifier que l'image s'affiche correctement
 \begin{figure}
 \begin{center}
 \makebox[\linewidth]{%        to center the image
   \includegraphics [width=70mm]{images/scenariocollab.png}}
 \end{center}
 \caption{Formulaire collaboratif}
-\label{scenarios}
+\label{scenariosCollab}
 \end{figure}
 
 \subsection{Soumission de formulaire papier}
@@ -278,7 +277,7 @@ Face aux imprévus, il nous a fallu adapter notre planification, notamment l'int
 Le projet s'est réalisé suivant la planification tableau~\ref{planifPost}
 \begin{table}
 \begin{center}
-\begin{tabular}{|c|c|p{4.5cm}|c|c|}
+\begin{tabular}{|c|c|p{3.8cm}|c|c|}
 \hline
  \# & ancien lot & Titre du lot & Début & Fin \\ \hline
 L1 & L1 & Management du projet & S1 & S21\tabularnewline
@@ -342,7 +341,7 @@ Cette structure nous permet en créant des objets d'extraire et remplir facileme
 
 %---------------------------------Section fonctionnalité développées----------------
 \section{Les fonctionnalités développées}
-\subsection{Connexion}% TODO (Romain)
+\subsection{Connexion}
 L’ensemble des utilisateurs ayant un compte CAS à l’Université de Nice peuvent utiliser UniForms, et ce sans avoir besoin de se créer un compte au préalable. Comme déjà précisé, il est également possible d’accéder à l’application sans s’authentifier, dans le cadre de la réponse à un formulaire anonyme.\\
 
 Le service CAS est un système d’authentification unique sur un ensemble de site web. C’est le système utilisé dans la majorité des Université de France et est très répandu dans les Universités à travers le monde.\\
@@ -415,9 +414,9 @@ Afin de réaliser les tests nous avons utiliser deux outils, SimpleTest pour les
 Nous avons choisi SimpleTest car il est très similaire à JUnit (le framework de tests unitaires en JAVA), un outil avec lequel nous étions déjà familier.\\
 Selenium est un plugin fonctionnant sur de nombreux navigateurs (Firefox, Chrome, Opéra,...) permet de tester les scénarios.
 
-\subsection{Tests classes PHP} %TODO
-Les tests unitaires sont accomplis pour toutes les classes du système (User, Form, Group, Answer et Element) afin de s'assurer que chaque module individuel fonctionne correctement vis-à-vis de sa spécification. Nous avons aussi effectué des tests d'intégration. Pour chaque classe, nous créons des tests qui la combinent à d'autres modules, ce pour s'assurer du fonctionnement correct des fonctionnalités atomiques de l'application. Par exemple, nous créons un groupe et lui assignons des utilisateurs, ajoutons des éléments et les assignons à ce groupe et enfin y créons des réponses.\\
-Nous avons employé une approche "bottom-up", ce qui signifie que les composants de bas niveau sont d'abord testés, avant d'être utilisés pour les tests de composants de plus haut niveau. Ce processus est répété jusqu'à ce que toute la hiérarchie de composants soit validées par la série de tests.
+\subsection{Tests classes PHP} 
+Les tests unitaires sont réalisés pour toutes les classes du système (User, Form, Group, Answer et Element) afin de s'assurer que chaque module individuel fonctionne correctement vis-à-vis de sa spécification. Nous avons aussi effectué des tests d'intégration. Pour chaque classe, nous créons des tests qui la combinent à d'autres modules, ce pour s'assurer du fonctionnement correct des fonctionnalités atomiques de l'application. Par exemple, nous créons un groupe et lui assignons des utilisateurs, ajoutons des éléments et les assignons à ce groupe et enfin y créons des réponses.\\
+Nous avons employé une approche ``bottom-up'', ce qui signifie que les composants de bas niveau sont d'abord testés, avant d'être utilisés pour les tests de composants de plus haut niveau. Ce processus est répété jusqu'à ce que toute la hiérarchie de composants soit validées par la série de tests.
 
 \subsection{Tests scénarios}
 Afin de valider nos scénarios d’utilisation de “UniForms”, nous avons utilisé Sélénium IDE~\ref{selenium} v2.8.0 qui est un outil  d'automatisation permettant de faire des tests d'interface des applications Web.
@@ -499,7 +498,7 @@ L’authentification CAS permet de nominer les créateurs et les destinataires. 
 \item Permettre la gestion de collections de formulaires\\
 Uniforms permet la gestion des formulaires créés et des formulaires reçus, avec les quatre opérations CRUD\footnote{Create Read Update Delete}, création, lecture, mise à jour et suppression.
 \item Donner la possibilité de pré-remplir des champs\\
-Ce point là a été abandonné en cours de projet, car la fonctionnalité de création de formulaire dit “Collaboratif” a dû être revu et son temps de développement a augmenté pour prendre en compte certains éléments importants (ordre de remplissage, nombre de réponses autorisée,...). Avec accord du client, nous avons décidé de développer le formulaire “collaboratif” et d’abandonner le pré-remplissage.
+Ce point là a été abandonné en cours de projet, car la fonctionnalité de création de formulaire dit ``Collaboratif'' a dû être revu et son temps de développement a augmenté pour prendre en compte certains éléments importants (ordre de remplissage, nombre de réponses autorisée,...). Avec accord du client, nous avons décidé de développer le formulaire ``collaboratif'' et d’abandonner le pré-remplissage.
 \item Livrer une documentation\\
 Deux documentations ont été réalisées. Une documentation technique à l’aide de PHPdoc pour les éventuels futurs développeurs qui souhaiteraient reprendre le projet et un manuel utilisateur afin d’expliquer en détail le fonctionnement de l’application aux utilisateurs.\\
 Cette documentation valide également un critère de succès.
@@ -509,16 +508,14 @@ Les autres critères de succès, génération de formulaire papier exploitable e
 Pour le package d’installation, seul l'installation de la base de données est nécessaire, c'est pourquoi nous proposons une page où les informations de la base de données sont requies et un script l'installe.
 
 \subsubsection{Synthèse}
-Pour conclure sur les résultats obtenus, nous pouvons dire que tous les critères de succès ont été atteints. Hormis l’objectif du pré-remplissage des champs qui est compensé par le formulaire “collaboratif”, tous les objectifs ont également été atteints.
+Pour conclure sur les résultats obtenus, nous pouvons dire que tous les critères de succès ont été atteints. Hormis l’objectif du pré-remplissage des champs qui est compensé par le formulaire ``collaboratif'', tous les objectifs ont également été atteints.\\
+Une vidéo de l'application finale peut être trouvée sur \url{http://youtu.be/DyYPl_2YS6Q}.
 
 \subsection{Perspectives}
 À la vue de nos résultats et de l’état de l’art, on pourrait imaginer diverses améliorations.\\
 Premièrement, au niveau des utilisateurs. Actuellement, les utilisateurs autorisés sont ceux pouvant s’identifier avec CAS. Il pourrait être intéressant d’ouvrir le champs des utilisateurs à des personnes externes à l’université. Par exemple, si l’on souhaite recueillir l'opinion de personne ayant assistée un événement de l’université. Un compte temporaire serait créé pour qu’ils répondent au formulaire. À la différence d’un formulaire anonyme, les personnes qui répondront seront définies.\\
 Deuxièmement, la liste des éléments disponibles est limitées, proposer plus d’éléments comme un champs d’url, d'adresse mail, liste déroulante... \\
 Troisièmement, les champs de réponses sont vides lorsqu’ils sont proposés au destinataire, il serait pertinent de développer la fonctionnalité d’auto-remplissage par bases de données externes. Par exemple, si le créateur possède en local une base de données concernant les promotions de chaque élève, qu’il puisse, par l’intermédiaire d’un script qu’il écrira, remplir les champs de promotion de élève du formulaire soumis.
-
-
-
 
 \appendix
 %\section{Appendix Title}

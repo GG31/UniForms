@@ -1,0 +1,91 @@
+\documentclass[11pt]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[frenchb]{babel}
+\usepackage{graphicx}
+\usepackage{textpos}
+%%%%
+%compteS
+
+%%%
+\usetheme{Berlin}
+\usecolortheme{beaver}
+\useinnertheme[shadow]{rounded}
+
+\makeatletter
+\beamer@theme@subsectionfalse
+\makeatother
+
+\title{UniForms}
+\author[Ayoub BENATHMANE, Geneviève CIRERA, Luis Felipe POLO, Romain TRUCHI]{Ayoub BENATHMANE, Geneviève CIRERA, Luis Felipe POLO, Romain TRUCHI\\\vspace{1cm}{\small Encadrant : Michel GAUTERO}}
+\institute{Polytech'Nice-Sophia}
+\subtitle{Création et Partage de Formulaires 
+Web et Papier}
+\date{\oldstylenums{\today}}
+
+
+
+\begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
+
+%\AtBeginSection[]{
+%  \begin{frame}{Sommaire}
+%  \small \tableofcontents[currentsection, hideothersubsections]
+%  \end{frame} 
+%}
+% ------------------------------
+
+% ----- Presentacion ------
+\section{Introduction}
+\subsection*{SubPart 1}
+%\subsection{En bref}
+
+\begin{frame}{Architecture}
+\begin{center}
+\includegraphics[width=.8\paperwidth]{images/architecture.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Technologies}
+\begin{columns}[t]
+	\begin{column}[T]{.5\textwidth}
+		\begin{center}
+		\includegraphics[width=.3\paperwidth]{images/jquery-logo.png}\\
+		\vspace{1cm}
+		\includegraphics[width=.4\paperwidth]{images/html.jpeg}
+		\end{center}
+  	\end{column}
+  	\begin{column}[T]{.5\textwidth}
+  		\begin{center}
+  		\includegraphics[width=.25\paperwidth]{images/bootstrap.jpg}
+  		\end{center}
+	\end{column}
+\end{columns}
+\begin{center}
+
+\end{center}
+\end{frame}
+
+\begin{frame}{Base de Données}
+\begin{center}
+\includegraphics[width=.7\paperwidth]{images/bdd_diagram.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Diagramme de classe}
+\begin{center}
+\includegraphics[width=.7\paperwidth]{images/class_diagram.jpg}
+\end{center}
+\end{frame}
+
+\begin{frame}{Tests}
+\begin{itemize}
+	\item Tests de classes PHP : SimpleTest
+	\item Tests de scénarios : Sélénium
+\end{itemize}
+\end{frame}
+
+
+
+\end{document}

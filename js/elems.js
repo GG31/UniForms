@@ -209,7 +209,9 @@ Element = (function(){
 				obj.type = 1;
 				break;
 			case 2:
-				element = $('<input/>').attr('type', 'number');
+				element = $('<input/>').attr('type', 'number')
+										.attr('min', obj.min)
+										.attr('max', obj.max);
 				obj.type = 2;
 				break;
 			case 4:

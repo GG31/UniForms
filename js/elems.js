@@ -278,9 +278,15 @@ Element = (function(){
 
 	Element.prototype.disable = function(){
 		this.disabled = true;
+		console.log(this.element.get());
 
-		this.element.get().prop('disabled', true);
-		this.element.get().find('input').prop('disabled', true);
+		if(typeof this.element.prop == "function"){
+			this.element.prop('disabled', true);
+			this.element.find('input').prop('disabled', true);
+		}else{
+			this.element.get().prop('disabled', true);
+			this.element.get().find('input').prop('disabled', true);
+		}
 	};
 
 	Element.prototype.attrs = function() {

@@ -165,7 +165,7 @@
 			global $database;
 			$query = mysqli_query($database, "SELECT * FROM answer WHERE formdest_id = ".$formDestId);
 			$limit = mysqli_fetch_array(mysqli_query($database, "SELECT * FROM formgroup JOIN formdest ON formgroup.formgroup_id = formdest.formgroup_id AND formdest_id = ".$formDestId))["group_limit"];
-			if (mysqli_num_rows($query) >= $limit) 
+			if (mysqli_num_rows($query) >= $limit and $limit != 0) 
 				return true;
 			return false;
 		}

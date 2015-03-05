@@ -12,8 +12,13 @@
 		case 'fillform':
 			verify_access_fill();
 			break;
-		case 'exportSQL':
 		case 'download_csv':
+			if (isset($_GET["form"]) || isset($_GET["ans"]))
+				verify_creator($_GET["form"], $_GET["ans"]); 
+			else 
+				header ( "Location: error.php?e=99" );
+			break;
+		case 'exportSQL':
 		case 'results':
 			if (isset($_GET["form"])) 
 				verify_creator($_GET["form"]); 
@@ -34,8 +39,16 @@
 	}
 	
 	/* Verifies if current user is creator of $formId */
-	function verify_creator($formId ) {
-		if (!((new Form($formId))->creator()->id() == $_SESSION ["user_id"]))
+	function verify_creator($formId, $ansId = NULL ) {
+		if(isset($formId)){
+			$creatorId = (new Form($formId))->creator()->id();
+		}elseif(isset($ansId)){
+			$creatorId = (new Form((new Answer($ansId))->formId()))->creator()->id();
+		}else{
+			header ( "Location: error.php?e=3" );
+		}
+
+		if (!($creatorId == $_SESSION ["user_id"]))
 			header ( "Location: error.php?e=3" );
 	}
 	

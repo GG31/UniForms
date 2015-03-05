@@ -14,7 +14,8 @@
 			break;
 		case 'download_csv':
 			if (isset($_GET["form"]) || isset($_GET["ans"]))
-				verify_creator($_GET["form"], $_GET["ans"]); 
+				verify_creator(	isset($_GET["form"]) 	? $_GET["form"] : NULL,
+								isset($_GET["ans"]) 	? $_GET["ans"] 	: NULL); 
 			else 
 				header ( "Location: error.php?e=99" );
 			break;

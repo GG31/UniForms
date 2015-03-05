@@ -412,11 +412,12 @@ Lorsque l'application est réalisé, il convient que notre encadrant s'assure qu
 
 \subsection{Outils de tests utilisés}
 Afin de réaliser les tests nous avons utiliser deux outils, SimpleTest pour les tests des classes PHP et Sélénium IDE pour les tests de scénarios.\\
-Bien que PHPUnit soit un standard des framework de tests PHP, nous avons choisi SimpleTest car il possède une interface web pour l’exécution des tests. De plus, l’équipe travaillant sur deux systèmes d’exploitation différents, SimpleTest fonctionnait sur les deux à la différence de PHPUnit.\\
+Nous avons choisi SimpleTest car il est très similaire à JUnit (le framework de tests unitaires en JAVA), un outil avec lequel nous étions déjà familier.\\
 Selenium est un plugin fonctionnant sur de nombreux navigateurs (Firefox, Chrome, Opéra,...) permet de tester les scénarios.
 
 \subsection{Tests classes PHP} %TODO
-Afin de vérifier le bon fonctionnement des méthodes de nos classes PHP, nous les avons testé en utilisant SimpleTest.
+Les tests unitaires sont accomplis pour toutes les classes du système (User, Form, Group, Answer et Element) afin de s'assurer que chaque module individuel fonctionne correctement vis-à-vis de sa spécification. Nous avons aussi effectué des tests d'intégration. Pour chaque classe, nous créons des tests qui la combinent à d'autres modules, ce pour s'assurer du fonctionnement correct des fonctionnalités atomiques de l'application. Par exemple, nous créons un groupe et lui assignons des utilisateurs, ajoutons des éléments et les assignons à ce groupe et enfin y créons des réponses.\\
+Nous avons employé une approche "bottom-up", ce qui signifie que les composants de bas niveau sont d'abord testés, avant d'être utilisés pour les tests de composants de plus haut niveau. Ce processus est répété jusqu'à ce que toute la hiérarchie de composants soit validées par la série de tests.
 
 \subsection{Tests scénarios}
 Afin de valider nos scénarios d’utilisation de “UniForms”, nous avons utilisé Sélénium IDE~\ref{selenium} v2.8.0 qui est un outil  d'automatisation permettant de faire des tests d'interface des applications Web.
